@@ -1,7 +1,8 @@
 # Corathing
 ### Organize Anything with Customizable Widget Dashboards
 
-Corathing is Customizable Widget Organizer
+DevelopTools 는 Windows 개발 환경에서 도움이 되는 도구들을 모아놓은 프로젝트입니다.
+현재는 순수 C# 및 WPF 를 이용한 프로젝트들로 구성되어 있으며, 추후 다양한 프로젝트들을 추가할 예정입니다.
 
 [English](README.md)
 [한국어](README_KR.md)
@@ -22,50 +23,41 @@ HW Monitoring
 - https://github.com/chris1111/HWSensors
 
 
-Corathing 을 사용하기 위해 다음과 같은 지식이 필요합니다.
+DevelopTools 는 다음 사항들을 목적으로 구성되어 있습니다.
 - MVVM 패턴을 이용한 WPF 프로젝트
 - CommunityToolkit 기반 샘플
 
 [Wiki](./wiki/Home.md)
 
+📁 Apps
+-
+
+| Name| Framework | Description | Version
+| --- | --- | --- | --- |
+| DDTMonitor | WPF | Grafana 를 이용한 WPF 모니터링 툴 | ```시작전```
+| DDTIntraChat | WPF | KakaoTalk 클론 코딩 | ```시작전```
+| DDTAccessServer | ASP.NET | 백그라운드 원격 제어 서버 프로그램 | ```시작전```
+| DDTAccessManager | WPF | WPF 원격 제어 클라이언트 프로그램 | ```시작전```
+| DDTDeveloperConsoleSample | WPF | DeveloperConsole 을 만들고  | ```시작전```
+
+📁 Controls
+-
+
+| Namespace | Framework | Description | Version
+| --- | --- | --- | --- |
+| DDTBorder | WPF | Grafana 를 이용한 WPF 모니터링 툴 | None
+
 📁 Projects
 -
-| Name| Folder |Framework | Description | Version
-| --- | --- | --- | --- | --- |
-| Corathing.Organizer | src/Apps | WPF | Grafana 를 이용한 WPF 모니터링 툴 | ```시작전```
-| Corathing.WidgetSystems |  | WPF | KakaoTalk 클론 코딩 | ```시작전```
-| Corathing.WidgetSystems.WPF | | ASP.NET | 백그라운드 원격 제어 서버 프로그램 | ```시작전```
 
-```mermaid
-graph
-    A[Corathing.Organizer] --> B[Corathing.WidgetSystems]
-    A --> C[Corathing.WidgetSystems.WPF]
-    C --> B
-    subgraph CustomWidgets
-        D[CustomWidgets]
-        E[DefaultWidgets]
-        D[OtherWidgets]
-    end
-    D --> B
-    D --> C
-    A -. Import as DLL .-> CustomWidgets
-```
-
-
-📁 Widgets
--
-| Name| Folder |Framework | Description | Version
-| --- | --- | --- | --- | --- |
-| Corathing. | src/Apps | WPF | Grafana 를 이용한 WPF 모니터링 툴 | ```시작전```
-| DDTIntraChat |  | WPF | KakaoTalk 클론 코딩 | ```시작전```
-| DDTAccessServer | | ASP.NET | 백그라운드 원격 제어 서버 프로그램 | ```시작전```
-| DDTAccessManager | | WPF | WPF 원격 제어 클라이언트 프로그램 | ```시작전```
-| DDTDeveloperConsoleSample | | WPF | DeveloperConsole 을 만들고  | ```시작전```
+| Namespace | Framework | Description | Version
+| --- | --- | --- | --- |
+| DDT.Apps.DDTMonitor | WPF | Grafana 를 이용한 WPF 모니터링 툴 | None
 
 📕 library to use
 -
 
-| Name (🔗 Core Libraries) | Where to use | Version |
+| Name | Where to use | Version |
 | --- | --- | --- |
 | [Microsoft.EntityFrameworkCore](https://learn.microsoft.com/ko-kr/ef/core/) | |
 | [Microsoft.Extensions.Logger](https://learn.microsoft.com/en-us/dotnet/core/extensions/logging) | |
@@ -76,16 +68,34 @@ graph
 | [Microsoft.CommunityToolkit.MVVM](https://learn.microsoft.com/ko-kr/dotnet/communitytoolkit/mvvm/) | |
 | [Microsoft.Toolkit.WebView](https://learn.microsoft.com/en-us/windows/communitytoolkit/controls/wpf-winforms/webview) | |
 
-| Name (🔗 Controls and Themes) | Where to use | Version |
-| --- | --- | --- |
-| [MaterialDesign](https://github.com/MaterialDesignInXAML/MaterialDesignInXamlToolkit) | |
-| [MahApp](https://github.com/MahApps/MahApps.Metro) | |
-| [WpfUi](https://learn.microsoft.com/en-us/dotnet/api/microsoft.extensions.configuration) | |
-
 ### 패키지
 - Virtual Serial Port (IO Test용)
 - LiveLogViewer (디버그용, 수정해서 사용 중)
 - [Prometheus-net MIT] (https://github.com/prometheus-net/prometheus-net)
+
+### THIRD_PARTY UI
+- [MaterialDesign](https://github.com/MaterialDesignInXAML/MaterialDesignInXamlToolkit)
+    - MaterialDesign.Icons
+    - MaterialDesignColors
+    - MaterialDesignThemes
+    - MaterialDesignThemes.MahApps
+- [MahApps.Metro](https://github.com/MahApps/MahApps.Metro)
+
+### Dependencies
+
+```mermaid
+graph
+    A[DDT] --> B[DDTMonitor]
+    A --> C[DDTIntraChat]
+    A --> D[DDTAccessServer]
+    A --> E[DDTDeveloperConsoleSample]
+    A --> F[DDT]
+    B --> G[DDTMonitor]
+    C --> H[DDTIntraChat]
+    D --> I[DDTAccessServer]
+    E --> J[DDTDeveloperConsoleSample]
+    F --> K[DDT]
+```
 
 ### 코드 커버리지 및 정적 분석용
 - [roslynator.dotnet.cli](https://github.com/dotnet/roslynator)
