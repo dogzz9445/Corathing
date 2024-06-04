@@ -31,7 +31,7 @@ jobs:
     # For more information, see https://help.github.com/en/actions/configuring-and-managing-workflows/configuring-a-workflow#configuring-a-build-matrix
       matrix:
         channel: [Dev, Prod_Sideload, Prod_Store]
-        targetPlatform: [x86, x64]
+        targetPlatform: [x64]
         include:
 
           # includes the following variables for the matrix leg matching Dev
@@ -67,11 +67,11 @@ jobs:
       App_Packages_Archive: AppPackages.zip
       App_Packages_Directory: AppPackages
       SigningCertificate: GitHubActionsDemo.pfx
-      Solution_Path: MyWpfApp.sln
-      Test_Project_Path: MyWpfApp.Tests\MyWpfApp.Tests.csproj
-      Wpf_Project_Path: MyWpfApp\MyWpfApp.csproj
-      Wap_Project_Directory: MyWpfApp.Package
-      Wap_Project_Name: MyWpfApp.Package.wapproj
+      Solution_Path: Corathing.sln
+      Test_Project_Path: src\Apps\Corathing.Organizer.UnitTests\Corathing.Organizer.UnitTests.csproj
+      Wpf_Project_Path: src\Apps\Corathing.Organizer\Corathing.Organizer.csproj
+      Wap_Project_Directory: src\Apps\Corathing.Package
+      Wap_Project_Name: Corathing.Package.wapproj
       Actions_Allow_Unsecure_Commands: true # Allows AddPAth and SetEnv commands
 
     steps:
