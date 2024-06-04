@@ -135,3 +135,26 @@ reports:
 
 # 기타 정리 필요
 
+# Workflows
+
+Create CI/CD workflows for WPF and Windows Forms Applications built on .NET 8.x
+
+- [x] CI/CD
+- [ ] Code Quality
+
+This repo contains a sample application to demonstrate how to create CI/CD pipelines using [GitHub Actions](https://github.com/features/actions "GitHub Actions page"). 
+
+With GitHub Actions, you can quickly and easily automate your software workflows with CI/CD.
+* Integrate code changes directly into GitHub to speed up development cycles
+* Trigger builds to quickly identify breaking changes and create testable debug builds
+* Continuously run tests to identify and eliminate bugs, improving code quality 
+* Automatically build, sign, package and deploy branches that pass CI 
+
+Build, test, and deploy your code entirely within GitHub.
+
+| Workflow | Status |
+|----------|--------|
+| WPF - CI | ![ci](https://github.com/microsoft/github-actions-for-desktop-apps/workflows/Wpf%20Continuous%20Integration/badge.svg) |
+| WPF - CD | ![cd](https://github.com/microsoft/github-actions-for-desktop-apps/workflows/Wpf%20Continuous%20Delivery/badge.svg) |
+| WPF - CI (.NET 6 experimental) | [![NET 6.0 CI (temporary)](https://github.com/microsoft/github-actions-for-desktop-apps/actions/workflows/ci-net6-temp.yml/badge.svg)](https://github.com/microsoft/github-actions-for-desktop-apps/actions/workflows/ci-net6-temp.yml) |
+
