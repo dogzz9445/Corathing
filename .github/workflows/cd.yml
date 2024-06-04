@@ -66,7 +66,7 @@ jobs:
     env:
       App_Packages_Archive: AppPackages.zip
       App_Packages_Directory: AppPackages
-      SigningCertificate: GitHubActionsDemo.pfx
+      SigningCertificate: GitHubActionsPackageCorathing.pfx
       Solution_Path: Corathing.sln
       Test_Project_Path: src\Apps\Corathing.Organizer.UnitTests\Corathing.Organizer.UnitTests.csproj
       Wpf_Project_Path: src\Apps\Corathing.Organizer\Corathing.Organizer.csproj
@@ -76,7 +76,7 @@ jobs:
 
     steps:
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
       with:
         fetch-depth: 0 # avoid shallow clone so nbgv can do its work.
 
@@ -93,7 +93,7 @@ jobs:
 
     # Add  MsBuild to the PATH: https://github.com/microsoft/setup-msbuild
     - name: Setup MSBuild.exe
-      uses: microsoft/setup-msbuild@v1.1
+      uses: microsoft/setup-msbuild@v2
 
     # Update the appxmanifest before build by setting the per-channel values set in the matrix such as
     # the Package.Identity.Version or the Package.Identity.Name, which allows multiple channels to be built.
