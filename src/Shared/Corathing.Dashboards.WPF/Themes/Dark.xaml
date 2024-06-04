@@ -1,0 +1,49 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="pack://application:,,,/DDT.Core.WidgetSystems;component/Themes/Generic.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+
+    <SolidColorBrush x:Key="PrimaryHueLightBrush"
+                     Color="{DynamicResource DarkTheme_PrimaryHueLightBrush}" />
+    <SolidColorBrush x:Key="PrimaryHueLightForegroundBrush"
+                     Color="{DynamicResource DarkTheme_PrimaryHueLightForegroundBrush}" />
+    <SolidColorBrush x:Key="PrimaryHueMidBrush"
+                     Color="{DynamicResource DarkTheme_PrimaryHueMidBrush}" />
+    <SolidColorBrush x:Key="PrimaryHueMidForegroundBrush"
+                     Color="{DynamicResource DarkTheme_PrimaryHueMidForegroundBrush}" />
+    <SolidColorBrush x:Key="PrimaryHueDarkBrush"
+                     Color="{DynamicResource DarkTheme_PrimaryHueDarkBrush}" />
+    <SolidColorBrush x:Key="PrimaryHueDarkForegroundBrush"
+                     Color="{DynamicResource DarkTheme_PrimaryHueDarkForegroundBrush}" />
+
+    <SolidColorBrush x:Key="SecondaryHueLightBrush"
+                     Color="{DynamicResource DarkTheme_SecondaryHueLightBrush}" />
+    <SolidColorBrush x:Key="SecondaryHueLightForegroundBrush"
+                     Color="{DynamicResource DarkTheme_SecondaryHueLightForegroundBrush}" />
+    <SolidColorBrush x:Key="SecondaryHueMidBrush"
+                     Color="{DynamicResource DarkTheme_SecondaryHueMidBrush}" />
+    <SolidColorBrush x:Key="SecondaryHueMidForegroundBrush"
+                     Color="{DynamicResource DarkTheme_SecondaryHueMidForegroundBrush}" />
+    <SolidColorBrush x:Key="SecondaryHueDarkBrush"
+                     Color="{DynamicResource DarkTheme_SecondaryHueDarkBrush}" />
+    <SolidColorBrush x:Key="SecondaryHueDarkForegroundBrush"
+                     Color="{DynamicResource DarkTheme_SecondaryHueDarkForegroundBrush}" />
+
+    <SolidColorBrush x:Key="PrimaryAlertBrush"
+                     Color="{DynamicResource PrimaryAlertDarkColor}" />
+    <SolidColorBrush x:Key="SecondaryAlertBrush"
+                     Color="{DynamicResource SecondaryAlertDarkColor}" />
+    <SolidColorBrush x:Key="SuccessAlertBrush"
+                     Color="{DynamicResource SuccessAlertDarkColor}" />
+    <SolidColorBrush x:Key="DangerAlertBrush"
+                     Color="{DynamicResource DangerAlertDarkColor}" />
+    <SolidColorBrush x:Key="WarningAlertBrush"
+                     Color="{DynamicResource WarningAlertDarkColor}" />
+    <SolidColorBrush x:Key="InfoAlertBrush"
+                     Color="{DynamicResource InfoAlertDarkColor}" />
+    <SolidColorBrush x:Key="LightAlertBrush"
+                     Color="{DynamicResource LightAlertDarkColor}" />
+    <SolidColorBrush x:Key="DarkAlertBrush"
+                     Color="{DynamicResource DarkAlertDarkColor}" />
+</ResourceDictionary>

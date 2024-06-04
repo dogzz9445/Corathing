@@ -1,0 +1,21 @@
+﻿<ItemsControl x:Class="Corathing.Dashboards.WPF.Controls.DashboardHost"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+              xmlns:local="clr-namespace:Corathing.Dashboards.WPF.Controls"
+              FocusVisualStyle="{x:Null}">
+    <ItemsControl.Template>
+        <ControlTemplate>
+            <ScrollViewer x:Name="DashboardHostScrollViewer"
+                          HorizontalScrollBarVisibility="Auto"
+                          VerticalScrollBarVisibility="Auto">
+                <AdornerDecorator>
+                    <Grid>
+                        <Canvas x:Name="HighlightWidgetCanvas" />
+                        <ItemsPresenter />
+                    </Grid>
+                </AdornerDecorator>
+            </ScrollViewer>
+        </ControlTemplate>
+    </ItemsControl.Template>
+</ItemsControl>

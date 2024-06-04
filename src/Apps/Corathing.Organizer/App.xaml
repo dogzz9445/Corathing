@@ -1,8 +1,7 @@
 ﻿<Application x:Class="Corathing.Organizer.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:Corathing.Organizer"
-             StartupUri="MainWindow.xaml">
+             xmlns:local="clr-namespace:Corathing.Organizer">
     <Application.Resources>
          
     </Application.Resources>
