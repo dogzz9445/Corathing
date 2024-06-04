@@ -7,7 +7,7 @@ DevelopTools 는 Windows 개발 환경에서 도움이 되는 도구들을 모�
 [English](README.md)
 [한국어](README_KR.md)
 
-![alt text](assets/logo.png)
+![alt text](docs/images/logo.png)
 
 카피 프로젝트
 - Freeter
