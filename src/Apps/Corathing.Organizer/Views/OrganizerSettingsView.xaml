@@ -8,53 +8,212 @@
       xmlns:converters="clr-namespace:Corathing.Organizer.Converters"
       xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
       mc:Ignorable="d"
-      ui:Design.Background="{DynamicResource ApplicationBackgroundBrush}"
-      ui:Design.Foreground="{DynamicResource TextFillColorPrimaryBrush}"
-      d:DesignHeight="450"
-      d:DesignWidth="800"
+      Background="{DynamicResource ApplicationBackgroundBrush}"
+      Foreground="{DynamicResource TextFillColorPrimaryBrush}"
       d:DataContext="{d:DesignInstance viewmodels:OrganizerSettingsViewModel,
                         IsDesignTimeCreatable=False}"
+      Margin="24"
       Title="OrganizerSettingsView">
     <Page.Resources>
         <converters:ThemeToIndexConverter x:Key="ThemeToIndexConverter" />
     </Page.Resources>
 
-    <StackPanel Margin="0,0,0,24">
-        <ui:TextBlock Margin="0,0,0,8"
-                      FontTypography="BodyStrong"
-                      Text="Appearance &amp; behavior" />
-        <ui:CardControl Margin="0,0,0,12"
-                        Icon="{ui:SymbolIcon Color24}">
-            <ui:CardControl.Header>
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                    </Grid.RowDefinitions>
-                    <ui:TextBlock Grid.Row="0"
-                                  FontTypography="Body"
-                                  Text="App theme" />
-                    <ui:TextBlock Grid.Row="1"
-                                  Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
-                                  Text="Select which app theme to display" />
-                </Grid>
-            </ui:CardControl.Header>
-            <ComboBox Grid.Column="1"
-                      MinWidth="200"
-                      SelectedIndex="{Binding CurrentApplicationTheme, Converter={StaticResource ThemeToIndexConverter}, Mode=TwoWay}">
-                <ComboBoxItem Content="Light" />
-                <ComboBoxItem Content="Dark" />
-            </ComboBox>
-        </ui:CardControl>
+    <DockPanel LastChildFill="True">
+        <StackPanel DockPanel.Dock="Top"
+                    Margin="0, 10, 0, 0"
+                    Orientation="Horizontal"
+                    VerticalAlignment="Top"
+                    Height="48">
+            <ui:Button VerticalAlignment="Top"
+                       Command="{Binding CloseCommand}"
+                       CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, 
+                                        AncestorType={x:Type Window}}}"
+                       Height="40"
+                       Width="40">
+                <ui:SymbolIcon Symbol="ArrowLeft12" />
+            </ui:Button>
+            <ui:TextBlock Margin="16,0,0,0"
+                          VerticalAlignment="Top"
+                          FontTypography="Title"
+                          Text="Settings" />
+        </StackPanel>
+        <Separator DockPanel.Dock="Top"/>
 
-        <ui:CardControl Margin="0,0,0,12"
-                        Icon="{ui:SymbolIcon AlignSpaceEvenlyVertical20}">
-            <ui:CardControl.Header>
-                <ui:TextBlock Grid.Row="0"
-                              FontTypography="Body"
-                              Text="Navigation style" />
-            </ui:CardControl.Header>
-            <!--<ComboBox Grid.Column="1"
+        <ScrollViewer FocusVisualStyle="{x:Null}">
+
+            <StackPanel Margin="0,8,0,8"
+                        FocusVisualStyle="{x:Null}">
+                <ui:TextBlock Margin="0,16,0,8"
+                              FontTypography="BodyStrong"
+                              Text="Settings Folder" />
+                <ui:CardExpander Margin="0,0,0,8"
+                                 ContentPadding="0">
+                    <ui:CardExpander.Header>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <ui:TextBlock Grid.Row="0"
+                                          Grid.Column="0"
+                                          FontTypography="Body"
+                                          Text="설정 파일 (글로벌 or 로컬" />
+                            <ui:TextBlock Grid.Row="1"
+                                          Grid.Column="0"
+                                          Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
+                                          Text="설정 파일을 설정합니다" />
+                            <TextBlock Grid.Row="0"
+                                       Grid.RowSpan="2"
+                                       Grid.Column="1"
+                                       Margin="0,0,16,0"
+                                       VerticalAlignment="Center"
+                                       Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
+                                       Text="{Binding AppVersion, Mode=OneWay}" />
+                        </Grid>
+                    </ui:CardExpander.Header>
+                    <StackPanel>
+                        <Grid Margin="16">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0"
+                                       Text="To clone this repository" />
+                            <TextBlock Grid.Column="1"
+                                       Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
+                                       Text="git clone https://github.com/lepoco/wpfui.git" />
+                        </Grid>
+                        <ui:Anchor Margin="0"
+                                   Padding="16"
+                                   HorizontalAlignment="Stretch"
+                                   HorizontalContentAlignment="Stretch"
+                                   Background="Transparent"
+                                   BorderThickness="0,1,0,0"
+                                   CornerRadius="0"
+                                   NavigateUri="https://github.com/lepoco/wpfui/issues/new/choose">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0"
+                                           Text="File a bug or request a new sample" />
+                                <ui:SymbolIcon Grid.Column="1"
+                                               Symbol="Link24" />
+                            </Grid>
+                        </ui:Anchor>
+                        <ui:Anchor Margin="0"
+                                   Padding="16"
+                                   HorizontalAlignment="Stretch"
+                                   HorizontalContentAlignment="Stretch"
+                                   Background="Transparent"
+                                   BorderThickness="0,1,0,1"
+                                   CornerRadius="0"
+                                   NavigateUri="https://wpfui.lepo.co/">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0"
+                                           Text="Check out the docs" />
+                                <ui:SymbolIcon Grid.Column="1"
+                                               Symbol="Link24" />
+                            </Grid>
+                        </ui:Anchor>
+                        <TextBlock Margin="16"
+                                   Text="{Binding AppVersion, Mode=OneWay}" />
+                    </StackPanel>
+                </ui:CardExpander>
+
+
+                <ui:TextBlock Margin="0,16,0,8"
+                              FontTypography="BodyStrong"
+                              Text="Appearance &amp; behavior" />
+                <ui:CardControl Margin="0,0,0,8"
+                                Icon="{ui:SymbolIcon Color24}">
+                    <ui:CardControl.Header>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <ui:TextBlock Grid.Row="0"
+                                          FontTypography="Body"
+                                          Text="App theme" />
+                            <ui:TextBlock Grid.Row="1"
+                                          Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
+                                          Text="Select which app theme to display" />
+                        </Grid>
+                    </ui:CardControl.Header>
+                    <ComboBox Grid.Column="1"
+                              MinWidth="200"
+                              SelectedIndex="{Binding CurrentApplicationTheme, Converter={StaticResource ThemeToIndexConverter}, Mode=TwoWay}">
+                        <ComboBoxItem Content="Light" />
+                        <ComboBoxItem Content="Dark" />
+                    </ComboBox>
+                </ui:CardControl>
+                
+                <ui:CardControl Margin="0,0,0,8"
+                                Icon="{ui:SymbolIcon LocalLanguage24}">
+                    <ui:CardControl.Header>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <ui:TextBlock Grid.Row="0"
+                                          FontTypography="Body"
+                                          Text="Language" />
+                            <ui:TextBlock Grid.Row="1"
+                                          Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
+                                          Text="Select which app theme to display" />
+                        </Grid>
+                    </ui:CardControl.Header>
+                    <ComboBox Grid.Column="1"
+                              MinWidth="200"
+                              SelectedIndex="{Binding CurrentApplicationTheme, Converter={StaticResource ThemeToIndexConverter}, Mode=TwoWay}">
+                        <ComboBoxItem Content="Light" />
+                        <ComboBoxItem Content="Dark" />
+                    </ComboBox>
+                </ui:CardControl>
+
+                <ui:CardControl Margin="0,0,0,8"
+                                Icon="{ui:SymbolIcon Color24}">
+                    <ui:CardControl.Header>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <ui:TextBlock Grid.Row="0"
+                                          FontTypography="Body"
+                                          Text="닫기 버튼 제거" />
+                            <ui:TextBlock Grid.Row="1"
+                                          Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
+                                          Text="Select which app theme to display" />
+                        </Grid>
+                    </ui:CardControl.Header>
+                    <ComboBox Grid.Column="1"
+                              MinWidth="200"
+                              SelectedIndex="{Binding CurrentApplicationTheme, Converter={StaticResource ThemeToIndexConverter}, Mode=TwoWay}">
+                        <ComboBoxItem Content="Light" />
+                        <ComboBoxItem Content="Dark" />
+                    </ComboBox>
+                </ui:CardControl>
+
+                <ui:CardControl Margin="0,0,0,12"
+                                Icon="{ui:SymbolIcon AlignSpaceEvenlyVertical20}">
+                    <ui:CardControl.Header>
+                        <ui:TextBlock Grid.Row="0"
+                                      FontTypography="Body"
+                                      Text="Navigation style" />
+                    </ui:CardControl.Header>
+                    <!--<ComboBox Grid.Column="1"
                       MinWidth="200"
                       SelectedIndex="{Binding CurrentApplicationNavigationStyle, Converter={StaticResource PaneDisplayModeToIndexConverter}, Mode=TwoWay}">
                 <ComboBoxItem Content="Left compact" />
@@ -62,93 +221,95 @@
                 <ComboBoxItem Content="Top" />
                 <ComboBoxItem Content="Bottom" />
             </ComboBox>-->
-        </ui:CardControl>
+                </ui:CardControl>
 
-        <ui:TextBlock Margin="0,24,0,8"
-                      FontTypography="BodyStrong"
-                      Text="About" />
-        <ui:CardExpander ContentPadding="0">
-            <ui:CardExpander.Header>
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="Auto" />
-                    </Grid.ColumnDefinitions>
-                    <ui:TextBlock Grid.Row="0"
-                                  Grid.Column="0"
-                                  FontTypography="Body"
-                                  Text="WPF UI" />
-                    <ui:TextBlock Grid.Row="1"
-                                  Grid.Column="0"
-                                  Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
-                                  Text="© 2024 lepo.co | Leszek Pomianowski &amp; WPF UI Contributors" />
-                    <TextBlock Grid.Row="0"
-                               Grid.RowSpan="2"
-                               Grid.Column="1"
-                               Margin="0,0,16,0"
-                               VerticalAlignment="Center"
-                               Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
-                               Text="{Binding ViewModel.AppVersion, Mode=OneWay}" />
-                </Grid>
-            </ui:CardExpander.Header>
-            <StackPanel>
-                <Grid Margin="16">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="Auto" />
-                    </Grid.ColumnDefinitions>
-                    <TextBlock Grid.Column="0"
-                               Text="To clone this repository" />
-                    <TextBlock Grid.Column="1"
-                               Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
-                               Text="git clone https://github.com/lepoco/wpfui.git" />
-                </Grid>
-                <ui:Anchor Margin="0"
-                           Padding="16"
-                           HorizontalAlignment="Stretch"
-                           HorizontalContentAlignment="Stretch"
-                           Background="Transparent"
-                           BorderThickness="0,1,0,0"
-                           CornerRadius="0"
-                           NavigateUri="https://github.com/lepoco/wpfui/issues/new/choose">
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="Auto" />
-                        </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Column="0"
-                                   Text="File a bug or request a new sample" />
-                        <ui:SymbolIcon Grid.Column="1"
-                                       Symbol="Link24" />
-                    </Grid>
-                </ui:Anchor>
-                <ui:Anchor Margin="0"
-                           Padding="16"
-                           HorizontalAlignment="Stretch"
-                           HorizontalContentAlignment="Stretch"
-                           Background="Transparent"
-                           BorderThickness="0,1,0,1"
-                           CornerRadius="0"
-                           NavigateUri="https://wpfui.lepo.co/">
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="Auto" />
-                        </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Column="0"
-                                   Text="Check out the docs" />
-                        <ui:SymbolIcon Grid.Column="1"
-                                       Symbol="Link24" />
-                    </Grid>
-                </ui:Anchor>
-                <TextBlock Margin="16"
-                           Text="{Binding ViewModel.AppVersion, Mode=OneWay}" />
+                <ui:TextBlock Margin="0,16,0,8"
+                              FontTypography="BodyStrong"
+                              Text="About" />
+                <ui:CardExpander ContentPadding="0">
+                    <ui:CardExpander.Header>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <ui:TextBlock Grid.Row="0"
+                                          Grid.Column="0"
+                                          FontTypography="Body"
+                                          Text="Corathing" />
+                            <ui:TextBlock Grid.Row="1"
+                                          Grid.Column="0"
+                                          Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
+                                          Text="© 2024 corathing.com | Dongmin Jang &amp; Corathing Contributors" />
+                            <TextBlock Grid.Row="0"
+                                       Grid.RowSpan="2"
+                                       Grid.Column="1"
+                                       Margin="0,0,16,0"
+                                       VerticalAlignment="Center"
+                                       Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
+                                       Text="{Binding AppVersion, Mode=OneWay}" />
+                        </Grid>
+                    </ui:CardExpander.Header>
+                    <StackPanel>
+                        <Grid Margin="16">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0"
+                                       Text="To clone this repository" />
+                            <TextBlock Grid.Column="1"
+                                       Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
+                                       Text="git clone https://github.com/dogzz9445/Corathing.git" />
+                        </Grid>
+                        <ui:Anchor Margin="0"
+                                   Padding="16"
+                                   HorizontalAlignment="Stretch"
+                                   HorizontalContentAlignment="Stretch"
+                                   Background="Transparent"
+                                   BorderThickness="0,1,0,0"
+                                   CornerRadius="0"
+                                   NavigateUri="https://github.com/dogzz9445/Corathing/issues/new/choose">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0"
+                                           Text="File a bug or request a new sample" />
+                                <ui:SymbolIcon Grid.Column="1"
+                                               Symbol="Link24" />
+                            </Grid>
+                        </ui:Anchor>
+                        <ui:Anchor Margin="0"
+                                   Padding="16"
+                                   HorizontalAlignment="Stretch"
+                                   HorizontalContentAlignment="Stretch"
+                                   Background="Transparent"
+                                   BorderThickness="0,1,0,1"
+                                   CornerRadius="0"
+                                   NavigateUri="https://corathing.com">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0"
+                                           Text="Check out the docs" />
+                                <ui:SymbolIcon Grid.Column="1"
+                                               Symbol="Link24" />
+                            </Grid>
+                        </ui:Anchor>
+                        <TextBlock Margin="16"
+                                   Text="{Binding AppVersion, Mode=OneWay}" />
+                    </StackPanel>
+                </ui:CardExpander>
             </StackPanel>
-        </ui:CardExpander>
-    </StackPanel>
+        </ScrollViewer>
+    </DockPanel>
 </Page>
                                                                               

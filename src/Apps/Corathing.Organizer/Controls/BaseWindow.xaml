@@ -4,13 +4,16 @@
                  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                 xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
                  xmlns:local="clr-namespace:Corathing.Organizer.Controls"
                  mc:Ignorable="d"
-                 Title="BaseWindow"
                  ShowTitleBar="False"
-                 Height="1000"
-                 Width="1600">
-    <Grid>
-
-    </Grid>
+                 ShowCloseButton="False"
+                 IsWindowDraggable="False"
+                 Background="{DynamicResource ApplicationBackgroundBrush}"
+                 Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+                 WindowStartupLocation="CenterOwner"
+                 ResizeMode="NoResize"
+                 Height="800"
+                 Width="1280">
 </mah:MetroWindow>

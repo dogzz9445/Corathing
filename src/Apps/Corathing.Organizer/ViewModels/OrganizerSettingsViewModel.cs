@@ -4,9 +4,11 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Media;
 
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 
 using Corathing.Contracts.Services;
 
@@ -61,6 +63,12 @@ public partial class OrganizerSettingsViewModel : ObservableRecipient
         {
             CurrentApplicationTheme = currentApplicationTheme;
         }
+    }
+
+    [RelayCommand]
+    public void Close(Window window)
+    {
+        window.Close();
     }
 
     private static string GetAssemblyVersion()

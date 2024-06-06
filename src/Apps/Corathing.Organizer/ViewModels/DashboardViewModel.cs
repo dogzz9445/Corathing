@@ -93,7 +93,9 @@ public partial class DashboardsViewModel : ObservableObject, IDashboardConfigura
         var window = new BaseWindow();
         window.Content = new OrganizerSettingsView();
         window.Owner = Application.Current.MainWindow;
+        Application.Current.MainWindow.Effect = new BlurEffect();
         window.ShowDialog();
+        Application.Current.MainWindow.Effect = null;
     }
 
     [RelayCommand]
