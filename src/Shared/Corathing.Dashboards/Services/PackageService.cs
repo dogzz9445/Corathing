@@ -68,9 +68,9 @@ public class PackageService : IPackageService
 
             for (int i = 0; i < attributes.Length; i++)
             {
-                if (attributes[i] is WidgetAttribute)
+                if (attributes[i] is WidgetContextEntryAttribute)
                 {
-                    var attribute = ((WidgetAttribute)attributes[i]);
+                    var attribute = ((WidgetContextEntryAttribute)attributes[i]);
                     attribute.RegisterServices(_services);
                     widgets.Add(attribute.WidgetGenerator);
                 }

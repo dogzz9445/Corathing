@@ -288,14 +288,27 @@ namespace Corathing.Dashboards.WPF.Controls
 
             Debug.Assert(widgetContext != null, nameof(widgetContext) + " != null");
 
-            widgetContext.WidgetStateGuid = widgetHost.Id;
+            // TODO:
+            // 여기서 WidgetHost의 Layout을 설정하고, WidgetHost의 위치를 설정해야 함
+            // 설정을 읽게 된다면 여기서 WidgetContext 의 정보는 설정으로부터 읽어져옴
             var widgetLayout = widgetContext.Layout;
             if (widgetLayout == null)
-                widgetContext.Layout = widgetLayout = WidgetLayoutFactory.Create(widgetContext);
+            {
+                // 위젯이 처음 생성 됨
+                widgetContext.Layout = widgetLayout = WidgetLayoutFactory.Create(widgetHost.Id, widgetContext);
 
-            // Set min/max dimensions of host so it isn't allowed to grow any larger or smaller
-            widgetHost.MinHeight = (WidgetMinimumHeight * widgetLayout.H) - widgetHost.Margin.Top - widgetHost.Margin.Bottom;
-            widgetHost.MinWidth = (WidgetMinimumWidth * widgetLayout.W) - widgetHost.Margin.Left - widgetHost.Margin.Right;
+                // 초기 위치 및 는 
+                // Set min/max dimensions of host so it isn't allowed to grow any larger or smaller
+                widgetHost.MinHeight = (WidgetMinimumHeight * widgetLayout.H) - widgetHost.Margin.Top - widgetHost.Margin.Bottom;
+                widgetHost.MinWidth = (WidgetMinimumWidth * widgetLayout.W) - widgetHost.Margin.Left - widgetHost.Margin.Right;
+                widgetHost.Height = (_widgetSize.Height * widgetLayout.H) - widgetHost.Margin.Top - widgetHost.Margin.Bottom;
+                widgetHost.Width = (_widgetSize.Width * widgetLayout.W) - widgetHost.Margin.Left - widgetHost.Margin.Right;
+            }
+            else
+            {
+                // 위젯이 설정으로부터 읽어들임
+                widgetHost.Id = widgetLayout.WidgetStateId;
+            }
 
             // Subscribe to the widgets drag started and add the widget
             // to the _widgetHosts to keep tabs on it
@@ -365,20 +378,6 @@ namespace Corathing.Dashboards.WPF.Controls
         private void AddCanvasEditingBackgroundRow(int rowCount, int columnCount)
         {
             _numbersCanEditRowColumn.H += 1;
-        }
-
-        /// <summary>
-        /// Returns a Rectangle that has a background that is gray. Used for the CanvasEditingBackground Canvas.
-        /// </summary>
-        /// <returns>Rectangle.</returns>
-        private Rectangle CreateGrayRectangleBackground()
-        {
-            return new Rectangle
-            {
-                Height = Math.Floor(_widgetSize.Height * 90 / 100),
-                Width = Math.Floor(_widgetSize.Width * 90 / 100),
-                Fill = Brushes.LightGray
-            };
         }
 
         /// <summary>
@@ -1213,7 +1212,7 @@ namespace Corathing.Dashboards.WPF.Controls
                 return;
 
             _draggingHost = widgetHost;
-            _draggingWidgetLayout = _widgetLayouts.FirstOrDefault(widgetData => widgetData.Id == _draggingHost.Id);
+            _draggingWidgetLayout = _widgetLayouts.FirstOrDefault(widgetData => widgetData.WidgetStateId == _draggingHost.Id);
 
             _widgetDestinationHighlight.Width =
                 _draggingHost.ActualWidth + _draggingHost.Margin.Left + _draggingHost.Margin.Right;

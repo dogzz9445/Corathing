@@ -10,17 +10,17 @@ namespace Corathing.Contracts.Factories
 {
     public static class WidgetLayoutFactory
     {
-        public static WidgetLayout Create(WidgetContext context) =>
+        public static WidgetLayout Create(Guid hostId, WidgetContext context) =>
             new WidgetLayout()
             {
                 Id = Guid.NewGuid(),
-                WidgetStateId = context.WidgetStateGuid,
+                WidgetStateId = hostId,
                 Rect = new WidgetLayoutRect()
                 {
                     X = 0,
                     Y = 0,
-                    W = 0,
-                    H = 0,
+                    W = 2,
+                    H = 2,
                 }
             };
     }

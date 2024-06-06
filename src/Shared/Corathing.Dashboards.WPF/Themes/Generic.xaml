@@ -12,11 +12,11 @@
     <!-- ================================================================ -->
 
     <!-- 1. Light Theme Primary Colors -->
-    <Color x:Key="LightTheme_PrimaryHueLightBrush">#484848</Color>
+    <Color x:Key="LightTheme_PrimaryHueLightBrush">#F0F0F0</Color>
     <Color x:Key="LightTheme_PrimaryHueLightForegroundBrush">#000000</Color>
-    <Color x:Key="LightTheme_PrimaryHueMidBrush">#212121</Color>
+    <Color x:Key="LightTheme_PrimaryHueMidBrush">#E0E0E0</Color>
     <Color x:Key="LightTheme_PrimaryHueMidForegroundBrush">#000000</Color>
-    <Color x:Key="LightTheme_PrimaryHueDarkBrush">#000000</Color>
+    <Color x:Key="LightTheme_PrimaryHueDarkBrush">#C0C0C0</Color>
     <Color x:Key="LightTheme_PrimaryHueDarkForegroundBrush">#000000</Color>
 
     <!-- 2. Light Theme Secondary Colors -->

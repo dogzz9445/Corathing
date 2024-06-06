@@ -13,6 +13,7 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/Corathing.Dashboards.WPF;component/Themes/Generic.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/Corathing.Dashboards.WPF;component/Styles/CustomStyles.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <BooleanToVisibilityConverter x:Key="BoolToVis" />
         </ResourceDictionary>

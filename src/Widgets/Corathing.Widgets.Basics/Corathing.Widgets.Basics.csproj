@@ -1,0 +1,41 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+	  <TargetFramework>net8.0-windows10.0.19041.0</TargetFramework>
+	  <Nullable>enable</Nullable>
+	  <ImplicitUsings>enable</ImplicitUsings>
+	  <UseWPF>true</UseWPF>
+	  <UseWindowsForms>true</UseWindowsForms>
+  </PropertyGroup>
+
+	<ItemGroup>
+		<Content Include="Assets\Monaco\**">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Compile Remove="LogicNodes\**" />
+	  <EmbeddedResource Remove="LogicNodes\**" />
+	  <None Remove="LogicNodes\**" />
+	  <Page Remove="LogicNodes\**" />
+	</ItemGroup>
+
+	<ItemGroup>
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.9.2" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.2535.41" />
+    <PackageReference Include="WPF-UI" Version="3.0.4" />
+  </ItemGroup>
+
+  <ProjectExtensions><VisualStudio><UserProperties /></VisualStudio></ProjectExtensions>
+
+	<ItemGroup>
+		<Folder Include="Assets\Monaco\" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\..\Shared\Corathing.Contracts\Corathing.Contracts.csproj" />
+	</ItemGroup>
+
+</Project>

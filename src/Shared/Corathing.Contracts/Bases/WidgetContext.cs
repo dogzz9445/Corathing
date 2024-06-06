@@ -14,10 +14,6 @@ public partial class WidgetContext : ObservableRecipient
     private readonly IServiceProvider _services;
 
     [ObservableProperty]
-    private Guid _id;
-    [ObservableProperty]
-    private Guid _widgetStateGuid;
-    [ObservableProperty]
     private string _widgetTitle;
     [ObservableProperty]
     private bool? _visibleTitle;

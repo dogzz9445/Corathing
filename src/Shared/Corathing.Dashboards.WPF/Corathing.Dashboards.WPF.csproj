@@ -5,14 +5,18 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
+    <RestoreFallbackFolders>clear</RestoreFallbackFolders>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Corathing.Dashboards\Corathing.Dashboards.csproj" />
+    <Compile Remove="Services\**" />
+    <EmbeddedResource Remove="Services\**" />
+    <None Remove="Services\**" />
+    <Page Remove="Services\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Services\" />
+    <ProjectReference Include="..\Corathing.Dashboards\Corathing.Dashboards.csproj" />
   </ItemGroup>
 
   <ItemGroup>

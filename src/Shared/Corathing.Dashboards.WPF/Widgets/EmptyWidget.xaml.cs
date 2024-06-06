@@ -15,6 +15,7 @@ using System.Windows.Shapes;
 
 using CommunityToolkit.Mvvm.ComponentModel;
 
+using Corathing.Contracts.Attributes;
 using Corathing.Contracts.Bases;
 
 namespace Corathing.Dashboards.WPF.Widgets
@@ -29,6 +30,13 @@ namespace Corathing.Dashboards.WPF.Widgets
 
     }
 
+    [WidgetContextEntry(
+        name: "Create Empty",
+        description: "Empty Widget.",
+        menuPath: "Empty",
+        menuOrder: 0,
+        targetType: typeof(EmptyWidgetContext)
+        )]
     public partial class EmptyWidgetContext : WidgetContext
     {
         [ObservableProperty]

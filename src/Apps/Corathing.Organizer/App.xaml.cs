@@ -9,16 +9,11 @@ using Corathing.Contracts.Services;
 using Corathing.Dashboards.Services;
 using Corathing.Organizer.Services;
 using Corathing.Organizer.Utils;
-
-using MahApps.Metro.Controls;
+using Corathing.Organizer.ViewModels;
+using Corathing.Organizer.Views;
 
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-
-using Wpf.Ui.Appearance;
-
-using Application = System.Windows.Application;
-using MessageBox = System.Windows.MessageBox;
 
 namespace Corathing.Organizer;
 
@@ -42,11 +37,11 @@ public partial class App : Application
     {
         base.OnStartup(e);
 
-        Application.Current.DispatcherUnhandledException += (sender, args) =>
-        {
-            MessageBox.Show(args.Exception.Message, "Unhandled exception occured");
-            //Logger.LogError(args.Exception, "Unhandled exception occured");
-        };
+        //Application.Current.DispatcherUnhandledException += (sender, args) =>
+        //{
+        //    MessageBox.Show(args.Exception.Message, "Unhandled exception occured");
+        //    //Logger.LogError(args.Exception, "Unhandled exception occured");
+        //};
 
         // 같은 이름의 다른 프로세스가 실행중인지 확인하고, 실행중이면 종료
         if (CheckIfProcessExists())
@@ -60,14 +55,54 @@ public partial class App : Application
             Shutdown();
         }
 
+        Services = ConfigureServices(e.Args);
+
         // Set the theme
         var theme = System.Configuration.ConfigurationManager.AppSettings["Theme"];
-        //ThemeHelper.Register("Light", @"pack://application:,,,/DDT.Core.WidgetSystems;component/Themes/Light.xaml");
-        //ThemeHelper.Register("Dark", @"pack://application:,,,/DDT.Core.WidgetSystems;component/Themes/Dark.xaml");
-        //ThemeHelper.ChangeTheme(Resources, "Dark");
-        ApplicationThemeManager.Apply(ApplicationTheme.Dark);
+        var themeService = Services.GetService<IThemeService>();
+        if (themeService != null)
+        {
+            themeService.Register(
+                "Corathing.Dashboards.WPF",
+                @"pack://application:,,,/Corathing.Dashboards.WPF;component/Themes/Light.xaml",
+                @"pack://application:,,,/Corathing.Dashboards.WPF;component/Themes/Dark.xaml"
+                );
+            themeService.Register(
+                "MaterialDesignThemes.Wpf",
+                @"pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml",
+                @"pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Dark.xaml"
+                );
+            //themeService.Register(
+            //    "Corathing.Dashboards.WPF",
+            //    @"pack://application:,,,/Corathing.Dashboards.WPF;component/Themes/Light.xaml",
+            //    @"pack://application:,,,/Corathing.Dashboards.WPF;component/Themes/Dark.xaml",
+            //    );
+            if (!string.IsNullOrEmpty(theme))
+            {
+                themeService.Apply(
+                    theme switch
+                    {
+                        "Light" => ApplicationTheme.Light,
+                        "Dark" => ApplicationTheme.Dark,
+                        _ => ApplicationTheme.Unknown
+                    });
+            }
+            else
+            {
+                themeService.ApplySystemTheme();
+            }
+        }
+        themeService.Apply(ApplicationTheme.Light);
 
-        Services = ConfigureServices(e.Args);
+
+        // --------------------------------------------------------------------------
+        // Available Widgets
+        // --------------------------------------------------------------------------
+        IPackageService widgetService = Services.GetService<IPackageService>();
+        widgetService.LoadWidgetsFromDLL("Corathing.Dashboards.WPF.dll");
+        //widgetService.LoadWidgetsFromDLL("DDT.Core.WidgetSystems.DefaultWidgets.dll");
+        //widgetService.RegisterWidgets(new List<WidgetGenerator> { new WidgetGenerator() });
+
 
         // Create a new MainWindow and set its DataContext to a new MainWindowViewModel which binds the view to the viewmodel
         new MainWindow().Show();
@@ -77,11 +112,11 @@ public partial class App : Application
     {
         // Create and build a configuration builder
         var builder = new ConfigurationBuilder()
-            .SetBasePath(Directory.GetCurrentDirectory())
+            .SetBasePath(Directory.GetCurrentDirectory());
             //.AddAppSettingsJsonFileByEnvironmentVariables()
             //.AddEnvironmentVariables()
             //.AddEntityConfiguration()
-            .AddCommandLine(args);
+            //.AddCommandLine(args);
 
         return builder.Build();
     }
@@ -96,14 +131,16 @@ public partial class App : Application
 
         // Register services
         serviceCollection.AddSingleton<IApplicationService, ApplicationService>();
-        //serviceCollection.AddSingleton<ISecretService, ModelVersionSecretService>();
+        serviceCollection.AddSingleton<ISecretService, ModelVersionSecretService>();
         serviceCollection.AddSingleton<IAuthService, AuthService>();
-        //serviceCollection.AddSingleton<IAppStateService, WidgetService>();
+        serviceCollection.AddSingleton<IAppStateService, AppStateService>();
         serviceCollection.AddSingleton<IPackageService, PackageService>();
+        serviceCollection.AddSingleton<IThemeService, ThemeService>();
         //serviceCollection.AddSingleton<IWidgetSystemService, WidgetSystemService>();
 
         // Register viewmodels
-
+        serviceCollection.AddScoped<OrganizerSettingsViewModel>();
+        serviceCollection.AddScoped<WidgetSettingsViewModel>();
 
         //Logger.Configure(configuration);
         //serviceCollection.AddSingleton<SettingsController>();

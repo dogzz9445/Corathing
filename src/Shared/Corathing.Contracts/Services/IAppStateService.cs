@@ -14,4 +14,6 @@ public interface IAppStateService
     void UpdateOverwrite(Guid id, object value);
     void UpdateOrAdd(Guid id, object value);
     bool TryGetWorkflow(Guid id, out WorkflowState workflow);
+    bool TryGetProject(Guid id, out ProjectState project);
+    bool TryGetWidgetOption<T>(Guid id, out T option);
 }

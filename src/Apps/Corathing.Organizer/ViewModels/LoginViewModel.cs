@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Messaging.Messages;
+
+using Corathing.Contracts.Services;
+
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Corathing.Organizer.ViewModels;
