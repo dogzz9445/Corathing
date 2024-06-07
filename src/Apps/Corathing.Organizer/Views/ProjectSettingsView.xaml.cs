@@ -13,6 +13,10 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
+using Corathing.Organizer.Extensions;
+using Corathing.Organizer.ViewModels;
+using Microsoft.Extensions.DependencyInjection;
+
 namespace Corathing.Organizer.Views
 {
     /// <summary>
@@ -20,9 +24,20 @@ namespace Corathing.Organizer.Views
     /// </summary>
     public partial class ProjectSettingsView : Page
     {
+        public ProjectSettingsViewModel? ViewModel;
+
         public ProjectSettingsView()
         {
             InitializeComponent();
+
+            DataContext = ViewModel = App.Current.Services.GetService<ProjectSettingsViewModel>();
+
+            Loaded += (s, e) =>
+            {
+                var window = Window.GetWindow(this);
+                window.Width = 1000;
+                window.CenterWindowToParent();
+            };
         }
     }
 }

@@ -4,11 +4,13 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:Corathing.Organizer.Views"
+             xmlns:models="clr-namespace:Corathing.Organizer.Models"
              xmlns:viewmodels="clr-namespace:Corathing.Organizer.ViewModels"
              xmlns:converters="clr-namespace:Corathing.Dashboards.WPF.Converters;assembly=Corathing.Dashboards.WPF"
              xmlns:dashboardControl="clr-namespace:Corathing.Dashboards.WPF.Controls;assembly=Corathing.Dashboards.WPF"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+             xmlns:behavior="clr-namespace:Corathing.Organizer.Behaviors"
              mc:Ignorable="d"
              Background="{DynamicResource ApplicationBackgroundBrush}"
              Foreground="{DynamicResource TextFillColorPrimaryBrush}"
@@ -16,11 +18,48 @@
              d:DesignWidth="1600">
     <UserControl.Resources>
         <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/Corathing.Organizer;component/Styles/CustomStyles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
             <BooleanToVisibilityConverter x:Key="BoolToVis" />
             <converters:InvertBoolToVisibilityConverter x:Key="InvertBoolToVis" />
             <converters:DashboardSelectorIsCheckedConverter x:Key="DashboardSelectorIsCheckedConverter" />
             <converters:NullToVisibilityConverter x:Key="NullToVisibilityConverter" />
             <converters:InvertNullToVisibilityConverter x:Key="InvertNullToVisibilityConverter" />
+
+            <!-- TabControl Template -->
+            <DataTemplate x:Key="newTabButtonContentTemplate">
+                <Grid />
+            </DataTemplate>
+            
+            <DataTemplate x:Key="newTabButtonHeaderTemplate">
+                <ui:Button Icon="{ui:SymbolIcon Add12}"
+                           FontSize="12"
+                           Command="{Binding AddWorkflowCommand,
+                                RelativeSource={RelativeSource FindAncestor,
+                                AncestorType={x:Type TabControl}}}"
+                           ToolTip="Add New Workflow"/>
+            </DataTemplate>
+
+            <DataTemplate x:Key="itemContentTemplate">
+                <dashboardControl:DashboardHost Grid.Column="0"
+                                                Margin="5"
+                                                EditMode="{Binding EditMode}"
+                                                ItemsSource="{Binding Widgets}" />
+            </DataTemplate>
+
+            <DataTemplate x:Key="itemHeaderTemplate">
+                <TextBlock Text="{Binding Title}" />
+            </DataTemplate>
+
+            <behavior:TemplateSelector x:Key="headerTemplateSelector"
+                                 NewButtonTemplate="{StaticResource newTabButtonHeaderTemplate}"
+                                 ItemTemplate="{StaticResource itemHeaderTemplate}" />
+
+            <behavior:TemplateSelector x:Key="contentTemplateSelector"
+                                 NewButtonTemplate="{StaticResource newTabButtonContentTemplate}"
+                                 ItemTemplate="{StaticResource itemContentTemplate}" />
+
         </ResourceDictionary>
     </UserControl.Resources>
 
@@ -51,11 +90,16 @@
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
 
-                <ComboBox materialDesign:HintAssist.Hint="Select Project"
-                          Margin="8"
+                <ComboBox Margin="8"
                           Width="220"
                           ItemsSource="{Binding Projects}"
+                          SelectedItem="{Binding SelectedProject}"
                           Grid.Column="0">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate DataType="{x:Type models:ProjectContext}">
+                            <TextBlock Text="{Binding Title}" />
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
                 </ComboBox>
 
                 <!--  Popup for Dashboard Selector  -->
@@ -118,20 +162,16 @@
                                   Style="{DynamicResource DashboardSelectorToggle}" />-->
 
                 <!--  Configure Dashboard Button  -->
-                <Button Grid.Column="1"
-                        Margin="0,0,10,0"
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center"
-                        Width="64"
-                        Height="40"
-                        FocusVisualStyle="{x:Null}"
-                        Command="{Binding CommandManageDashboard}"
-                        ToolTip="Manage dashboard">
-                    <materialDesign:PackIcon Kind="Settings"
-                                             Foreground="{DynamicResource PrimaryHueMidForegroundBrush}"
-                                             Width="24"
-                                             Height="24" />
-                </Button>
+                <ui:Button Grid.Column="1"
+                           Margin="0,0,10,0"
+                           Padding="0"
+                           Command="{Binding OpenProjectSettingsCommand}"
+                           ToolTip="Manage dashboard"
+                           FocusVisualStyle="{x:Null}"
+                           Icon="{ui:SymbolIcon Board24}"
+                           FontSize="24"
+                           Height="40"
+                           Width="40" />
 
                 <!--  Separator  -->
                 <Border Grid.Column="2"
@@ -145,14 +185,11 @@
                               Margin="10,4,4,4"
                               Width="40"
                               Height="40"
+                              Padding="0"
                               FocusVisualStyle="{x:Null}"
                               Command="{Binding ToggleEditDashboardCommand}"
-                              Style="{StaticResource MaterialDesignFlatToggleButton}"
                               ToolTip="Edit the dashboard">
-                    <materialDesign:PackIcon Kind="PuzzleEdit"
-                                             Foreground="{DynamicResource PrimaryHueMidForegroundBrush}"
-                                             Width="24"
-                                             Height="24" />
+                    <ui:SymbolIcon Symbol="Whiteboard24" FontSize="24"/>
                 </ToggleButton>
 
                 <!-- Tool bar (Editing) -->
@@ -225,21 +262,11 @@
                     </ToolBar>
 
                 <ui:Button Grid.Column="6"
-                        Margin="0,0,10,0"
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center"
-                        Width="64"
-                        Height="40"
-                        FocusVisualStyle="{x:Null}"
-                        Command="{Binding OpenOrganizerSettingsCommand}"
-                        Style="{StaticResource MaterialDesignFlatButton}"
-                        ToolTip="Open settings dashboard"
-                           Cursor="Hand">
-                    <materialDesign:PackIcon Kind="Settings"
-                                             Foreground="{DynamicResource PrimaryHueMidForegroundBrush}"
-                                             Width="24"
-                                             Height="24" />
-                </ui:Button>
+                           Style="{StaticResource IconButton24}"
+                           Margin="0,0,10,0"
+                           Icon="{ui:SymbolIcon Settings24}"
+                           Command="{Binding OpenOrganizerSettingsCommand}"
+                           ToolTip="Open settings dashboard" />
             </Grid>
 
             <!--  Separator  -->
@@ -261,13 +288,92 @@
                                            Icon="Home24" />
                 </ui:NavigationView.MenuItems>
             </ui:NavigationView>
-            <TabControl HorizontalContentAlignment="Left">
-                <TabItem Header="Workflow">
+            <TabControl HorizontalContentAlignment="Left"
+                        x:Name="DashboardHostTabControl"
+                        FocusVisualStyle="{x:Null}"
+                        SelectedItem="{Binding SelectedProject.SelectedWorkflow}"
+                        ItemsSource="{Binding SelectedProject.Workflows}">
+                <TabControl.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Title}" />
+                    </DataTemplate>
+                </TabControl.ItemTemplate>
+                <TabControl.ContentTemplate>
+                    <DataTemplate>
+                        <dashboardControl:DashboardHost Grid.Column="0"
+                                                        Margin="5"
+                                                        EditMode="{Binding EditMode}"
+                                                        ItemsSource="{Binding Widgets}" />
+                    </DataTemplate>
+                </TabControl.ContentTemplate>
+
+                <!--<TabControl.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{Binding Header, Mode=OneWay}" />
+                            <Button Click="OnTabCloseClick"
+                                    Width="20"
+                                    Padding="0"
+                                    Margin="8 0 0 0"
+                                    Content="X">
+                                <Button.Style>
+                                    <Style TargetType="Button"
+                                           x:Name="CloseButtonStyle">
+                                        <Setter Property="Visibility"
+                                                Value="Visible" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsPlaceholder}"
+                                                         Value="True">
+                                                <Setter Property="Visibility"
+                                                        Value="Collapsed" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Button.Style>
+                            </Button>
+                        </StackPanel>
+                    </DataTemplate>
+                </TabControl.ItemTemplate>
+
+                <TabControl.ContentTemplate>
+                    <DataTemplate>
+                        <ContentControl>
+                            <ContentControl.Resources>
+                                <ContentControl x:Key="TabContentTemplate">
+                                    <StackPanel DataContext="{Binding Content}"
+                                                Orientation="Vertical">
+                                        <TextBlock Text="{Binding Path=Name}" />
+                                        <TextBlock Text="{Binding Path=Index}" />
+                                    </StackPanel>
+                                </ContentControl>
+                            </ContentControl.Resources>
+                            <ContentControl.Style>
+                                <Style TargetType="ContentControl">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsPlaceholder}"
+                                                     Value="True">
+                                            <Setter Property="Content"
+                                                    Value="{x:Null}" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding IsPlaceholder}"
+                                                     Value="False">
+                                            <Setter Property="Content"
+                                                    Value="{StaticResource TabContentTemplate}" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </ContentControl.Style>
+                        </ContentControl>
+                    </DataTemplate>
+                </TabControl.ContentTemplate>-->
+
+                
+                <!--<TabItem Header="Workflow">
                     <dashboardControl:DashboardHost Grid.Column="0"
                                                     Margin="5"
                                                     EditMode="{Binding EditMode}"
-                                                    ItemsSource="{Binding SelectedDashboard.Widgets}" />
-                </TabItem>
+                                                    ItemsSource="{Binding SelectedWorkflow.Widgets}" />
+                </TabItem>-->
 
             </TabControl>
         </Grid>

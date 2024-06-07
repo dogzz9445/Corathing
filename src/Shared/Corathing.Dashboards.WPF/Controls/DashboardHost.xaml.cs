@@ -60,7 +60,7 @@ namespace Corathing.Dashboards.WPF.Controls
             nameof(MaxNumColumns),
             typeof(int),
             typeof(DashboardHost),
-            new PropertyMetadata(16));
+            new PropertyMetadata(32));
 
         /// <summary>
         /// The number property

@@ -1,12 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Input;
+using System.Windows.Media.Effects;
+
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 
 using Corathing.Contracts.Bases;
+using Corathing.Dashboards.WPF.Controls;
+using Corathing.Organizer.Controls;
+using Corathing.Organizer.Extensions;
+using Corathing.Organizer.Views;
 
 namespace Corathing.Organizer.Models;
 
@@ -40,6 +50,14 @@ public partial class WorkflowContext : ObservableObject
     /// <value>The title.</value>
     [ObservableProperty]
     private string _title;
+
+    [DefaultValue(false)]
+    [ObservableProperty]
+    private bool? _isPlaceholder;
+
+    [DefaultValue(false)]
+    [ObservableProperty]
+    private bool? _editMode;
 
     /// <summary>
     /// Gets or sets the widgets.
@@ -76,6 +94,37 @@ public partial class WorkflowContext : ObservableObject
     //    }
     //    return Task.CompletedTask;
     //}
+
+    /// <summary>
+    /// Gets the command remove widget.
+    /// </summary>
+    /// <value>The command remove widget.</value>
+    [RelayCommand]
+    public void RemoveWidget(WidgetHost widget)
+    {
+        Widgets.Remove(widget.DataContext as WidgetContext);
+    }
+
+    [RelayCommand]
+    public void ConfigureWidget(WidgetHost widget)
+    {
+        var widgetHost = widget;
+        var parentWindow = Window.GetWindow(widgetHost);
+        var window = new BaseWindow();
+        if (parentWindow != null)
+        {
+            window.Owner = parentWindow;
+            parentWindow.Effect = new BlurEffect();
+            window.CenterWindowToParent();
+        }
+        var view = new WidgetSettingsView(widgetHost);
+        window.Content = view;
+        window.ShowDialog();
+        if (parentWindow != null)
+        {
+            parentWindow.Effect = null;
+        }
+    }
 
     public WorkflowContext()
     {

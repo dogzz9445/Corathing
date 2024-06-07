@@ -10,15 +10,17 @@ using CommunityToolkit.Mvvm.Input;
 
 namespace Corathing.Organizer.ViewModels;
 
-public partial class WidgetSettingsViewModel : ObservableObject
+public partial class ProjectSettingsViewModel : ObservableObject
 {
-    public WidgetSettingsViewModel(IServiceProvider services)
+    public ProjectSettingsViewModel(IServiceProvider services)
     {
 
     }
+
     [RelayCommand]
     public void Close(Window window)
     {
         window.Close();
     }
+
 }

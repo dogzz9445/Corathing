@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
+using Corathing.Organizer.Extensions;
 using Corathing.Organizer.ViewModels;
 
 using Microsoft.Extensions.DependencyInjection;
@@ -31,6 +32,13 @@ namespace Corathing.Organizer.Views
             InitializeComponent();
 
             DataContext = ViewModel = App.Current.Services.GetService<OrganizerSettingsViewModel>();
+
+            Loaded += (s, e) =>
+            {
+                var window = Window.GetWindow(this);
+                window.Width = 800;
+                window.CenterWindowToParent();
+            };
         }
     }
 }
