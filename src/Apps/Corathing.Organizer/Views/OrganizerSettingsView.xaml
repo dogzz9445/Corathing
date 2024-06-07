@@ -54,6 +54,7 @@
                               FontTypography="BodyStrong"
                               Text="{localizations:Localization Corathing.Organizer.ManageCorathingAppConfigurationFile}" />
                 <ui:CardExpander Margin="0,0,0,8"
+                                 Icon="{ui:SymbolIcon Folder24}"
                                  ContentPadding="0">
                     <ui:CardExpander.Header>
                         <Grid>
@@ -180,6 +181,77 @@
                     </StackPanel>
                 </ui:CardExpander>
 
+                <ui:CardControl Margin="0,0,0,8"
+                                Icon="{ui:SymbolIcon Color24}">
+                    <ui:CardControl.Header>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <ui:TextBlock Grid.Row="0"
+                                          FontTypography="Body"
+                                          Text="트레이 아이콘" />
+                            <ui:TextBlock Grid.Row="1"
+                                          Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
+                                          Text="{localizations:Localization Corathing.Organizer.AppThemeDescription}" />
+                        </Grid>
+                    </ui:CardControl.Header>
+                    <ComboBox Grid.Column="1"
+                              MinWidth="200"
+                              SelectedIndex="{Binding CurrentApplicationTheme, Converter={StaticResource ThemeToIndexConverter}, Mode=TwoWay}">
+                        <ComboBoxItem Content="{localizations:Localization Corathing.Organizer.Light}" />
+                        <ComboBoxItem Content="{localizations:Localization Corathing.Organizer.Dark}" />
+                    </ComboBox>
+                </ui:CardControl>
+
+                <ui:CardControl Margin="0,0,0,8"
+                                Icon="{ui:SymbolIcon Color24}">
+                    <ui:CardControl.Header>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <ui:TextBlock Grid.Row="0"
+                                          FontTypography="Body"
+                                          Text="핫키 제어" />
+                            <ui:TextBlock Grid.Row="1"
+                                          Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
+                                          Text="{localizations:Localization Corathing.Organizer.AppThemeDescription}" />
+                        </Grid>
+                    </ui:CardControl.Header>
+                    <ComboBox Grid.Column="1"
+                              MinWidth="200"
+                              SelectedIndex="{Binding CurrentApplicationTheme, Converter={StaticResource ThemeToIndexConverter}, Mode=TwoWay}">
+                        <ComboBoxItem Content="{localizations:Localization Corathing.Organizer.Light}" />
+                        <ComboBoxItem Content="{localizations:Localization Corathing.Organizer.Dark}" />
+                    </ComboBox>
+                </ui:CardControl>
+
+                <ui:CardControl Margin="0,0,0,8"
+                                Icon="{ui:SymbolIcon Color24}">
+                    <ui:CardControl.Header>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <ui:TextBlock Grid.Row="0"
+                                          FontTypography="Body"
+                                          Text="게스트 모드 (게스트 모드, 푸는 방법)" />
+                            <ui:TextBlock Grid.Row="1"
+                                          Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
+                                          Text="{localizations:Localization Corathing.Organizer.AppThemeDescription}" />
+                        </Grid>
+                    </ui:CardControl.Header>
+                    <ComboBox Grid.Column="1"
+                              MinWidth="200"
+                              SelectedIndex="{Binding CurrentApplicationTheme, Converter={StaticResource ThemeToIndexConverter}, Mode=TwoWay}">
+                        <ComboBoxItem Content="{localizations:Localization Corathing.Organizer.Light}" />
+                        <ComboBoxItem Content="{localizations:Localization Corathing.Organizer.Dark}" />
+                    </ComboBox>
+                </ui:CardControl>
 
                 <ui:TextBlock Margin="0,16,0,8"
                               FontTypography="BodyStrong"
