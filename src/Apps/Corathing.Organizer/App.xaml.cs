@@ -7,6 +7,8 @@ using System.Windows;
 
 using Corathing.Contracts.Services;
 using Corathing.Dashboards.Services;
+using Corathing.Dashboards.WPF.Services;
+using Corathing.Organizer.Resources;
 using Corathing.Organizer.Services;
 using Corathing.Organizer.Utils;
 using Corathing.Organizer.ViewModels;
@@ -57,6 +59,9 @@ public partial class App : Application
 
         Services = ConfigureServices(e.Args);
 
+        var appStateService = Services.GetService<IAppStateService>();
+        var appSettings = appStateService.GetAppSettings();
+
         // Set the theme
         var theme = System.Configuration.ConfigurationManager.AppSettings["Theme"];
         var themeService = Services.GetService<IThemeService>();
@@ -104,6 +109,19 @@ public partial class App : Application
         //widgetService.RegisterWidgets(new List<WidgetGenerator> { new WidgetGenerator() });
 
 
+        IAuthService authService = App.Current.Services.GetService<IAuthService>();
+        if (authService != null && authService.UseAuthService)
+        {
+            //var loginWindow = new BaseWindow();
+            //loginWindow.Content = new LoginView();
+            //loginWindow.Owner = Window.GetWindow(this);
+            //loginWindow.ShowDialog();
+            //if (loginWindow.DialogResult == false)
+            //{
+            //    // System.Shutdown
+            //}
+        }
+
         // Create a new MainWindow and set its DataContext to a new MainWindowViewModel which binds the view to the viewmodel
         new MainWindow().Show();
     }
@@ -136,11 +154,15 @@ public partial class App : Application
         serviceCollection.AddSingleton<IAppStateService, AppStateService>();
         serviceCollection.AddSingleton<IPackageService, PackageService>();
         serviceCollection.AddSingleton<IThemeService, ThemeService>();
-        //serviceCollection.AddSingleton<IWidgetSystemService, WidgetSystemService>();
+        serviceCollection.AddSingleton<ILocalizationService>(LocalizationService.Instance);
+
+        LocalizationService.Instance.RegisterStringResourceManager("Corathing.Organizer",
+            CorathingOrganizerLocalizationStringResources.ResourceManager);
 
         // Register viewmodels
         serviceCollection.AddScoped<OrganizerSettingsViewModel>();
         serviceCollection.AddScoped<WidgetSettingsViewModel>();
+        serviceCollection.AddScoped<ProjectSettingsViewModel>();
 
         //Logger.Configure(configuration);
         //serviceCollection.AddSingleton<SettingsController>();

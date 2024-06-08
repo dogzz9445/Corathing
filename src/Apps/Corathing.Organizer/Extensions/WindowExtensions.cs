@@ -156,7 +156,7 @@ public static class WindowExtensions
         window.WindowState = WindowState.Minimized;
     }
 
-    public static void CenterWindowToParent(this MetroWindow window)
+    public static void CenterWindowToParent(this Window window)
     {
         if (window.Owner == null)
             return;
@@ -165,6 +165,15 @@ public static class WindowExtensions
             window.WindowStartupLocation = WindowStartupLocation.CenterOwner;
 
         if (window.IsLoaded)
+        {
             window.WindowState = WindowState.Normal;
+
+            if (window.Owner != null)
+            {
+                Window parent = window.Owner;
+                window.Left = parent.Left + (parent.ActualWidth - window.ActualWidth) / 2;
+                window.Top = parent.Top + (parent.ActualHeight - window.ActualHeight) / 2;
+            }
+        }
     }
 }

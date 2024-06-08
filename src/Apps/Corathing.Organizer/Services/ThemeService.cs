@@ -23,7 +23,7 @@ public class ThemeInfo
 public class ThemeService : IThemeService
 {
     #region Private Properties
-    private readonly IServiceProvider _serivces;
+    private readonly IServiceProvider? _serivces;
     private ApplicationTheme _cachedApplicationTheme = ApplicationTheme.Unknown;
     private SystemTheme _cachedSystemTheme = SystemTheme.Unknown;
     public List<ThemeInfo> ThemeInfos = new List<ThemeInfo>();

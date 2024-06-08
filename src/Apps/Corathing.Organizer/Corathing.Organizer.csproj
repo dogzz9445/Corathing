@@ -43,4 +43,25 @@
     <Resource Include="Assets\logo_256.png" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Update="Resources\CorathingOrganizerLocalizationStringResources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>CorathingOrganizerLocalizationStringResources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Resources\CorathingOrganizerLocalizationStringResources.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>CorathingOrganizerLocalizationStringResources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

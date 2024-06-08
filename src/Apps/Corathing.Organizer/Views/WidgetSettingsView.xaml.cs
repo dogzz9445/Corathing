@@ -14,6 +14,10 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 using Corathing.Dashboards.WPF.Controls;
+using Corathing.Organizer.Extensions;
+using Corathing.Organizer.ViewModels;
+
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Corathing.Organizer.Views
 {
@@ -22,9 +26,20 @@ namespace Corathing.Organizer.Views
     /// </summary>
     public partial class WidgetSettingsView : Page
     {
+        public WidgetSettingsViewModel ViewModel { get; set; }
+
         public WidgetSettingsView(WidgetHost widgetHost)
         {
             InitializeComponent();
+
+            DataContext = ViewModel = App.Current.Services.GetService<WidgetSettingsViewModel>();
+
+            Loaded += (s, e) =>
+            {
+                var window = Window.GetWindow(this);
+                window.Width = 1000;
+                window.CenterWindowToParent();
+            };
         }
     }
 }

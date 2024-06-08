@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Effects;
@@ -19,8 +21,9 @@ using Corathing.Organizer.Controls;
 using Corathing.Organizer.Extensions;
 using Corathing.Organizer.Models;
 using Corathing.Organizer.Views;
-
 using Microsoft.Extensions.DependencyInjection;
+
+using static MaterialDesignThemes.Wpf.Theme.ToolBar;
 
 namespace Corathing.Organizer.ViewModels;
 
@@ -42,11 +45,27 @@ public partial class DashboardsViewModel : ObservableObject, IDashboardConfigura
     /// Gets or sets the dashboards.
     /// </summary>
     /// <value>The dashboards.</value>
-    [ObservableProperty]
-    private ObservableCollection<WorkflowContext>? _dashboards;
+    private ObservableCollection<WorkflowContext>? _workflows;
+    public ObservableCollection<WorkflowContext> Workflows
+    {
+        get => _workflows;
+        set
+        {
+            if (EqualityComparer<ObservableCollection<WorkflowContext>?>.Default.Equals(_workflows, value))
+                return;
+            OnPropertyChanging(nameof(Workflows));
+            _workflows = value;
+            var itemsView = (IEditableCollectionView)CollectionViewSource.GetDefaultView(_workflows);
+            itemsView.NewItemPlaceholderPosition = NewItemPlaceholderPosition.AtEnd;
+            OnPropertyChanged(nameof(Workflows));
+        }
+    }
 
     [ObservableProperty]
-    private WorkflowContext _selectedDashboard;
+    private ProjectContext _selectedProject;
+
+    [ObservableProperty]
+    private WorkflowContext _selectedWorkflow;
 
     [ObservableProperty]
     private ObservableCollection<MenuItemViewModel> _addWidgetMenuItemViewModels;
@@ -69,6 +88,19 @@ public partial class DashboardsViewModel : ObservableObject, IDashboardConfigura
 
     #region Public Properties
 
+    protected override void OnPropertyChanged(PropertyChangedEventArgs e)
+    {
+        base.OnPropertyChanged(e);
+
+        if (Projects != null)
+        {
+            foreach (var project in Projects)
+            {
+                project.EditMode = EditMode;
+            }
+        }
+    }
+
     /// <summary>
     /// Gets the command add widget.
     /// </summary>
@@ -77,14 +109,20 @@ public partial class DashboardsViewModel : ObservableObject, IDashboardConfigura
     {
         var widgetGeneratorToAdd = (WidgetGenerator)o;
 
-        SelectedDashboard.Widgets.Add(widgetGeneratorToAdd.CreateWidget());
+        SelectedWorkflow.Widgets.Add(widgetGeneratorToAdd.CreateWidget());
         EditMode = true;
     });
 
     [RelayCommand]
     public void AddWidget(WidgetGenerator generator)
     {
-        SelectedDashboard.Widgets.Add(generator.CreateWidget());
+        SelectedWorkflow.Widgets.Add(generator.CreateWidget());
+    }
+
+    [RelayCommand]
+    public void AddWorkflow()
+    {
+        SelectedProject.AddWorkflow();
     }
 
     [RelayCommand]
@@ -143,13 +181,6 @@ public partial class DashboardsViewModel : ObservableObject, IDashboardConfigura
     /// <value>The command done configuring widget.</value>
     //public ICommand CommandDoneConfiguringWidget => new RelayCommand(() => ConfiguringWidget = null);
 
-    /// <summary>
-    /// Gets the command edit dashboard.
-    /// </summary>
-    /// <value>The command edit dashboard.</value>
-    //public ICommand CommandEditDashboard => new RelayCommand<string>(o => EditMode = o.ToString() == "True", o => ConfiguringWidget == null);
-    public ICommand CommandEditDashboard => new RelayCommand<string>(o => EditMode = o.ToString() == "True", o => true);
-
     ///// <summary>
     ///// Gets the command manage dashboard.
     ///// </summary>
@@ -166,12 +197,6 @@ public partial class DashboardsViewModel : ObservableObject, IDashboardConfigura
     //public ICommand CommandNewDashboard => new RelayCommand(() =>
     //    ConfiguringDashboard = new DashboardSettingsPromptViewModel(DashboardConfigurationType.New, this));
 
-    /// <summary>
-    /// Gets the command remove widget.
-    /// </summary>
-    /// <value>The command remove widget.</value>
-    public ICommand CommandRemoveWidget => new RelayCommand<WidgetContext>(o => SelectedDashboard.Widgets.Remove((WidgetContext)o));
-
     #endregion Public Properties
 
     #region Public Methods
@@ -184,22 +209,20 @@ public partial class DashboardsViewModel : ObservableObject, IDashboardConfigura
     /// <param name="newName">The new name.</param>
     public void DashboardConfigurationComplete(DashboardConfigurationType type, bool save, string newName)
     {
-        //ConfiguringDashboard = null;
+        //if (!save)
+        //    return;
 
-        if (!save)
-            return;
-
-        switch (type)
-        {
-            case DashboardConfigurationType.New:
-                var dashboardModel = new WorkflowContext { Title = newName };
-                Dashboards.Add(dashboardModel);
-                SelectedDashboard = dashboardModel;
-                return;
-            case DashboardConfigurationType.Existing:
-                SelectedDashboard.Title = newName;
-                return;
-        }
+        //switch (type)
+        //{
+        //    case DashboardConfigurationType.New:
+        //        var dashboardModel = new WorkflowContext { Title = newName };
+        //        Workflows.Add(dashboardModel);
+        //        SelectedWorkflow = dashboardModel;
+        //        return;
+        //    case DashboardConfigurationType.Existing:
+        //        SelectedWorkflow.Title = newName;
+        //        return;
+        //}
     }
 
     /// <summary>
@@ -209,7 +232,7 @@ public partial class DashboardsViewModel : ObservableObject, IDashboardConfigura
     /// <returns>DashboardNameValidResponse.</returns>
     public DashboardNameValidResponse DashboardNameValid(string name)
     {
-        return Dashboards.Any(dashboard => dashboard.Title == name)
+        return Workflows.Any(dashboard => dashboard.Title == name)
             ? new DashboardNameValidResponse(false, $"That Dashboard Name [{name}] already exists.")
             : new DashboardNameValidResponse(true);
     }
@@ -223,7 +246,6 @@ public partial class DashboardsViewModel : ObservableObject, IDashboardConfigura
         // --------------------------------------------------------------------------
         // Available Widgets
         // --------------------------------------------------------------------------
-        IPackageService widgetService = services.GetService<IPackageService>();
 
         // --------------------------------------------------------------------------
         // Load Component Data
@@ -232,8 +254,11 @@ public partial class DashboardsViewModel : ObservableObject, IDashboardConfigura
         {
             new ProjectContext { Title = "My Project" }
         };
-        Dashboards = [new WorkflowContext { Title = "My Workflow" }];
-        SelectedDashboard = Dashboards[0];
+        SelectedProject = Projects[0];
+        SelectedProject.Workflows.Add(new WorkflowContext { Title = "My Workflow" });
+
+        //Workflows = [new WorkflowContext { Title = "My Workflow" }];
+        //SelectedWorkflow = Workflows[0];
         AddWidgetMenuItemViewModels = new ObservableCollection<MenuItemViewModel>();
 
         // --------------------------------------------------------------------------
@@ -245,7 +270,8 @@ public partial class DashboardsViewModel : ObservableObject, IDashboardConfigura
             MenuItems = new ObservableCollection<MenuItemViewModel>(),
         });
 
-        foreach (var widget in widgetService.GetAvailableWidgets())
+        IPackageService packageService = services.GetService<IPackageService>();
+        foreach (var widget in packageService.GetAvailableWidgets())
         {
             var fullMenuHeader = widget.MenuPath;
             if (string.IsNullOrEmpty(fullMenuHeader))
@@ -266,7 +292,7 @@ public partial class DashboardsViewModel : ObservableObject, IDashboardConfigura
                         Header = splitedMenuHeaders[i],
                         Command = new RelayCommand(() =>
                         {
-                            SelectedDashboard.Widgets.Add(widget.CreateWidget());
+                            SelectedProject.SelectedWorkflow.Widgets.Add(widget.CreateWidget());
                         }, () => true),
                     });
                 }

@@ -10,7 +10,9 @@ namespace Corathing.Contracts.Services;
 
 public interface IAppStateService
 {
-    void Update(string key, string value);
+    AppSettings GetAppSettings();
+    void UpdateAppSettings(AppSettings appSettings);
+
     void UpdateOverwrite(Guid id, object value);
     void UpdateOrAdd(Guid id, object value);
     bool TryGetWorkflow(Guid id, out WorkflowState workflow);
