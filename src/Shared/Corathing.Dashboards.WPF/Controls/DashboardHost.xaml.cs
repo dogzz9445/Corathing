@@ -25,9 +25,9 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using Microsoft.Extensions.DependencyInjection;
 using System.ComponentModel;
 using Corathing.Dashboards.WPF.Bindings;
-using Corathing.Contracts.Factories;
 using Corathing.Contracts.Bases.Interfaces;
 using System.Windows.Media.Animation;
+using Corathing.Dashboards.Bases;
 
 namespace Corathing.Dashboards.WPF.Controls
 {
@@ -295,7 +295,7 @@ namespace Corathing.Dashboards.WPF.Controls
             if (widgetLayout == null)
             {
                 // 위젯이 처음 생성 됨
-                widgetContext.Layout = widgetLayout = WidgetLayoutFactory.Create(widgetHost.Id, widgetContext);
+                widgetContext.Layout = widgetLayout = WidgetLayoutUtils.Create(widgetHost.Id, widgetContext);
 
                 // 초기 위치 및 는 
                 // Set min/max dimensions of host so it isn't allowed to grow any larger or smaller

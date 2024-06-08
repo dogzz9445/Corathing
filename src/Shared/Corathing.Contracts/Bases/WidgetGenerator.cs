@@ -12,6 +12,11 @@ public class WidgetGenerator
 
     public Func<WidgetContext> CreateWidgetInternal;
 
+    // FIXME:
+    // 어떤 방식을 사용할지 정의해야함
+    // Generic? Type Converting?
+    public Func<WidgetState<object>> CreateWidgetOptionInternal;
+
     #endregion Private Fields
 
     #region Public Properties

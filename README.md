@@ -6,7 +6,7 @@ Corathing is Customizable Widget Organizer
 [English](README.md)
 [한국어](README_KR.md)
 
-![alt text](docs/images/logo.png)
+![alt text](docs/images/logo_256.png)
 
 카피 프로젝트
 - Freeter
