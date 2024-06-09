@@ -6,6 +6,6 @@ using System.Threading.Tasks;
 
 namespace Corathing.Contracts.Services;
 
-internal interface IDialogService
+public interface IDialogService
 {
 }

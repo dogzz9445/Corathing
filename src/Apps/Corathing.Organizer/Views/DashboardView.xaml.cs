@@ -97,13 +97,13 @@ public interface IDashboardConfigurationHandler
 /// </summary>
 public partial class DashboardView : UserControl
 {
-    public DashboardsViewModel ViewModel;
+    public DashboardViewModel ViewModel;
 
     public DashboardView()
     {
         InitializeComponent();
 
-        DataContext = ViewModel = new DashboardsViewModel() { EditMode = false };
+        DataContext = ViewModel = new DashboardViewModel() { EditMode = false };
 
         //DashboardHostTabControl.SelectionChanged += DashboardHostTabControl_SelectionChanged;
 

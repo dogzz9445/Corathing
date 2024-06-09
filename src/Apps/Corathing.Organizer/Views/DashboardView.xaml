@@ -29,23 +29,55 @@
 
             <!-- TabControl Template -->
             <DataTemplate x:Key="newTabButtonContentTemplate">
-                <Grid />
+                <Grid>
+                    <TextBlock Text="Add New Project or Workflow" FontSize="36" />
+                </Grid>
             </DataTemplate>
             
             <DataTemplate x:Key="newTabButtonHeaderTemplate">
                 <ui:Button Icon="{ui:SymbolIcon Add12}"
                            FontSize="12"
-                           Command="{Binding AddWorkflowCommand,
+                           Foreground="Black"
+                           Command="{Binding SelectedProject.AddWorkflowCommand,
                                 RelativeSource={RelativeSource FindAncestor,
                                 AncestorType={x:Type TabControl}}}"
                            ToolTip="Add New Workflow"/>
             </DataTemplate>
 
             <DataTemplate x:Key="itemContentTemplate">
-                <dashboardControl:DashboardHost Grid.Column="0"
-                                                Margin="5"
-                                                EditMode="{Binding EditMode}"
-                                                ItemsSource="{Binding Widgets}" />
+                <ContentControl>
+                    <ContentControl.Resources>
+                        <DataTemplate x:Key="FallbackTabItem"></DataTemplate>
+                    </ContentControl.Resources>
+                    <ContentControl.Style>
+                        <Style TargetType="{x:Type ContentControl}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsPlaceholder}"
+                                             Value="True">
+                                    <Setter Property="Content">
+                                        <Setter.Value>
+                                            <Grid>
+                                                <TextBlock Text="Add New Project or Dashboard"
+                                                           FontSize="64" />
+                                            </Grid>
+                                        </Setter.Value>
+                                    </Setter>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding IsPlaceholder}"
+                                             Value="False">
+                                    <Setter Property="Content">
+                                        <Setter.Value>
+                                            <dashboardControl:DashboardHost Grid.Column="0"
+                                                                            Margin="5"
+                                                                            EditMode="{Binding EditMode}"
+                                                                            ItemsSource="{Binding Widgets}" />
+                                        </Setter.Value>
+                                    </Setter>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ContentControl.Style>
+                </ContentControl>
             </DataTemplate>
 
             <DataTemplate x:Key="itemHeaderTemplate">
@@ -291,22 +323,11 @@
             <TabControl HorizontalContentAlignment="Left"
                         x:Name="DashboardHostTabControl"
                         FocusVisualStyle="{x:Null}"
+                        ItemTemplateSelector="{StaticResource headerTemplateSelector}"
+                        ContentTemplateSelector="{StaticResource contentTemplateSelector}"
                         SelectedItem="{Binding SelectedProject.SelectedWorkflow}"
                         ItemsSource="{Binding SelectedProject.Workflows}">
-                <TabControl.ItemTemplate>
-                    <DataTemplate>
-                        <TextBlock Text="{Binding Title}" />
-                    </DataTemplate>
-                </TabControl.ItemTemplate>
-                <TabControl.ContentTemplate>
-                    <DataTemplate>
-                        <dashboardControl:DashboardHost Grid.Column="0"
-                                                        Margin="5"
-                                                        EditMode="{Binding EditMode}"
-                                                        ItemsSource="{Binding Widgets}" />
-                    </DataTemplate>
-                </TabControl.ContentTemplate>
-
+-
                 <!--<TabControl.ItemTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal">

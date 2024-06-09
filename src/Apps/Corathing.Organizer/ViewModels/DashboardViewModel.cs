@@ -34,7 +34,7 @@ namespace Corathing.Organizer.ViewModels;
 /// </summary>
 /// <seealso cref="Infrastructure.ViewModelBase" />
 /// <seealso cref="WpfDashboardControl.Dashboards.IDashboardConfigurationHandler" />
-public partial class DashboardsViewModel : ObservableObject, IDashboardConfigurationHandler
+public partial class DashboardViewModel : ObservableObject, IDashboardConfigurationHandler
 {
     #region Private Fields
 
