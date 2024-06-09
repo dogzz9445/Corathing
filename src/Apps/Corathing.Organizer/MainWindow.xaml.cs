@@ -23,26 +23,6 @@ namespace Corathing.Organizer
         public MainWindow()
         {
             InitializeComponent();
-
-            MouseDown += Window_MouseDown;
-            MouseDoubleClick += Window_MouseDoubleClick;
-        }
-
-        private void Window_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-            if (e.ChangedButton == MouseButton.Left)
-            {
-                if (WindowState == WindowState.Normal)
-                    WindowState = WindowState.Maximized;
-                else
-                    WindowState = WindowState.Normal;
-            }
-        }
-
-        private void Window_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            if (e.ChangedButton == MouseButton.Left)
-                this.DragMove();
         }
     }
 }
