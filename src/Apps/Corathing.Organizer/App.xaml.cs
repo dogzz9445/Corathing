@@ -17,6 +17,11 @@ using Corathing.Organizer.Views;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
+using Wpf.Ui;
+
+using IThemeService = Corathing.Contracts.Services.IThemeService;
+using ThemeService = Corathing.Organizer.Services.ThemeService;
+
 namespace Corathing.Organizer;
 
 /// <summary>
@@ -146,6 +151,11 @@ public partial class App : Application
         // Build the configuration
         var configuration = BuildConfiguration(args);
         serviceCollection.AddSingleton<IConfiguration>(configuration);
+
+        // Wpf.Ui Service
+        // TODO: This should be implmented with IDialogService (Corathing.Contracts.Services)
+        // RoadMap 3, Content Presenter (Binding using Context)
+        serviceCollection.AddSingleton<IContentDialogService, ContentDialogService>();
 
         // Register services
         serviceCollection.AddSingleton<IApplicationService, ApplicationService>();

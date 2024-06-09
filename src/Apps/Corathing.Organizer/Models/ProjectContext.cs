@@ -40,8 +40,8 @@ public partial class ProjectContext : ObservableObject
                 return;
             OnPropertyChanging(nameof(Workflows));
             _workflows = value;
-            var itemsView = (IEditableCollectionView)CollectionViewSource.GetDefaultView(_workflows);
-            itemsView.NewItemPlaceholderPosition = NewItemPlaceholderPosition.AtEnd;
+            //var itemsView = (IEditableCollectionView)CollectionViewSource.GetDefaultView(_workflows);
+            //itemsView.NewItemPlaceholderPosition = NewItemPlaceholderPosition.AtEnd;
             OnPropertyChanged(nameof(Workflows));
         }
     }

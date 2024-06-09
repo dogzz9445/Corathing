@@ -874,8 +874,11 @@ namespace Corathing.Dashboards.WPF.Controls
         /// <exception cref="InvalidOperationException"></exception>
         private void ItemsSource_Changed(object sender, EventArgs args)
         {
-            // Enforce the ItemsSource be of type ICollect<WidgetBase> as most of the code behind
-            // relies on there being a WidgetBase as the item
+            if (ItemsSource == null)
+
+                return;
+            // Enforce the ItemsSource be of type ICollect<WidgetContext> as most of the code behind
+            // relies on there being a WidgetContext as the item
             if (!(ItemsSource is ICollection<WidgetContext>))
                 throw new InvalidOperationException(
                     $"{nameof(DashboardHost)} ItemsSource binding must be an ICollection of {nameof(WidgetContext)} type");

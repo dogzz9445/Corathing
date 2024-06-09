@@ -68,31 +68,6 @@ public class DashboardNameValidResponse
 }
 
 /// <summary>
-/// Interface IDashboardConfigurationHandler
-/// </summary>
-public interface IDashboardConfigurationHandler
-{
-    #region Public Methods
-
-    /// <summary>
-    /// Complete the dashboard configuration.
-    /// </summary>
-    /// <param name="type">The type.</param>
-    /// <param name="save">if set to <c>true</c> [save].</param>
-    /// <param name="newName">The new name.</param>
-    void DashboardConfigurationComplete(DashboardConfigurationType type, bool save, string newName);
-
-    /// <summary>
-    /// Validate dashboard name.
-    /// </summary>
-    /// <param name="name">The name.</param>
-    /// <returns>DashboardNameValidResponse.</returns>
-    DashboardNameValidResponse DashboardNameValid(string name);
-
-    #endregion Public Methods
-}
-
-/// <summary>
 /// DashboardView.xaml에 대한 상호 작용 논리
 /// </summary>
 public partial class DashboardView : UserControl
@@ -113,62 +88,62 @@ public partial class DashboardView : UserControl
         };
     }
 
-    private void DashboardHostTabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
-    {
-        if (e.Source is TabControl)
-        {
-            var pos = DashboardHostTabControl.SelectedIndex;
-            if (pos != 0 && pos == ViewModel.SelectedProject.Workflows.Count - 1) //last tab
-            {
-                var tab = ViewModel.SelectedProject.Workflows.Last();
-                ConvertPlusToNewTab(tab);
-                AddNewPlusButton();
-            }
-        }
-    }
+    //private void DashboardHostTabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    //{
+    //    if (e.Source is TabControl)
+    //    {
+    //        var pos = DashboardHostTabControl.SelectedIndex;
+    //        if (pos != 0 && pos == ViewModel.SelectedProject.Workflows.Count - 1) //last tab
+    //        {
+    //            var tab = ViewModel.SelectedProject.Workflows.Last();
+    //            ConvertPlusToNewTab(tab);
+    //            AddNewPlusButton();
+    //        }
+    //    }
+    //}
 
-    void ConvertPlusToNewTab(WorkflowContext tab)
-    {
-        //Do things to make it a new tab.
-        TabIndex++;
-        tab.Title = $"Tab {TabIndex}";
-        tab.IsPlaceholder = false;
-        //tab.Content = new ContentVM("Tab content", TabIndex);
-    }
+    //void ConvertPlusToNewTab(WorkflowContext tab)
+    //{
+    //    //Do things to make it a new tab.
+    //    TabIndex++;
+    //    tab.Title = $"Tab {TabIndex}";
+    //    tab.IsPlaceholder = false;
+    //    //tab.Content = new ContentVM("Tab content", TabIndex);
+    //}
 
-    void AddNewPlusButton()
-    {
-        var plusTab = new WorkflowContext()
-        {
-            Title = "+",
-            IsPlaceholder = true
-        };
-        ViewModel.SelectedProject.Workflows.Add(plusTab);
-    }
+    //void AddNewPlusButton()
+    //{
+    //    var plusTab = new WorkflowContext()
+    //    {
+    //        Title = "+",
+    //        IsPlaceholder = true
+    //    };
+    //    ViewModel.SelectedProject.Workflows.Add(plusTab);
+    //}
 
 
-    class ContentVM
-    {
-        public ContentVM(string name, int index)
-        {
-            Name = name;
-            Index = index;
-        }
-        public string Name { get; set; }
-        public int Index { get; set; }
-    }
+    //class ContentVM
+    //{
+    //    public ContentVM(string name, int index)
+    //    {
+    //        Name = name;
+    //        Index = index;
+    //    }
+    //    public string Name { get; set; }
+    //    public int Index { get; set; }
+    //}
 
-    private void OnTabCloseClick(object sender, RoutedEventArgs e)
-    {
-        var tab = (sender as Button).DataContext as WorkflowContext;
-        if (ViewModel.SelectedProject.Workflows.Count > 2)
-        {
-            var index = ViewModel.SelectedProject.Workflows.IndexOf(tab);
-            if (index == ViewModel.SelectedProject.Workflows.Count - 2)//last tab before [+]
-            {
-                DashboardHostTabControl.SelectedIndex--;
-            }
-            ViewModel.SelectedProject.Workflows.RemoveAt(index);
-        }
-    }
+    //private void OnTabCloseClick(object sender, RoutedEventArgs e)
+    //{
+    //    var tab = (sender as Button).DataContext as WorkflowContext;
+    //    if (ViewModel.SelectedProject.Workflows.Count > 2)
+    //    {
+    //        var index = ViewModel.SelectedProject.Workflows.IndexOf(tab);
+    //        if (index == ViewModel.SelectedProject.Workflows.Count - 2)//last tab before [+]
+    //        {
+    //            DashboardHostTabControl.SelectedIndex--;
+    //        }
+    //        ViewModel.SelectedProject.Workflows.RemoveAt(index);
+    //    }
+    //}
 }

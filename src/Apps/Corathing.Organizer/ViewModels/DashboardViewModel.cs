@@ -23,6 +23,8 @@ using Corathing.Organizer.Models;
 using Corathing.Organizer.Views;
 using Microsoft.Extensions.DependencyInjection;
 
+using Wpf.Ui;
+
 using static MaterialDesignThemes.Wpf.Theme.ToolBar;
 
 namespace Corathing.Organizer.ViewModels;
@@ -34,38 +36,15 @@ namespace Corathing.Organizer.ViewModels;
 /// </summary>
 /// <seealso cref="Infrastructure.ViewModelBase" />
 /// <seealso cref="WpfDashboardControl.Dashboards.IDashboardConfigurationHandler" />
-public partial class DashboardsViewModel : ObservableObject, IDashboardConfigurationHandler
+public partial class DashboardsViewModel : ObservableObject
 {
     #region Private Fields
 
     [ObservableProperty]
     private ObservableCollection<ProjectContext>? _projects;
 
-    /// <summary>
-    /// Gets or sets the dashboards.
-    /// </summary>
-    /// <value>The dashboards.</value>
-    private ObservableCollection<WorkflowContext>? _workflows;
-    public ObservableCollection<WorkflowContext> Workflows
-    {
-        get => _workflows;
-        set
-        {
-            if (EqualityComparer<ObservableCollection<WorkflowContext>?>.Default.Equals(_workflows, value))
-                return;
-            OnPropertyChanging(nameof(Workflows));
-            _workflows = value;
-            var itemsView = (IEditableCollectionView)CollectionViewSource.GetDefaultView(_workflows);
-            itemsView.NewItemPlaceholderPosition = NewItemPlaceholderPosition.AtEnd;
-            OnPropertyChanged(nameof(Workflows));
-        }
-    }
-
     [ObservableProperty]
     private ProjectContext _selectedProject;
-
-    [ObservableProperty]
-    private WorkflowContext _selectedWorkflow;
 
     [ObservableProperty]
     private ObservableCollection<MenuItemViewModel> _addWidgetMenuItemViewModels;
@@ -101,22 +80,14 @@ public partial class DashboardsViewModel : ObservableObject, IDashboardConfigura
         }
     }
 
-    /// <summary>
-    /// Gets the command add widget.
-    /// </summary>
-    /// <value>The command add widget.</value>
-    public ICommand CommandAddWidget => new RelayCommand<WidgetGenerator>(o =>
-    {
-        var widgetGeneratorToAdd = (WidgetGenerator)o;
-
-        SelectedWorkflow.Widgets.Add(widgetGeneratorToAdd.CreateWidget());
-        EditMode = true;
-    });
-
     [RelayCommand]
     public void AddWidget(WidgetGenerator generator)
     {
-        SelectedWorkflow.Widgets.Add(generator.CreateWidget());
+        if (SelectedProject == null)
+            return;
+        if (SelectedProject.SelectedWorkflow == null)
+            return;
+        SelectedProject.SelectedWorkflow.Widgets.Add(generator.CreateWidget());
     }
 
     [RelayCommand]
@@ -126,7 +97,7 @@ public partial class DashboardsViewModel : ObservableObject, IDashboardConfigura
     }
 
     [RelayCommand]
-    public void OpenOrganizerSettings()
+    public async void OpenOrganizerSettings()
     {
         var window = new BaseWindow();
         window.Content = new OrganizerSettingsView();
@@ -150,6 +121,33 @@ public partial class DashboardsViewModel : ObservableObject, IDashboardConfigura
     {
         EditMode = !EditMode;
     }
+
+    [RelayCommand]
+    public void MouseDoubleClick(object e)
+    {
+        Console.WriteLine(e);
+        //private void Window_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        //{
+        //    if (sender is not MainWindow)
+        //        return;
+
+        //    if (e.ChangedButton == MouseButton.Left)
+        //    {
+        //        if (WindowState == WindowState.Normal)
+        //            WindowState = WindowState.Maximized;
+        //        else
+        //            WindowState = WindowState.Normal;
+        //    }
+        //}
+
+        //private void Window_MouseDown(object sender, MouseButtonEventArgs e)
+        //{
+        //    if (e.ChangedButton == MouseButton.Left)
+        //        this.DragMove();
+        //}
+    }
+
+
 
     /// <summary>
     /// Gets the command configure widget.
@@ -223,18 +221,6 @@ public partial class DashboardsViewModel : ObservableObject, IDashboardConfigura
         //        SelectedWorkflow.Title = newName;
         //        return;
         //}
-    }
-
-    /// <summary>
-    /// Dashboards the name valid.
-    /// </summary>
-    /// <param name="name">The name.</param>
-    /// <returns>DashboardNameValidResponse.</returns>
-    public DashboardNameValidResponse DashboardNameValid(string name)
-    {
-        return Workflows.Any(dashboard => dashboard.Title == name)
-            ? new DashboardNameValidResponse(false, $"That Dashboard Name [{name}] already exists.")
-            : new DashboardNameValidResponse(true);
     }
 
     /// <summary>
