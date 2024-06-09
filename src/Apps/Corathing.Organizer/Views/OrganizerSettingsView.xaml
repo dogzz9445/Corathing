@@ -52,7 +52,7 @@
                         FocusVisualStyle="{x:Null}">
                 <ui:TextBlock Margin="0,16,0,8"
                               FontTypography="BodyStrong"
-                              Text="{localizations:Localization Corathing.Organizer.ManageCorathingAppConfigurationFile}" />
+                              Text="사용자 환경 설정" />
                 <ui:CardExpander Margin="0,0,0,8"
                                  Icon="{ui:SymbolIcon Folder24}"
                                  ContentPadding="0">
@@ -181,6 +181,37 @@
                     </StackPanel>
                 </ui:CardExpander>
 
+                <!-- Guest Mode -->
+                <!-- 1. 설정 버튼 숨기기 -->
+                <!-- 2. 유저 인증 -->
+                <ui:CardControl Margin="0,0,0,8"
+                                Icon="{ui:SymbolIcon Color24}">
+                    <ui:CardControl.Header>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <ui:TextBlock Grid.Row="0"
+                                          FontTypography="Body"
+                                          Text="게스트 모드 (게스트 모드, 푸는 방법)" />
+                            <ui:TextBlock Grid.Row="1"
+                                          Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
+                                          Text="{localizations:Localization Corathing.Organizer.AppThemeDescription}" />
+                        </Grid>
+                    </ui:CardControl.Header>
+                    <ComboBox Grid.Column="1"
+                              MinWidth="200"
+                              SelectedIndex="{Binding CurrentApplicationTheme, Converter={StaticResource ThemeToIndexConverter}, Mode=TwoWay}">
+                        <ComboBoxItem Content="{localizations:Localization Corathing.Organizer.Light}" />
+                        <ComboBoxItem Content="{localizations:Localization Corathing.Organizer.Dark}" />
+                    </ComboBox>
+                </ui:CardControl>
+
+                <!-- Tray Icon -->
+                <!-- 1. Tray 사용 여부 -->
+                <!-- 2. Tray Icon 을 앱 아이콘을 사용할 것인지 -->
+                <!-- 3. Tray Icon 을 사용자 커스텀 -->
                 <ui:CardControl Margin="0,0,0,8"
                                 Icon="{ui:SymbolIcon Color24}">
                     <ui:CardControl.Header>
@@ -205,6 +236,8 @@
                     </ComboBox>
                 </ui:CardControl>
 
+                <!-- Hotkey Control -->
+                <!-- 1. Modifier 설정 -->
                 <ui:CardControl Margin="0,0,0,8"
                                 Icon="{ui:SymbolIcon Color24}">
                     <ui:CardControl.Header>
@@ -229,29 +262,6 @@
                     </ComboBox>
                 </ui:CardControl>
 
-                <ui:CardControl Margin="0,0,0,8"
-                                Icon="{ui:SymbolIcon Color24}">
-                    <ui:CardControl.Header>
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                            </Grid.RowDefinitions>
-                            <ui:TextBlock Grid.Row="0"
-                                          FontTypography="Body"
-                                          Text="게스트 모드 (게스트 모드, 푸는 방법)" />
-                            <ui:TextBlock Grid.Row="1"
-                                          Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
-                                          Text="{localizations:Localization Corathing.Organizer.AppThemeDescription}" />
-                        </Grid>
-                    </ui:CardControl.Header>
-                    <ComboBox Grid.Column="1"
-                              MinWidth="200"
-                              SelectedIndex="{Binding CurrentApplicationTheme, Converter={StaticResource ThemeToIndexConverter}, Mode=TwoWay}">
-                        <ComboBoxItem Content="{localizations:Localization Corathing.Organizer.Light}" />
-                        <ComboBoxItem Content="{localizations:Localization Corathing.Organizer.Dark}" />
-                    </ComboBox>
-                </ui:CardControl>
 
                 <ui:TextBlock Margin="0,16,0,8"
                               FontTypography="BodyStrong"
@@ -392,6 +402,9 @@
                     </StackPanel>
                 </ui:CardExpander>
 
+                <!-- 앱 아이콘 -->
+                <!-- 1. 앱 아이콘 숨기기 (대쉬보드 최상단좌측에서) -->
+                <!-- 2. 앱 아이콘 변경 -->
                 <ui:CardControl Margin="0,0,0,8"
                                 Icon="{ui:SymbolIcon Color24}">
                     <ui:CardControl.Header>
@@ -402,7 +415,34 @@
                             </Grid.RowDefinitions>
                             <ui:TextBlock Grid.Row="0"
                                           FontTypography="Body"
-                                          Text="닫기 버튼 제거" />
+                                          Text="최소화 및 닫기 버튼" />
+                            <ui:TextBlock Grid.Row="1"
+                                          Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
+                                          Text="Select which app theme to display" />
+                        </Grid>
+                    </ui:CardControl.Header>
+                    <ComboBox Grid.Column="1"
+                              MinWidth="200"
+                              SelectedIndex="{Binding CurrentApplicationTheme, Converter={StaticResource ThemeToIndexConverter}, Mode=TwoWay}">
+                        <ComboBoxItem Content="Light" />
+                        <ComboBoxItem Content="Dark" />
+                    </ComboBox>
+                </ui:CardControl>
+
+                <!-- 최소화 및 닫기 버튼 -->
+                <!-- 1. 최소화 및 닫기 버튼을 삭제할 것인지 -->
+                <!-- 2. 더블 클릭을 하면 드러내기? -->
+                <ui:CardControl Margin="0,0,0,8"
+                                Icon="{ui:SymbolIcon Color24}">
+                    <ui:CardControl.Header>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <ui:TextBlock Grid.Row="0"
+                                          FontTypography="Body"
+                                          Text="최소화 및 닫기 버튼" />
                             <ui:TextBlock Grid.Row="1"
                                           Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
                                           Text="Select which app theme to display" />

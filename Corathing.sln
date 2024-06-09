@@ -8,6 +8,16 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Apps", "Apps", "{5BF1289A-1427-4306-B2E1-51E0770B6B75}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AppDocs", "AppDocs", "{DC193F44-8A37-4005-947E-73F0C91C223C}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		.gitattributes = .gitattributes
+		.gitignore = .gitignore
+		CONTRIBUTE.md = CONTRIBUTE.md
+		LICENSE.md = LICENSE.md
+		README.md = README.md
+		README_KR.md = README_KR.md
+		version.json = version.json
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{89CC8AAB-466A-47B6-98B9-93EB379F55A7}"
 EndProject

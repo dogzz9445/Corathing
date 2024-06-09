@@ -8,8 +8,8 @@ using Corathing.Contracts.Services;
 
 namespace Corathing.Contracts.Bases;
 
-public class AppState
+public class AppPreferences
 {
-    public AppPreferences? Preferences { get; set; }
-
+    public ApplicationLanguage? Language { get; set; }
+    public ApplicationTheme? Theme { get; set; }
 }
