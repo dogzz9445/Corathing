@@ -1,6 +1,13 @@
 ﻿namespace Corathing.Dashboards.WPF.Controls;
 
+[Flags]
 public enum ControlHitType
 {
-    None, Body, TL, TR, BR, BL, L, R, B, T
+    None   = 0,
+    Body   = 1 << 0,
+    Line   = 1 << 1,
+    Left   = 1 << 2,
+    Right  = 1 << 3,
+    Top    = 1 << 4,
+    Bottom = 1 << 5,
 };

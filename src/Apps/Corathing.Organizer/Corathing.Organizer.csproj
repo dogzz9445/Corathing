@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net8.0-windows</TargetFramework>
+    <TargetFramework>net8.0-windows10.0.19041.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
@@ -37,6 +37,13 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Shared\Corathing.Contracts\Corathing.Contracts.csproj" />
     <ProjectReference Include="..\..\Shared\Corathing.Dashboards.WPF\Corathing.Dashboards.WPF.csproj" />
+    <ProjectReference Include="..\..\Widgets\Corathing.Widgets.Basics\Corathing.Widgets.Basics.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Corathing.Widgets.Basics">
+      <HintPath>..\..\Widgets\Corathing.Widgets.Basics\bin\Debug\net8.0-windows10.0.19041.0\Corathing.Widgets.Basics.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
   <ItemGroup>

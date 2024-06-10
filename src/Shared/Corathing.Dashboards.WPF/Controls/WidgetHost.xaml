@@ -33,8 +33,7 @@
                     IsHitTestVisible="True"
                     Margin="1"
                     BorderThickness="4"
-                    MouseDown="Host_MouseLeftButtonDown"
-                    Cursor="">
+                    MouseDown="Host_MouseLeftButtonDown">
                 <Grid>
                     <Border>
                         <Border.Effect>
@@ -46,8 +45,7 @@
                     </Border>
                     <Border HorizontalAlignment="Stretch"
                             VerticalAlignment="Stretch"
-                            BorderThickness="1"
-                            Cursor="Arrow">
+                            BorderThickness="1">
                         <Border.Style>
                             <Style TargetType="{x:Type Border}">
                                 <Setter Property="FocusVisualStyle"
@@ -64,14 +62,12 @@
                                         Value="True" />
                                 <Setter Property="OverridesDefaultStyle"
                                         Value="True" />
-                                <Setter Property="Cursor"
-                                        Value="Arrow" />
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding EditMode, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:DashboardHost}}}"
+                                    <!--<DataTrigger Binding="{Binding EditMode, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:DashboardHost}}}"
                                                  Value="True">
                                         <Setter Property="Cursor"
                                                 Value="SizeAll" />
-                                    </DataTrigger>
+                                    </DataTrigger>-->
                                     <MultiDataTrigger>
                                         <MultiDataTrigger.Conditions>
                                             <Condition Binding="{Binding DataContext.EditMode, RelativeSource={RelativeSource AncestorType={x:Type local:DashboardHost}, Mode=FindAncestor}}"
@@ -98,6 +94,7 @@
                         </Border.Style>
                         <Grid>
                             <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
                                 <RowDefinition Height="*" />
                             </Grid.RowDefinitions>
 
@@ -196,7 +193,8 @@
                                 </Button>
                             </StackPanel>
 
-                            <ContentPresenter Content="{TemplateBinding Content}"
+                            <ContentPresenter Grid.Row="1"
+                                              Content="{TemplateBinding Content}"
                                               ContentTemplate="{TemplateBinding ContentTemplate}" />
                         </Grid>
                     </Border>

@@ -16,6 +16,7 @@
                 <ResourceDictionary Source="pack://application:,,,/Corathing.Dashboards.WPF;component/Themes/Light.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/Corathing.Dashboards.WPF;component/Styles/CustomStyles.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/Corathing.Dashboards.WPF;component/Widgets/WidgetDataTemplates.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/Corathing.Widgets.Basics;component/Widgets/DataTemplates.xaml" />
                 <ui:ThemesDictionary Theme="Light" />
                 <ui:ControlsDictionary />
             </ResourceDictionary.MergedDictionaries>

@@ -19,15 +19,15 @@ public class WidgetContextEntryAttribute : Attribute
         string description,
         string menuPath,
         int menuOrder,
-        Type targetType)
+        Type targetType,
+        Type optionType = null)
     {
         WidgetGenerator = new WidgetGenerator(
             name: name,
             description: description,
             menuPath: menuPath,
             menuOrder: menuOrder,
-            targetType: targetType,
-            createWidget: () => (WidgetContext)Activator.CreateInstance(targetType, Services)
+            targetType: targetType
         );
     }
 

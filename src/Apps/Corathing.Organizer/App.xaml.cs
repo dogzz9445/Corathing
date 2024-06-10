@@ -110,6 +110,7 @@ public partial class App : Application
         // --------------------------------------------------------------------------
         IPackageService widgetService = Services.GetService<IPackageService>();
         widgetService.LoadWidgetsFromDLL("Corathing.Dashboards.WPF.dll");
+        widgetService.LoadWidgetsFromDLL("Corathing.Widgets.Basics.dll");
         //widgetService.LoadWidgetsFromDLL("DDT.Core.WidgetSystems.DefaultWidgets.dll");
         //widgetService.RegisterWidgets(new List<WidgetGenerator> { new WidgetGenerator() });
 

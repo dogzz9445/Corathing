@@ -117,6 +117,7 @@ namespace Corathing.Dashboards.WPF.Controls
         // Return a HitType value to indicate what is at the point.
         private ControlHitType SetHitType(Rect rect, Point point)
         {
+            ControlHitType hitType = ControlHitType.Line;
             double left = 0;
             double top = 0;
             double right = rect.Right;
@@ -127,22 +128,59 @@ namespace Corathing.Dashboards.WPF.Controls
             if (point.Y > bottom) return ControlHitType.None;
 
             if (point.X - left < _outlineGap)
-            {
-                // Left edge.
-                if (point.Y - top < _outlineGap) return ControlHitType.TL;
-                if (bottom - point.Y < _outlineGap) return ControlHitType.BL;
-                return ControlHitType.L;
-            }
+                hitType |= ControlHitType.Left;
             else if (right - point.X < _outlineGap)
+                hitType |= ControlHitType.Right;
+            if (point.Y - top < _outlineGap)
+                hitType |= ControlHitType.Top;
+            if (bottom - point.Y < _outlineGap)
+                hitType |= ControlHitType.Bottom;
+            return (hitType & ~ControlHitType.Line) > 0
+                ? hitType
+                : ControlHitType.Body;
+        }
+
+        /// <summary>
+        /// Set a mouse cursor appropriate for the current hit type.
+        /// </summary>
+        /// <returns></returns>
+        public Cursor SetMouseCursor()
+        {
+            // See what cursor we should display.
+            Cursor desired_cursor = Cursors.Arrow;
+            switch (MouseHitType)
             {
-                // Right edge.
-                if (point.Y - top < _outlineGap) return ControlHitType.TR;
-                if (bottom - point.Y < _outlineGap) return ControlHitType.BR;
-                return ControlHitType.R;
+                case ControlHitType.None:
+                    desired_cursor = Cursors.Arrow;
+                    break;
+                case ControlHitType.Body:
+                    desired_cursor = Cursors.ScrollAll;
+                    break;
+                case ControlHitType.Top | ControlHitType.Left | ControlHitType.Line:
+                case ControlHitType.Bottom | ControlHitType.Right | ControlHitType.Line:
+                    desired_cursor = Cursors.SizeNWSE;
+                    break;
+                case ControlHitType.Top | ControlHitType.Right | ControlHitType.Line:
+                case ControlHitType.Bottom | ControlHitType.Left | ControlHitType.Line:
+                    desired_cursor = Cursors.SizeNESW;
+                    break;
+                case ControlHitType.Top | ControlHitType.Line:
+                case ControlHitType.Bottom | ControlHitType.Line:
+                    desired_cursor = Cursors.SizeNS;
+                    break;
+                case ControlHitType.Left | ControlHitType.Line:
+                case ControlHitType.Right | ControlHitType.Line:
+                    desired_cursor = Cursors.SizeWE;
+                    break;
             }
-            if (point.Y - top < _outlineGap) return ControlHitType.T;
-            if (bottom - point.Y < _outlineGap) return ControlHitType.B;
-            return ControlHitType.Body;
+
+            // Display the desired cursor.
+            if (Cursor != desired_cursor)
+            {
+                Cursor = desired_cursor;
+                Mouse.SetCursor(Cursor);
+            }
+            return Cursor;
         }
 
         /// <summary>

@@ -306,8 +306,12 @@ namespace Corathing.Dashboards.WPF.Controls
             }
             else
             {
-                // 위젯이 설정으로부터 읽어들임
+                // 위젯이 탭컨트롤 변경 혹은 설정에 의해서 읽어짐
                 widgetHost.Id = widgetLayout.WidgetStateId;
+                widgetHost.MinHeight = (WidgetMinimumHeight * widgetLayout.H) - widgetHost.Margin.Top - widgetHost.Margin.Bottom;
+                widgetHost.MinWidth = (WidgetMinimumWidth * widgetLayout.W) - widgetHost.Margin.Left - widgetHost.Margin.Right;
+                widgetHost.Height = (_widgetSize.Height * widgetLayout.H) - widgetHost.Margin.Top - widgetHost.Margin.Bottom;
+                widgetHost.Width = (_widgetSize.Width * widgetLayout.W) - widgetHost.Margin.Left - widgetHost.Margin.Right;
             }
 
             // Subscribe to the widgets drag started and add the widget
@@ -1248,7 +1252,9 @@ namespace Corathing.Dashboards.WPF.Controls
             MouseLeftButtonUp += Dashboard_MouseLeftButtonUp;
             MouseLeave += Dashboard_MouseLeave;
 
-            SetMouseCursor(_draggingHost);
+            var cursor = _draggingHost.SetMouseCursor();
+            Mouse.SetCursor(cursor);
+            Cursor = cursor;
             DragInProgress = true;
 
             // Need to hide the _draggingHost to give off the illusion that we're moving it somewhere
@@ -1278,8 +1284,9 @@ namespace Corathing.Dashboards.WPF.Controls
             MouseLeave -= Dashboard_MouseLeave;
             MouseLeftButtonUp -= Dashboard_MouseLeftButtonUp;
             MouseMove -= Dashboard_MouseMove;
-            Mouse.SetCursor(Cursors.Arrow);
+            _draggingHost.Cursor = Cursors.Arrow;
             Cursor = Cursors.Arrow;
+            Mouse.SetCursor(Cursors.Arrow);
             if (_draggingHost != null)
             {
                 _draggingHost.MaxHeight = _widgetDestinationHighlight.Height;
@@ -1309,13 +1316,17 @@ namespace Corathing.Dashboards.WPF.Controls
             if (!DragInProgress || _draggingHost == null || _draggingWidgetLayout == null)
                 return;
 
+            _draggingHost.SetMouseCursor();
+
             double originalWidth = _draggingWidgetLayout.RectBeforeDrag.W * _widgetSize.Width;
             double originalHeight = _draggingWidgetLayout.RectBeforeDrag.H * _widgetSize.Height;
             double originalLeft = _draggingWidgetLayout.RectBeforeDrag.X * _widgetSize.Width;
             double originalTop = _draggingWidgetLayout.RectBeforeDrag.Y * _widgetSize.Height;
 
-            Point startPoint = _draggingHost.MouseDownPoint ?? default;
-            var point = e.GetPosition(_draggingHost);
+            Point startPoint = new Point(originalLeft, originalTop);
+            startPoint.X += _draggingHost.MouseDownPoint.Value.X;
+            startPoint.Y += _draggingHost.MouseDownPoint.Value.Y;
+            var endPoint = e.GetPosition(this);
             // See how much the mouse has moved.
 
             // Get the rectangle's current position.
@@ -1325,44 +1336,23 @@ namespace Corathing.Dashboards.WPF.Controls
             double offset_y = 0;
 
             // Update the rectangle.
-            switch (_draggingHost.MouseHitType)
+            if ((_draggingHost.MouseHitType & ControlHitType.Top) > 0)
             {
-                case ControlHitType.Body:
-                    break;
-                case ControlHitType.BR:
-                    offset_x = point.X - startPoint.X;
-                    offset_y = point.Y - startPoint.Y;
-                    break;
-                case ControlHitType.B:
-                    offset_y = point.Y - startPoint.Y;
-                    break;
-                case ControlHitType.R:
-                    offset_x = point.X - startPoint.X;
-                    break;
-                case ControlHitType.TL:
-                    offset_x = startPoint.X - point.X;
-                    offset_y = startPoint.Y - point.Y;
-                    new_x = originalLeft - offset_x;
-                    new_y = originalTop - offset_y;
-                    break;
-                case ControlHitType.TR:
-                    offset_x = point.X - startPoint.X;
-                    offset_y = startPoint.Y - point.Y;
-                    new_y = originalTop - offset_y;
-                    break;
-                case ControlHitType.BL:
-                    offset_x = startPoint.X - point.X;
-                    offset_y = point.Y - startPoint.Y;
-                    new_x = originalLeft - offset_x;
-                    break;
-                case ControlHitType.L:
-                    offset_x = startPoint.X - point.X;
-                    new_x = originalLeft - offset_x;
-                    break;
-                case ControlHitType.T:
-                    offset_y = startPoint.Y - point.Y;
-                    new_y = originalTop - offset_y;
-                    break;
+                offset_y = startPoint.Y - endPoint.Y;
+                new_y = originalTop - offset_y;
+            }
+            if ((_draggingHost.MouseHitType & ControlHitType.Bottom) > 0)
+            {
+                offset_y = endPoint.Y - startPoint.Y;
+            }
+            if ((_draggingHost.MouseHitType & ControlHitType.Left) > 0)
+            {
+                offset_x = startPoint.X - endPoint.X;
+                new_x = originalLeft - offset_x;
+            }
+            if ((_draggingHost.MouseHitType & ControlHitType.Right) > 0)
+            {
+                offset_x = endPoint.X - startPoint.X;
             }
             double new_width = originalWidth + offset_x;
             double new_height = originalHeight + offset_y;
@@ -1394,9 +1384,6 @@ namespace Corathing.Dashboards.WPF.Controls
             var newRowIndexColumnIndex = new WidgetLayoutXY(columnIndex, rowIndex);
             var newRowSpanColumnSpan = new WidgetLayoutWH(columnSpan, rowSpan);
 
-            // Get the closest row/column to the adorner "imaginary" position
-            //var closestRowColumn = GetClosestRowColumn(new Point(columnIndex * _widgetHostSize.Width, rowIndex * _widgetHostSize.Height));
-
             // Use the canvas to draw a square around the closestRowColumn to indicate where the _draggingWidgetHost will be when mouse is released
             var top = rowIndex < 0 ? 0 : rowIndex * _widgetSize.Height;
             var left = columnIndex < 0 ? 0 : columnIndex * _widgetSize.Width;
@@ -1413,8 +1400,8 @@ namespace Corathing.Dashboards.WPF.Controls
                 W = columnSpan,
                 H = rowSpan,
             };
+
             // Set the _dragging host into its dragging position
-            //SetWidgetRowAndColumn(_draggingHost, newRowIndexColumnIndex, new WidgetLayoutWH(rowSpan, columnSpan), false);
             SetWidgetXY(_draggingHost, new_x, new_y);
 
             // Get all the widgets in the path of where the _dragging host will be set
@@ -1471,44 +1458,6 @@ namespace Corathing.Dashboards.WPF.Controls
 
             ReArrangeToPreviewLocation();
 
-        }
-
-        // Set a mouse cursor appropriate for the current hit type.
-        private void SetMouseCursor(WidgetHost widgetHost)
-        {
-            if (widgetHost == null)
-                return;
-
-            // See what cursor we should display.
-            Cursor desired_cursor = Cursors.Arrow;
-            switch (widgetHost.MouseHitType)
-            {
-                case ControlHitType.None:
-                    desired_cursor = Cursors.Arrow;
-                    break;
-                case ControlHitType.Body:
-                    desired_cursor = Cursors.ScrollAll;
-                    break;
-                case ControlHitType.TL:
-                case ControlHitType.BR:
-                    desired_cursor = Cursors.SizeNWSE;
-                    break;
-                case ControlHitType.BL:
-                case ControlHitType.TR:
-                    desired_cursor = Cursors.SizeNESW;
-                    break;
-                case ControlHitType.T:
-                case ControlHitType.B:
-                    desired_cursor = Cursors.SizeNS;
-                    break;
-                case ControlHitType.L:
-                case ControlHitType.R:
-                    desired_cursor = Cursors.SizeWE;
-                    break;
-            }
-
-            // Display the desired cursor.
-            if (Cursor != desired_cursor) Cursor = desired_cursor;
         }
 
         #endregion Private Methods

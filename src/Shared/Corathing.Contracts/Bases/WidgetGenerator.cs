@@ -42,6 +42,8 @@ public class WidgetGenerator
 
     public Type TargetType { get; }
 
+    public Type OptionType { get; }
+
     #endregion Public Properties
 
     #region Public Constructors
@@ -57,15 +59,13 @@ public class WidgetGenerator
         string description,
         string menuPath,
         int menuOrder,
-        Type targetType,
-        Func<WidgetContext> createWidget)
+        Type targetType)
     {
         Name = name;
         MenuPath = menuPath;
         Description = description;
         MenuOrder = menuOrder;
         TargetType = targetType;
-        CreateWidgetInternal = createWidget;
     }
 
     #endregion Public Constructors

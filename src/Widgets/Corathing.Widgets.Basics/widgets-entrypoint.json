@@ -1,3 +1,5 @@
 {
-
+  "NamespaceName": "Corathing.Widgets.Basics",
+  "WidgetDataTemplates": "Widgets/DataTemplates.xaml",
+  "AssemblyFileName": "Corathing.Widgets.Basics.dll",
 }
