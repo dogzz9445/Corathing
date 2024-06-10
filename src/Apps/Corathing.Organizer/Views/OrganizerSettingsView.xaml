@@ -185,7 +185,7 @@
                 <!-- 1. 설정 버튼 숨기기 -->
                 <!-- 2. 유저 인증 -->
                 <ui:CardControl Margin="0,0,0,8"
-                                Icon="{ui:SymbolIcon Color24}">
+                                Icon="{ui:SymbolIcon Guest24}">
                     <ui:CardControl.Header>
                         <Grid>
                             <Grid.RowDefinitions>
@@ -213,7 +213,7 @@
                 <!-- 2. Tray Icon 을 앱 아이콘을 사용할 것인지 -->
                 <!-- 3. Tray Icon 을 사용자 커스텀 -->
                 <ui:CardControl Margin="0,0,0,8"
-                                Icon="{ui:SymbolIcon Color24}">
+                                Icon="{ui:SymbolIcon TrayItemAdd24}">
                     <ui:CardControl.Header>
                         <Grid>
                             <Grid.RowDefinitions>
@@ -239,7 +239,7 @@
                 <!-- Hotkey Control -->
                 <!-- 1. Modifier 설정 -->
                 <ui:CardControl Margin="0,0,0,8"
-                                Icon="{ui:SymbolIcon Color24}">
+                                Icon="{ui:SymbolIcon KeyboardLayoutResize24}">
                     <ui:CardControl.Header>
                         <Grid>
                             <Grid.RowDefinitions>
@@ -257,7 +257,7 @@
                     <ComboBox Grid.Column="1"
                               MinWidth="200"
                               SelectedIndex="{Binding CurrentApplicationTheme, Converter={StaticResource ThemeToIndexConverter}, Mode=TwoWay}">
-                        <ComboBoxItem Content="{localizations:Localization Corathing.Organizer.Light}" />
+                        <ComboBoxItem Content="Ctrl + Alt + F" />
                         <ComboBoxItem Content="{localizations:Localization Corathing.Organizer.Dark}" />
                     </ComboBox>
                 </ui:CardControl>
@@ -316,97 +316,11 @@
                     </ComboBox>
                 </ui:CardControl>
 
-
-                <ui:CardExpander Margin="0,0,0,8"
-                                 ContentPadding="0"
-                                 Icon="{ui:SymbolIcon LocalLanguage24}">
-                    <ui:CardExpander.Header>
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="Auto" />
-                            </Grid.ColumnDefinitions>
-                            <ui:TextBlock Grid.Row="0"
-                                          Grid.Column="0"
-                                          FontTypography="Body"
-                                          Text="Corathing" />
-                            <ui:TextBlock Grid.Row="1"
-                                          Grid.Column="0"
-                                          Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
-                                          Text="Select which language to display" />
-                            <!--<TextBlock Grid.Row="0"
-                                       Grid.RowSpan="2"
-                                       Grid.Column="1"
-                                       Margin="0,0,16,0"
-                                       VerticalAlignment="Center"
-                                       Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
-                                       Text="{Binding CurrentApplicationLanguage, Converter={StaticResource ApplicationLanguageToIndexConverter}, Mode=OneWay}" />-->
-                        </Grid>
-                    </ui:CardExpander.Header>
-                    <StackPanel>
-                        <Grid Margin="16">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="Auto" />
-                            </Grid.ColumnDefinitions>
-                            <TextBlock Grid.Column="0"
-                                       Text="To clone this repository" />
-                            <TextBlock Grid.Column="1"
-                                       Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
-                                       Text="git clone https://github.com/dogzz9445/Corathing.git" />
-                        </Grid>
-                        <ui:Anchor Margin="0"
-                                   Padding="16"
-                                   HorizontalAlignment="Stretch"
-                                   HorizontalContentAlignment="Stretch"
-                                   Background="Transparent"
-                                   BorderThickness="0,1,0,0"
-                                   CornerRadius="0"
-                                   NavigateUri="https://github.com/dogzz9445/Corathing/issues/new/choose">
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="Auto" />
-                                </Grid.ColumnDefinitions>
-                                <TextBlock Grid.Column="0"
-                                           Text="File a bug or request a new sample" />
-                                <ui:SymbolIcon Grid.Column="1"
-                                               Symbol="Link24" />
-                            </Grid>
-                        </ui:Anchor>
-                        <ui:Anchor Margin="0"
-                                   Padding="16"
-                                   HorizontalAlignment="Stretch"
-                                   HorizontalContentAlignment="Stretch"
-                                   Background="Transparent"
-                                   BorderThickness="0,1,0,1"
-                                   CornerRadius="0"
-                                   NavigateUri="https://corathing.com">
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="Auto" />
-                                </Grid.ColumnDefinitions>
-                                <TextBlock Grid.Column="0"
-                                           Text="Check out the docs" />
-                                <ui:SymbolIcon Grid.Column="1"
-                                               Symbol="Link24" />
-                            </Grid>
-                        </ui:Anchor>
-                        <TextBlock Margin="16"
-                                   Text="{Binding AppVersion, Mode=OneWay}" />
-                    </StackPanel>
-                </ui:CardExpander>
-
                 <!-- 앱 아이콘 -->
                 <!-- 1. 앱 아이콘 숨기기 (대쉬보드 최상단좌측에서) -->
                 <!-- 2. 앱 아이콘 변경 -->
                 <ui:CardControl Margin="0,0,0,8"
-                                Icon="{ui:SymbolIcon Color24}">
+                                Icon="{ui:SymbolIcon AppGeneric24}">
                     <ui:CardControl.Header>
                         <Grid>
                             <Grid.RowDefinitions>
@@ -415,7 +329,7 @@
                             </Grid.RowDefinitions>
                             <ui:TextBlock Grid.Row="0"
                                           FontTypography="Body"
-                                          Text="최소화 및 닫기 버튼" />
+                                          Text="앱 아이콘" />
                             <ui:TextBlock Grid.Row="1"
                                           Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
                                           Text="Select which app theme to display" />
@@ -433,7 +347,7 @@
                 <!-- 1. 최소화 및 닫기 버튼을 삭제할 것인지 -->
                 <!-- 2. 더블 클릭을 하면 드러내기? -->
                 <ui:CardControl Margin="0,0,0,8"
-                                Icon="{ui:SymbolIcon Color24}">
+                                Icon="{ui:SymbolIcon ArrowMinimize24}">
                     <ui:CardControl.Header>
                         <Grid>
                             <Grid.RowDefinitions>

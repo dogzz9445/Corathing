@@ -19,12 +19,12 @@
         </ResourceDictionary>
     </ContentControl.Resources>
 
-    <ContentControl.Effect>
+    <!--<ContentControl.Effect>
         <DropShadowEffect BlurRadius="0"
                           Opacity="0.2"
                           ShadowDepth="1"
                           Color="Black" />
-    </ContentControl.Effect>
+    </ContentControl.Effect>-->
     <ContentControl.Template>
         <ControlTemplate TargetType="{x:Type ContentControl}">
             <Border HorizontalAlignment="Stretch"
@@ -44,14 +44,26 @@
                                               Color="{DynamicResource LightTheme_PrimaryHueDarkBrush}" />
                         </Border.Effect>
                     </Border>
-                    <Border Background="{DynamicResource PrimaryHueMidBrush}"
-                            HorizontalAlignment="Stretch"
+                    <Border HorizontalAlignment="Stretch"
                             VerticalAlignment="Stretch"
-                            BorderBrush="{DynamicResource PrimaryHueLightBrush}"
                             BorderThickness="1"
                             Cursor="Arrow">
                         <Border.Style>
                             <Style TargetType="{x:Type Border}">
+                                <Setter Property="FocusVisualStyle"
+                                        Value="{DynamicResource DefaultControlFocusVisualStyle}" />
+                                <Setter Property="Background"
+                                        Value="{DynamicResource CardBackground}" />
+                                <Setter Property="BorderBrush"
+                                        Value="{DynamicResource CardBorderBrush}" />
+                                <Setter Property="BorderThickness"
+                                        Value="{StaticResource CardControlBorderThemeThickness}" />
+                                <Setter Property="CornerRadius"
+                                        Value="{DynamicResource ControlCornerRadius}" />
+                                <Setter Property="SnapsToDevicePixels"
+                                        Value="True" />
+                                <Setter Property="OverridesDefaultStyle"
+                                        Value="True" />
                                 <Setter Property="Cursor"
                                         Value="Arrow" />
                                 <Style.Triggers>
@@ -82,6 +94,7 @@
                                     </MultiDataTrigger>
                                 </Style.Triggers>
                             </Style>
+                            
                         </Border.Style>
                         <Grid>
                             <Grid.RowDefinitions>
@@ -94,7 +107,7 @@
                                 <TextBlock Margin="4,2,0,0"
                                            HorizontalAlignment="Left"
                                            VerticalAlignment="Top"
-                                           Foreground="{DynamicResource PrimaryHueLightForegroundBrush}"
+                                           Foreground="{DynamicResource CardForeground}"
                                            Text="{Binding WidgetTitle}"
                                            TextTrimming="CharacterEllipsis" />
                             </Border>

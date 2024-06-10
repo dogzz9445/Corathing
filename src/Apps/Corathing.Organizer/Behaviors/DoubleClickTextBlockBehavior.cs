@@ -23,7 +23,7 @@ public class DoubleClickTextBoxBehavior : Behavior<TextBox>
     /// </summary>
     public static readonly DependencyProperty EditModeProperty = DependencyProperty.Register(
         nameof(EditMode),
-        typeof(bool),
+        typeof(bool?),
         typeof(DoubleClickTextBoxBehavior),
         new PropertyMetadata(false));
 
@@ -31,9 +31,9 @@ public class DoubleClickTextBoxBehavior : Behavior<TextBox>
     /// Gets or sets a value indicating whether the dashboard is in [edit mode].
     /// </summary>
     /// <value><c>true</c> if [edit mode]; otherwise, <c>false</c>.</value>
-    public bool EditMode
+    public bool? EditMode
     {
-        get => (bool)GetValue(EditModeProperty);
+        get => (bool?)GetValue(EditModeProperty);
         set => SetValue(EditModeProperty, value);
     }
 
@@ -99,7 +99,7 @@ public class DoubleClickTextBoxBehavior : Behavior<TextBox>
 
     private void AssociatedObjectOnMouseDoubleClick(object sender, MouseButtonEventArgs e)
     {
-        if (!EditMode)
+        if (!(EditMode ?? false))
             return;
 
         if (e.ChangedButton != MouseButton.Left)

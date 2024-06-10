@@ -93,6 +93,8 @@ public partial class DashboardViewModel : ObservableObject
     [RelayCommand]
     public void AddWorkflow()
     {
+        if (SelectedProject == null)
+            return;
         SelectedProject.AddWorkflow();
     }
 
@@ -147,6 +149,35 @@ public partial class DashboardViewModel : ObservableObject
         //}
     }
 
+    [RelayCommand]
+    public async void ConfigureWidget(WidgetHost widgetHost)
+    {
+        var parentWindow = Window.GetWindow(widgetHost);
+        var window = new BaseWindow();
+        if (parentWindow != null)
+        {
+            window.Owner = parentWindow;
+            parentWindow.Effect = new BlurEffect();
+            window.CenterWindowToParent();
+        }
+        var view = new WidgetSettingsView(widgetHost);
+        window.Content = view;
+        window.ShowDialog();
+        if (parentWindow != null)
+        {
+            parentWindow.Effect = null;
+        }
+    }
+
+    [RelayCommand]
+    public void RemoveWidget(object widgetHost)
+    {
+        if (widgetHost == null)
+            return;
+        if (!(widgetHost is WidgetHost))
+            return;
+        SelectedProject.SelectedWorkflow.Widgets.Remove((widgetHost as WidgetHost).DataContext as WidgetContext);
+    }
 
 
     /// <summary>
