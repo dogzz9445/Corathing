@@ -46,8 +46,7 @@ public partial class FileOpenerWidgetViewModel : WidgetContext
     /// Initializes a new instance of the <see cref="OneByOneViewModel"/> class.
     /// </summary>
     public FileOpenerWidgetViewModel(
-        IServiceProvider services,
-        object option = null)
+        IServiceProvider services)
         : base(services)
     {
         WidgetTitle = $"FileOpener";

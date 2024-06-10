@@ -58,7 +58,6 @@
     <NoWarn>$(NoWarn);NU1702</NoWarn>
     <EntryPointProjectUniqueName>..\Corathing.Organizer\Corathing.Organizer.csproj</EntryPointProjectUniqueName>
     <UserSecretsId>a32b8f09-b8a4-4d9e-abc1-58e7c8061162</UserSecretsId>
-    <RestoreFallbackFolders>clear</RestoreFallbackFolders>
   </PropertyGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
