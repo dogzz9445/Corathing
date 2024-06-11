@@ -14,8 +14,8 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using CommunityToolkit.Mvvm.ComponentModel;
 
-using Corathing.Contracts.Attributes;
 using Corathing.Contracts.Bases;
+using Corathing.Contracts.Entries;
 using Corathing.Widgets.Basics.Widgets.Commanders;
 
 namespace Corathing.Widgets.Basics.Widgets.FileOpeners;
@@ -25,14 +25,15 @@ public class FileOpenerOption
     public string FilePath { get; set; }
 }
 
-
-[WidgetContextEntry(
+[EntryCoraWidget(
+    viewType: typeof(FileOpenerWidget),
+    contextType: typeof(FileOpenerWidgetViewModel),
+    dataTemplateSource: "Widgets/FileOpeners/DataTemplates.xaml",
+    optionType: typeof(FileOpenerOption),
     name: "Create File Opener",
     description: "Provides a one by one square widget.",
     menuPath: "Default/File Opener",
-    menuOrder: 0,
-    targetType: typeof(FileOpenerWidgetViewModel),
-    optionType: typeof(FileOpenerOption)
+    menuOrder: 0
     )]
 public partial class FileOpenerWidgetViewModel : WidgetContext
 {

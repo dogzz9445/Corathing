@@ -1,14 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Corathing.Contracts.Bases;
+using Corathing.Contracts.Bases;
 
-public class WidgetGenerator
+namespace Corathing.Contracts.Entries;
+
+public class CoraWidgetGenerator
 {
     #region Private Fields
+
+    public IServiceProvider Services { get; set; }
 
     public Func<WidgetContext> CreateWidgetInternal;
 
@@ -33,14 +38,13 @@ public class WidgetGenerator
     /// <value>The name.</value>
     public string Name { get; }
 
-    /// <summary>
-    /// Gets the MenuPath
-    /// </summary>
-    public string MenuPath { get; }
+    public CoraWidgetMenuInfo MenuInfo { get; set; }
 
-    public int MenuOrder { get; }
+    public Type ViewType { get; }
 
-    public Type TargetType { get; }
+    public Type ContextType { get; }
+
+    public string DataTemplateSource { get; }
 
     public Type OptionType { get; }
 
@@ -54,18 +58,17 @@ public class WidgetGenerator
     /// <param name="name">The name.</param>
     /// <param name="description">The description.</param>
     /// <param name="createWidget">The create widget.</param>
-    public WidgetGenerator(
-        string name,
-        string description,
-        string menuPath,
-        int menuOrder,
-        Type targetType)
+    public CoraWidgetGenerator(
+        Type viewType,
+        Type contextType,
+        string dataTemplateSource,
+        Type optionType
+        )
     {
-        Name = name;
-        MenuPath = menuPath;
-        Description = description;
-        MenuOrder = menuOrder;
-        TargetType = targetType;
+        ViewType = viewType;
+        ContextType = contextType;
+        DataTemplateSource = dataTemplateSource;
+        OptionType = optionType;
     }
 
     #endregion Public Constructors
@@ -78,7 +81,7 @@ public class WidgetGenerator
     /// <returns>WidgetBase.</returns>
     public WidgetContext CreateWidget()
     {
-        return CreateWidgetInternal.Invoke();
+        return (WidgetContext)Activator.CreateInstance(ContextType, Services);
     }
 
     #endregion Public Methods

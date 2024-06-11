@@ -13,18 +13,21 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-using Corathing.Contracts.Attributes;
 using Corathing.Contracts.Bases;
+using Corathing.Contracts.Entries;
 using Corathing.Widgets.Basics.Widgets.Commanders;
+using Corathing.Widgets.Basics.Widgets.FileOpeners;
 
 namespace Corathing.Widgets.Basics.Widgets.LinkOpeners;
 
-[WidgetContextEntry(
+[EntryCoraWidget(
+    viewType: typeof(LinkOpenerWidget),
+    contextType: typeof(LinkOpenerWidgetViewModel),
+    dataTemplateSource: "Widgets/LinkOpeners/DataTemplates.xaml",
     name: "Create Linke Opener",
     description: "Provides a one by one square widget.",
     menuPath: "Default/Link Opener",
-    menuOrder: 0,
-    targetType: typeof(LinkOpenerWidgetViewModel)
+    menuOrder: 0
     )]
 public partial class LinkOpenerWidgetViewModel : WidgetContext
 {

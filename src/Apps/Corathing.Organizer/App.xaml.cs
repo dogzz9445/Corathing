@@ -6,7 +6,6 @@ using System.IO.Packaging;
 using System.Windows;
 
 using Corathing.Contracts.Services;
-using Corathing.Dashboards.Services;
 using Corathing.Dashboards.WPF.Services;
 using Corathing.Organizer.Resources;
 using Corathing.Organizer.Services;
@@ -109,7 +108,6 @@ public partial class App : Application
         // Available Widgets
         // --------------------------------------------------------------------------
         IPackageService widgetService = Services.GetService<IPackageService>();
-        widgetService.LoadWidgetsFromDLL("Corathing.Dashboards.WPF.dll");
         widgetService.LoadWidgetsFromDLL("Corathing.Widgets.Basics.dll");
         //widgetService.LoadWidgetsFromDLL("DDT.Core.WidgetSystems.DefaultWidgets.dll");
         //widgetService.RegisterWidgets(new List<WidgetGenerator> { new WidgetGenerator() });

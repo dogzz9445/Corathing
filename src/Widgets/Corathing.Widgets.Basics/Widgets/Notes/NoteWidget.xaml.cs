@@ -13,18 +13,21 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-using Corathing.Contracts.Attributes;
 using Corathing.Contracts.Bases;
+using Corathing.Contracts.Entries;
+using Corathing.Widgets.Basics.Widgets.LinkOpeners;
 using Corathing.Widgets.Basics.Widgets.Monacos;
 
 namespace Corathing.Widgets.Basics.Widgets.Notes;
 
-[WidgetContextEntry(
+[EntryCoraWidget(
+    viewType: typeof(NoteWidget),
+    contextType: typeof(NoteWidgetViewModel),
+    dataTemplateSource: "Widgets/Notes/DataTemplates.xaml",
     name: "Create Note",
     description: "Provides a one by one square widget.",
     menuPath: "Default/Note",
-    menuOrder: 0,
-    targetType: typeof(NoteWidgetViewModel)
+    menuOrder: 0
     )]
 public partial class NoteWidgetViewModel : WidgetContext
 {

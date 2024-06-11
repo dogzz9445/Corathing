@@ -13,18 +13,20 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-using Corathing.Contracts.Attributes;
 using Corathing.Contracts.Bases;
+using Corathing.Contracts.Entries;
 using Corathing.Widgets.Basics.Widgets.WebPages;
 
 namespace Corathing.Widgets.Basics.Widgets.WebQueries;
 
-[WidgetContextEntry(
+[EntryCoraWidget(
+    viewType: typeof(WebQueryWidget),
+    contextType: typeof(WebQueryViewModel),
+    dataTemplateSource: "Widgets/WebQueries/DataTemplates.xaml",
     name: "Create Web Query",
     description: "Provides a one by one square widget.",
     menuPath: "Default/Web Query",
-    menuOrder: 0,
-    targetType: typeof(WebQueryViewModel)
+    menuOrder: 0
     )]
 public partial class WebQueryViewModel : WidgetContext
 {

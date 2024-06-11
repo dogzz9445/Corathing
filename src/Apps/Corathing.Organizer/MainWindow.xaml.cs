@@ -9,20 +9,51 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
+using Corathing.Organizer.ViewModels;
+
 using MahApps.Metro.Controls;
 
 using Wpf.Ui.Controls;
 
-namespace Corathing.Organizer
+namespace Corathing.Organizer;
+
+/// <summary>
+/// Interaction logic for MainWindow.xaml
+/// </summary> 
+public partial class MainWindow : MetroWindow
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary> 
-    public partial class MainWindow : MetroWindow
+    public MainViewModel ViewModel;
+
+    public MainWindow()
     {
-        public MainWindow()
+        InitializeComponent();
+
+        DataContext = ViewModel = new MainViewModel();
+
+        MouseDown += Window_MouseDown;
+        MouseDoubleClick += Window_MouseDoubleClick;
+    }
+
+    private void Window_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+    {
+        if (e.GetPosition(this).Y >= 64)
+            return;
+
+        if (e.ChangedButton == MouseButton.Left)
         {
-            InitializeComponent();
+            if (WindowState == WindowState.Normal)
+                WindowState = WindowState.Maximized;
+            else
+                WindowState = WindowState.Normal;
         }
+    }
+
+    private void Window_MouseDown(object sender, MouseButtonEventArgs e)
+    {
+        if (e.GetPosition(this).Y >= 64)
+            return;
+
+        if (e.ChangedButton == MouseButton.Left)
+            this.DragMove();
     }
 }

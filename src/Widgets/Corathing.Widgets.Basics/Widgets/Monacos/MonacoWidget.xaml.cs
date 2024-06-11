@@ -19,18 +19,20 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Corathing.Contracts.Bases;
 using Corathing.Widgets.Basics.Widgets.LinkOpeners;
-using Corathing.Contracts.Attributes;
 using Corathing.Contracts.Services;
 using Microsoft.Extensions.DependencyInjection;
+using Corathing.Contracts.Entries;
 
 namespace Corathing.Widgets.Basics.Widgets.Monacos;
 
-[WidgetContextEntry(
+[EntryCoraWidget(
+    viewType: typeof(MonacoWidget),
+    contextType: typeof(MonacoWidgetViewModel),
+    dataTemplateSource: "Widgets/Monacos/DataTemplates.xaml",
     name: "Create Monaco",
     description: "Provides a one by one square widget.",
     menuPath: "Default/Monaco",
-    menuOrder: 0,
-    targetType: typeof(MonacoWidgetViewModel)
+    menuOrder: 0
     )]
 public partial class MonacoWidgetViewModel : WidgetContext
 {

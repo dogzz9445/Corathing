@@ -14,17 +14,20 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using CommunityToolkit.Mvvm.ComponentModel;
 
-using Corathing.Contracts.Attributes;
 using Corathing.Contracts.Bases;
+using Corathing.Contracts.Entries;
+using Corathing.Widgets.Basics.Widgets.Monacos;
 
 namespace Corathing.Widgets.Basics.Widgets.Commanders
 {
-    [WidgetContextEntry(
+    [EntryCoraWidget(
+    viewType: typeof(CommanderWidget),
+    contextType: typeof(CommanderWidgetViewModel),
+    dataTemplateSource: "Widgets/Commanders/DataTemplates.xaml",
         name: "Create Commander",
         description: "Provides a one by one square widget.",
         menuPath: "Default/Commander",
-        menuOrder: 0,
-        targetType: typeof(CommanderWidgetViewModel)
+        menuOrder: 0
         )]
     public partial class CommanderWidgetViewModel : WidgetContext
     {

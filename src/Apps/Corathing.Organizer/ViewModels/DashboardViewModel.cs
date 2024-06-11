@@ -13,7 +13,9 @@ using System.Windows.Media.Effects;
 
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+
 using Corathing.Contracts.Bases;
+using Corathing.Contracts.Entries;
 using Corathing.Contracts.Services;
 
 using Corathing.Dashboards.WPF.Controls;
@@ -21,6 +23,7 @@ using Corathing.Organizer.Controls;
 using Corathing.Organizer.Extensions;
 using Corathing.Organizer.Models;
 using Corathing.Organizer.Views;
+
 using Microsoft.Extensions.DependencyInjection;
 
 using Wpf.Ui;
@@ -81,7 +84,7 @@ public partial class DashboardViewModel : ObservableObject
     }
 
     [RelayCommand]
-    public void AddWidget(WidgetGenerator generator)
+    public void AddWidget(CoraWidgetGenerator generator)
     {
         if (SelectedProject == null)
             return;
@@ -290,7 +293,7 @@ public partial class DashboardViewModel : ObservableObject
         IPackageService packageService = services.GetService<IPackageService>();
         foreach (var widget in packageService.GetAvailableWidgets())
         {
-            var fullMenuHeader = widget.MenuPath;
+            var fullMenuHeader = widget.MenuInfo.MenuPath;
             if (string.IsNullOrEmpty(fullMenuHeader))
                 continue;
 

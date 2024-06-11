@@ -17,8 +17,8 @@ using Corathing.Widgets.Basics.Widgets.ToDoLists;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Corathing.Contracts.Services;
 using Microsoft.Web.WebView2.Wpf;
-using Corathing.Contracts.Attributes;
 using Microsoft.Extensions.DependencyInjection;
+using Corathing.Contracts.Entries;
 
 namespace Corathing.Widgets.Basics.Widgets.WebPages;
 
@@ -60,12 +60,14 @@ public partial class WebPageOption : ObservableObject
     private int? autoReloadSeconds;
 }
 
-[WidgetContextEntry(
+[EntryCoraWidget(
+    viewType: typeof(WebPageWidget),
+    contextType: typeof(WebPageViewModel),
+    dataTemplateSource: "Widgets/WebPages/DataTemplates.xaml",
     name: "Create Web Page",
     description: "Provides a one by one square widget.",
     menuPath: "Default/Web Page",
-    menuOrder: 0,
-    targetType: typeof(WebPageViewModel)
+    menuOrder: 0
     )]
 public partial class WebPageViewModel : WidgetContext
 {

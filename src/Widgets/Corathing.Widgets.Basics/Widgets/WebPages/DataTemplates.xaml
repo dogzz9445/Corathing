@@ -1,9 +1,7 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:widgets="clr-namespace:Corathing.Dashboards.WPF.Widgets">
-
-    <DataTemplate DataType="{x:Type widgets:EmptyWidgetContext}">
-        <widgets:EmptyWidget />
+                    xmlns:local="clr-namespace:Corathing.Widgets.Basics.Widgets.WebPages">
+    <DataTemplate DataType="{x:Type local:WebPageViewModel}">
+        <local:WebPageWidget />
     </DataTemplate>
-
 </ResourceDictionary>

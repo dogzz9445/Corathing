@@ -12,4 +12,8 @@
     <PackageReference Include="WPF-UI" Version="3.0.4" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Styles\" />
+  </ItemGroup>
+
 </Project>

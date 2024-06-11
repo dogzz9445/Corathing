@@ -13,18 +13,20 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-using Corathing.Contracts.Attributes;
 using Corathing.Contracts.Bases;
+using Corathing.Contracts.Entries;
 using Corathing.Widgets.Basics.Widgets.Notes;
 
 namespace Corathing.Widgets.Basics.Widgets.Timers;
 
-[WidgetContextEntry(
+[EntryCoraWidget(
+    viewType: typeof(TimerWidget),
+    contextType: typeof(TimerWidgetViewModel),
+    dataTemplateSource: "Widgets/Timers/DataTemplates.xaml",
     name: "Create Timer",
     description: "Provides a one by one square widget.",
     menuPath: "Default/Timer",
-    menuOrder: 0,
-    targetType: typeof(TimerWidgetViewModel)
+    menuOrder: 0
     )]
 public partial class TimerWidgetViewModel : WidgetContext
 {

@@ -13,18 +13,20 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-using Corathing.Contracts.Attributes;
 using Corathing.Contracts.Bases;
+using Corathing.Contracts.Entries;
 using Corathing.Widgets.Basics.Widgets.Timers;
 
 namespace Corathing.Widgets.Basics.Widgets.ToDoLists;
 
-[WidgetContextEntry(
+[EntryCoraWidget(
+    viewType: typeof(ToDoListWidget),
+    contextType: typeof(ToDoListViewModel),
+    dataTemplateSource: "Widgets/ToDoLists/DataTemplates.xaml",
     name: "Create To Do List",
     description: "Provides a one by one square widget.",
     menuPath: "Default/To Do List",
-    menuOrder: 0,
-    targetType: typeof(ToDoListViewModel)
+    menuOrder: 0
     )]
 public partial class ToDoListViewModel : WidgetContext
 {
