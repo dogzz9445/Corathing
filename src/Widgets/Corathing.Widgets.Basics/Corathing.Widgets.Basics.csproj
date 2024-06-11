@@ -46,6 +46,7 @@
 
 	<ItemGroup>
 	  <ProjectReference Include="..\..\Shared\Corathing.Contracts\Corathing.Contracts.csproj" />
+	  <ProjectReference Include="..\..\Shared\Corathing.UI.WPF\Corathing.UI.WPF.csproj" />
 	</ItemGroup>
 
 </Project>

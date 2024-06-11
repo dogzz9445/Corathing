@@ -4,7 +4,9 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:Corathing.Widgets.Basics.Widgets.FileOpeners"
+             xmlns:behaviors="clr-namespace:Corathing.UI.WPF.Behaviors;assembly=Corathing.UI.WPF"
              xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              mc:Ignorable="d"
              HorizontalAlignment="Stretch"
              VerticalAlignment="Stretch">
@@ -17,6 +19,10 @@
     </UserControl.Resources>-->
     <Grid HorizontalAlignment="Stretch"
           VerticalAlignment="Stretch">
-        <ui:SymbolIcon Symbol="DocumentArrowUp16" />
+        <ui:SymbolIcon Symbol="DocumentArrowUp16">
+            <i:Interaction.Behaviors>
+                <behaviors:SymbolIconScaleFontBehavior />
+            </i:Interaction.Behaviors>
+        </ui:SymbolIcon>
     </Grid>
 </UserControl>
