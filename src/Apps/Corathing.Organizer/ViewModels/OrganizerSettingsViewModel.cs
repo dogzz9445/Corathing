@@ -77,7 +77,7 @@ public partial class OrganizerSettingsViewModel : ObservableRecipient
         _localizationService.Apply(newValue);
     }
 
-    partial void OnUseGlobalConfigurationChanged(bool? oldValue, bool? newValue)
+    async partial void OnUseGlobalConfigurationChanged(bool? oldValue, bool? newValue)
     {
         var appSettings = _appStateService.GetAppSettings();
         if (appSettings.UseGlobalConfiguration == newValue)
@@ -86,7 +86,7 @@ public partial class OrganizerSettingsViewModel : ObservableRecipient
         _appStateService.UpdateAppSettings(appSettings);
     }
 
-    partial void OnUseAppPathConfigurationChanged(bool? oldValue, bool? newValue)
+    async partial void OnUseAppPathConfigurationChanged(bool? oldValue, bool? newValue)
     {
         var appSettings = _appStateService.GetAppSettings();
         if (appSettings.UseAppPathConfiguration == newValue)
@@ -95,14 +95,14 @@ public partial class OrganizerSettingsViewModel : ObservableRecipient
         _appStateService.UpdateAppSettings(appSettings);
     }
 
-    partial void OnCustomPathChanged(string? oldValue, string newValue)
+    async partial void OnCustomPathChanged(string? oldValue, string newValue)
     {
         var appSettings = _appStateService.GetAppSettings();
         // FIXME:
         // / \ 차이와 Lower Trim 등을 적용하여야함
-        if (string.Compare(appSettings.CustomPath, newValue) == 0)
+        if (string.Compare(appSettings.CustomConfigurationFilename, newValue) == 0)
             return;
-        appSettings.CustomPath = newValue;
+        appSettings.CustomConfigurationFilename = newValue;
         _appStateService.UpdateAppSettings(appSettings);
     }
 
@@ -116,7 +116,7 @@ public partial class OrganizerSettingsViewModel : ObservableRecipient
         var appSettings = _appStateService.GetAppSettings();
         UseGlobalConfiguration = appSettings.UseGlobalConfiguration;
         UseAppPathConfiguration = appSettings.UseAppPathConfiguration;
-        CustomPath = appSettings.CustomPath;
+        CustomPath = appSettings.CustomConfigurationFilename;
 
         _isInitialized = true;
     }

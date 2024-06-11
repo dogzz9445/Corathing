@@ -8,11 +8,10 @@ using Corathing.Contracts.Bases;
 
 namespace Corathing.Contracts.Factories;
 
-public static class AppStateFactory
+public static class AppDashboardStateFactory
 {
-    public static AppState Create()
-        => new AppState()
+    public static AppDashboardState Create()
+        => new AppDashboardState()
         {
-
         };
 }

@@ -10,12 +10,14 @@ namespace Corathing.Contracts.Services;
 
 public interface IAppStateService
 {
+    Task InitializeAsync();
     AppSettings GetAppSettings();
     void UpdateAppSettings(AppSettings appSettings);
+    AppPreferenceState GetAppPreferenceState();
+    AppPackageState GetAppPackageState();
+    AppDashboardState GetAppDashboardState();
 
-    void UpdateOverwrite(Guid id, object value);
-    void UpdateOrAdd(Guid id, object value);
     bool TryGetWorkflow(Guid id, out WorkflowState workflow);
     bool TryGetProject(Guid id, out ProjectState project);
-    bool TryGetWidgetOption<T>(Guid id, out T option);
+    bool TryGetWidget<T>(Guid id, out T option);
 }

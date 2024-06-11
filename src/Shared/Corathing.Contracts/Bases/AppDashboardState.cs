@@ -8,8 +8,9 @@ using Corathing.Contracts.Services;
 
 namespace Corathing.Contracts.Bases;
 
-public class AppPreferences
+public record StateRecord(string key, string value);
+
+public class AppDashboardState
 {
-    public ApplicationLanguage? Language { get; set; }
-    public ApplicationTheme? Theme { get; set; }
+    public Dictionary<Guid, WidgetState<StateRecord>> Widgets { get; set; }
 }

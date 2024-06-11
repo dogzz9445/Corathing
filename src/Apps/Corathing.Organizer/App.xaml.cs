@@ -39,7 +39,7 @@ public partial class App : Application
     /// </summary>
     public IServiceProvider? Services { get; private set; }
 
-    protected override void OnStartup(StartupEventArgs e)
+    protected override async void OnStartup(StartupEventArgs e)
     {
         base.OnStartup(e);
 
@@ -64,10 +64,13 @@ public partial class App : Application
         Services = ConfigureServices(e.Args);
 
         var appStateService = Services.GetService<IAppStateService>();
+        appStateService.InitializeAsync().Wait();
+
         var appSettings = appStateService.GetAppSettings();
+        var appPreferences = appStateService.GetAppPreferenceState();
 
         // Set the theme
-        var theme = System.Configuration.ConfigurationManager.AppSettings["Theme"];
+        var theme = appStateService.GetAppPreferenceState().Theme ?? ApplicationTheme.Light;
         var themeService = Services.GetService<IThemeService>();
         if (themeService != null)
         {
@@ -81,34 +84,19 @@ public partial class App : Application
                 @"pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml",
                 @"pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Dark.xaml"
                 );
-            //themeService.Register(
-            //    "Corathing.Dashboards.WPF",
-            //    @"pack://application:,,,/Corathing.Dashboards.WPF;component/Themes/Light.xaml",
-            //    @"pack://application:,,,/Corathing.Dashboards.WPF;component/Themes/Dark.xaml",
-            //    );
-            if (!string.IsNullOrEmpty(theme))
-            {
-                themeService.Apply(
-                    theme switch
-                    {
-                        "Light" => ApplicationTheme.Light,
-                        "Dark" => ApplicationTheme.Dark,
-                        _ => ApplicationTheme.Unknown
-                    });
-            }
-            else
-            {
+
+            if (appPreferences.UseSystemTheme)
                 themeService.ApplySystemTheme();
-            }
+            else
+                themeService.Apply(theme);
         }
-        themeService.Apply(ApplicationTheme.Light);
 
 
         // --------------------------------------------------------------------------
         // Available Widgets
         // --------------------------------------------------------------------------
-        IPackageService widgetService = Services.GetService<IPackageService>();
-        widgetService.LoadWidgetsFromDLL("Corathing.Widgets.Basics.dll");
+        IPackageService packageService = Services.GetService<IPackageService>();
+        packageService.LoadWidgetsFromDLL("Corathing.Widgets.Basics.dll");
         //widgetService.LoadWidgetsFromDLL("DDT.Core.WidgetSystems.DefaultWidgets.dll");
         //widgetService.RegisterWidgets(new List<WidgetGenerator> { new WidgetGenerator() });
 

@@ -4,12 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using Corathing.Contracts.Services;
-
 namespace Corathing.Contracts.Bases;
 
-public class AppState
+public class AppPackageState
 {
-    public AppPreferences? Preferences { get; set; }
-
 }

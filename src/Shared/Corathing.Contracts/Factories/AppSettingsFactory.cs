@@ -15,7 +15,7 @@ public static class AppSettingsFactory
         {
             UseGlobalConfiguration = false,
             UseAppPathConfiguration = true,
-            CustomPath = "",
+            CustomConfigurationFilename = "",
         };
 
     public static AppSettings Copy(this AppSettings appSettings)
@@ -23,7 +23,7 @@ public static class AppSettingsFactory
         {
             UseGlobalConfiguration = appSettings.UseGlobalConfiguration,
             UseAppPathConfiguration = appSettings.UseAppPathConfiguration,
-            CustomPath = appSettings.CustomPath,
+            CustomConfigurationFilename = appSettings.CustomConfigurationFilename,
         };
 
     public static AppSettings CopyWithUpdate(
@@ -35,6 +35,6 @@ public static class AppSettingsFactory
             {
                 UseGlobalConfiguration = useGlobalConfiguration ?? appSettings.UseGlobalConfiguration,
                 UseAppPathConfiguration = useAppPathConfiguration ?? appSettings.UseAppPathConfiguration,
-                CustomPath = customPath ?? appSettings.CustomPath,
+                CustomConfigurationFilename = customPath ?? appSettings.CustomConfigurationFilename,
             };
 }

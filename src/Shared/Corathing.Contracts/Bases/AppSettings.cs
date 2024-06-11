@@ -10,5 +10,5 @@ public class AppSettings
 {
     public bool? UseGlobalConfiguration { get; set; }
     public bool? UseAppPathConfiguration { get; set; }
-    public string? CustomPath { get; set; }
+    public string? CustomConfigurationFilename { get; set; }
 }

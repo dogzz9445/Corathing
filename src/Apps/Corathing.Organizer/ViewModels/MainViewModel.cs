@@ -45,7 +45,6 @@ public partial class MainViewModel : ObservableObject
 
     public MainViewModel()
     {
-
         TrayMenuItems = [new() { Header = "Home", Tag = "tray_home" }];
     }
 }

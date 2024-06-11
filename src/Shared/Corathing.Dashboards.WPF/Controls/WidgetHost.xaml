@@ -29,7 +29,7 @@
         <ControlTemplate TargetType="{x:Type ContentControl}">
             <Border HorizontalAlignment="Stretch"
                     VerticalAlignment="Stretch"
-                    BorderBrush="#00000000"
+                    BorderBrush="Transparent"
                     IsHitTestVisible="True"
                     Margin="1"
                     BorderThickness="4"
@@ -104,6 +104,8 @@
                                 <TextBlock Margin="4,2,0,0"
                                            HorizontalAlignment="Left"
                                            VerticalAlignment="Top"
+                                           FontSize="12"
+                                           FontWeight="SemiBold"
                                            Foreground="{DynamicResource CardForeground}"
                                            Text="{Binding WidgetTitle}"
                                            TextTrimming="CharacterEllipsis" />

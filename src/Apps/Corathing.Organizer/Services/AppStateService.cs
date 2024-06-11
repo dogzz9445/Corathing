@@ -15,100 +15,122 @@ using Corathing.Contracts.Services;
 
 namespace Corathing.Organizer.Services;
 
+#pragma warning disable CS8601 // Possible null reference assignment.
+
 public class AppStateService : IAppStateService
 {
-    private AppSettings _cachedAppSettings;
-    private AppState _cachedAppState;
+    #region Readonly Properties
+    private const string AppSettingsFilename = "appsettings.json";
+    private const string CorathingSettingsFilename = "corathing-settings.json";
 
-    private JsonSerializerOptions _serializerOptions = new JsonSerializerOptions()
-    {
-        TypeInfoResolver = new DefaultJsonTypeInfoResolver(),
-        WriteIndented = true,
-    };
+    private const string AppStateJsonDomBase = """
+        {
+            "Preferences": {},
+            "Packages": {},
+            "Dashboards": {}
+        }
+        """;
 
-    private JsonWriterOptions _writerOptions = new JsonWriterOptions
+    private readonly JsonSerializerOptions _serializerOptions =
+        new JsonSerializerOptions()
+        {
+            TypeInfoResolver = new DefaultJsonTypeInfoResolver(),
+            WriteIndented = true,
+        };
+
+    private readonly JsonDocumentOptions _documentOptions =
+        new JsonDocumentOptions
+        {
+            CommentHandling = JsonCommentHandling.Skip
+        };
+    #endregion
+
+    #region Cached Properties
+    private AppSettings? _cachedAppSettings;
+    private AppPreferenceState? _cachedAppPreferenceState;
+    private AppPackageState? _cachedAppPackageState;
+    private AppDashboardState? _cachedAppDashboardState;
+    #endregion
+
+    public async Task InitializeAsync()
     {
-        Indented = true
-    };
+        await ReadOrCreateAppSettingsFromAppPath();
+        await ReadOrCreateAppStateByAppSettings();
+    }
+
+    public AppSettings GetAppSettings()
+    {
+        if (_cachedAppSettings != null)
+            return _cachedAppSettings;
+
+        ReadOrCreateAppSettingsFromAppPath().Wait();
+        return _cachedAppSettings;
+    }
+
+    public async void UpdateAppSettings(AppSettings appSettings)
+    {
+        _cachedAppSettings = appSettings;
+        await WriteAppSettingsToAppPath(appSettings);
+
+        await ReadOrCreateAppStateByAppSettings();
+    }
+
+    public AppPreferenceState GetAppPreferenceState()
+    {
+        if (_cachedAppPreferenceState != null)
+            return _cachedAppPreferenceState;
+
+        // FIXME:
+        // 없을 경우 Read 하도록
+        return _cachedAppPreferenceState;
+    }
+
+    public AppPackageState GetAppPackageState()
+    {
+        if (_cachedAppPackageState != null)
+            return _cachedAppPackageState;
+
+        // FIXME:
+        // 없을 경우 Read 하도록
+        return _cachedAppPackageState;
+    }
+
+    public AppDashboardState GetAppDashboardState()
+    {
+        if (_cachedAppDashboardState != null)
+            return _cachedAppDashboardState;
+
+        // FIXME:
+        // 없을 경우 Read 하도록
+        return _cachedAppDashboardState;
+    }
+
 
     public bool TryGetProject(Guid id, out ProjectState project)
     {
+        if (_cachedAppDashboardState == null)
+            ReadOrCreateAppStateByAppSettings().Wait();
+
         project = new ProjectState();
         return true;
     }
 
-    public bool TryGetWidgetOption<T>(Guid id, out T option)
+    public bool TryGetWidget<T>(Guid id, out T option)
     {
+        if (_cachedAppDashboardState == null)
+            ReadOrCreateAppStateByAppSettings().Wait();
+
         option = default;
         return true;
     }
 
     public bool TryGetWorkflow(Guid id, out WorkflowState workflow)
     {
+        if (_cachedAppDashboardState == null)
+            ReadOrCreateAppStateByAppSettings().Wait();
+
         workflow = new WorkflowState();
         return true;
-    }
-
-    public AppSettings GetAppSettings()
-    {
-        ReadAppSettingsFromAppPath();
-        return _cachedAppSettings.Copy();
-    }
-
-
-    /// <summary>
-    /// Update Key and Value AppSettings
-    /// <see cref="AppSettings"/>
-    /// </summary>
-    /// <param name="key"></param>
-    /// <param name="value"></param>
-    public void UpdateAppSettings(AppSettings appSettings)
-    {
-        _cachedAppSettings = appSettings;
-        WriteAppSettingsToAppPath(appSettings);
-
-        // Read or Create AppState Data
-        if (_cachedAppSettings.UseGlobalConfiguration ?? false)
-        {
-            ReadOrCreateAppState(Path.Combine(
-                Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-                "corathing-widgetsettings.json"
-                ));
-        }
-        else if (_cachedAppSettings.UseAppPathConfiguration ?? false)
-        {
-            ReadOrCreateAppState("corathing-widgetsettings.json");
-        }
-        else if (!string.IsNullOrEmpty(_cachedAppSettings.CustomPath))
-        {
-            ReadOrCreateAppState(_cachedAppSettings.CustomPath);
-        }
-        else
-        {
-            ReadOrCreateAppState("corathing-widgetsettings.json");
-        }
-    }
-
-    private void ReadOrCreateAppState(string path)
-    {
-        if (!File.Exists(path))
-        {
-            if (!Directory.Exists(Path.GetDirectoryName(Path.GetFullPath(path))))
-            {
-                Directory.CreateDirectory(Path.GetDirectoryName(Path.GetFullPath(path)));
-            }
-            using var streamWriter = File.CreateText(path);
-            var appState = AppStateFactory.Create();
-            var json = JsonSerializer.Serialize(appState);
-            streamWriter.Write(json);
-        }
-        else
-        {
-            var json = File.ReadAllText(path);
-            using var document = JsonDocument.Parse(json,
-                new JsonDocumentOptions { CommentHandling = JsonCommentHandling.Skip });
-            _cachedAppState = document.RootElement.Deserialize<AppState>();
-        }
     }
 
     public void UpdateOrAdd(Guid id, object value)
@@ -120,38 +142,127 @@ public class AppStateService : IAppStateService
     }
 
     #region Private Methods
-    private AppSettings ReadAppSettingsFromAppPath()
-    {
-        if (_cachedAppSettings != null)
-            return _cachedAppSettings;
 
-        var filePath = "appsettings.json";
-        var json = File.ReadAllText(filePath);
-        using var document = JsonDocument.Parse(json, new JsonDocumentOptions { CommentHandling = JsonCommentHandling.Skip });
-        var appSettings = document.RootElement
-            .GetProperty("Corathing")
-            .GetProperty("Organizer")
-            .Deserialize<AppSettings>();
-        _cachedAppSettings = appSettings;
-        return appSettings;
+    private async Task<AppSettings> ReadOrCreateAppSettingsFromAppPath()
+    {
+        if (!File.Exists(AppSettingsFilename))
+        {
+            var appSettings = AppSettingsFactory.Create();
+            var json = JsonSerializer.Serialize(appSettings);
+            await File.WriteAllTextAsync(AppSettingsFilename, json);
+            _cachedAppSettings = appSettings;
+            return appSettings;
+        }
+        else
+        {
+            var json = File.ReadAllText(AppSettingsFilename);
+            using var document = JsonDocument.Parse(json, _documentOptions);
+            var appSettings = document.RootElement
+                .GetProperty("Corathing")
+                .GetProperty("Organizer")
+                .Deserialize<AppSettings>();
+            _cachedAppSettings = appSettings;
+            return appSettings;
+        }
     }
 
-    private async void WriteAppSettingsToAppPath(AppSettings appSettings)
+    private async Task WriteAppSettingsToAppPath(AppSettings appSettings)
     {
         if (appSettings == null)
             return;
 
-        var filePath = "appsettings.json";
-
-        string jsonString = await File.ReadAllTextAsync(filePath);
+        string jsonString = await File.ReadAllTextAsync(AppSettingsFilename);
 
         var rootNode = JsonNode.Parse(jsonString);
 
         rootNode["Corathing"]["Organizer"].ReplaceWith(appSettings);
         var json = rootNode.ToJsonString(_serializerOptions);
 
-        await File.WriteAllTextAsync(filePath, json);
+        await File.WriteAllTextAsync(AppSettingsFilename, json);
+    }
+
+    /// <summary>
+    /// AppState 파일 이름을 가져옴
+    /// </summary>
+    /// <returns></returns>
+    private string GetAppStatePathByAppSettings()
+    {
+        // Read or Create AppState Data
+        if (_cachedAppSettings.UseGlobalConfiguration ?? false)
+        {
+            return Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                CorathingSettingsFilename
+                );
+        }
+        else if (_cachedAppSettings.UseAppPathConfiguration ?? false)
+        {
+            return CorathingSettingsFilename;
+        }
+        else if (!string.IsNullOrEmpty(_cachedAppSettings.CustomConfigurationFilename))
+        {
+            return _cachedAppSettings.CustomConfigurationFilename;
+        }
+        else
+        {
+            return CorathingSettingsFilename;
+        }
+    }
+
+    private async Task ReadOrCreateAppStateByAppSettings()
+    {
+        var path = GetAppStatePathByAppSettings();
+        await ReadOrCreateAppStateFromPath(path);
+    }
+
+    private async Task ReadOrCreateAppStateFromPath(string path)
+    {
+        if (!File.Exists(path))
+        {
+            if (!Directory.Exists(Path.GetDirectoryName(Path.GetFullPath(path))))
+            {
+                Directory.CreateDirectory(Path.GetDirectoryName(Path.GetFullPath(path)));
+            }
+            _cachedAppPreferenceState = AppPreferenceStateFactory.Create();
+            _cachedAppPackageState = AppPackageStateFactory.Create();
+            _cachedAppDashboardState = AppDashboardStateFactory.Create();
+
+            JsonNode rootNode = JsonNode.Parse(AppStateJsonDomBase);
+            rootNode["Preferences"].ReplaceWith(_cachedAppPreferenceState);
+            rootNode["Packages"].ReplaceWith(_cachedAppPackageState);
+            rootNode["Dashboards"].ReplaceWith(_cachedAppDashboardState);
+
+            await File.WriteAllTextAsync(path, rootNode.ToJsonString(_serializerOptions));
+        }
+        else
+        {
+            var json = File.ReadAllText(path);
+            using var document = JsonDocument.Parse(json, _documentOptions);
+
+            // TODO:
+            // Document 에 내용이 없으면 리턴 가능하게
+            if (document == null)
+                return;
+
+            _cachedAppPreferenceState = document.RootElement
+                .GetProperty("Preferences")
+                .Deserialize<AppPreferenceState>();
+            _cachedAppPackageState = document.RootElement
+                .GetProperty("Packages")
+                .Deserialize<AppPackageState>();
+            _cachedAppDashboardState = document.RootElement
+                .GetProperty("Dashboards")
+                .Deserialize<AppDashboardState>();
+        }
+    }
+
+
+
+    private async Task UpdateInternal(AppDashboardState appState)
+    {
+
     }
 
     #endregion
 }
+#pragma warning restore CS8601 // Possible null reference assignment.

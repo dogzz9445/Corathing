@@ -12,7 +12,7 @@ namespace Corathing.Contracts.Bases;
 public interface IWidgetState<TSettings> : IEntity
 {
     IWidgetCoreState CoreSettings { get; }
-    TSettings Settings { get; }
+    List<TSettings> Settings { get; }
     WidgetContext Context { get; }
 }
 
@@ -20,6 +20,6 @@ public class WidgetState<TSettings> : IWidgetState<TSettings>
 {
     public Guid Id { get; set; }
     public IWidgetCoreState CoreSettings { get; set; }
-    public TSettings Settings { get; set; }
+    public List<TSettings> Settings { get; set; }
     public WidgetContext Context { get; set; }
 }
