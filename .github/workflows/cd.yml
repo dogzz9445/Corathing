@@ -68,7 +68,6 @@ jobs:
       App_Packages_Directory: AppPackages
       SigningCertificate: GitHubActionsPackageCorathing.pfx
       Solution_Path: Corathing.sln
-      Test_Project_Path: src\Apps\Corathing.Organizer.UnitTests\Corathing.Organizer.UnitTests.csproj
       Wpf_Project_Path: src\Apps\Corathing.Organizer\Corathing.Organizer.csproj
       Wap_Project_Directory: src\Apps\Corathing.Package
       Wap_Project_Name: Corathing.Package.wapproj
