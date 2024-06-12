@@ -1,53 +1,52 @@
-# Corathing
-### Organize Anything with Customizable Widget Dashboards
+# Corathing 
+### Organize Anything with Customizable Widget Dashboards <img src="docs/images/logo_256.png" alt="drawing" width="32"/> 
 
-Corathing is Customizable Widget Organizer
+Corathing is Customizable Widget Organizer. It is a WPF application that allows you to organize anything with customizable widget dashboards. You can create your own widgets or use the default widgets provided by Corathing.
 
-[English](README.md)
-[한국어](README_KR.md)
+|  Wiki |Readme | Readme |
+| --- | --- | --- |
+| [Wiki](https://github.com/dogzz9445/Corathing.wiki.git) | [English](README.md) | [한국어](README_KR.md) | 
 
-![alt text](docs/images/logo_256.png)
+![sample](docs/images/version0.0.9.gif)
 
-카피 프로젝트
-- Freeter
-- https://github.com/DustinBryant/WpfDashboardControl.git
+## 영감
+- [Freeter](https://github.com/FreeterApp/Freeter) - Freeter is a productivity app that allows you to gather everything in one place.
+  - UI/UX 및 기능들에 영감을 얻었습니다.
+- [Grafana](https://grafana.com/) - Grafana is the open-source analytics & monitoring solution for every database.
+  - 대시보드를 만들어서 모니터링에 영감을 얻었습니다.
 
-HW Monitoring
-- https://github.com/JettFlat/WPF-hardware-monitor/tree/master
-- https://github.com/openhardwaremonitor/openhardwaremonitor
-- https://github.com/marcoswada/hwmonitor
-- https://github.com/marcoswada/hwmonitor/tree/main/hwmonitor-service
-- https://github.com/LibreHardwareMonitor/LibreHardwareMonitor
-- https://github.com/ChristianBenner/HardwareMonitor
-- https://github.com/chris1111/HWSensors
+✔️ Features
+-
+- Dashboard host and widget host implementation and bug fixes, testing
 
+❌ Features - TBD
+- 
 
-Corathing 을 사용하기 위해 다음과 같은 지식이 필요합니다.
-- MVVM 패턴을 이용한 WPF 프로젝트
-- CommunityToolkit 기반 샘플
-
-[Wiki](./wiki/Home.md)
 
 📁 Projects
 -
 | Name| Folder |Framework | Description | Version
 | --- | --- | --- | --- | --- |
-| Corathing.Organizer | src/Apps | WPF | Grafana 를 이용한 WPF 모니터링 툴 | ```시작전```
-| Corathing.WidgetSystems |  | WPF | KakaoTalk 클론 코딩 | ```시작전```
-| Corathing.WidgetSystems.WPF | | ASP.NET | 백그라운드 원격 제어 서버 프로그램 | ```시작전```
+| Corathing.Organizer | src/Apps | WPF | 메인 앱, 데스크톱용 오거나이저 프로그램 | ```구현중```
+| Corathing.Dashboards.Sample | src/Apps | WPF | 대시보드 화면 샘플 프로그램 | ```시작전```
+| Corathing.Contracts | src/Shared | C# | Organizer와 Widget 구현물 간 정의 | ```구현중```
+| Corathing.Dashboards | src/Shared | C# | 백그라운드 원격 제어 서버 프로그램 | ```구현중```
+| Corathing.Dashboards.WPF | src/Shared | WPF | 백그라운드 원격 제어 서버 프로그램 | ```구현중```
 
 ```mermaid
 graph
-    A[Corathing.Organizer] --> B[Corathing.WidgetSystems]
-    A --> C[Corathing.WidgetSystems.WPF]
-    C --> B
+    A[Corathing.Organizer] --> B[Corathing.Contracts]
+    A --> C1[Corathing.Dashboards]
+    A --> C2[Corathing.Dashboards.WPF]
+    C2 --> C1
+    C2 --> B
     subgraph CustomWidgets
         D[CustomWidgets]
         E[DefaultWidgets]
         D[OtherWidgets]
     end
     D --> B
-    D --> C
+    D --> C2
     A -. Import as DLL .-> CustomWidgets
 ```
 
@@ -56,11 +55,16 @@ graph
 -
 | Name| Folder |Framework | Description | Version
 | --- | --- | --- | --- | --- |
-| Corathing. | src/Apps | WPF | Grafana 를 이용한 WPF 모니터링 툴 | ```시작전```
-| DDTIntraChat |  | WPF | KakaoTalk 클론 코딩 | ```시작전```
-| DDTAccessServer | | ASP.NET | 백그라운드 원격 제어 서버 프로그램 | ```시작전```
-| DDTAccessManager | | WPF | WPF 원격 제어 클라이언트 프로그램 | ```시작전```
-| DDTDeveloperConsoleSample | | WPF | DeveloperConsole 을 만들고  | ```시작전```
+| Corathing.Widgets.Basics | src/Apps | WPF | Grafana 를 이용한 WPF 모니터링 툴 | ```시작전```
+|  |  | WPF |  | ```시작전```
+
+# Development
+
+Corathing 을 구현하거나  사용하기 위해 다음과 같은 지식이 필요합니다.
+- MVVM 패턴을 이용한 WPF 프로젝트
+- CommunityToolkit 기반의 MVVM 을 제공하기 위한 API
+- Microsoft Dependency Injection 을 이용한 DI 구현
+
 
 📕 library to use
 -
@@ -126,12 +130,6 @@ reports:
 
 ### MS Store
 - MVVM Toolkit Sample App
-
-
-# 참고
-- https://github.com/dotnet
-
-
 
 # 기타 정리 필요
 
