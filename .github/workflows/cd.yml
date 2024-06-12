@@ -39,8 +39,8 @@ jobs:
             ChannelName: Dev
             Configuration: Debug
             DistributionUrl: https://microsoft.github.io/github-actions-for-desktop-apps-distribution-dev
-            MsixPackageId: MyWPFApp.DevOpsDemo.Dev
-            MsixPublisherId: CN=GitHubActionsDemo
+            MsixPackageId: Corathing.Organzier.Dev
+            MsixPublisherId: CN=CorathingOrganizer
             MsixPackageDisplayName: MyWPFApp (Dev)
 
           # includes the following variables for the matrix leg matching Prod_Sideload
@@ -48,8 +48,8 @@ jobs:
             Configuration: Release
             ChannelName: Prod_Sideload
             DistributionUrl: https://microsoft.github.io/github-actions-for-desktop-apps-distribution-prod
-            MsixPackageId: MyWPFApp.DevOpsDemo.ProdSideload
-            MsixPublisherId: CN=GitHubActionsDemo
+            MsixPackageId: Corathing.Organzier.ProdSideload
+            MsixPublisherId: CN=CorathingOrganizer
             MsixPackageDisplayName: MyWPFApp (ProdSideload)
 
           # includes the following variables for the matrix leg matching Prod_Store
@@ -57,8 +57,8 @@ jobs:
             Configuration: Release
             ChannelName: Prod_Store
             DistributionUrl:
-            MsixPackageId: MyWPFApp.DevOpsDemo.ProdStore
-            MsixPublisherId: CN=GitHubActionsDemo
+            MsixPackageId: Corathing.Organzier.ProdStore
+            MsixPublisherId: CN=CorathingOrganizer
             MsixPackageDisplayName: MyWPFApp (ProdStore)
 
     runs-on: windows-latest
