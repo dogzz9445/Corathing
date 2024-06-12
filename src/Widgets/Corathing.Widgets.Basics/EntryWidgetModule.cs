@@ -4,8 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Corathing.Contracts.Entries;
+using Corathing.Contracts.Entries;
 
-public class EntryCoraPackageAttribute : Attribute
+namespace Corathing.Widgets.Basics;
+
+[EntryCoraPackage]
+public class EntryWidgetModule
 {
 }
