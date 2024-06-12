@@ -120,4 +120,31 @@
   <data name="Corathing.Widgets.Basics.FileOpenerName" xml:space="preserve">
     <value>File Opener</value>
   </data>
+  <data name="Corathing.Widgets.Basics.CalendarName" xml:space="preserve">
+    <value>Calendar</value>
+  </data>
+  <data name="Corathing.Widgets.Basics.CommanderName" xml:space="preserve">
+    <value>Commander</value>
+  </data>
+  <data name="Corathing.Widgets.Basics.LinkOpenerName" xml:space="preserve">
+    <value>Link Opener</value>
+  </data>
+  <data name="Corathing.Widgets.Basics.TextEditorName" xml:space="preserve">
+    <value>Text Editor</value>
+  </data>
+  <data name="Corathing.Widgets.Basics.NoteName" xml:space="preserve">
+    <value>Note</value>
+  </data>
+  <data name="Corathing.Widgets.Basics.TimerName" xml:space="preserve">
+    <value>Timer</value>
+  </data>
+  <data name="Corathing.Widgets.Basics.ToDoListName" xml:space="preserve">
+    <value>To Do List</value>
+  </data>
+  <data name="Corathing.Widgets.Basics.WebPageName" xml:space="preserve">
+    <value>Web Page</value>
+  </data>
+  <data name="Corathing.Widgets.Basics.WebQueryName" xml:space="preserve">
+    <value>Web Query</value>
+  </data>
 </root>

@@ -15,7 +15,10 @@ using System.Windows.Shapes;
 
 using Corathing.Contracts.Bases;
 using Corathing.Contracts.Entries;
+using Corathing.Contracts.Services;
 using Corathing.Widgets.Basics.Widgets.Notes;
+
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Corathing.Widgets.Basics.Widgets.Timers;
 
@@ -35,7 +38,8 @@ public partial class TimerWidgetViewModel : WidgetContext
     /// </summary>
     public TimerWidgetViewModel(IServiceProvider services) : base(services)
     {
-        WidgetTitle = $"Timer";
+        ILocalizationService localizationService = services.GetService<ILocalizationService>();
+        localizationService.Provide("Corathing.Widgets.Basics.TimerName", value => WidgetTitle = value);
     }
 }
 

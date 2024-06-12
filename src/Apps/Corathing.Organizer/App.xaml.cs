@@ -12,6 +12,7 @@ using Corathing.Organizer.Services;
 using Corathing.Organizer.Utils;
 using Corathing.Organizer.ViewModels;
 using Corathing.Organizer.Views;
+using Corathing.Widgets.Basics.Resources;
 
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -76,13 +77,18 @@ public partial class App : Application
         {
             themeService.Register(
                 "Corathing.Dashboards.WPF",
-                @"pack://application:,,,/Corathing.Dashboards.WPF;component/Themes/Light.xaml",
-                @"pack://application:,,,/Corathing.Dashboards.WPF;component/Themes/Dark.xaml"
+                "pack://application:,,,/Corathing.Dashboards.WPF;component/Themes/Light.xaml",
+                "pack://application:,,,/Corathing.Dashboards.WPF;component/Themes/Dark.xaml"
                 );
             themeService.Register(
                 "MaterialDesignThemes.Wpf",
-                @"pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml",
-                @"pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Dark.xaml"
+                "pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml",
+                "pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Dark.xaml"
+                );
+            themeService.Register(
+                "MahApps.Metro",
+                "pack://application:,,,/MahApps.Metro;component/Styles/Themes/Light.Blue.xaml",
+                "pack://application:,,,/MahApps.Metro;component/Styles/Themes/Dark.Cyan.xaml"
                 );
 
             if (appPreferences.UseSystemTheme)
@@ -100,6 +106,11 @@ public partial class App : Application
         //widgetService.LoadWidgetsFromDLL("DDT.Core.WidgetSystems.DefaultWidgets.dll");
         //widgetService.RegisterWidgets(new List<WidgetGenerator> { new WidgetGenerator() });
 
+        LocalizationService.Instance.RegisterStringResourceManager("Corathing.Organizer",
+            CorathingOrganizerLocalizationStringResources.ResourceManager);
+
+        LocalizationService.Instance.RegisterStringResourceManager("Corathing.Widgets.Basics",
+            BasicWidgetStringResources.ResourceManager);
 
         IAuthService authService = App.Current.Services.GetService<IAuthService>();
         if (authService != null && authService.UseAuthService)
@@ -153,16 +164,12 @@ public partial class App : Application
         serviceCollection.AddSingleton<IThemeService, ThemeService>();
         serviceCollection.AddSingleton<ILocalizationService>(LocalizationService.Instance);
 
-        LocalizationService.Instance.RegisterStringResourceManager("Corathing.Organizer",
-            CorathingOrganizerLocalizationStringResources.ResourceManager);
-
         // Register viewmodels
         serviceCollection.AddScoped<OrganizerSettingsViewModel>();
         serviceCollection.AddScoped<WidgetSettingsViewModel>();
         serviceCollection.AddScoped<ProjectSettingsViewModel>();
 
         //Logger.Configure(configuration);
-        //serviceCollection.AddSingleton<SettingsController>();
         //Localizer.Configure(configuration);
 
         return serviceCollection.BuildServiceProvider();

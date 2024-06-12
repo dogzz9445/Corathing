@@ -15,7 +15,10 @@ using System.Windows.Shapes;
 
 using Corathing.Contracts.Bases;
 using Corathing.Contracts.Entries;
+using Corathing.Contracts.Services;
 using Corathing.Widgets.Basics.Widgets.WebPages;
+
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Corathing.Widgets.Basics.Widgets.WebQueries;
 
@@ -35,7 +38,8 @@ public partial class WebQueryViewModel : WidgetContext
     /// </summary>
     public WebQueryViewModel(IServiceProvider services) : base(services)
     {
-        WidgetTitle = $"ToDoList";
+        ILocalizationService localizationService = services.GetService<ILocalizationService>();
+        localizationService.Provide("Corathing.Widgets.Basics.WebQueryName", value => WidgetTitle = value);
     }
 }
 

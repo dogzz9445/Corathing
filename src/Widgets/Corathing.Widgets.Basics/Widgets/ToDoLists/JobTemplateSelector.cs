@@ -20,10 +20,8 @@ public class JobTemplateSelector : DataTemplateSelector
             return null;
 
         if (item is ToDoJob)
-            return element.FindResource("ToDoJobDataTemplate")
-                        as DataTemplate;
+            return element.FindResource("ToDoJobDataTemplate") as DataTemplate;
         else
-            return element.FindResource("AddingJobDataTemplate")
-                as DataTemplate;
+            return element.FindResource("AddingJobDataTemplate") as DataTemplate;
     }
 }

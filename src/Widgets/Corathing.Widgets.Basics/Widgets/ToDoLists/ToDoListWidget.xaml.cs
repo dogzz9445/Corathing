@@ -21,8 +21,11 @@ using CommunityToolkit.Mvvm.Input;
 
 using Corathing.Contracts.Bases;
 using Corathing.Contracts.Entries;
+using Corathing.Contracts.Services;
 using Corathing.Widgets.Basics.Widgets.Timers;
 using Corathing.Widgets.Basics.Widgets.ToDoLists.Models;
+
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Corathing.Widgets.Basics.Widgets.ToDoLists;
 
@@ -71,7 +74,9 @@ public partial class ToDoListViewModel : WidgetContext
     /// </summary>
     public ToDoListViewModel(IServiceProvider services) : base(services)
     {
-        WidgetTitle = $"ToDoList";
+        ILocalizationService localizationService = services.GetService<ILocalizationService>();
+        localizationService.Provide("Corathing.Widgets.Basics.ToDoListName", value => WidgetTitle = value);
+
         Jobs = new ObservableCollection<Job>();
     }
 }

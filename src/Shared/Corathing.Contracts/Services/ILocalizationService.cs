@@ -21,4 +21,11 @@ public interface ILocalizationService
     ApplicationLanguage GetAppLanguage();
     CultureInfo GetAppCulture();
     CultureInfo GetSystemCulture();
+    string GetString(string key);
+
+    /// <summary>
+    /// On LocalizationChanged
+    /// </summary>
+    /// <param name="action"></param>
+    void Provide(string key, Action<string> action);
 }

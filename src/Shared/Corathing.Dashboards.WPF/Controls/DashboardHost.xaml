@@ -7,11 +7,13 @@
     <ItemsControl.Template>
         <ControlTemplate>
             <ScrollViewer x:Name="DashboardHostScrollViewer"
+                          FocusVisualStyle="{x:Null}"
                           HorizontalScrollBarVisibility="Auto"
                           VerticalScrollBarVisibility="Auto">
-                <AdornerDecorator>
-                    <Grid>
-                        <Canvas x:Name="HighlightWidgetCanvas" />
+                <AdornerDecorator FocusVisualStyle="{x:Null}">
+                    <Grid FocusVisualStyle="{x:Null}">
+                        <Canvas x:Name="HighlightWidgetCanvas"
+                                FocusVisualStyle="{x:Null}" />
                         <ItemsPresenter />
                     </Grid>
                 </AdornerDecorator>

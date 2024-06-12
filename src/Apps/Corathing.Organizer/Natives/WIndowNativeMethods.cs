@@ -8,6 +8,17 @@ namespace Corathing.Organizer.Natives;
 
 public static class WindowNativeMethods
 {
+    private static IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
+    {
+        if (msg == 0x0312)
+        {
+            Console.WriteLine("resr");
+        }
+
+        return IntPtr.Zero;
+    }
+
+
     [DllImport("user32.dll")]
     public static extern bool EnumDisplayMonitors(IntPtr hdc, IntPtr lprcClip, MonitorEnumProc lpfnEnum, IntPtr dwData);
 
@@ -28,4 +39,6 @@ public static class WindowNativeMethods
         public Rect Work;
         public uint Flags;
     }
+
+
 }

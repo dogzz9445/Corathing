@@ -380,19 +380,6 @@
                         ContentTemplateSelector="{StaticResource contentTemplateSelector}"
                         SelectedItem="{Binding SelectedProject.SelectedWorkflow}"
                         ItemsSource="{Binding SelectedProject.Workflows}" />
-            <!--<TabControl.ItemTemplate>
-                <DataTemplate DataType="{x:Type models:WorkflowContext}">
-                </DataTemplate>
-            </TabControl.ItemTemplate>
-            <TabControl.ContentTemplate>
-                <DataTemplate DataType="{x:Type models:WorkflowContext}">
-                    <dashboardControl:DashboardHost Grid.Column="0"
-                                                    Margin="4"
-                                                    EditMode="{Binding EditMode}"
-                                                    ItemsSource="{Binding Widgets}" />
-                </DataTemplate>
-            </TabControl.ContentTemplate>-->
-
         </Grid>
     </Grid>
 </UserControl>

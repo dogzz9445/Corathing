@@ -45,7 +45,8 @@ public partial class MonacoWidgetViewModel : WidgetContext
 
     public MonacoWidgetViewModel(IServiceProvider services) : base(services)
     {
-        WidgetTitle = $"Monaco";
+        ILocalizationService localizationService = services.GetService<ILocalizationService>();
+        localizationService.Provide("Corathing.Widgets.Basics.TextEditorName", value => WidgetTitle = value);
         VisibleTitle = false;
 
         _applicationService = services.GetService<IApplicationService>();

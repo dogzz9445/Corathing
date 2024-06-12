@@ -16,7 +16,10 @@ using CommunityToolkit.Mvvm.ComponentModel;
 
 using Corathing.Contracts.Bases;
 using Corathing.Contracts.Entries;
+using Corathing.Contracts.Services;
 using Corathing.Widgets.Basics.Widgets.Commanders;
+
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Corathing.Widgets.Basics.Widgets.FileOpeners;
 
@@ -50,7 +53,8 @@ public partial class FileOpenerWidgetViewModel : WidgetContext
         IServiceProvider services)
         : base(services)
     {
-        WidgetTitle = $"FileOpener";
+        ILocalizationService localizationService = services.GetService<ILocalizationService>();
+        localizationService.Provide("Corathing.Widgets.Basics.FileOpenerName", value => WidgetTitle = value);
         VisibleTitle = true;
     }
 }

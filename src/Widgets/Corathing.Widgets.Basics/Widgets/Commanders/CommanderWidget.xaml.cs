@@ -16,7 +16,10 @@ using CommunityToolkit.Mvvm.ComponentModel;
 
 using Corathing.Contracts.Bases;
 using Corathing.Contracts.Entries;
+using Corathing.Contracts.Services;
 using Corathing.Widgets.Basics.Widgets.Monacos;
+
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Corathing.Widgets.Basics.Widgets.Commanders
 {
@@ -36,9 +39,10 @@ namespace Corathing.Widgets.Basics.Widgets.Commanders
         /// <summary>
         /// Initializes a new instance of the <see cref="OneByOneViewModel"/> class.
         /// </summary>
-        public CommanderWidgetViewModel(IServiceProvider serivces) : base(serivces)
+        public CommanderWidgetViewModel(IServiceProvider services) : base(services)
         {
-            WidgetTitle = $"Commander";
+            ILocalizationService localizationService = services.GetService<ILocalizationService>();
+            localizationService.Provide("Corathing.Widgets.Basics.CommanderName", value => WidgetTitle = value);
         }
     }
 

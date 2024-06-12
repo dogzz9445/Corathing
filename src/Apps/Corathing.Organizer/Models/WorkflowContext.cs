@@ -132,4 +132,16 @@ public partial class WorkflowContext : ObservableObject
     }
 
     #endregion Public Properties
+    protected override void OnPropertyChanged(PropertyChangedEventArgs e)
+    {
+        base.OnPropertyChanged(e);
+
+        if (Widgets != null)
+        {
+            foreach (var widgetContext in Widgets)
+            {
+                widgetContext.EditMode = EditMode;
+            }
+        }
+    }
 }

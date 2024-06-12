@@ -8,6 +8,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 using Corathing.Contracts.Services;
 
@@ -38,6 +39,7 @@ public class LocalizationService : ILocalizationService, INotifyPropertyChanged
     private CultureInfo? _cachedSystemCultureInfo = null;
 
     private readonly Dictionary<string, ResourceManager> _stringResourceManagers = new Dictionary<string, ResourceManager>();
+    private readonly List<Action> _refreshProvideActions = new List<Action>();
 
     public CultureInfo? CachedSystemCultureInfo
     {
@@ -63,22 +65,24 @@ public class LocalizationService : ILocalizationService, INotifyPropertyChanged
 
     public string? this[string key]
     {
-        get
+        get => GetString(key);
+    }
+
+    public string GetString(string key)
+    {
+        foreach (var resManager in _stringResourceManagers.Values)
         {
-            foreach (var resManager in _stringResourceManagers.Values)
+            if (CachedApplicationCultureInfo == null)
             {
-                if (CachedApplicationCultureInfo == null)
-                {
-                    ApplySystemLanguage();
-                }
-                string? resultString = resManager.GetString(key, CachedApplicationCultureInfo);
-                if (!string.IsNullOrEmpty(resultString))
-                {
-                    return resultString;
-                }
+                ApplySystemLanguage();
             }
-            return "";
+            string? resultString = resManager.GetString(key, CachedApplicationCultureInfo);
+            if (!string.IsNullOrEmpty(resultString))
+            {
+                return resultString;
+            }
         }
+        return "";
     }
 
 
@@ -86,6 +90,7 @@ public class LocalizationService : ILocalizationService, INotifyPropertyChanged
     private void RaisePropertyChanged(object sender, PropertyChangedEventArgs e)
     {
         PropertyChanged?.Invoke(sender, e);
+        _refreshProvideActions.ForEach(action => action.Invoke());
     }
 
 
@@ -184,5 +189,14 @@ public class LocalizationService : ILocalizationService, INotifyPropertyChanged
     public void RegisterStringResourceManager(string namespaceName, ResourceManager resourceManager)
     {
         _stringResourceManagers.Add(namespaceName, resourceManager);
+    }
+
+    /// <summary>
+    /// <inheritdoc/>
+    /// </summary>
+    public void Provide(string key, Action<string> action)
+    {
+        action?.Invoke(GetString(key));
+        _refreshProvideActions.Add(() => action?.Invoke(GetString(key)));
     }
 }

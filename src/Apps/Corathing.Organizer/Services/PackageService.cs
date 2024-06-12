@@ -17,6 +17,9 @@ using NuGet.Protocol;
 using NuGet.Versioning;
 using NuGet.Packaging.Core;
 using NuGet.Packaging;
+using Microsoft.Extensions.DependencyInjection;
+using System.Resources;
+using Microsoft.Extensions.Localization;
 
 namespace Corathing.Organizer.Services;
 
@@ -97,6 +100,23 @@ public class PackageService : IPackageService
                     );
             }
         }
+
+        // Localization
+        // TODO:
+        // Fix the assembly
+        //var localizationService = _services.GetService<ILocalizationService>();
+        //if (localizationService != null)
+        //{
+        //    var resources = assembly.GetTypes().Where(t => typeof(ResourceManager).IsAssignableFrom(t));
+
+        //    foreach (var resource in resources)
+        //    {
+        //        if (resource.Name.Contains("StringResources"))
+        //        {
+        //            resource
+        //        }
+        //    }
+        //}
     }
 
     public void LoadWidgetsFromDLL(string pathDLL)

@@ -120,4 +120,31 @@
   <data name="Corathing.Widgets.Basics.FileOpenerName" xml:space="preserve">
     <value>파일 열기</value>
   </data>
+  <data name="Corathing.Widgets.Basics.CalendarName" xml:space="preserve">
+    <value>캘린더</value>
+  </data>
+  <data name="Corathing.Widgets.Basics.CommanderName" xml:space="preserve">
+    <value>콘솔 명령</value>
+  </data>
+  <data name="Corathing.Widgets.Basics.LinkOpenerName" xml:space="preserve">
+    <value>링크 열기</value>
+  </data>
+  <data name="Corathing.Widgets.Basics.TextEditorName" xml:space="preserve">
+    <value>텍스트 편집기</value>
+  </data>
+  <data name="Corathing.Widgets.Basics.NoteName" xml:space="preserve">
+    <value>노트</value>
+  </data>
+  <data name="Corathing.Widgets.Basics.TimerName" xml:space="preserve">
+    <value>타이머</value>
+  </data>
+  <data name="Corathing.Widgets.Basics.ToDoListName" xml:space="preserve">
+    <value>할일 목록</value>
+  </data>
+  <data name="Corathing.Widgets.Basics.WebPageName" xml:space="preserve">
+    <value>웹페이지</value>
+  </data>
+  <data name="Corathing.Widgets.Basics.WebQueryName" xml:space="preserve">
+    <value>웹 쿼리</value>
+  </data>
 </root>

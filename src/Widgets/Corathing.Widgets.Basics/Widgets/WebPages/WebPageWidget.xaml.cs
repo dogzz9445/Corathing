@@ -82,6 +82,9 @@ public partial class WebPageViewModel : WidgetContext
     /// </summary>
     public WebPageViewModel(IServiceProvider services) : base(services)
     {
+        ILocalizationService localizationService = services.GetService<ILocalizationService>();
+        localizationService.Provide("Corathing.Widgets.Basics.WebPageName", value => WidgetTitle = value);
+
         var appStateService = services.GetService<IAppStateService>();
         //if (!widgetSystemService.TryGetWidgetOption<WebPageOption>(Uid, out var option))
         //WidgetTitle = option.Name;

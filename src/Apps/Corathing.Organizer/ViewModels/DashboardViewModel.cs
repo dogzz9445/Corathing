@@ -128,31 +128,6 @@ public partial class DashboardViewModel : ObservableObject
     }
 
     [RelayCommand]
-    public void MouseDoubleClick(object e)
-    {
-        Console.WriteLine(e);
-        //private void Window_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        //{
-        //    if (sender is not MainWindow)
-        //        return;
-
-        //    if (e.ChangedButton == MouseButton.Left)
-        //    {
-        //        if (WindowState == WindowState.Normal)
-        //            WindowState = WindowState.Maximized;
-        //        else
-        //            WindowState = WindowState.Normal;
-        //    }
-        //}
-
-        //private void Window_MouseDown(object sender, MouseButtonEventArgs e)
-        //{
-        //    if (e.ChangedButton == MouseButton.Left)
-        //        this.DragMove();
-        //}
-    }
-
-    [RelayCommand]
     public async void ConfigureWidget(WidgetHost widgetHost)
     {
         var parentWindow = Window.GetWindow(widgetHost);
@@ -181,31 +156,6 @@ public partial class DashboardViewModel : ObservableObject
             return;
         SelectedProject.SelectedWorkflow.Widgets.Remove((widgetHost as WidgetHost).DataContext as WidgetContext);
     }
-
-
-    /// <summary>
-    /// Gets the command configure widget.
-    /// </summary>
-    /// <value>The command configure widget.</value>
-    public ICommand CommandConfigureWidget => new RelayCommand<WidgetHost>(async o =>
-    {
-        var widgetHost = (WidgetHost)o;
-        var parentWindow = Window.GetWindow(widgetHost);
-        var window = new BaseWindow();
-        if (parentWindow != null)
-        {
-            window.Owner = parentWindow;
-            parentWindow.Effect = new BlurEffect();
-            window.CenterWindowToParent();
-        }
-        var view = new WidgetSettingsView(widgetHost);
-        window.Content = view;
-        window.ShowDialog();
-        if (parentWindow != null)
-        {
-            parentWindow.Effect = null;
-        }
-    });
 
     /// <summary>
     /// Gets the command done configuring widget.

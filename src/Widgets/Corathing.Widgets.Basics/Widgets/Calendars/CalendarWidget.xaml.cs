@@ -16,7 +16,10 @@ using System.Windows.Shapes;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Corathing.Contracts.Bases;
 using Corathing.Contracts.Entries;
+using Corathing.Contracts.Services;
 using Corathing.Widgets.Basics.Widgets.FileOpeners;
+
+using Microsoft.Extensions.DependencyInjection;
 
 using Wpf.Ui.Controls;
 
@@ -46,7 +49,8 @@ public partial class CalendarWidgetViewModel : WidgetContext
         IServiceProvider services)
         : base(services)
     {
-        WidgetTitle = $"Calendar";
+        ILocalizationService localizationService = services.GetService<ILocalizationService>();
+        localizationService.Provide("Corathing.Widgets.Basics.CalendarName", value => WidgetTitle = value);
         VisibleTitle = false;
 
         var x = new DataTemplate()

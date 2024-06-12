@@ -13,10 +13,15 @@ public partial class WidgetContext : ObservableRecipient
 {
     private readonly IServiceProvider _services;
 
+    #region 확정된 프로퍼티
     [ObservableProperty]
     private string _widgetTitle;
     [ObservableProperty]
     private bool? _visibleTitle;
+    [ObservableProperty]
+    private bool? _editMode;
+    #endregion
+
     [ObservableProperty]
     private bool? _isSelecting;
     [ObservableProperty]
@@ -30,12 +35,14 @@ public partial class WidgetContext : ObservableRecipient
 
     public WidgetContext()
     {
+        WidgetTitle = "Widget";
+        VisibleTitle = true;
+        EditMode = true;
+
         IsSelecting = false;
         IsDragging = false;
         IsResizing = false;
         IsEditing = false;
-        VisibleTitle = true;
-        WidgetTitle = "Widget";
     }
 
     public WidgetContext(IServiceProvider services) : this()

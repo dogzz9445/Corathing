@@ -15,8 +15,11 @@ using System.Windows.Shapes;
 
 using Corathing.Contracts.Bases;
 using Corathing.Contracts.Entries;
+using Corathing.Contracts.Services;
 using Corathing.Widgets.Basics.Widgets.Commanders;
 using Corathing.Widgets.Basics.Widgets.FileOpeners;
+
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Corathing.Widgets.Basics.Widgets.LinkOpeners;
 
@@ -36,8 +39,8 @@ public partial class LinkOpenerWidgetViewModel : WidgetContext
     /// </summary>
     public LinkOpenerWidgetViewModel(IServiceProvider services) : base(services)
     {
-
-        WidgetTitle = $"Commander";
+        ILocalizationService localizationService = services.GetService<ILocalizationService>();
+        localizationService.Provide("Corathing.Widgets.Basics.LinkOpenerName", value => WidgetTitle = value);
     }
 }
 

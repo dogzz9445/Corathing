@@ -5,47 +5,157 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Corathing.Widgets.Basics.Widgets.ToDoLists"
              xmlns:models="clr-namespace:Corathing.Widgets.Basics.Widgets.ToDoLists.Models"
+             xmlns:behaviors="clr-namespace:Corathing.UI.WPF.Behaviors;assembly=Corathing.UI.WPF"
+             xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="400">
     <UserControl.Resources>
         <local:JobTemplateSelector x:Key="JobTemplateSelector" />
+        <BooleanToVisibilityConverter x:Key="BoolToVis" />
+
+        <Style TargetType="{x:Type ListBox}">
+            <Setter Property="Margin"
+                    Value="0" />
+            <Setter Property="Padding"
+                    Value="0" />
+            <Setter Property="BorderThickness"
+                    Value="0" />
+            <Setter Property="ScrollViewer.VerticalScrollBarVisibility"
+                    Value="Auto" />
+            <Setter Property="ScrollViewer.HorizontalScrollBarVisibility"
+                    Value="Auto" />
+            <Setter Property="ScrollViewer.CanContentScroll"
+                    Value="True" />
+            <Setter Property="VerticalContentAlignment"
+                    Value="Center" />
+            <Setter Property="VirtualizingPanel.IsVirtualizing"
+                    Value="True" />
+            <Setter Property="VirtualizingPanel.VirtualizationMode"
+                    Value="Standard" />
+            <Setter Property="SnapsToDevicePixels"
+                    Value="True" />
+            <Setter Property="ItemsPanel">
+                <Setter.Value>
+                    <ItemsPanelTemplate>
+                        <VirtualizingStackPanel Orientation="Vertical"
+                                                IsVirtualizing="{TemplateBinding VirtualizingPanel.IsVirtualizing}"
+                                                VirtualizationMode="{TemplateBinding VirtualizingPanel.VirtualizationMode}" />
+                    </ItemsPanelTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="{x:Type ListBoxItem}"
+               BasedOn="{StaticResource DefaultListBoxItemStyle}">
+            <Setter Property="Foreground"
+                    Value="{DynamicResource ListBoxItemForeground}" />
+            <Setter Property="Background"
+                    Value="{DynamicResource ListBoxItemSelectedBackgroundThemeBrush}" />
+            <Setter Property="BorderBrush"
+                    Value="{DynamicResource ListBoxItemSelectedBackgroundThemeBrush}" />
+            <Setter Property="Margin"
+                    Value="0" />
+            <Setter Property="Padding"
+                    Value="0" />
+            <Setter Property="Border.CornerRadius"
+                    Value="0" />
+            <Setter Property="SnapsToDevicePixels"
+                    Value="True" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                        <Border x:Name="Border"
+                                Margin="0"
+                                Padding="{TemplateBinding Padding}"
+                                Background="Transparent"
+                                BorderThickness="0"
+                                CornerRadius="{TemplateBinding Border.CornerRadius}">
+                            <ContentPresenter />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver"
+                                     Value="True">
+                                <Setter TargetName="Border"
+                                        Property="Background"
+                                        Value="{DynamicResource ButtonBackgroundPointerOver}" />
+                                <Setter Property="Foreground"
+                                        Value="{DynamicResource ButtonForegroundPointerOver}" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style BasedOn="{StaticResource MahApps.Styles.CheckBox}"
+               TargetType="{x:Type CheckBox}">
+            <Setter Property="Margin"
+                    Value="4 2 0 2" />
+            <Setter Property="BorderBrush"
+                    Value="{DynamicResource CheckBoxBorderBrush}" />
+            <Setter Property="Background"
+                    Value="{DynamicResource CheckBoxBackground}" />
+            <Setter Property="Foreground"
+                    Value="{DynamicResource CheckBoxForeground}" />
+        </Style>
+
+        <Style TargetType="{x:Type TextBox}"
+               BasedOn="{StaticResource MahApps.Styles.TextBox}">
+            <Setter Property="Background"
+                    Value="Transparent" />
+            <Setter Property="Foreground"
+                    Value="{DynamicResource TextControlForeground}" />
+            <Setter Property="CaretBrush"
+                    Value="{DynamicResource TextControlForeground}" />
+        </Style>
+        
         <DataTemplate x:Key="AddingJobDataTemplate" DataType="{x:Type models:AddingJob}">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
-                <Button Content="Add"
-                        Command="{Binding DataContext.AddNewJobCommand, RelativeSource={RelativeSource AncestorType={x:Type local:ToDoListWidget}, Mode=FindAncestor}}"/>
+                <Button Margin="4 2 0 2"
+                        Command="{Binding DataContext.AddNewJobCommand, RelativeSource={RelativeSource AncestorType={x:Type local:ToDoListWidget}, Mode=FindAncestor}}">
+                    <TextBlock Text="Add Item..."
+                               FontSize="11"
+                               Foreground="{DynamicResource CardForeground}" />
+                </Button>
             </Grid>
         </DataTemplate>
         <DataTemplate x:Key="ToDoJobDataTemplate" DataType="{x:Type models:ToDoJob}">
-            <DockPanel HorizontalAlignment="Stretch"
-                       LastChildFill="True">
-                <CheckBox Style="{x:Null}"
-                          DockPanel.Dock="Left"
-                          IsChecked="{Binding IsCompleted}" />
-                <TextBox Style="{x:Null}"
-                         HorizontalAlignment="Stretch"
-                         VerticalContentAlignment="Center"
-                         Text="{Binding Detail}" />
-            </DockPanel>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <DockPanel HorizontalAlignment="Stretch"
+                           LastChildFill="True">
+                    <CheckBox DockPanel.Dock="Left"
+                              FocusVisualStyle="{x:Null}"
+                              IsChecked="{Binding IsCompleted}" />
+                    <TextBox HorizontalAlignment="Stretch"
+                             VerticalContentAlignment="Center"
+                             Margin="0"
+                             BorderThickness="0"
+                             Text="{Binding Detail}" />
+                </DockPanel>
+                <Border IsHitTestVisible="False"
+                        Visibility="{Binding IsCompleted, 
+                                Converter={StaticResource BoolToVis}}"
+                        BorderThickness="0.5"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Stretch"
+                        BorderBrush="{DynamicResource TextControlForegroundDisabled}" />
+            </Grid>
         </DataTemplate>
     </UserControl.Resources>
-    <ScrollViewer>
+    <Grid>
         <ListBox x:Name="ToDoListBox"
                  BorderThickness="0"
+                 Background="Transparent"
                  ItemsSource="{Binding Jobs}"
-                 Style="{x:Null}"
-                 ItemTemplateSelector="{StaticResource JobTemplateSelector}">
-            <ItemsControl.ItemContainerStyle>
-                <Style BasedOn="{x:Null}" />
-            </ItemsControl.ItemContainerStyle>
-            <ItemsControl.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <StackPanel Orientation="Vertical" />
-                </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
-        </ListBox>
-    </ScrollViewer>
+                 ItemTemplateSelector="{StaticResource JobTemplateSelector}" />
+
+    </Grid>
 </UserControl>

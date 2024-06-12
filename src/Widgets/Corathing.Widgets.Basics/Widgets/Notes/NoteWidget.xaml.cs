@@ -15,8 +15,11 @@ using System.Windows.Shapes;
 
 using Corathing.Contracts.Bases;
 using Corathing.Contracts.Entries;
+using Corathing.Contracts.Services;
 using Corathing.Widgets.Basics.Widgets.LinkOpeners;
 using Corathing.Widgets.Basics.Widgets.Monacos;
+
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Corathing.Widgets.Basics.Widgets.Notes;
 
@@ -36,7 +39,8 @@ public partial class NoteWidgetViewModel : WidgetContext
     /// </summary>
     public NoteWidgetViewModel(IServiceProvider services) : base(services)
     {
-        WidgetTitle = $"Commander";
+        ILocalizationService localizationService = services.GetService<ILocalizationService>();
+        localizationService.Provide("Corathing.Widgets.Basics.NoteName", value => WidgetTitle = value);
     }
 }
 
