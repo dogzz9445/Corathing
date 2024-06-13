@@ -13,6 +13,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
+using CommunityToolkit.Mvvm.Input;
+
 namespace Corathing.Dashboards.WPF.Controls
 {
     /// <summary>
@@ -32,6 +34,57 @@ namespace Corathing.Dashboards.WPF.Controls
     /// </summary>
     public partial class WidgetHost : ContentControl
     {
+        #region Public Fields
+        /// <summary>
+        /// The edit mode property
+        /// </summary>
+        public static readonly DependencyProperty EditModeProperty = DependencyProperty.Register(
+            nameof(EditMode),
+            typeof(bool),
+            typeof(WidgetHost),
+            new PropertyMetadata(false));
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the dashboard is in [edit mode].
+        /// </summary>
+        /// <value><c>true</c> if [edit mode]; otherwise, <c>false</c>.</value>
+        public bool EditMode
+        {
+            get => (bool)GetValue(EditModeProperty);
+            set => SetValue(EditModeProperty, value);
+        }
+
+
+        public static readonly DependencyProperty CornerRadiusProperty = DependencyProperty.Register(
+                nameof(CornerRadius),
+                typeof(CornerRadius),
+                typeof(WidgetHost),
+                new PropertyMetadata(default)
+            );
+
+        public CornerRadius CornerRadius
+        {
+            get => (CornerRadius)GetValue(CornerRadiusProperty);
+            set => SetValue(CornerRadiusProperty, value);
+        }
+
+
+        //public static readonly DependencyProperty TemplateButtonCommandProperty = DependencyProperty.Register(
+        //    nameof(TemplateButtonCommand),
+        //    typeof(IRelayCommand),
+        //    typeof(BreadcrumbBar),
+        //    new PropertyMetadata(null)
+        //);
+
+        //public static readonly DependencyProperty TemplateButtonCommandProperty = DependencyProperty.Register(
+        //    nameof(TemplateButtonCommand),
+        //    typeof(IRelayCommand),
+        //    typeof(BreadcrumbBar),
+        //    new PropertyMetadata(null)
+        //);
+
+        #endregion
+
         #region Private Fields
 
         // For Resize
@@ -72,6 +125,11 @@ namespace Corathing.Dashboards.WPF.Controls
         public event MouseEnterEventHandler MouseOver;
 
         #endregion Public Events
+
+        static WidgetHost()
+        {
+            BackgroundProperty.OverrideMetadata(typeof(WidgetHost), new FrameworkPropertyMetadata());
+        }
 
         public WidgetHost()
         {

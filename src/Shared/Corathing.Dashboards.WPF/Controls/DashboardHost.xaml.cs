@@ -154,7 +154,6 @@ namespace Corathing.Dashboards.WPF.Controls
         private readonly List<WidgetHost> _widgetHosts = new List<WidgetHost>();
         private List<WidgetLayout> _widgetLayouts = new List<WidgetLayout>();
 
-
         // True if a drag is in progress.
         private bool DragInProgress = false;
         private DragAdorner _draggingAdorner;
@@ -578,6 +577,7 @@ namespace Corathing.Dashboards.WPF.Controls
         private void EditEnabler()
         {
             AllowDrop = EditMode;
+            _widgetHosts.ForEach(widgetHost => widgetHost.EditMode = EditMode);
 
             if (EditMode)
                 return;

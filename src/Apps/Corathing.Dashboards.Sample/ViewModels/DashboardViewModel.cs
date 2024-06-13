@@ -58,7 +58,7 @@ public partial class DashboardViewModel : ObservableObject
     {
         base.OnPropertyChanged(e);
 
-        foreach (var widget in  Widgets)
+        foreach (var widget in Widgets)
         {
             widget.EditMode = EditMode;
         }

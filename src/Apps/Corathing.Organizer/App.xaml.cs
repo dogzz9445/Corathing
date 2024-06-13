@@ -44,23 +44,26 @@ public partial class App : Application
     {
         base.OnStartup(e);
 
-        //Application.Current.DispatcherUnhandledException += (sender, args) =>
-        //{
-        //    MessageBox.Show(args.Exception.Message, "Unhandled exception occured");
-        //    //Logger.LogError(args.Exception, "Unhandled exception occured");
-        //};
+        // 오류 발생 시 처리
+        Application.Current.DispatcherUnhandledException += (sender, args) =>
+        {
+            MessageBox.Show(args.Exception.Message, "Unhandled exception occured");
+            // FIXME:
+            // Logger 사용
+            //Logger.LogError(args.Exception, "Unhandled exception occured");
+        };
 
         // 같은 이름의 다른 프로세스가 실행중인지 확인하고, 실행중이면 종료
-        if (CheckIfProcessExists())
-        {
-            MessageBox.Show(
-                "Another instance of the application is already running.",
-                "Error",
-                MessageBoxButton.OK,
-                MessageBoxImage.Error);
+        //if (CheckIfProcessExists())
+        //{
+        //    MessageBox.Show(
+        //        "Another instance of the application is already running.",
+        //        "Error",
+        //        MessageBoxButton.OK,
+        //        MessageBoxImage.Error);
 
-            Shutdown();
-        }
+        //    Shutdown();
+        //}
 
         Services = ConfigureServices(e.Args);
 
@@ -69,6 +72,8 @@ public partial class App : Application
 
         var appSettings = appStateService.GetAppSettings();
         var appPreferences = appStateService.GetAppPreferenceState();
+        var appPackages = appStateService.GetAppPackageState();
+        var appDashboards = appStateService.GetAppDashboardState();
 
         // Set the theme
         var theme = appStateService.GetAppPreferenceState().Theme ?? ApplicationTheme.Light;
@@ -112,6 +117,9 @@ public partial class App : Application
         LocalizationService.Instance.RegisterStringResourceManager("Corathing.Widgets.Basics",
             BasicWidgetStringResources.ResourceManager);
 
+        // --------------------------------------------------------------------------
+        // Configure authentication
+        // --------------------------------------------------------------------------
         IAuthService authService = App.Current.Services.GetService<IAuthService>();
         if (authService != null && authService.UseAuthService)
         {
@@ -146,29 +154,42 @@ public partial class App : Application
     {
         var serviceCollection = new ServiceCollection();
 
+        // --------------------------------------------------------------------------
         // Build the configuration
+        // --------------------------------------------------------------------------
         var configuration = BuildConfiguration(args);
         serviceCollection.AddSingleton<IConfiguration>(configuration);
 
-        // Wpf.Ui Service
-        // TODO: This should be implmented with IDialogService (Corathing.Contracts.Services)
+        // TODO:
+        // Currently, use Wpf.Ui service,
+        // This should be implmented with IDialogService (Corathing.Contracts.Services)
         // RoadMap 3, Content Presenter (Binding using Context)
         serviceCollection.AddSingleton<IContentDialogService, ContentDialogService>();
 
+        // --------------------------------------------------------------------------
         // Register services
+        // --------------------------------------------------------------------------
         serviceCollection.AddSingleton<IApplicationService, ApplicationService>();
-        serviceCollection.AddSingleton<ISecretService, ModelVersionSecretService>();
-        serviceCollection.AddSingleton<IAuthService, AuthService>();
         serviceCollection.AddSingleton<IAppStateService, AppStateService>();
-        serviceCollection.AddSingleton<IPackageService, PackageService>();
-        serviceCollection.AddSingleton<IThemeService, ThemeService>();
+        serviceCollection.AddSingleton<IAuthService, AuthService>();
+        serviceCollection.AddSingleton<IDialogService, DialogService>();
         serviceCollection.AddSingleton<ILocalizationService>(LocalizationService.Instance);
+        serviceCollection.AddSingleton<IPackageService, PackageService>();
+        serviceCollection.AddSingleton<IResourceDictionaryService, ResourceDictionaryService>();
+        serviceCollection.AddSingleton<ISecretService, ModelVersionSecretService>();
+        serviceCollection.AddSingleton<IStorageService, StorageService>();
+        serviceCollection.AddSingleton<IThemeService, ThemeService>();
+        serviceCollection.AddSingleton<IWidgetService, WidgetService>();
 
+        // --------------------------------------------------------------------------
         // Register viewmodels
+        // --------------------------------------------------------------------------
         serviceCollection.AddScoped<OrganizerSettingsViewModel>();
         serviceCollection.AddScoped<WidgetSettingsViewModel>();
         serviceCollection.AddScoped<ProjectSettingsViewModel>();
 
+        // TODO:
+        // Logger 및 Localizer 설정
         //Logger.Configure(configuration);
         //Localizer.Configure(configuration);
 

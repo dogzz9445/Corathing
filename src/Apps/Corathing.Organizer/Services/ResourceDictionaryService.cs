@@ -8,6 +8,6 @@ using Corathing.Contracts.Services;
 
 namespace Corathing.Organizer.Services;
 
-public class WidgetService : IWidgetService
+public class ResourceDictionaryService : IResourceDictionaryService
 {
 }

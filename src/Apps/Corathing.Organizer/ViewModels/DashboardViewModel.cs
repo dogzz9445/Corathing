@@ -26,6 +26,8 @@ using Corathing.Organizer.Views;
 
 using Microsoft.Extensions.DependencyInjection;
 
+using NuGet.Packaging;
+
 using Wpf.Ui;
 
 using static MaterialDesignThemes.Wpf.Theme.ToolBar;
@@ -67,6 +69,14 @@ public partial class DashboardViewModel : ObservableObject
     private bool? _editMode;
 
     #endregion Private Fields
+
+    #region Contructors
+    public DashboardViewModel()
+    {
+        Projects = new ObservableCollection<ProjectContext>();
+        AddWidgetMenuItemViewModels = new ObservableCollection<MenuItemViewModel>();
+    }
+    #endregion
 
     #region Public Properties
 
@@ -214,22 +224,17 @@ public partial class DashboardViewModel : ObservableObject
     public Task Start(IServiceProvider services)
     {
         // --------------------------------------------------------------------------
-        // Available Widgets
-        // --------------------------------------------------------------------------
-
-        // --------------------------------------------------------------------------
         // Load Component Data
         // --------------------------------------------------------------------------
-        Projects = new ObservableCollection<ProjectContext>
+        Projects.AddRange(new []
         {
             new ProjectContext { Title = "My Project" }
-        };
-        SelectedProject = Projects[0];
-        SelectedProject.Workflows.Add(new WorkflowContext { Title = "My Workflow" });
-
-        //Workflows = [new WorkflowContext { Title = "My Workflow" }];
-        //SelectedWorkflow = Workflows[0];
-        AddWidgetMenuItemViewModels = new ObservableCollection<MenuItemViewModel>();
+        });
+        SelectedProject = Projects.FirstOrDefault();
+        SelectedProject.Workflows.AddRange(new[]
+        {
+            new WorkflowContext { Title = "My Workflow" }
+        });
 
         // --------------------------------------------------------------------------
         // Add Widget Menu
@@ -240,6 +245,9 @@ public partial class DashboardViewModel : ObservableObject
             MenuItems = new ObservableCollection<MenuItemViewModel>(),
         });
 
+        // --------------------------------------------------------------------------
+        // Add Widget Menu
+        // --------------------------------------------------------------------------
         IPackageService packageService = services.GetService<IPackageService>();
         foreach (var widget in packageService.GetAvailableWidgets())
         {

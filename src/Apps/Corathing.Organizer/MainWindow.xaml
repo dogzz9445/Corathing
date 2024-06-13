@@ -21,7 +21,7 @@
     <Grid>
         <views:DashboardView DockPanel.Dock="Bottom" />
 
-        <tray:NotifyIcon Grid.Row="0"
+        <!--<tray:NotifyIcon Grid.Row="0"
                          FocusOnLeftClick="True"
                          Icon="pack://application:,,,/Assets/logo_256.png"
                          MenuOnRightClick="True"
@@ -29,6 +29,6 @@
             <tray:NotifyIcon.Menu>
                 <ContextMenu ItemsSource="{Binding ViewModel.TrayMenuItems, Mode=OneWay}" />
             </tray:NotifyIcon.Menu>
-        </tray:NotifyIcon>
+        </tray:NotifyIcon>-->
     </Grid>
 </metro:MetroWindow>
