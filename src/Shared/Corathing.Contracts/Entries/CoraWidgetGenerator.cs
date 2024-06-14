@@ -38,7 +38,7 @@ public class CoraWidgetGenerator
     /// <value>The name.</value>
     public string Name { get; }
 
-    public CoraWidgetMenuInfo MenuInfo { get; set; }
+    public CoraWidgetInfo Info { get; set; }
 
     public Type ViewType { get; }
 

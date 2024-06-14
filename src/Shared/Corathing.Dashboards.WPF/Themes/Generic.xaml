@@ -36,11 +36,11 @@
     <Color x:Key="DarkTheme_PrimaryHueDarkForegroundBrush">#FFFFFF</Color>
 
     <!-- 4. Dark Theme Secondary Colors -->
-    <Color x:Key="DarkTheme_SecondaryHueLightBrush">#666ad1</Color>
+    <Color x:Key="DarkTheme_SecondaryHueLightBrush">#5ea6ff</Color>
     <Color x:Key="DarkTheme_SecondaryHueLightForegroundBrush">#FFFFFF</Color>
-    <Color x:Key="DarkTheme_SecondaryHueMidBrush">#303f9f</Color>
+    <Color x:Key="DarkTheme_SecondaryHueMidBrush">#0078d4</Color>
     <Color x:Key="DarkTheme_SecondaryHueMidForegroundBrush">#FFFFFF</Color>
-    <Color x:Key="DarkTheme_SecondaryHueDarkBrush">#001970</Color>
+    <Color x:Key="DarkTheme_SecondaryHueDarkBrush">#004da2</Color>
     <Color x:Key="DarkTheme_SecondaryHueDarkForegroundBrush">#FFFFFF</Color>
 
     <!-- 5. Primary Brushes (Default: Dark) -->

@@ -25,14 +25,21 @@ public class EntryCoraWidgetAttribute : Attribute
         string? description = null,
         // MenuInfo
         string? menuPath = null,
-        int menuOrder = 0
+        int menuOrder = 0,
+        // LayoutInfo
+        int minimumColumnSpan = 1,
+        int minimumRowSpan = 1
         )
     {
-        var menuInfo = new CoraWidgetMenuInfo()
+        var info = new CoraWidgetInfo()
         {
+            Name = name,
+            Description = description,
             MenuPath = menuPath,
             MenuOrder = menuOrder,
             MenuTooltip = description,
+            MinimunColumnSpan = minimumColumnSpan,
+            MinimumRowSpan = minimumRowSpan,
         };
 
         Generator = new CoraWidgetGenerator(
@@ -42,7 +49,7 @@ public class EntryCoraWidgetAttribute : Attribute
             optionType: optionType
             )
         {
-            MenuInfo = menuInfo,
+            Info = info,
         };
 
     }

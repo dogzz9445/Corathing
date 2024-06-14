@@ -251,7 +251,7 @@ public partial class DashboardViewModel : ObservableObject
         IPackageService packageService = services.GetService<IPackageService>();
         foreach (var widget in packageService.GetAvailableWidgets())
         {
-            var fullMenuHeader = widget.MenuInfo.MenuPath;
+            var fullMenuHeader = widget.Info.MenuPath;
             if (string.IsNullOrEmpty(fullMenuHeader))
                 continue;
 

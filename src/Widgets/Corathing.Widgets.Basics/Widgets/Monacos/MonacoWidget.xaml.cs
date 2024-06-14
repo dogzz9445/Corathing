@@ -87,26 +87,37 @@ public partial class MonacoWidgetViewModel : WidgetContext
         await _monacoController.CreateAsync();
 
         var themeService = _services.GetService<IThemeService>();
+        await _monacoController.DefineThemeAsync();
         if (themeService != null)
         {
             themeService.ProvideApplicationTheme(theme =>
             {
-                _applicationService.InvokeAsync(async () =>
-                {
-                    await _monacoController.SetThemeAsync(theme switch
-                    {
-                        ApplicationTheme.Dark => Wpf.Ui.Appearance.ApplicationTheme.Dark,
-                        ApplicationTheme.Light => Wpf.Ui.Appearance.ApplicationTheme.Light,
-                        ApplicationTheme.HighContrast => Wpf.Ui.Appearance.ApplicationTheme.HighContrast,
-                        _ => Wpf.Ui.Appearance.ApplicationTheme.Unknown
-                    });
-                });
+                _applicationService.InvokeAsync(OnThemeChanged);
             });
         }
         await _monacoController.SetLanguageAsync(MonacoLanguage.Csharp);
         await _monacoController.SetContentAsync(
             "// This Source Code Form is subject to the terms of the MIT License.\r\n// If a copy of the MIT was not distributed with this file, You can obtain one at https://opensource.org/licenses/MIT.\r\n// Copyright (C) Leszek Pomianowski and WPF UI Contributors.\r\n// All Rights Reserved.\r\n\r\nnamespace Wpf.Ui.Gallery.Models.Monaco;\r\n\r\n[Serializable]\r\npublic record MonacoTheme\r\n{\r\n    public string Base { get; init; }\r\n\r\n    public bool Inherit { get; init; }\r\n\r\n    public IDictionary<string, string> Rules { get; init; }\r\n\r\n    public IDictionary<string, string> Colors { get; init; }\r\n}\r\n"
         );
+        return true;
+    }
+
+    private async Task<bool> OnThemeChanged()
+    {
+        if (_monacoController == null)
+        {
+            return false;
+        }
+
+        var themeService = _services.GetService<IThemeService>();
+        var theme = themeService.GetAppTheme();
+        await _monacoController.SetThemeAsync(theme switch
+        {
+            ApplicationTheme.Dark => Wpf.Ui.Appearance.ApplicationTheme.Dark,
+            ApplicationTheme.Light => Wpf.Ui.Appearance.ApplicationTheme.Light,
+            ApplicationTheme.HighContrast => Wpf.Ui.Appearance.ApplicationTheme.HighContrast,
+            _ => Wpf.Ui.Appearance.ApplicationTheme.Unknown
+        });
         return true;
     }
 

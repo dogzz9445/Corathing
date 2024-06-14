@@ -125,12 +125,10 @@ public partial class ThemeService : ObservableRecipient, IThemeService
         Wpf.Ui.Appearance.ApplicationThemeManager.Apply(Convert(applicationTheme), Convert(backgroundEffect), updateAccent);
         if (updateAccent)
         {
-            // FIXME:
-            //ApplicationAccentColorManager.Apply(
-            //    ApplicationAccentColorManager.GetColorizationColor(),
-            //    applicationTheme,
-            //    false
-            //);
+            Wpf.Ui.Appearance.ApplicationAccentColorManager.Apply(
+                Color.FromArgb(0xff, 0x00, 0x78, 0xd4),
+                Convert(applicationTheme)
+                );
         }
 
         if (applicationTheme == ApplicationTheme.Unknown)
@@ -205,7 +203,7 @@ public partial class ThemeService : ObservableRecipient, IThemeService
 
         UpdateSystemThemeCache();
 
-        _cachedApplicationTheme = applicationTheme;
+        CachedApplicationTheme = applicationTheme;
     }
 
 
@@ -500,8 +498,7 @@ public partial class ThemeService : ObservableRecipient, IThemeService
 
     public void ProvideApplicationTheme(Action<ApplicationTheme> action)
     {
-        var theme = GetAppTheme();
-        action?.Invoke(theme);
-        _refreshProvideThemeActions.Add(() => action?.Invoke(theme));
+        action?.Invoke(GetAppTheme());
+        _refreshProvideThemeActions.Add(() => action?.Invoke(GetAppTheme()));
     }
 }
