@@ -114,9 +114,6 @@ public partial class App : Application
         LocalizationService.Instance.RegisterStringResourceManager("Corathing.Organizer",
             CorathingOrganizerLocalizationStringResources.ResourceManager);
 
-        LocalizationService.Instance.RegisterStringResourceManager("Corathing.Widgets.Basics",
-            BasicWidgetStringResources.ResourceManager);
-
         // --------------------------------------------------------------------------
         // Configure authentication
         // --------------------------------------------------------------------------

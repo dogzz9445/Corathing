@@ -142,4 +142,9 @@ public interface IThemeService
     ApplicationTheme GetAppTheme();
     SystemTheme GetSystemTheme();
 
+    /// <summary>
+    /// On LocalizationChanged
+    /// </summary>
+    /// <param name="action"></param>
+    void ProvideApplicationTheme(Action<ApplicationTheme> action);
 }

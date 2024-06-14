@@ -23,9 +23,11 @@ public interface ILocalizationService
     CultureInfo GetSystemCulture();
     string GetString(string key);
 
+    #region Provide Event
     /// <summary>
     /// On LocalizationChanged
     /// </summary>
     /// <param name="action"></param>
     void Provide(string key, Action<string> action);
+    #endregion
 }

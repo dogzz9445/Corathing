@@ -89,13 +89,19 @@ public partial class MonacoWidgetViewModel : WidgetContext
         var themeService = _services.GetService<IThemeService>();
         if (themeService != null)
         {
-            await _monacoController.SetThemeAsync(themeService.GetAppTheme() switch
+            themeService.ProvideApplicationTheme(theme =>
+            {
+                _applicationService.InvokeAsync(async () =>
                 {
-                    ApplicationTheme.Dark => Wpf.Ui.Appearance.ApplicationTheme.Dark,
-                    ApplicationTheme.Light => Wpf.Ui.Appearance.ApplicationTheme.Light,
-                    ApplicationTheme.HighContrast => Wpf.Ui.Appearance.ApplicationTheme.HighContrast,
-                    _ => Wpf.Ui.Appearance.ApplicationTheme.Unknown
+                    await _monacoController.SetThemeAsync(theme switch
+                    {
+                        ApplicationTheme.Dark => Wpf.Ui.Appearance.ApplicationTheme.Dark,
+                        ApplicationTheme.Light => Wpf.Ui.Appearance.ApplicationTheme.Light,
+                        ApplicationTheme.HighContrast => Wpf.Ui.Appearance.ApplicationTheme.HighContrast,
+                        _ => Wpf.Ui.Appearance.ApplicationTheme.Unknown
+                    });
                 });
+            });
         }
         await _monacoController.SetLanguageAsync(MonacoLanguage.Csharp);
         await _monacoController.SetContentAsync(
@@ -104,12 +110,12 @@ public partial class MonacoWidgetViewModel : WidgetContext
         return true;
     }
 
-    private async void OnWebViewNavigationCompleted(
+    private void OnWebViewNavigationCompleted(
         object? sender,
         Microsoft.Web.WebView2.Core.CoreWebView2NavigationCompletedEventArgs e
     )
     {
-        await _applicationService.DispatchAsync(InitializeEditorAsync);
+        _applicationService.InvokeAsync(InitializeEditorAsync);
     }
 }
 

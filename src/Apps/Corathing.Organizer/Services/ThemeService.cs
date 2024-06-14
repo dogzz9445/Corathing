@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Channels;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
+
+using CommunityToolkit.Mvvm.ComponentModel;
 
 using Corathing.Contracts.Services;
 using Microsoft.Win32;
@@ -20,13 +23,15 @@ public class ThemeInfo
     public string? DarkUri { get; set; }
 }
 
-public class ThemeService : IThemeService
+public partial class ThemeService : ObservableRecipient, IThemeService
 {
     #region Private Properties
     private readonly IServiceProvider? _serivces;
+    [ObservableProperty]
     private ApplicationTheme _cachedApplicationTheme = ApplicationTheme.Unknown;
     private SystemTheme _cachedSystemTheme = SystemTheme.Unknown;
     public List<ThemeInfo> ThemeInfos = new List<ThemeInfo>();
+    private readonly List<Action> _refreshProvideThemeActions = new List<Action>();
 
     /// <summary>
     /// Gets the Windows glass color.
@@ -52,6 +57,15 @@ public class ThemeService : IThemeService
 
     #endregion
 
+    protected override void OnPropertyChanged(PropertyChangedEventArgs e)
+    {
+        base.OnPropertyChanged(e);
+
+        if (e.PropertyName == nameof(CachedApplicationTheme))
+        {
+            _refreshProvideThemeActions.ForEach(action => action?.Invoke());
+        }
+    }
 
 
     public ThemeService(IServiceProvider services)
@@ -483,4 +497,11 @@ public class ThemeService : IThemeService
         return rawSystemUsesLightTheme is 0 ? SystemTheme.Dark : SystemTheme.Light;
     }
     #endregion
+
+    public void ProvideApplicationTheme(Action<ApplicationTheme> action)
+    {
+        var theme = GetAppTheme();
+        action?.Invoke(theme);
+        _refreshProvideThemeActions.Add(() => action?.Invoke(theme));
+    }
 }

@@ -20,6 +20,7 @@ using NuGet.Packaging;
 using Microsoft.Extensions.DependencyInjection;
 using System.Resources;
 using Microsoft.Extensions.Localization;
+using Corathing.Dashboards.WPF.Services;
 
 namespace Corathing.Organizer.Services;
 
@@ -102,21 +103,33 @@ public class PackageService : IPackageService
         }
 
         // Localization
-        // TODO:
+        // FIXME:
         // Fix the assembly
-        //var localizationService = _services.GetService<ILocalizationService>();
-        //if (localizationService != null)
-        //{
-        //    var resources = assembly.GetTypes().Where(t => typeof(ResourceManager).IsAssignableFrom(t));
+        var localizationService = _services.GetService<ILocalizationService>();
+        if (localizationService != null)
+        {
+            var moduleTypes = assembly.GetTypes().Where(t => typeof(CoraWidgetModuleBase).IsAssignableFrom(t));
+            foreach (var type in moduleTypes)
+            {
+                MemberInfo info = type;
+                var attributes = info.GetCustomAttributes(true);
 
-        //    foreach (var resource in resources)
-        //    {
-        //        if (resource.Name.Contains("StringResources"))
-        //        {
-        //            resource
-        //        }
-        //    }
-        //}
+                for (int i = 0; i < attributes.Length; i++)
+                {
+                    if (!(attributes[i] is EntryCoraPackageAttribute))
+                        continue;
+
+                    var attribute = ((EntryCoraPackageAttribute)attributes[i]);
+                    var module = (CoraWidgetModuleBase)Activator.CreateInstance(attribute.EntryPackageType);
+                    module.StringResources.ForEach(resourceManager =>
+                        LocalizationService.Instance.RegisterStringResourceManager(
+                            resourceManager.GetType().FullName,
+                            //resource.Assembly.GetName().Name,
+                            resourceManager)
+                    );
+                }
+            }
+        }
     }
 
     public void LoadWidgetsFromDLL(string pathDLL)

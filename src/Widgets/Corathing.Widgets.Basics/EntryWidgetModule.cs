@@ -5,10 +5,15 @@ using System.Text;
 using System.Threading.Tasks;
 
 using Corathing.Contracts.Entries;
+using Corathing.Widgets.Basics.Resources;
 
 namespace Corathing.Widgets.Basics;
 
-[EntryCoraPackage]
-public class EntryWidgetModule
+[EntryCoraPackage(typeof(EntryWidgetModule))]
+public class EntryWidgetModule : CoraWidgetModuleBase
 {
+    public EntryWidgetModule()
+    {
+        StringResources.Add(BasicWidgetStringResources.ResourceManager);
+    }
 }
