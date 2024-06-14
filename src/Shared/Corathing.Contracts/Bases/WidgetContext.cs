@@ -11,7 +11,7 @@ namespace Corathing.Contracts.Bases;
 
 public partial class WidgetContext : ObservableRecipient
 {
-    private readonly IServiceProvider _services;
+    protected readonly IServiceProvider _services;
 
     #region 확정된 프로퍼티
     [ObservableProperty]
