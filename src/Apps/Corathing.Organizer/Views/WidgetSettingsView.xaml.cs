@@ -33,6 +33,7 @@ namespace Corathing.Organizer.Views
             InitializeComponent();
 
             DataContext = ViewModel = App.Current.Services.GetService<WidgetSettingsViewModel>();
+            ViewModel.RegisterWidget(widgetHost);
 
             Loaded += (s, e) =>
             {

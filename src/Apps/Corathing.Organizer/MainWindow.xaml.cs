@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Diagnostics;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -32,6 +33,7 @@ public partial class MainWindow : MetroWindow
 
         MouseDown += Window_MouseDown;
         MouseDoubleClick += Window_MouseDoubleClick;
+
     }
 
     private void Window_MouseDoubleClick(object sender, MouseButtonEventArgs e)

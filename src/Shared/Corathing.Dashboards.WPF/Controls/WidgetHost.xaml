@@ -19,12 +19,6 @@
         </ResourceDictionary>
     </ContentControl.Resources>
 
-    <!--<ContentControl.Effect>
-        <DropShadowEffect BlurRadius="0"
-                          Opacity="0.2"
-                          ShadowDepth="1"
-                          Color="Black" />
-    </ContentControl.Effect>-->
     <ContentControl.Template>
         <ControlTemplate TargetType="{x:Type ContentControl}">
             <Border HorizontalAlignment="Stretch"
@@ -70,7 +64,7 @@
                                     </DataTrigger>-->
                                     <MultiDataTrigger>
                                         <MultiDataTrigger.Conditions>
-                                            <Condition Binding="{Binding DataContext.EditMode, RelativeSource={RelativeSource AncestorType={x:Type local:DashboardHost}, Mode=FindAncestor}}"
+                                            <Condition Binding="{Binding EditMode, RelativeSource={RelativeSource AncestorType={x:Type local:WidgetHost}, Mode=FindAncestor}}"
                                                        Value="True" />
                                             <Condition Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType={x:Type local:WidgetHost}, Mode=FindAncestor}}"
                                                        Value="True" />
@@ -80,7 +74,7 @@
                                     </MultiDataTrigger>
                                     <MultiDataTrigger>
                                         <MultiDataTrigger.Conditions>
-                                            <Condition Binding="{Binding DataContext.EditMode, RelativeSource={RelativeSource AncestorType={x:Type local:DashboardHost}, Mode=FindAncestor}}"
+                                            <Condition Binding="{Binding EditMode, RelativeSource={RelativeSource AncestorType={x:Type local:WidgetHost}, Mode=FindAncestor}}"
                                                        Value="True" />
                                             <Condition Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType={x:Type local:WidgetHost}, Mode=FindAncestor}}"
                                                        Value="False" />
@@ -122,7 +116,7 @@
                                         <Style.Triggers>
                                             <MultiDataTrigger>
                                                 <MultiDataTrigger.Conditions>
-                                                    <Condition Binding="{Binding DataContext.EditMode, RelativeSource={RelativeSource AncestorType={x:Type local:DashboardHost}, Mode=FindAncestor}}"
+                                                    <Condition Binding="{Binding EditMode, RelativeSource={RelativeSource AncestorType={x:Type local:WidgetHost}, Mode=FindAncestor}}"
                                                                Value="True" />
                                                     <Condition Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType={x:Type local:WidgetHost}, Mode=FindAncestor}}"
                                                                Value="True" />

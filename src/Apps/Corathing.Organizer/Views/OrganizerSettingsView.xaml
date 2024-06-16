@@ -370,23 +370,7 @@
                     </ComboBox>
                 </ui:CardControl>
 
-                <ui:CardControl Margin="0,0,0,12"
-                                Icon="{ui:SymbolIcon AlignSpaceEvenlyVertical20}">
-                    <ui:CardControl.Header>
-                        <ui:TextBlock Grid.Row="0"
-                                      FontTypography="Body"
-                                      Text="Navigation style" />
-                    </ui:CardControl.Header>
-                    <!--<ComboBox Grid.Column="1"
-                      MinWidth="200"
-                      SelectedIndex="{Binding CurrentApplicationNavigationStyle, Converter={StaticResource PaneDisplayModeToIndexConverter}, Mode=TwoWay}">
-                <ComboBoxItem Content="Left compact" />
-                <ComboBoxItem Content="Fluent" />
-                <ComboBoxItem Content="Top" />
-                <ComboBoxItem Content="Bottom" />
-            </ComboBox>-->
-                </ui:CardControl>
-
+                <!-- About -->
                 <ui:TextBlock Margin="0,16,0,8"
                               FontTypography="BodyStrong"
                               Text="About" />

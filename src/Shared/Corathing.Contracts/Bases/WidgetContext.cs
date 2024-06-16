@@ -13,6 +13,13 @@ public partial class WidgetContext : ObservableRecipient
 {
     protected readonly IServiceProvider _services;
 
+    #region 숨겨진 프로퍼티
+    [ObservableProperty]
+    private Type _widgetType;
+    [ObservableProperty]
+    private Guid _widgetId;
+    #endregion
+
     #region 확정된 프로퍼티
     [ObservableProperty]
     private string _widgetTitle;

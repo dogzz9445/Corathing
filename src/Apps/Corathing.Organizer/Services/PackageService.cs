@@ -45,7 +45,8 @@ public class PackageService : IPackageService
     /// Gets or sets the available widgets.
     /// </summary>
     /// <value>The available widgets.</value>
-    private readonly List<CoraWidgetGenerator> _availableWidgets = new List<CoraWidgetGenerator>();
+    private readonly Dictionary<Type, CoraWidgetGenerator> _widgetGenerators = new Dictionary<Type, CoraWidgetGenerator>();
+
     private readonly IServiceProvider _services;
 
     private NuGet.Common.ILogger _nugetLogger;
@@ -61,11 +62,20 @@ public class PackageService : IPackageService
 
     public void RegisterWidgets(List<CoraWidgetGenerator> widgets)
     {
-        _availableWidgets.AddRange(widgets);
+        widgets.ForEach(widget =>
+        {
+            _widgetGenerators.Add(widget.ContextType, widget);
+        });
     }
+
     public List<CoraWidgetGenerator> GetAvailableWidgets()
     {
-        return _availableWidgets;
+        return _widgetGenerators.Values.ToList();
+    }
+
+    public bool TryGetWidgetGenerator(Type viewType, out CoraWidgetGenerator generator)
+    {
+        return _widgetGenerators.TryGetValue(viewType, out generator);
     }
 
     public void LoadAssembly(Assembly assembly)
@@ -91,7 +101,7 @@ public class PackageService : IPackageService
 
                 var attribute = ((EntryCoraWidgetAttribute)attributes[i]);
                 attribute.Configure(_services);
-                _availableWidgets.Add(attribute.Generator);
+                _widgetGenerators.Add(attribute.Generator.ContextType, attribute.Generator);
 
                 App.Current.Resources.MergedDictionaries.Add(
                     new ResourceDictionary()

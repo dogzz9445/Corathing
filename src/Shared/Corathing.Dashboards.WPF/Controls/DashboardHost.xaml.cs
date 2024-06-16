@@ -258,7 +258,7 @@ namespace Corathing.Dashboards.WPF.Controls
         /// <returns>The element that is used to display the given item.</returns>
         protected override DependencyObject GetContainerForItemOverride()
         {
-            return new WidgetHost { Id = Guid.NewGuid() };
+            return new WidgetHost { Id = Guid.NewGuid(), EditMode = EditMode };
         }
 
         /// <summary>

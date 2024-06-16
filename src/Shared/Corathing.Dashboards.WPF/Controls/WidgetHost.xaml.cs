@@ -35,6 +35,19 @@ namespace Corathing.Dashboards.WPF.Controls
     public partial class WidgetHost : ContentControl
     {
         #region Public Fields
+
+        public static readonly DependencyProperty TitleProperty = DependencyProperty.Register(
+            nameof(Title),
+            typeof(string),
+            typeof(WidgetHost),
+            new PropertyMetadata(default(string)));
+
+        public string Title
+        {
+            get => (string)GetValue(TitleProperty);
+            set => SetValue(TitleProperty, value);
+        }
+
         /// <summary>
         /// The edit mode property
         /// </summary>
@@ -68,20 +81,6 @@ namespace Corathing.Dashboards.WPF.Controls
             set => SetValue(CornerRadiusProperty, value);
         }
 
-
-        //public static readonly DependencyProperty TemplateButtonCommandProperty = DependencyProperty.Register(
-        //    nameof(TemplateButtonCommand),
-        //    typeof(IRelayCommand),
-        //    typeof(BreadcrumbBar),
-        //    new PropertyMetadata(null)
-        //);
-
-        //public static readonly DependencyProperty TemplateButtonCommandProperty = DependencyProperty.Register(
-        //    nameof(TemplateButtonCommand),
-        //    typeof(IRelayCommand),
-        //    typeof(BreadcrumbBar),
-        //    new PropertyMetadata(null)
-        //);
 
         #endregion
 

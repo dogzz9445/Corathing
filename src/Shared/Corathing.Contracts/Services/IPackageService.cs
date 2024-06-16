@@ -12,5 +12,7 @@ public interface IPackageService
 {
     void RegisterWidgets(List<CoraWidgetGenerator> widgets);
     List<CoraWidgetGenerator> GetAvailableWidgets();
+    bool TryGetWidgetGenerator(Type viewType, out CoraWidgetGenerator generator);
+
     void LoadWidgetsFromDLL(string pathDLL);
 }
