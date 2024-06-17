@@ -9,17 +9,17 @@ using Corathing.Contracts.Bases.Interfaces;
 
 namespace Corathing.Contracts.Bases;
 
-public interface IWidgetState<TSettings> : IEntity
+public interface IWidgetState : IEntity
 {
     IWidgetCoreState CoreSettings { get; }
-    List<TSettings> Settings { get; }
+    List<object> CustomSettings { get; }
     WidgetContext Context { get; }
 }
 
-public class WidgetState<TSettings> : IWidgetState<TSettings>
+public class WidgetState : IWidgetState
 {
     public Guid Id { get; set; }
     public IWidgetCoreState CoreSettings { get; set; }
-    public List<TSettings> Settings { get; set; }
+    public List<object> CustomSettings { get; set; }
     public WidgetContext Context { get; set; }
 }

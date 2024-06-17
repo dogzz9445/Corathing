@@ -228,12 +228,12 @@ public partial class DashboardViewModel : ObservableObject
         // --------------------------------------------------------------------------
         Projects.AddRange(new []
         {
-            new ProjectContext { Title = "My Project" }
+            services.GetService<ProjectContext>()
         });
         SelectedProject = Projects.FirstOrDefault();
         SelectedProject.Workflows.AddRange(new[]
         {
-            new WorkflowContext { Title = "My Workflow" }
+            services.GetService<WorkflowContext>()
         });
 
         // --------------------------------------------------------------------------

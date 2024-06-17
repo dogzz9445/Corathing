@@ -102,6 +102,7 @@
                                 <Setter.Value>
                                     <dashboardControl:DashboardHost Grid.Column="0"
                                                                     Margin="5"
+                                                                    LayoutChangedCommand="{Binding LayoutChangedCommand}"
                                                                     EditMode="{Binding EditMode}"
                                                                     ItemsSource="{Binding Widgets}" />
                                 </Setter.Value>
@@ -267,6 +268,7 @@
                 </Grid.ColumnDefinitions>
 
                 <ComboBox Margin="8"
+                          Focusable="False"
                           Width="220"
                           ItemsSource="{Binding Projects}"
                           SelectedItem="{Binding SelectedProject}"

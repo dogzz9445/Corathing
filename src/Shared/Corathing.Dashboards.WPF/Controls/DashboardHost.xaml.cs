@@ -29,6 +29,7 @@ using Corathing.Contracts.Bases.Interfaces;
 using System.Windows.Media.Animation;
 using Corathing.Dashboards.Bases;
 using CommunityToolkit.Mvvm.Input;
+using System.Collections.Specialized;
 
 namespace Corathing.Dashboards.WPF.Controls
 {
@@ -39,16 +40,16 @@ namespace Corathing.Dashboards.WPF.Controls
     {
         #region Public Fields
 
-        public static readonly DependencyProperty LayoutChangedProperty = DependencyProperty.Register(
-            nameof(LayoutChanged),
-            typeof(EventHandler<LayoutChangedEventArgs>),
+        public static readonly DependencyProperty LayoutChangedCommandProperty = DependencyProperty.Register(
+            nameof(LayoutChangedCommand),
+            typeof(ICommand),
             typeof(DashboardHost),
             new PropertyMetadata(default));
 
-        public EventHandler<LayoutChangedEventArgs> LayoutChanged
+        public ICommand LayoutChangedCommand
         {
-            get => (EventHandler<LayoutChangedEventArgs>)GetValue(LayoutChangedProperty);
-            set => SetValue(LayoutChangedProperty, value);
+            get => (ICommand)GetValue(LayoutChangedCommandProperty);
+            set => SetValue(LayoutChangedCommandProperty, value);
         }
 
         /// <summary>
@@ -260,9 +261,6 @@ namespace Corathing.Dashboards.WPF.Controls
             _widgetHosts.Remove(widgetHost);
             _widgetLayouts = _widgetLayouts.Where(widgetData => widgetData.WidgetStateId != widgetHost.Id)
                 .ToList();
-
-            //if (EditMode)
-            //    FixArrangements();
         }
 
         /// <summary>
@@ -335,7 +333,7 @@ namespace Corathing.Dashboards.WPF.Controls
 
             // Check if widget is new by seeing if ColumnIndex or RowIndex are set
             // If it isn't new then just set its location
-            var widgetAlreadyThere = WidgetAtLocation(widgetLayout.WH, widgetLayout.XY).Where(WidgetLayout => WidgetLayout.WidgetStateId != widgetHost.Id);
+            var widgetAlreadyThere = WidgetsAtLocation(widgetLayout.WH, widgetLayout.XY).Where(WidgetLayout => WidgetLayout.WidgetStateId != widgetHost.Id);
 
             if (widgetAlreadyThere == null || !widgetAlreadyThere.Any())
             {
@@ -360,6 +358,29 @@ namespace Corathing.Dashboards.WPF.Controls
                 !(widgetEndVerticalLocation <= scrollViewerVerticalScrollPosition))
                 DashboardScrollViewer.ScrollToVerticalOffset(
                     widgetEndVerticalLocation - widgetsHeight - ScrollIncrement);
+
+            if(LayoutChangedCommand != null && LayoutChangedCommand.CanExecute(this))
+            {
+                LayoutChangedCommand.Execute(this);
+            }
+        }
+
+        protected override void OnItemsChanged(NotifyCollectionChangedEventArgs e)
+        {
+            base.OnItemsChanged(e);
+
+            if (e.Action == NotifyCollectionChangedAction.Remove)
+            {
+                if (e.OldItems != null)
+                {
+                    Trace.WriteLine("Item is removed");
+
+                    if (LayoutChangedCommand != null && LayoutChangedCommand.CanExecute(this))
+                    {
+                        LayoutChangedCommand.Execute(this);
+                    }
+                }
+            }
         }
 
         #endregion Protected Methods
@@ -495,8 +516,7 @@ namespace Corathing.Dashboards.WPF.Controls
             var top = closestRowColumn.Y < 0 ? 0 : closestRowColumn.Y * _widgetSize.Height;
             var left = closestRowColumn.X < 0 ? 0 : closestRowColumn.X * _widgetSize.Width;
 
-            Canvas.SetTop(_widgetDestinationHighlight, top);
-            Canvas.SetLeft(_widgetDestinationHighlight, left);
+            SetElementXY(_widgetDestinationHighlight, left, top);
 
             // Set the _dragging host into its dragging position
             SetWidgetRowAndColumn(_draggingHost, closestRowColumn, _draggingWidgetLayout.WH);
@@ -519,7 +539,7 @@ namespace Corathing.Dashboards.WPF.Controls
                 // Find a row to move it
                 while (true)
                 {
-                    var widgetAtLoc = WidgetAtLocation(widgetLayout.WH,
+                    var widgetAtLoc = WidgetsAtLocation(widgetLayout.WH,
                         new WidgetLayoutXY(widgetLayout.X, widgetLayout.Y + rowIncrease))
                         .Where(WidgetLayout => !movingWidgets.Contains(WidgetLayout) || movedWidgets.Contains(WidgetLayout));
 
@@ -536,7 +556,7 @@ namespace Corathing.Dashboards.WPF.Controls
                 {
                     var reArragnedIndex = new WidgetLayoutXY(widgetLayout.X, row);
 
-                    var widgetAlreadyThere = WidgetAtLocation(widgetLayout.WH, reArragnedIndex)
+                    var widgetAlreadyThere = WidgetsAtLocation(widgetLayout.WH, reArragnedIndex)
                         .Where(WidgetLayoutThere => widgetLayout != WidgetLayoutThere && !movingWidgets.Contains(WidgetLayoutThere));
 
                     if (widgetAlreadyThere.Any())
@@ -762,7 +782,7 @@ namespace Corathing.Dashboards.WPF.Controls
             {
                 for (var column = 0; column < fullyVisibleColumns; column++)
                 {
-                    var widgetAlreadyThere = WidgetAtLocation(widgetSpans, new WidgetLayoutXY(column, rowCount));
+                    var widgetAlreadyThere = WidgetsAtLocation(widgetSpans, new WidgetLayoutXY(column, rowCount));
 
                     if (widgetAlreadyThere != null && widgetAlreadyThere.Any())
                         continue;
@@ -808,7 +828,7 @@ namespace Corathing.Dashboards.WPF.Controls
             if (widgetData == _draggingWidgetLayout)
             {
                 widgetsAtLocation
-                    .AddRange(WidgetAtLocation(widgetData.WH, rowAndColumnPlacement)
+                    .AddRange(WidgetsAtLocation(widgetData.WH, rowAndColumnPlacement)
                         .Where(widgetAtLocationData => widgetAtLocationData != _draggingWidgetLayout)
                         .ToList());
             }
@@ -821,7 +841,7 @@ namespace Corathing.Dashboards.WPF.Controls
                 for (var i = 0; i < widgetRowMovementCount; i++)
                 {
                     widgetsAtLocation
-                        .AddRange(WidgetAtLocation(widgetData.WH, new WidgetLayoutXY(rowAndColumnPlacement.X, widgetData.Y + i))
+                        .AddRange(WidgetsAtLocation(widgetData.WH, new WidgetLayoutXY(rowAndColumnPlacement.X, widgetData.Y + i))
                         .Where(WidgetLayout => WidgetLayout != widgetData && WidgetLayout != _draggingWidgetLayout));
                 }
             }
@@ -846,7 +866,7 @@ namespace Corathing.Dashboards.WPF.Controls
 
                 // Get the widgets at the new location this one is moving to
                 var currentWidgetsAtNewLocation =
-                    WidgetAtLocation(widgetDataAtLocation.WH, proposedRowAndColumn)
+                    WidgetsAtLocation(widgetDataAtLocation.WH, proposedRowAndColumn)
                         .Where(widget =>
                         {
                             if (widget == widgetsAtLocation[widgetAtLocationIndex])
@@ -892,8 +912,8 @@ namespace Corathing.Dashboards.WPF.Controls
         private void ItemsSource_Changed(object sender, EventArgs args)
         {
             if (ItemsSource == null)
-
                 return;
+
             // Enforce the ItemsSource be of type ICollect<WidgetContext> as most of the code behind
             // relies on there being a WidgetContext as the item
             if (!(ItemsSource is ICollection<WidgetContext>))
@@ -918,14 +938,14 @@ namespace Corathing.Dashboards.WPF.Controls
             {
                 for (var mainX = 0; mainX < maxRowsAndColumn.X; mainX++)
                 {
-                    if (WidgetAtLocation(new WidgetLayoutWH(1, 1), new WidgetLayoutXY(mainX, mainY)).Any())
+                    if (WidgetsAtLocation(new WidgetLayoutWH(1, 1), new WidgetLayoutXY(mainX, mainY)).Any())
                         continue;
 
                     // We need to peak to the next columns to see if they are blank as well
                     var additionalBlankColumnsOnMainRowIndex = 0;
                     for (var subX = mainX + 1; subX < maxRowsAndColumn.X; subX++)
                     {
-                        if (WidgetAtLocation(new WidgetLayoutWH(1, 1),
+                        if (WidgetsAtLocation(new WidgetLayoutWH(1, 1),
                             new WidgetLayoutXY(subX, mainY)).Any())
                             break;
 
@@ -940,7 +960,7 @@ namespace Corathing.Dashboards.WPF.Controls
                     {
                         for (var additionalColumnNumber = 0; additionalColumnNumber < additionalBlankColumnsOnMainRowIndex + 1; additionalColumnNumber++)
                         {
-                            var secondaryWidgetAtLocation = WidgetAtLocation(new WidgetLayoutWH(1, 1),
+                            var secondaryWidgetAtLocation = WidgetsAtLocation(new WidgetLayoutWH(1, 1),
                                 new WidgetLayoutXY(mainX + additionalColumnNumber, subY))
                                 .ToArray();
 
@@ -964,7 +984,7 @@ namespace Corathing.Dashboards.WPF.Controls
                             // mainColumnIndex + additionalColumnNumber
                             var mainRowColumnIndex = new WidgetLayoutXY(mainX, mainY);
                             var canSecondaryWidgetBePlacedMainRowColumn =
-                                WidgetAtLocation(possibleCandidateWidgetData.WH, mainRowColumnIndex)
+                                WidgetsAtLocation(possibleCandidateWidgetData.WH, mainRowColumnIndex)
                                     .All(widget => widget == secondaryWidgetAtLocation.First());
 
                             if (!canSecondaryWidgetBePlacedMainRowColumn)
@@ -1007,7 +1027,7 @@ namespace Corathing.Dashboards.WPF.Controls
                 {
                     var reArragnedIndex = new WidgetLayoutXY(widgetLayout.X, row);
 
-                    var widgetAlreadyThere = WidgetAtLocation(widgetLayout.WH, reArragnedIndex)
+                    var widgetAlreadyThere = WidgetsAtLocation(widgetLayout.WH, reArragnedIndex)
                         .Where(WidgetLayoutThere => widgetLayout != WidgetLayoutThere);
 
                     if (widgetAlreadyThere.Any())
@@ -1069,12 +1089,44 @@ namespace Corathing.Dashboards.WPF.Controls
             _numbersCanEditRowColumn = new WidgetLayoutWH(1, 1);
         }
 
-        private void AnimateWidget(WidgetHost widgetHost, double fromLeft, double toLeft, double fromTop, double toTop, int durationFromTo)
+        private void AnimateElementXY(
+            UIElement uiElement,
+            double fromLeft,
+            double toLeft,
+            double fromTop,
+            double toTop,
+            int durationFromTo)
         {
-            DoubleAnimation animationLeft = new DoubleAnimation(fromLeft, toLeft, TimeSpan.FromMilliseconds(200 * (int)Math.Log10(durationFromTo * 10)));
-            DoubleAnimation animationTop = new DoubleAnimation(fromTop, toTop, TimeSpan.FromMilliseconds(200 * (int)Math.Log10(durationFromTo * 10)));
-            widgetHost.BeginAnimation(Canvas.LeftProperty, animationLeft);
-            widgetHost.BeginAnimation(Canvas.TopProperty, animationTop);
+            var duration = TimeSpan.FromMilliseconds(200 * (int)Math.Log10(durationFromTo * 10));
+            DoubleAnimation animationLeft = new DoubleAnimation(fromLeft, toLeft, duration);
+            DoubleAnimation animationTop = new DoubleAnimation(fromTop, toTop, duration);
+
+            uiElement.BeginAnimation(Canvas.LeftProperty, animationLeft);
+            uiElement.BeginAnimation(Canvas.TopProperty, animationTop);
+        }
+
+        private void SetElementXY(
+            UIElement uiElement, double x, double y)
+        {
+            uiElement.BeginAnimation(Canvas.TopProperty, null);
+            uiElement.BeginAnimation(Canvas.LeftProperty, null);
+
+            Canvas.SetTop(uiElement, y);
+            Canvas.SetLeft(uiElement, x);
+        }
+
+        private void SetElementWH(
+            FrameworkElement element, double width, double height)
+        {
+            if (element == null)
+                return;
+
+            element.MaxHeight = height;
+            element.MinHeight = height;
+            element.Height = height;
+            element.Width = width;
+            element.MaxWidth = width;
+            element.MinWidth = width;
         }
 
         /// <summary>
@@ -1116,7 +1168,7 @@ namespace Corathing.Dashboards.WPF.Controls
             {
                 int distanceFromTo = Math.Abs(rowNumber - originalRowNumber)
                                         + Math.Abs(columnNumber - originalColumnNumber);
-                AnimateWidget(widgetHost,
+                AnimateElementXY(widgetHost,
                     (double)widgetHost.GetValue(Canvas.LeftProperty),
                     columnNumber * _widgetSize.Width,
                     (double)widgetHost.GetValue(Canvas.TopProperty),
@@ -1125,8 +1177,10 @@ namespace Corathing.Dashboards.WPF.Controls
             }
             else
             {
-                Canvas.SetTop(widgetHost, rowNumber * _widgetSize.Height);
-                Canvas.SetLeft(widgetHost, columnNumber * _widgetSize.Width);
+                SetElementXY(widgetHost,
+                    columnNumber * _widgetSize.Width,
+                    rowNumber * _widgetSize.Height
+                    );
             }
 
             if (!EnableColumnLimit)
@@ -1146,29 +1200,13 @@ namespace Corathing.Dashboards.WPF.Controls
             }
         }
 
-        private void SetWidgetXY(
-            WidgetHost widgetHost, double x, double y)
-        {
-            var maxRowsAndColumns = GetMaxRowsAndColumns();
-
-            WidgetsCanvasHost.Height = maxRowsAndColumns.Y * _widgetSize.Height;
-            WidgetsCanvasHost.Width = maxRowsAndColumns.X * _widgetSize.Width;
-
-            widgetHost.BeginAnimation(Canvas.TopProperty, null);
-            widgetHost.BeginAnimation(Canvas.LeftProperty, null);
-
-            Canvas.SetTop(widgetHost, y);
-            Canvas.SetLeft(widgetHost, x);
-
-        }
-
         /// <summary>
         /// Gets a list of WidgetHosts that occupy the provided rowAndColumnToCheck
         /// </summary>
         /// <param name="widgetSpan">The widget span.</param>
         /// <param name="widgetIndex">The row and column to check.</param>
         /// <returns>List<WidgetHost></returns>
-        private IEnumerable<WidgetLayout> WidgetAtLocation(IWidgetLayoutWH widgetSpan, IWidgetLayoutXY widgetIndex)
+        private IEnumerable<WidgetLayout> WidgetsAtLocation(IWidgetLayoutWH widgetSpan, IWidgetLayoutXY widgetIndex)
         {
             // Need to see if a widget is already at the specific row and column
             return _widgetLayouts
@@ -1202,8 +1240,9 @@ namespace Corathing.Dashboards.WPF.Controls
                     _draggingHost.ActualHeight + _draggingHost.Margin.Top + _draggingHost.Margin.Bottom;
                 _widgetDestinationHighlight.Visibility = Visibility.Visible;
 
-                Canvas.SetTop(_widgetDestinationHighlight, _draggingWidgetLayout.Y * _widgetSize.Height);
-                Canvas.SetLeft(_widgetDestinationHighlight, _draggingWidgetLayout.X * _widgetSize.Width);
+                SetElementXY(_widgetDestinationHighlight,
+                    _draggingWidgetLayout.X * _widgetSize.Width,
+                    _draggingWidgetLayout.Y * _widgetSize.Height);
 
                 // Need to create the adorner that will be used to drag a control around the DashboardHost
                 _draggingAdorner = new DragAdorner(_draggingHost, Mouse.GetPosition(_draggingHost));
@@ -1237,10 +1276,10 @@ namespace Corathing.Dashboards.WPF.Controls
                 _draggingHost = null;
                 _widgetDestinationHighlight.Visibility = Visibility.Hidden;
 
-                LayoutChanged.Invoke(this, new LayoutChangedEventArgs()
+                if (LayoutChangedCommand != null && LayoutChangedCommand.CanExecute(this))
                 {
-                    ChangedType = LayoutChangedType.Drag
-                });
+                    LayoutChangedCommand.Execute(this);
+                }
             }
         }
 
@@ -1262,8 +1301,9 @@ namespace Corathing.Dashboards.WPF.Controls
                 _draggingHost.ActualHeight + _draggingHost.Margin.Top + _draggingHost.Margin.Bottom;
             _widgetDestinationHighlight.Visibility = Visibility.Visible;
 
-            Canvas.SetLeft(_widgetDestinationHighlight, _draggingWidgetLayout.X * _widgetSize.Width);
-            Canvas.SetTop(_widgetDestinationHighlight, _draggingWidgetLayout.Y * _widgetSize.Height);
+            SetElementXY(_widgetDestinationHighlight,
+                _draggingWidgetLayout.X * _widgetSize.Width,
+                _draggingWidgetLayout.Y * _widgetSize.Height);
 
             // Need to create the adorner that will be used to drag a control around the DashboardHost
             MouseMove += Dashboard_MouseMove;
@@ -1297,6 +1337,7 @@ namespace Corathing.Dashboards.WPF.Controls
             DragInProgress = false;
 
             SetWidgetRowAndColumn(_draggingHost, _draggingWidgetLayout.XY, _draggingWidgetLayout.WH, true);
+            SetElementWH(_draggingHost, _widgetDestinationHighlight.Width, _widgetDestinationHighlight.Height);
 
             // Need to cleanup after the DoDragDrop ends by setting back everything to its default state
             MouseLeave -= Dashboard_MouseLeave;
@@ -1305,23 +1346,15 @@ namespace Corathing.Dashboards.WPF.Controls
             _draggingHost.Cursor = Cursors.Arrow;
             Cursor = Cursors.Arrow;
             Mouse.SetCursor(Cursors.Arrow);
-            if (_draggingHost != null)
-            {
-                _draggingHost.MaxHeight = _widgetDestinationHighlight.Height;
-                _draggingHost.MinHeight = _widgetDestinationHighlight.Height;
-                _draggingHost.Height = _widgetDestinationHighlight.Height;
-                _draggingHost.Width = _widgetDestinationHighlight.Width;
-                _draggingHost.MaxWidth = _widgetDestinationHighlight.Width;
-                _draggingHost.MinWidth = _widgetDestinationHighlight.Width;
-            }
+
             _draggingWidgetLayout = null;
             _draggingHost = null;
             _widgetDestinationHighlight.Visibility = Visibility.Hidden;
 
-            LayoutChanged.Invoke(this, new LayoutChangedEventArgs()
+            if (LayoutChangedCommand != null && LayoutChangedCommand.CanExecute(this))
             {
-                ChangedType = LayoutChangedType.Resize
-            });
+                LayoutChangedCommand.Execute(this);
+            }
         }
 
         private void Dashboard_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
@@ -1389,12 +1422,7 @@ namespace Corathing.Dashboards.WPF.Controls
             if (new_width <= 0 && new_height <= 0)
                 return;
 
-            _draggingHost.MaxHeight = new_height;
-            _draggingHost.MinHeight = new_height;
-            _draggingHost.Width = new_width;
-            _draggingHost.Height = new_height;
-            _draggingHost.MaxWidth = new_width;
-            _draggingHost.MinWidth = new_width;
+            SetElementWH(_draggingHost, new_width, new_height);
 
             int rowIndex = (int)Math.Round(new_y / _widgetSize.Height);
             int columnIndex = (int)Math.Round(new_x / _widgetSize.Width);
@@ -1411,8 +1439,7 @@ namespace Corathing.Dashboards.WPF.Controls
             var top = rowIndex < 0 ? 0 : rowIndex * _widgetSize.Height;
             var left = columnIndex < 0 ? 0 : columnIndex * _widgetSize.Width;
 
-            Canvas.SetTop(_widgetDestinationHighlight, top);
-            Canvas.SetLeft(_widgetDestinationHighlight, left);
+            SetElementXY(_widgetDestinationHighlight, left, top);
             _widgetDestinationHighlight.Width = columnSpan * _widgetSize.Height;
             _widgetDestinationHighlight.Height = rowSpan * _widgetSize.Width;
 
@@ -1425,7 +1452,7 @@ namespace Corathing.Dashboards.WPF.Controls
             };
 
             // Set the _dragging host into its dragging position
-            SetWidgetXY(_draggingHost, new_x, new_y);
+            SetElementXY(_draggingHost, new_x, new_y);
 
             // Get all the widgets in the path of where the _dragging host will be set
             var movingWidgets = GetWidgetMoveList(_widgetLayouts.FirstOrDefault(widgetData => widgetData == _draggingWidgetLayout), newRowIndexColumnIndex, null)
@@ -1445,7 +1472,7 @@ namespace Corathing.Dashboards.WPF.Controls
                 // Find a row to move it
                 while (true)
                 {
-                    var widgetAtLoc = WidgetAtLocation(widgetData.WH,
+                    var widgetAtLoc = WidgetsAtLocation(widgetData.WH,
                         new WidgetLayoutXY(widgetData.X, widgetData.Y + rowIncrease))
                         .Where(WidgetLayout => !movingWidgets.Contains(WidgetLayout) || movedWidgets.Contains(WidgetLayout));
 
@@ -1462,7 +1489,7 @@ namespace Corathing.Dashboards.WPF.Controls
                 {
                     var reArragnedIndex = new WidgetLayoutXY(widgetData.X, row);
 
-                    var widgetAlreadyThere = WidgetAtLocation(widgetData.WH, reArragnedIndex)
+                    var widgetAlreadyThere = WidgetsAtLocation(widgetData.WH, reArragnedIndex)
                         .Where(WidgetLayoutThere => widgetData != WidgetLayoutThere && !movingWidgets.Contains(WidgetLayoutThere));
 
                     if (widgetAlreadyThere.Any())
@@ -1478,9 +1505,7 @@ namespace Corathing.Dashboards.WPF.Controls
                 movedWidgets.Add(widgetData);
             }
 
-
             ReArrangeToPreviewLocation();
-
         }
 
         #endregion Private Methods

@@ -1,0 +1,170 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:circulars="clr-namespace:Corathing.UI.WPF.Controls.CircularProgressBars"
+                    xmlns:converters="clr-namespace:Corathing.UI.WPF.Converters">
+
+    <converters:DoubleValueConverter x:Key="DoubleValueConverter" />
+    <circulars:AngleRadiusToPointConverter x:Key="AngleRadiusToPointConverter" />
+    <circulars:AngleToIsLargeConverter x:Key="AngleToIsLargeConverter" />
+    <circulars:RadiusToSizeConverter x:Key="RadiusToSizeConverter" />
+    <circulars:RadiusToStartPointConverter x:Key="RadiusToStartPointConverter" />
+
+    <Style TargetType="{x:Type circulars:CircularProgressBar}"
+           x:Key="AutoCircularProgressBar">
+        <Setter Property="Value"
+                Value="10" />
+        <Setter Property="Maximum"
+                Value="100" />
+        <Setter Property="StrokeThickness"
+                Value="10" />
+        <Setter Property="Radius"
+                Value="50" />
+        <Setter Property="HorizontalAlignment"
+                Value="Stretch" />
+        <Setter Property="VerticalAlignment"
+                Value="Stretch" />
+        <Setter Property="SweepDirection"
+                Value="Clockwise" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type circulars:CircularProgressBar}">
+                    <Canvas Width="{Binding Path=Radius,
+                                RelativeSource={RelativeSource AncestorType={x:Type circulars:CircularProgressBar}},
+                                Converter={StaticResource DoubleValueConverter},
+                                Mode=OneWay}"
+                            Height="{Binding Path=Radius,
+                                RelativeSource={RelativeSource AncestorType={x:Type circulars:CircularProgressBar}},
+                                Converter={StaticResource DoubleValueConverter},
+                                Mode=OneWay}">
+                        <Ellipse Width="{Binding Path=Radius,
+                                    RelativeSource={RelativeSource AncestorType={x:Type circulars:CircularProgressBar}},
+                                    Converter={StaticResource DoubleValueConverter}, Mode=OneWay}"
+                                 Height="{Binding Path=Radius,
+                                    RelativeSource={RelativeSource AncestorType={x:Type circulars:CircularProgressBar}},
+                                    Converter={StaticResource DoubleValueConverter}, Mode=OneWay}"
+                                 Margin="{Binding Path=ShadowStorkeMargin, RelativeSource={RelativeSource AncestorType={x:Type circulars:CircularProgressBar}}}"
+                                 Stroke="LightGray"
+                                 StrokeThickness="{Binding Path=InnerThickness,
+                                    RelativeSource={RelativeSource AncestorType={x:Type circulars:CircularProgressBar}}}" />
+
+                        <Path Stroke="{TemplateBinding Background}"
+                              StrokeThickness="{TemplateBinding StrokeThickness}"
+                              Margin="{Binding Path=HighlightStrokeMargin, RelativeSource={RelativeSource AncestorType={x:Type circulars:CircularProgressBar}}}">
+                            
+                            <Path.Data>
+                                <PathGeometry>
+                                    <PathFigure StartPoint="{Binding Path=StartPoint,
+                                                        Converter={StaticResource RadiusToStartPointConverter},
+                                                        RelativeSource={RelativeSource FindAncestor,
+                                                            AncestorType=circulars:CircularProgressBar}}">
+                                        <ArcSegment RotationAngle="0"
+                                                    SweepDirection="{Binding Path=SweepDirection,
+                                                        RelativeSource={RelativeSource AncestorType={x:Type circulars:CircularProgressBar}}}"
+                                                    Size="{Binding Path=HighlightSize,
+                                                        RelativeSource={RelativeSource FindAncestor,
+                                                            AncestorType=circulars:CircularProgressBar}}"
+                                                    IsLargeArc="{Binding Path=MidRadius,
+                                                        Converter={StaticResource AngleToIsLargeConverter},
+                                                        RelativeSource={RelativeSource FindAncestor,
+                                                            AncestorType=circulars:CircularProgressBar}}">
+                                            <ArcSegment.Point>
+                                                <MultiBinding Converter="{StaticResource AngleRadiusToPointConverter}">
+                                                    <MultiBinding.Bindings>
+                                                        <Binding Path="Angle"
+                                                                 RelativeSource="{RelativeSource FindAncestor,
+                                                                    AncestorType=circulars:CircularProgressBar}" />
+                                                        <Binding Path="MidRadius"
+                                                                 RelativeSource="{RelativeSource FindAncestor,
+                                                                    AncestorType=circulars:CircularProgressBar}" />
+                                                    </MultiBinding.Bindings>
+                                                </MultiBinding>
+                                            </ArcSegment.Point>
+                                        </ArcSegment>
+                                    </PathFigure>
+                                </PathGeometry>
+                            </Path.Data>
+                        </Path>
+                        <Border Width="100"
+                                Height="100">
+                            <TextBlock Foreground="Gray"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"
+                                       Text="{Binding Path=Value, StringFormat={}%{0}, 
+                                RelativeSource={RelativeSource TemplatedParent}}"
+                                       FontSize="{TemplateBinding FontSize}" />
+                        </Border>
+                    </Canvas>
+
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+
+    <Style TargetType="{x:Type circulars:CircularProgressBar}"
+           x:Key="TempCircularProgressBar">
+        <Setter Property="Value"
+                Value="10" />
+        <Setter Property="Maximum"
+                Value="100" />
+        <Setter Property="StrokeThickness"
+                Value="10" />
+        <Setter Property="Radius"
+                Value="50" />
+        <Setter Property="SweepDirection"
+                Value="Counterclockwise" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type circulars:CircularProgressBar}">
+                    <Canvas Width="100"
+                            Height="100">
+                        <Ellipse Width="100"
+                                 Height="100"
+                                 Stroke="LightGray"
+                                 StrokeThickness="1" />
+
+                        <Path Stroke="{TemplateBinding Background}"
+                              StrokeThickness="{TemplateBinding StrokeThickness}">
+                            <Path.Data>
+                                <PathGeometry>
+                                    <PathFigure StartPoint="50,0">
+                                        <ArcSegment RotationAngle="0"
+                                                    SweepDirection="Clockwise"
+                                                    Size="50,50"
+                                                    IsLargeArc="{Binding Path=Angle,
+                                            Converter={StaticResource CircleAngleToIsLargeConverter},
+                                            RelativeSource={RelativeSource FindAncestor,
+                                                AncestorType=circulars:CircularProgressBar}}">
+                                            <ArcSegment.Point>
+                                                <MultiBinding Converter="{StaticResource CircleAngleToPointConverter}">
+                                                    <MultiBinding.Bindings>
+                                                        <Binding Path="Angle"
+                                                                 RelativeSource="{RelativeSource FindAncestor,
+                                                                    AncestorType=circulars:CircularProgressBar}" />
+                                                        <Binding Path="Radius"
+                                                                 RelativeSource="{RelativeSource FindAncestor,
+                                                                    AncestorType=circulars:CircularProgressBar}" />
+                                                    </MultiBinding.Bindings>
+                                                </MultiBinding>
+                                            </ArcSegment.Point>
+                                        </ArcSegment>
+                                    </PathFigure>
+                                </PathGeometry>
+                            </Path.Data>
+                        </Path>
+                        <Border Width="100"
+                                Height="100">
+                            <TextBlock Foreground="Gray"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"
+                                       Text="{Binding Path=Value, StringFormat={}%{0}, 
+                                RelativeSource={RelativeSource TemplatedParent}}"
+                                       FontSize="{TemplateBinding FontSize}" />
+                        </Border>
+                    </Canvas>
+
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

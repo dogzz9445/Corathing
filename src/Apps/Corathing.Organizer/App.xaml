@@ -18,6 +18,13 @@
                 <ui:ThemesDictionary Theme="Light" />
                 <ui:ControlsDictionary />
             </ResourceDictionary.MergedDictionaries>
+
+            <Style TargetType="{x:Type Menu}">
+                <Setter Property="HorizontalContentAlignment"
+                        Value="Left" />
+                <Setter Property="VerticalContentAlignment"
+                        Value="Center" />
+            </Style>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

@@ -21,14 +21,14 @@
                     Value="0" />
             <Setter Property="BorderThickness"
                     Value="0" />
+            <Setter Property="VerticalContentAlignment"
+                    Value="Center" />
             <Setter Property="ScrollViewer.VerticalScrollBarVisibility"
                     Value="Auto" />
             <Setter Property="ScrollViewer.HorizontalScrollBarVisibility"
                     Value="Auto" />
             <Setter Property="ScrollViewer.CanContentScroll"
                     Value="True" />
-            <Setter Property="VerticalContentAlignment"
-                    Value="Center" />
             <Setter Property="VirtualizingPanel.IsVirtualizing"
                     Value="True" />
             <Setter Property="VirtualizingPanel.VirtualizationMode"

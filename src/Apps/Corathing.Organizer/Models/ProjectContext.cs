@@ -10,17 +10,23 @@ using System.Windows.Data;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
+using Microsoft.Extensions.DependencyInjection;
+
 namespace Corathing.Organizer.Models;
 
 public partial class ProjectContext : ObservableObject
 {
+    #region Readonly Properties
+    private IServiceProvider _services;
+
+    #endregion
     #region Public Properties
     /// <summary>
     /// Gets or sets the title.
     /// </summary>
     /// <value>The title.</value>
     [ObservableProperty]
-    private string _title;
+    private string _title = "My Project";
 
     [DefaultValue(false)]
     [ObservableProperty]
@@ -52,18 +58,17 @@ public partial class ProjectContext : ObservableObject
     [RelayCommand]
     public void AddWorkflow()
     {
-        var newWorkflow = new WorkflowContext()
-        {
-            EditMode = EditMode,
-        };
+        var newWorkflow = _services.GetService<WorkflowContext>();
+        newWorkflow.EditMode = EditMode;
         Workflows.Add(newWorkflow);
         SelectedWorkflow = newWorkflow;
     }
 
     #endregion
 
-    public ProjectContext()
+    public ProjectContext(IServiceProvider services)
     {
+        _services = services;
         Workflows = new ObservableCollection<WorkflowContext>();
     }
 

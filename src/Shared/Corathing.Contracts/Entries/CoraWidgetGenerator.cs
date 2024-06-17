@@ -20,7 +20,7 @@ public class CoraWidgetGenerator
     // FIXME:
     // 어떤 방식을 사용할지 정의해야함
     // Generic? Type Converting?
-    public Func<WidgetState<object>> CreateWidgetOptionInternal;
+    public Func<WidgetState> CreateWidgetOptionInternal;
 
     #endregion Private Fields
 

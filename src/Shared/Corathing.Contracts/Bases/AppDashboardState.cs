@@ -12,5 +12,7 @@ public record StateRecord(string key, string value);
 
 public class AppDashboardState
 {
-    public Dictionary<Guid, WidgetState<StateRecord>> Widgets { get; set; }
+    public Dictionary<Guid, ProjectState> Projects { get; set; }
+    public Dictionary<Guid, WorkflowState> Workflows { get; set; }
+    public Dictionary<Guid, WidgetState> Widgets { get; set; }
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,10 +14,13 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
 using Corathing.Contracts.Bases;
+using Corathing.Contracts.Services;
 using Corathing.Dashboards.WPF.Controls;
 using Corathing.Organizer.Controls;
 using Corathing.Organizer.Extensions;
 using Corathing.Organizer.Views;
+
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Corathing.Organizer.Models;
 
@@ -43,13 +47,18 @@ public enum DashboardConfigurationType
 /// <seealso cref="Infrastructure.ViewModelBase" />
 public partial class WorkflowContext : ObservableObject
 {
+    #region Readonly properties
+    private IServiceProvider _services;
+
+    #endregion
+
     #region Public Properties
     /// <summary>
     /// Gets or sets the title.
     /// </summary>
     /// <value>The title.</value>
     [ObservableProperty]
-    private string _title;
+    private string _title = "My Workflow";
 
     [DefaultValue(false)]
     [ObservableProperty]
@@ -58,6 +67,9 @@ public partial class WorkflowContext : ObservableObject
     [DefaultValue(false)]
     [ObservableProperty]
     private bool? _editMode;
+
+    [ObservableProperty]
+    private Guid? _workflowId;
 
     /// <summary>
     /// Gets or sets the widgets.
@@ -126,8 +138,24 @@ public partial class WorkflowContext : ObservableObject
         }
     }
 
-    public WorkflowContext()
+    [RelayCommand]
+    public void LayoutChanged(DashboardHost host)
     {
+        Trace.WriteLine($"dashboard host changed");
+    }
+
+    protected override void OnPropertyChanging(PropertyChangingEventArgs e)
+    {
+        base.OnPropertyChanging(e);
+
+        var appState = _services.GetService<IAppStateService>();
+        //appState.UpdateWorkflow();
+    }
+
+
+    public WorkflowContext(IServiceProvider services)
+    {
+        _services = services;
         Widgets = new ObservableCollection<WidgetContext>();
     }
 

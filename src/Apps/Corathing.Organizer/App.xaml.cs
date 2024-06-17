@@ -7,6 +7,7 @@ using System.Windows;
 
 using Corathing.Contracts.Services;
 using Corathing.Dashboards.WPF.Services;
+using Corathing.Organizer.Models;
 using Corathing.Organizer.Resources;
 using Corathing.Organizer.Services;
 using Corathing.Organizer.Utils;
@@ -54,16 +55,16 @@ public partial class App : Application
         };
 
         // 같은 이름의 다른 프로세스가 실행중인지 확인하고, 실행중이면 종료
-        //if (CheckIfProcessExists())
-        //{
-        //    MessageBox.Show(
-        //        "Another instance of the application is already running.",
-        //        "Error",
-        //        MessageBoxButton.OK,
-        //        MessageBoxImage.Error);
+        if (CheckIfProcessExists())
+        {
+            MessageBox.Show(
+                "Another instance of the application is already running.",
+                "Error",
+                MessageBoxButton.OK,
+                MessageBoxImage.Error);
 
-        //    Shutdown();
-        //}
+            Shutdown();
+        }
 
         Services = ConfigureServices(e.Args);
 
@@ -184,6 +185,9 @@ public partial class App : Application
         serviceCollection.AddScoped<OrganizerSettingsViewModel>();
         serviceCollection.AddScoped<WidgetSettingsViewModel>();
         serviceCollection.AddScoped<ProjectSettingsViewModel>();
+        serviceCollection.AddScoped<WorkflowSettingsViewModel>();
+        serviceCollection.AddScoped<ProjectContext>();
+        serviceCollection.AddScoped<WorkflowContext>();
 
         // TODO:
         // Logger 및 Localizer 설정
@@ -208,6 +212,7 @@ public partial class App : Application
             {
                 clientPipe.Connect();
                 clientPipe.Write(new byte[] { (byte)SecondInstanceService.SecondInstanceRequest.MaximizeWindow }, 0, 1);
+                clientPipe.Flush();
             }
         }
 

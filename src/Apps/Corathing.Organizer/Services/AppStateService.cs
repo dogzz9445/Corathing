@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using Corathing.Contracts.Bases;
 using Corathing.Contracts.Factories;
 using Corathing.Contracts.Services;
+using Corathing.Organizer.Models;
 
 namespace Corathing.Organizer.Services;
 
@@ -50,7 +51,22 @@ public class AppStateService : IAppStateService
     private AppPreferenceState? _cachedAppPreferenceState;
     private AppPackageState? _cachedAppPackageState;
     private AppDashboardState? _cachedAppDashboardState;
+    private JsonNode? _cachedAppStateDom;
+    private object _lockAppState;
     #endregion
+
+    private void SaveAppSate()
+    {
+        lock (_lockAppState)
+        {
+
+        }
+    }
+
+    private void ReadAppSate()
+    {
+
+    }
 
     public async Task InitializeAsync()
     {
@@ -105,22 +121,12 @@ public class AppStateService : IAppStateService
         return _cachedAppDashboardState;
     }
 
-
     public bool TryGetProject(Guid id, out ProjectState project)
     {
         if (_cachedAppDashboardState == null)
             ReadOrCreateAppStateByAppSettings().Wait();
 
         project = new ProjectState();
-        return true;
-    }
-
-    public bool TryGetWidget<T>(Guid id, out T option)
-    {
-        if (_cachedAppDashboardState == null)
-            ReadOrCreateAppStateByAppSettings().Wait();
-
-        option = default;
         return true;
     }
 
@@ -131,6 +137,36 @@ public class AppStateService : IAppStateService
 
         workflow = new WorkflowState();
         return true;
+    }
+
+    public bool TryGetWidget(Guid id, out WidgetState option)
+    {
+        if (_cachedAppDashboardState == null)
+            ReadOrCreateAppStateByAppSettings().Wait();
+
+        option = default;
+        return true;
+    }
+
+    public ProjectState GetOrAddProject(Guid? id = null)
+    {
+        return default;
+    }
+
+
+    public void UpdateProject(ProjectState project)
+    {
+
+    }
+
+    public void UpdateWorkflow(WorkflowState workflow)
+    {
+
+    }
+
+    public void UpdateWidget(WidgetState widget)
+    {
+
     }
 
     public void UpdateOrAdd(Guid id, object value)
@@ -254,6 +290,22 @@ public class AppStateService : IAppStateService
                 .GetProperty("Dashboards")
                 .Deserialize<AppDashboardState>();
         }
+    }
+
+    private async Task WrtieAppState(string json)
+    {
+        string jsonString = await File.ReadAllTextAsync(GetAppStatePathByAppSettings());
+        if (string.IsNullOrEmpty(jsonString))
+            jsonString = AppStateJsonDomBase;
+
+        var rootNode = JsonNode.Parse(jsonString);
+
+        rootNode["Preferences"].ReplaceWith(_cachedAppPreferenceState);
+        rootNode["Packages"].ReplaceWith(_cachedAppPackageState);
+        rootNode["Dashboards"].ReplaceWith(_cachedAppDashboardState);
+
+        await File.WriteAllTextAsync(GetAppStatePathByAppSettings(),
+            rootNode.ToJsonString(_serializerOptions));
     }
 
 
