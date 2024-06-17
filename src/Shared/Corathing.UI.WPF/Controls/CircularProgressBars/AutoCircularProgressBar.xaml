@@ -84,17 +84,7 @@
                                 </PathGeometry>
                             </Path.Data>
                         </Path>
-                        <Border Width="100"
-                                Height="100">
-                            <TextBlock Foreground="Gray"
-                                       HorizontalAlignment="Center"
-                                       VerticalAlignment="Center"
-                                       Text="{Binding Path=Value, StringFormat={}%{0}, 
-                                RelativeSource={RelativeSource TemplatedParent}}"
-                                       FontSize="{TemplateBinding FontSize}" />
-                        </Border>
                     </Canvas>
-
                 </ControlTemplate>
             </Setter.Value>
         </Setter>

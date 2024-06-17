@@ -7,10 +7,12 @@ using System.Windows.Controls;
 using System.Windows.Media.Animation;
 using System.Windows;
 using System.Windows.Media;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 namespace Corathing.UI.WPF.Controls.CircularProgressBars;
 
-public partial class CircularProgressBar : ProgressBar
+public partial class CircularProgressBar : ProgressBar, INotifyPropertyChanged
 {
     #region Public Properties
     public static readonly DependencyProperty SweepDirectionProperty =
@@ -96,15 +98,51 @@ public partial class CircularProgressBar : ProgressBar
 
     #endregion
 
+    #region INotifyPropertyChanged
+    public event PropertyChangedEventHandler? PropertyChanged;
+
+    public void RaisePropertyChanged([CallerMemberName] string propertyName = null)
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    }
+
+    //public void SetProperty<T>(ref T  )
+    #endregion
+
+
     #region Internal Properties
-    public Point StartPoint { get; internal set; }
-    public double Diameter { get; internal set; }
-    public Thickness HighlightStrokeMargin { get; internal set; }
-    public Size HighlightSize { get; internal set; }
-    public Thickness ShadowStorkeMargin { get; internal set; }
-    public double OuterRadius { get; internal set; }
-    public double MidRadius { get; internal set; }
-    public double InnerRadius { get; internal set; }
+    // https://stackoverflow.com/questions/33015016/hidden-public-property-in-wpf-control
+
+    public static readonly DependencyProperty StartPointProperty = DependencyProperty.Register(
+        nameof(StartPoint),
+        typeof(Point),
+        typeof(CircularProgressBar),
+        new PropertyMetadata(new Point(0, 0)));
+
+    [Browsable(false)]
+    public Point StartPoint
+    {
+        get => (Point)GetValue(StartPointProperty);
+        set => SetValue(StartPointProperty, value);
+    }
+
+    public static readonly DependencyProperty DiameterProperty = DependencyProperty.Register(
+        nameof(Diameter),
+        typeof(double),
+        typeof(CircularProgressBar),
+        new PropertyMetadata(0.0));
+
+    public double Diameter
+    {
+        get;
+        set;
+    }
+    public Thickness HighlightStrokeMargin { get; set; }
+    public Size HighlightSize { get; set; }
+    public Thickness ShadowStorkeMargin { get; set; }
+    public double OuterRadius { get; set; }
+    public double MidRadius { get; set; }
+    public double InnerRadius { get; set; }
 
     #endregion
 
