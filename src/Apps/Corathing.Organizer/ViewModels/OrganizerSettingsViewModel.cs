@@ -27,14 +27,7 @@ public partial class OrganizerSettingsViewModel : ObservableRecipient
     private bool _isInitialized = false;
     #endregion
 
-    [ObservableProperty]
-    private string _appVersion = string.Empty;
-
-    [ObservableProperty]
-    private ApplicationTheme _currentApplicationTheme = ApplicationTheme.Unknown;
-
-    [ObservableProperty]
-    private ApplicationLanguage _currentApplicationLanguage = ApplicationLanguage.Unknown;
+    #region 11. 설정파일
 
     [ObservableProperty]
     private bool? _useGlobalConfiguration;
@@ -44,6 +37,31 @@ public partial class OrganizerSettingsViewModel : ObservableRecipient
 
     [ObservableProperty]
     private string _customPath;
+
+    #endregion
+
+    #region 12. 게스트 모드
+    [ObservableProperty]
+    private bool? _useGuestMode = false;
+
+    [ObservableProperty]
+    private bool? _showSettingsButtonOnDashboard = true;
+
+    [ObservableProperty]
+    private string _username;
+
+    [ObservableProperty]
+    private string _password;
+    #endregion
+
+    [ObservableProperty]
+    private string _appVersion = string.Empty;
+
+    [ObservableProperty]
+    private ApplicationTheme _currentApplicationTheme = ApplicationTheme.Unknown;
+
+    [ObservableProperty]
+    private ApplicationLanguage _currentApplicationLanguage = ApplicationLanguage.Unknown;
 
     public OrganizerSettingsViewModel(
         IThemeService themeService,

@@ -28,6 +28,7 @@ using Corathing.Dashboards.WPF.Bindings;
 using Corathing.Contracts.Bases.Interfaces;
 using System.Windows.Media.Animation;
 using Corathing.Dashboards.Bases;
+using CommunityToolkit.Mvvm.Input;
 
 namespace Corathing.Dashboards.WPF.Controls
 {
@@ -37,6 +38,18 @@ namespace Corathing.Dashboards.WPF.Controls
     public partial class DashboardHost : ItemsControl
     {
         #region Public Fields
+
+        public static readonly DependencyProperty LayoutChangedProperty = DependencyProperty.Register(
+            nameof(LayoutChanged),
+            typeof(EventHandler<LayoutChangedEventArgs>),
+            typeof(DashboardHost),
+            new PropertyMetadata(default));
+
+        public EventHandler<LayoutChangedEventArgs> LayoutChanged
+        {
+            get => (EventHandler<LayoutChangedEventArgs>)GetValue(LayoutChangedProperty);
+            set => SetValue(LayoutChangedProperty, value);
+        }
 
         /// <summary>
         /// The enalbe column limit property
@@ -1223,6 +1236,11 @@ namespace Corathing.Dashboards.WPF.Controls
                 _draggingWidgetLayout = null;
                 _draggingHost = null;
                 _widgetDestinationHighlight.Visibility = Visibility.Hidden;
+
+                LayoutChanged.Invoke(this, new LayoutChangedEventArgs()
+                {
+                    ChangedType = LayoutChangedType.Drag
+                });
             }
         }
 
@@ -1299,6 +1317,11 @@ namespace Corathing.Dashboards.WPF.Controls
             _draggingWidgetLayout = null;
             _draggingHost = null;
             _widgetDestinationHighlight.Visibility = Visibility.Hidden;
+
+            LayoutChanged.Invoke(this, new LayoutChangedEventArgs()
+            {
+                ChangedType = LayoutChangedType.Resize
+            });
         }
 
         private void Dashboard_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
