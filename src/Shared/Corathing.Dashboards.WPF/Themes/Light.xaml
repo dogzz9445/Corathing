@@ -46,5 +46,22 @@
                      Color="{DynamicResource LightAlertLightColor}" />
     <SolidColorBrush x:Key="DarkAlertBrush"
                      Color="{DynamicResource DarkAlertLightColor}" />
+
+    <Color x:Key="TextFillColorPrimary">#E4000000</Color>
+    <Color x:Key="TextFillColorSecondary">#9E000000</Color>
+    <Color x:Key="TextFillColorTertiary">#72000000</Color>
+    <Color x:Key="TextFillColorDisabled">#5C000000</Color>
+    <Color x:Key="TextFillPlaceholderColor">#9E000000</Color>
+
+    <SolidColorBrush x:Key="TextFillColorPrimaryBrush"
+                     Color="{StaticResource TextFillColorPrimary}" />
+    <SolidColorBrush x:Key="TextFillColorSecondaryBrush"
+                     Color="{StaticResource TextFillColorSecondary}" />
+    <SolidColorBrush x:Key="TextFillColorTertiaryBrush"
+                     Color="{StaticResource TextFillColorTertiary}" />
+    <SolidColorBrush x:Key="TextFillColorDisabledBrush"
+                     Color="{StaticResource TextFillColorDisabled}" />
+    <SolidColorBrush x:Key="TextFillPlaceholderColorBrush"
+                     Color="{StaticResource TextFillPlaceholderColor}" />
 </ResourceDictionary>
     

@@ -28,15 +28,15 @@
                     HorizontalAlignment="Center"
                     Orientation="Vertical">
             <Button Content="Start"
-                    Background="White"
+                    Foreground="{DynamicResource TextFillColorPrimaryBrush}"
                     Visibility="{Binding IsRunning, Converter={StaticResource InverseBooleanToVisibilityConverter}}"
                     Command="{Binding StartCommand}" />
             <Button Content="Stop"
-                    Background="White"
+                    Foreground="{DynamicResource TextFillColorPrimaryBrush}"
                     Visibility="{Binding IsRunning, Converter={StaticResource BoolNotNullToVisibilityConverter}}"
                     Command="{Binding StopCommand}" />
             <Button Content="Reset"
-                    Background="White"
+                    Foreground="{DynamicResource TextFillColorPrimaryBrush}"
                     Visibility="{Binding IsRunning, Converter={StaticResource BoolNotNullToVisibilityConverter}}"
                     Command="{Binding ResetCommand}" />
         </StackPanel>
