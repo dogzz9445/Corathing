@@ -9,12 +9,50 @@ using System.Windows;
 using System.Windows.Media;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Reflection.Metadata;
 
 namespace Corathing.UI.WPF.Controls.CircularProgressBars;
 
 public partial class CircularProgressBar : ProgressBar, INotifyPropertyChanged
 {
+    #region Constants Brushes
+    private static readonly SolidColorBrush DefaultHighlightBrush =
+        new SolidColorBrush((Color)ColorConverter.ConvertFromString("#23FF23"));
+    private static readonly SolidColorBrush DefaultShadowBrush =
+        new SolidColorBrush((Color)ColorConverter.ConvertFromString("#242424"));
+
+    #endregion
+
     #region Public Properties
+    public static readonly DependencyProperty HighlightStrokeProperty =
+        DependencyProperty.Register(
+            nameof(HighlightStroke),
+            typeof(Brush),
+            typeof(CircularProgressBar),
+            new PropertyMetadata(DefaultHighlightBrush)
+            );
+
+    public Brush HighlightStroke
+    {
+        get => (Brush)GetValue(HighlightStrokeProperty);
+        set => SetValue(HighlightStrokeProperty, value);
+    }
+
+    public static readonly DependencyProperty ShadowStrokeProperty =
+        DependencyProperty.Register(
+            nameof(ShadowStroke),
+            typeof(Brush),
+            typeof(CircularProgressBar),
+            new PropertyMetadata(DefaultShadowBrush))
+        ;
+
+    public Brush ShadowStroke
+    {
+        get => (Brush)GetValue(ShadowStrokeProperty);
+        set => SetValue(ShadowStrokeProperty, value);
+    }
+
+
     public static readonly DependencyProperty SweepDirectionProperty =
         DependencyProperty.Register(
             nameof(SweepDirection),
@@ -55,6 +93,21 @@ public partial class CircularProgressBar : ProgressBar, INotifyPropertyChanged
         set => SetValue(AngleProperty, value);
     }
 
+    // Using a DependencyProperty as the backing store for Angle.  This enables animation, styling, binding, etc...
+    public static readonly DependencyProperty StartAngleProperty =
+        DependencyProperty.Register(
+            nameof(StartAngle),
+            typeof(double),
+            typeof(CircularProgressBar),
+            new PropertyMetadata(0.0));
+
+    public double StartAngle
+    {
+        get => (double)GetValue(StartAngleProperty);
+        set => SetValue(StartAngleProperty, value);
+    }
+
+
     public static readonly DependencyProperty DurationProperty =
         DependencyProperty.Register(
             nameof(Duration),
@@ -69,85 +122,105 @@ public partial class CircularProgressBar : ProgressBar, INotifyPropertyChanged
     }
 
     // Using a DependencyProperty as the backing store for StrokeThickness.  This enables animation, styling, binding, etc...
-    public static readonly DependencyProperty StrokeThicknessProperty =
+    public static readonly DependencyProperty HighlightThicknessProperty =
         DependencyProperty.Register(
-            nameof(StrokeThickness),
+            nameof(HighlightThickness),
             typeof(double),
             typeof(CircularProgressBar),
             new PropertyMetadata(10.0));
 
-    public double StrokeThickness
+    public double HighlightThickness
     {
-        get => (double)GetValue(StrokeThicknessProperty);
-        set => SetValue(StrokeThicknessProperty, value);
+        get => (double)GetValue(HighlightThicknessProperty);
+        set => SetValue(HighlightThicknessProperty, value);
     }
 
     // Using a DependencyProperty as the backing store for InnerThickness.  This enables animation, styling, binding, etc...
-    public static readonly DependencyProperty InnerThicknessProperty =
+    public static readonly DependencyProperty ShadowThicknessProperty =
         DependencyProperty.Register(
-            nameof(InnerThickness),
+            nameof(ShadowThickness),
             typeof(double),
             typeof(CircularProgressBar),
             new PropertyMetadata(10.0));
 
-    public double InnerThickness
+    public double ShadowThickness
     {
-        get => (double)GetValue(InnerThicknessProperty);
-        set => SetValue(InnerThicknessProperty, value);
+        get => (double)GetValue(ShadowThicknessProperty);
+        set => SetValue(ShadowThicknessProperty, value);
     }
 
     #endregion
 
-    #region INotifyPropertyChanged
+    #region Implement INotifyPropertyChanged
     public event PropertyChangedEventHandler? PropertyChanged;
 
-    public void RaisePropertyChanged([CallerMemberName] string propertyName = null)
+    public void RaisePropertyChanged([CallerMemberName] string? propertyName = null)
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 
-    //public void SetProperty<T>(ref T  )
+    public bool SetProperty<T>(ref T member, T value, [CallerMemberName] string? propertyName = null)
+    {
+        if (EqualityComparer<T>.Default.Equals(member, value))
+            return false;
+        member = value;
+        RaisePropertyChanged(propertyName);
+        return true;
+    }
     #endregion
 
 
     #region Internal Properties
     // https://stackoverflow.com/questions/33015016/hidden-public-property-in-wpf-control
 
-    public static readonly DependencyProperty StartPointProperty = DependencyProperty.Register(
-        nameof(StartPoint),
-        typeof(Point),
-        typeof(CircularProgressBar),
-        new PropertyMetadata(new Point(0, 0)));
+    private Point _highlightStartPoint;
+    public Point HighlightStartPoint { get => _highlightStartPoint; set => SetProperty(ref _highlightStartPoint, value); }
+
+    private Point _highlightPoint;
+    public Point HighlightPoint { get => _highlightPoint; set => SetProperty(ref _highlightPoint, value); }
+
+    private double _diameter;
+    public double Diameter { get => _diameter; set => SetProperty(ref _diameter, value); }
+
+    private Thickness _marginOffset;
+    public Thickness StorkeMargin { get => _marginOffset; set => SetProperty(ref _marginOffset, value); }
+
+    private Thickness _highlightStorkeMargin;
+    public Thickness HighlightStrokeMargin { get => _highlightStorkeMargin; set => SetProperty(ref _highlightStorkeMargin, value); }
+
+    public static readonly DependencyProperty HighlightSizeProperty =
+        DependencyProperty.Register(
+            nameof(HighlightSize),
+            typeof(Size),
+            typeof(CircularProgressBar),
+            new FrameworkPropertyMetadata(new Size(0, 0)));
 
     [Browsable(false)]
-    public Point StartPoint
+    public Size HighlightSize
     {
-        get => (Point)GetValue(StartPointProperty);
-        set => SetValue(StartPointProperty, value);
+        get => (Size)GetValue(HighlightSizeProperty);
+        set => SetValue(HighlightSizeProperty, value);
     }
 
-    public static readonly DependencyProperty DiameterProperty = DependencyProperty.Register(
-        nameof(Diameter),
-        typeof(double),
-        typeof(CircularProgressBar),
-        new PropertyMetadata(0.0));
+    private Thickness _shadowStorkeMargin;
+    public Thickness ShadowStorkeMargin { get => _shadowStorkeMargin; set => SetProperty(ref _shadowStorkeMargin, value); }
 
-    public double Diameter
-    {
-        get;
-        set;
-    }
-    public Thickness HighlightStrokeMargin { get; set; }
-    public Size HighlightSize { get; set; }
-    public Thickness ShadowStorkeMargin { get; set; }
-    public double OuterRadius { get; set; }
-    public double MidRadius { get; set; }
-    public double InnerRadius { get; set; }
+    private double _highlightRadius;
+    public double HighlightRadius { get => _highlightRadius; set => SetProperty(ref _highlightRadius, value); }
 
+    private double _highlightDiameter;
+    public double HighlightDiameter { get => _highlightDiameter; set => SetProperty(ref _highlightDiameter, value); }
+
+    private double _shadowDiameter;
+    public double ShadowDiameter { get => _shadowDiameter; set => SetProperty(ref _shadowDiameter, value); }
     #endregion
 
     public CircularProgressBar()
     {
+        HighlightStartPoint = new Point(0, 0);
+        HighlightSize = new Size(0, 0);
+        SweepDirection = SweepDirection.Clockwise;
+
         ValueChanged += CircularProgressBar_ValueChanged;
         SizeChanged += CircularProgressBar_SizeChanged;
     }
@@ -156,14 +229,24 @@ public partial class CircularProgressBar : ProgressBar, INotifyPropertyChanged
     {
         if (sender is CircularProgressBar bar)
         {
-            var marginOffset = Math.Max(bar.StrokeThickness, bar.InnerThickness) / 2;
-            bar.Diameter = bar.Radius * 2;
-            bar.HighlightStrokeMargin = new Thickness(bar.StrokeThickness - marginOffset);
-            bar.ShadowStorkeMargin = new Thickness(bar.InnerThickness / 2 - marginOffset);
-            bar.MidRadius = bar.Radius - (bar.StrokeThickness - marginOffset);
-            bar.HighlightSize = new Size(bar.Radius - (bar.StrokeThickness - marginOffset), bar.Radius - (bar.StrokeThickness - marginOffset));
-            bar.StartPoint = new Point(bar.Radius - (bar.StrokeThickness - marginOffset), 0);
-            //bar.RaiseEvent(new RoutedEventArgs());
+            var marginOffset = Math.Abs(bar.HighlightThickness - bar.ShadowThickness) / 2;
+            if (bar.HighlightThickness >= bar.ShadowThickness)
+            {
+                bar.HighlightStrokeMargin = new Thickness((bar.HighlightThickness)/ 2);
+                bar.ShadowStorkeMargin = new Thickness(marginOffset);
+            }
+            else
+            {
+                bar.HighlightStrokeMargin = new Thickness(marginOffset + (bar.HighlightThickness / 2));
+                bar.ShadowStorkeMargin = new Thickness(0);
+            }
+            bar.HighlightDiameter = (bar.Radius - bar.HighlightStrokeMargin.Top) * 2;
+            bar.ShadowDiameter = (bar.Radius - bar.ShadowStorkeMargin.Top) * 2;
+            bar.HighlightRadius = bar.HighlightDiameter / 2;
+            bar.HighlightStartPoint = new Point(bar.HighlightRadius + bar.HighlightStrokeMargin.Left, bar.HighlightStrokeMargin.Top);
+            bar.HighlightSize = new Size(bar.HighlightRadius, bar.HighlightRadius);
+
+            bar.RaisePropertyChanged(nameof(Radius));
         }
     }
 
@@ -174,6 +257,7 @@ public partial class CircularProgressBar : ProgressBar, INotifyPropertyChanged
             var diameter = Math.Min(bar.ActualWidth, bar.ActualHeight);
 
             bar.Radius = diameter / 2;
+            bar.Diameter = diameter;
         }
     }
 

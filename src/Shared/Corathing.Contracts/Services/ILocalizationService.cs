@@ -28,6 +28,6 @@ public interface ILocalizationService
     /// On LocalizationChanged
     /// </summary>
     /// <param name="action"></param>
-    void Provide(string key, Action<string> action);
+    void Provide(string key, Action<string> action, string fallbackValue = "");
     #endregion
 }

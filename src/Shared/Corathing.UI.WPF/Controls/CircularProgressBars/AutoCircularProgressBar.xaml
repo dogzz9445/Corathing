@@ -3,11 +3,9 @@
                     xmlns:circulars="clr-namespace:Corathing.UI.WPF.Controls.CircularProgressBars"
                     xmlns:converters="clr-namespace:Corathing.UI.WPF.Converters">
 
-    <converters:DoubleValueConverter x:Key="DoubleValueConverter" />
     <circulars:AngleRadiusToPointConverter x:Key="AngleRadiusToPointConverter" />
     <circulars:AngleToIsLargeConverter x:Key="AngleToIsLargeConverter" />
     <circulars:RadiusToSizeConverter x:Key="RadiusToSizeConverter" />
-    <circulars:RadiusToStartPointConverter x:Key="RadiusToStartPointConverter" />
 
     <Style TargetType="{x:Type circulars:CircularProgressBar}"
            x:Key="AutoCircularProgressBar">
@@ -15,10 +13,18 @@
                 Value="10" />
         <Setter Property="Maximum"
                 Value="100" />
-        <Setter Property="StrokeThickness"
-                Value="10" />
+        <Setter Property="HighlightStroke"
+                Value="LightGreen" />
+        <Setter Property="ShadowStroke"
+                Value="LightGray" />
+        <Setter Property="HighlightThickness"
+                Value="8" />
+        <Setter Property="ShadowThickness"
+                Value="8" />
         <Setter Property="Radius"
                 Value="50" />
+        <Setter Property="Duration"
+                Value="500" />
         <Setter Property="HorizontalAlignment"
                 Value="Stretch" />
         <Setter Property="VerticalAlignment"
@@ -27,55 +33,61 @@
                 Value="Clockwise" />
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="{x:Type circulars:CircularProgressBar}">
-                    <Canvas Width="{Binding Path=Radius,
-                                RelativeSource={RelativeSource AncestorType={x:Type circulars:CircularProgressBar}},
-                                Converter={StaticResource DoubleValueConverter},
-                                Mode=OneWay}"
-                            Height="{Binding Path=Radius,
-                                RelativeSource={RelativeSource AncestorType={x:Type circulars:CircularProgressBar}},
-                                Converter={StaticResource DoubleValueConverter},
-                                Mode=OneWay}">
-                        <Ellipse Width="{Binding Path=Radius,
-                                    RelativeSource={RelativeSource AncestorType={x:Type circulars:CircularProgressBar}},
-                                    Converter={StaticResource DoubleValueConverter}, Mode=OneWay}"
-                                 Height="{Binding Path=Radius,
-                                    RelativeSource={RelativeSource AncestorType={x:Type circulars:CircularProgressBar}},
-                                    Converter={StaticResource DoubleValueConverter}, Mode=OneWay}"
-                                 Margin="{Binding Path=ShadowStorkeMargin, RelativeSource={RelativeSource AncestorType={x:Type circulars:CircularProgressBar}}}"
-                                 Stroke="LightGray"
-                                 StrokeThickness="{Binding Path=InnerThickness,
+                <ControlTemplate TargetType="{x:Type circulars:CircularProgressBar}" x:Name="PART_CircularProgressBarMain">
+                    <Canvas Width="{Binding Path=Diameter,
+                                    RelativeSource={RelativeSource AncestorType={x:Type circulars:CircularProgressBar}}}"
+                            Height="{Binding Path=Diameter,
+                                    RelativeSource={RelativeSource AncestorType={x:Type circulars:CircularProgressBar}}}">
+                        <Ellipse Width="{Binding Path=ShadowDiameter,
+                                    RelativeSource={RelativeSource AncestorType={x:Type circulars:CircularProgressBar}}}"
+                                 Height="{Binding Path=ShadowDiameter,
+                                    RelativeSource={RelativeSource AncestorType={x:Type circulars:CircularProgressBar}}}"
+                                 Margin="{Binding Path=ShadowStorkeMargin,
+                            RelativeSource={RelativeSource AncestorType={x:Type circulars:CircularProgressBar}}}"
+                                 Stroke="{TemplateBinding ShadowStroke}"
+                                 StrokeThickness="{Binding Path=ShadowThickness,
                                     RelativeSource={RelativeSource AncestorType={x:Type circulars:CircularProgressBar}}}" />
 
-                        <Path Stroke="{TemplateBinding Background}"
-                              StrokeThickness="{TemplateBinding StrokeThickness}"
-                              Margin="{Binding Path=HighlightStrokeMargin, RelativeSource={RelativeSource AncestorType={x:Type circulars:CircularProgressBar}}}">
+                        <Path Stroke="{TemplateBinding HighlightStroke}"
+                              StrokeThickness="{TemplateBinding HighlightThickness}"
+                              Width="{Binding Path=Diameter,
+                                    RelativeSource={RelativeSource AncestorType={x:Type circulars:CircularProgressBar}}}"
+                              Height="{Binding Path=Diameter,
+                                    RelativeSource={RelativeSource AncestorType={x:Type circulars:CircularProgressBar}}}">
                             
                             <Path.Data>
                                 <PathGeometry>
-                                    <PathFigure StartPoint="{Binding Path=StartPoint,
-                                                        Converter={StaticResource RadiusToStartPointConverter},
-                                                        RelativeSource={RelativeSource FindAncestor,
-                                                            AncestorType=circulars:CircularProgressBar}}">
+                                    <PathFigure>
+                                        <PathFigure.StartPoint>
+                                            <MultiBinding Converter="{StaticResource AngleRadiusToPointConverter}">
+                                                <MultiBinding.Bindings>
+                                                    <Binding Path="StartAngle"
+                                                             RelativeSource="{RelativeSource AncestorType=circulars:CircularProgressBar}" />
+                                                    <Binding Path="HighlightRadius"
+                                                             RelativeSource="{RelativeSource AncestorType=circulars:CircularProgressBar}" />
+                                                    <Binding Path="HighlightStrokeMargin"
+                                                             RelativeSource="{RelativeSource AncestorType=circulars:CircularProgressBar}" />
+                                                </MultiBinding.Bindings>
+                                            </MultiBinding>
+                                        </PathFigure.StartPoint>
                                         <ArcSegment RotationAngle="0"
                                                     SweepDirection="{Binding Path=SweepDirection,
                                                         RelativeSource={RelativeSource AncestorType={x:Type circulars:CircularProgressBar}}}"
-                                                    Size="{Binding Path=HighlightSize,
-                                                        RelativeSource={RelativeSource FindAncestor,
-                                                            AncestorType=circulars:CircularProgressBar}}"
-                                                    IsLargeArc="{Binding Path=MidRadius,
+                                                    Size="{Binding Path=HighlightRadius,
+                                                        Converter={StaticResource RadiusToSizeConverter},
+                                                        RelativeSource={RelativeSource AncestorType={x:Type circulars:CircularProgressBar}}}"
+                                                    IsLargeArc="{Binding Path=Angle,
                                                         Converter={StaticResource AngleToIsLargeConverter},
-                                                        RelativeSource={RelativeSource FindAncestor,
-                                                            AncestorType=circulars:CircularProgressBar}}">
+                                                        RelativeSource={RelativeSource AncestorType={x:Type circulars:CircularProgressBar}}}">
                                             <ArcSegment.Point>
                                                 <MultiBinding Converter="{StaticResource AngleRadiusToPointConverter}">
                                                     <MultiBinding.Bindings>
                                                         <Binding Path="Angle"
-                                                                 RelativeSource="{RelativeSource FindAncestor,
-                                                                    AncestorType=circulars:CircularProgressBar}" />
-                                                        <Binding Path="MidRadius"
-                                                                 RelativeSource="{RelativeSource FindAncestor,
-                                                                    AncestorType=circulars:CircularProgressBar}" />
+                                                                 RelativeSource="{RelativeSource AncestorType=circulars:CircularProgressBar}" />
+                                                        <Binding Path="HighlightRadius"
+                                                                 RelativeSource="{RelativeSource AncestorType=circulars:CircularProgressBar}" />
+                                                        <Binding Path="HighlightStrokeMargin"
+                                                                 RelativeSource="{RelativeSource AncestorType=circulars:CircularProgressBar}" />
                                                     </MultiBinding.Bindings>
                                                 </MultiBinding>
                                             </ArcSegment.Point>
@@ -97,7 +109,7 @@
                 Value="10" />
         <Setter Property="Maximum"
                 Value="100" />
-        <Setter Property="StrokeThickness"
+        <Setter Property="HighlightThickness"
                 Value="10" />
         <Setter Property="Radius"
                 Value="50" />
@@ -114,7 +126,7 @@
                                  StrokeThickness="1" />
 
                         <Path Stroke="{TemplateBinding Background}"
-                              StrokeThickness="{TemplateBinding StrokeThickness}">
+                              StrokeThickness="{TemplateBinding HighlightThickness}">
                             <Path.Data>
                                 <PathGeometry>
                                     <PathFigure StartPoint="50,0">

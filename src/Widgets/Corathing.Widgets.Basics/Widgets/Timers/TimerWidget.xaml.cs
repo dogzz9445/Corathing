@@ -12,6 +12,10 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
+
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 
 using Corathing.Contracts.Bases;
 using Corathing.Contracts.Entries;
@@ -33,13 +37,82 @@ namespace Corathing.Widgets.Basics.Widgets.Timers;
     )]
 public partial class TimerWidgetViewModel : WidgetContext
 {
+    #region 01. Timer
+    private DispatcherTimer? _timer;
+
+    [ObservableProperty]
+    private TimeSpan _configuringTime;
+    [ObservableProperty]
+    private TimeSpan _ramainingTime;
+    [ObservableProperty]
+    private bool _isRunning;
+    #endregion
+
+    #region 02. Progressbar
+
+    #endregion
+
     /// <summary>
     /// Initializes a new instance of the <see cref="OneByOneViewModel"/> class.
     /// </summary>
     public TimerWidgetViewModel(IServiceProvider services) : base(services)
     {
         ILocalizationService localizationService = services.GetService<ILocalizationService>();
-        localizationService.Provide("Corathing.Widgets.Basics.TimerName", value => WidgetTitle = value);
+        localizationService.Provide(
+            "Corathing.Widgets.Basics.TimerName",
+            value => WidgetTitle = value,
+            fallbackValue: "Timer");
+
+        IsRunning = false;
+        ConfiguringTime = TimeSpan.FromSeconds(10);
+        RamainingTime = TimeSpan.FromSeconds(10);
+
+        _timer = new DispatcherTimer();
+        _timer.Tick += OnTimerTick;
+        _timer.Interval = TimeSpan.FromMilliseconds(1000);
+    }
+
+    public override void OnDestroy()
+    {
+        base.OnDestroy();
+
+        _timer?.Stop();
+        _timer.Tick -= OnTimerTick;
+        _timer = null;
+    }
+
+    private void OnTimerTick(object sender, EventArgs e)
+    {
+        RamainingTime -= TimeSpan.FromSeconds(1);
+    }
+
+    [RelayCommand]
+    public void Start()
+    {
+        if (EditMode == true)
+            return;
+
+        IsRunning = true;
+        _timer.Start();
+    }
+
+    [RelayCommand]
+    public void Stop()
+    {
+        if (EditMode == true)
+            return;
+
+        IsRunning = false;
+        _timer.Stop();
+    }
+
+    [RelayCommand]
+    public void Reset()
+    {
+        if (EditMode == true)
+            return;
+
+        RamainingTime = ConfiguringTime;
     }
 }
 

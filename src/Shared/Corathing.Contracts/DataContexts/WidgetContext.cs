@@ -56,4 +56,8 @@ public partial class WidgetContext : ObservableRecipient
     {
         _services = services;
     }
+
+    public virtual void OnDestroy()
+    {
+    }
 }

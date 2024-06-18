@@ -85,6 +85,25 @@ public class LocalizationService : ILocalizationService, INotifyPropertyChanged
         return "";
     }
 
+    private bool TryGetString(string key, out string value)
+    {
+        value = "";
+        foreach (var resManager in _stringResourceManagers.Values)
+        {
+            if (CachedApplicationCultureInfo == null)
+            {
+                ApplySystemLanguage();
+            }
+            string? resultString = resManager.GetString(key, CachedApplicationCultureInfo);
+            if (!string.IsNullOrEmpty(resultString))
+            {
+                value = resultString;
+                return true;
+            }
+        }
+        return false;
+    }
+
 
     public event PropertyChangedEventHandler? PropertyChanged;
     private void RaisePropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -194,9 +213,17 @@ public class LocalizationService : ILocalizationService, INotifyPropertyChanged
     /// <summary>
     /// <inheritdoc/>
     /// </summary>
-    public void Provide(string key, Action<string> action)
+    public void Provide(string key, Action<string> action, string fallbackValue = "")
     {
-        action?.Invoke(GetString(key));
-        _refreshProvideActions.Add(() => action?.Invoke(GetString(key)));
+        if (string.IsNullOrEmpty(key))
+        {
+            action?.Invoke(fallbackValue);
+            _refreshProvideActions.Add(() => action?.Invoke(fallbackValue));
+        }
+        else
+        {
+            action?.Invoke(TryGetString(key, out string value) ? value : fallbackValue);
+            _refreshProvideActions.Add(() => action?.Invoke(TryGetString(key, out string value) ? value : fallbackValue));
+        }
     }
 }

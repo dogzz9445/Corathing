@@ -9,23 +9,23 @@ using System.Windows.Data;
 
 namespace Corathing.UI.WPF.Controls.CircularProgressBars;
 
-[ValueConversion(typeof(double[]), typeof(Point))]
 public class AngleRadiusToPointConverter : IMultiValueConverter
 {
     public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
     {
-        if (values.Length != 2)
+        if (values.Length != 3)
             return new();
 
         if (values[0] is double angle &&
-            values[1] is double radius)
+            values[1] is double radius &&
+            values[2] is Thickness offset)
         {
             double piang = angle * Math.PI / 180;
 
             double px = Math.Sin(piang) * radius + radius;
             double py = -Math.Cos(piang) * radius + radius;
 
-            return new Point(px, py);
+            return new Point(px + offset.Left, py + offset.Top);
         }
 
         return new();
