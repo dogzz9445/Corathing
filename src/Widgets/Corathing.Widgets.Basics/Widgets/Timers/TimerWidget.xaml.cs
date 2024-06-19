@@ -43,7 +43,7 @@ public partial class TimerWidgetViewModel : WidgetContext
     [ObservableProperty]
     private TimeSpan _configuringTime;
     [ObservableProperty]
-    private TimeSpan _ramainingTime;
+    private TimeSpan _remainingTime;
     [ObservableProperty]
     private bool _isRunning;
     #endregion
@@ -63,9 +63,11 @@ public partial class TimerWidgetViewModel : WidgetContext
             value => WidgetTitle = value,
             fallbackValue: "Timer");
 
+        VisibleTitle = false;
+
         IsRunning = false;
         ConfiguringTime = TimeSpan.FromSeconds(10);
-        RamainingTime = TimeSpan.FromSeconds(10);
+        RemainingTime = TimeSpan.FromSeconds(10);
 
         _timer = new DispatcherTimer();
         _timer.Tick += OnTimerTick;
@@ -83,7 +85,9 @@ public partial class TimerWidgetViewModel : WidgetContext
 
     private void OnTimerTick(object sender, EventArgs e)
     {
-        RamainingTime -= TimeSpan.FromSeconds(1);
+        RemainingTime -= TimeSpan.FromSeconds(1);
+        if (RemainingTime.TotalSeconds == 0)
+            Stop();
     }
 
     [RelayCommand]
@@ -124,7 +128,7 @@ public partial class TimerWidgetViewModel : WidgetContext
         if (EditMode == true)
             return;
 
-        RamainingTime = ConfiguringTime;
+        RemainingTime = ConfiguringTime;
     }
 }
 

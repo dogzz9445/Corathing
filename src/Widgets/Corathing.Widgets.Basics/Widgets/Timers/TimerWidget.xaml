@@ -7,6 +7,7 @@
              xmlns:circulars="clr-namespace:Corathing.UI.WPF.Controls.CircularProgressBars;assembly=Corathing.UI.WPF"
              xmlns:converters="clr-namespace:Corathing.UI.WPF.Converters;assembly=Corathing.UI.WPF"
              xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:behaviors="clr-namespace:Corathing.UI.WPF.Behaviors;assembly=Corathing.UI.WPF"
              x:Name="TimerWidgetMainControl"
              mc:Ignorable="d"
              d:DesignHeight="128" d:DesignWidth="128">
@@ -39,7 +40,7 @@
             </Style>
         </ResourceDictionary>
     </UserControl.Resources>
-    <Grid>
+    <Grid Margin="4">
         <b:Interaction.Triggers>
             <b:EventTrigger EventName="MouseLeftButtonDown"
                                     SourceObject="{Binding ElementName=TimerWidgetMainControl}">
@@ -48,24 +49,42 @@
         </b:Interaction.Triggers>
         <circulars:CircularProgressBar Padding="4"
                                        Style="{StaticResource AutoCircularProgressBar}"
+                                       HighlightStroke="{DynamicResource SecondaryHueMidBrush}"
                                        Maximum="{Binding ConfiguringTime, Converter={StaticResource TimeSpanSecondToDoubleConverter}}"
-                                       Value="{Binding RamainingTime, Converter={StaticResource TimeSpanSecondToDoubleConverter}}"
+                                       Value="{Binding RemainingTime, Converter={StaticResource TimeSpanSecondToDoubleConverter}}"
                                        />
-        <StackPanel VerticalAlignment="Center"
-                    HorizontalAlignment="Center"
-                    Orientation="Vertical">
-            <Button Content="Start"
-                    Foreground="{DynamicResource TextFillColorPrimaryBrush}"
-                    Visibility="{Binding IsRunning, Converter={StaticResource InverseBooleanToVisibilityConverter}}"
-                    Command="{Binding StartCommand}" />
-            <Button Content="Stop"
-                    Foreground="{DynamicResource TextFillColorPrimaryBrush}"
-                    Visibility="{Binding IsRunning, Converter={StaticResource BoolNotNullToVisibilityConverter}}"
-                    Command="{Binding StopCommand}" />
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="2*" />
+                <ColumnDefinition Width="1*" />
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Column="1">
+                <b:Interaction.Behaviors>
+                    <behaviors:TextBlockScaleFontBehavior />
+                </b:Interaction.Behaviors>
+                <TextBlock VerticalAlignment="Center"
+                           HorizontalAlignment="Center"
+                           Text="{Binding RemainingTime, StringFormat=\{0:mm\\:ss\}, FallbackValue=00:00}"
+                           Foreground="{DynamicResource TextFillAccentColorPrimaryBrush}">
+                </TextBlock>
+            </Grid>
+        </Grid>
+        
+        <!-- When Running -->
+        <Grid Visibility="{Binding IsRunning, Converter={StaticResource BoolNotNullToVisibilityConverter}}">
+
+
+        </Grid>
+
+        <!-- When not Running-->
+        <Grid HorizontalAlignment="Center"
+              VerticalAlignment="Bottom"
+              Visibility="{Binding IsRunning, Converter={StaticResource InverseBooleanToVisibilityConverter}}">
             <Button Content="Reset"
                     Foreground="{DynamicResource TextFillColorPrimaryBrush}"
-                    Visibility="{Binding IsRunning, Converter={StaticResource BoolNotNullToVisibilityConverter}}"
+                    Style="{StaticResource MahApps.Styles.Button.MetroSquare}"
                     Command="{Binding ResetCommand}" />
-        </StackPanel>
+        </Grid>
     </Grid>
 </UserControl>
