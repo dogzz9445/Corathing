@@ -4,6 +4,7 @@
         <ResourceDictionary Source="pack://application:,,,/Corathing.UI.WPF;component/Themes/Generic.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
+    <!-- Primary Color -->
     <SolidColorBrush x:Key="PrimaryHueLightBrush"
                      Color="{DynamicResource DarkTheme_PrimaryHueLightColor}" />
     <SolidColorBrush x:Key="PrimaryHueLightForegroundBrush"
@@ -17,6 +18,7 @@
     <SolidColorBrush x:Key="PrimaryHueDarkForegroundBrush"
                      Color="{DynamicResource DarkTheme_PrimaryHueDarkForegroundColor}" />
 
+    <!-- Secondary Color -->
     <SolidColorBrush x:Key="SecondaryHueLightBrush"
                      Color="{DynamicResource DarkTheme_SecondaryHueLightColor}" />
     <SolidColorBrush x:Key="SecondaryHueLightForegroundBrush"
@@ -30,6 +32,7 @@
     <SolidColorBrush x:Key="SecondaryHueDarkForegroundBrush"
                      Color="{DynamicResource DarkTheme_SecondaryHueDarkForegroundColor}" />
 
+    <!-- Alerts -->
     <SolidColorBrush x:Key="PrimaryAlertBrush"
                      Color="{DynamicResource PrimaryAlertDarkColor}" />
     <SolidColorBrush x:Key="SecondaryAlertBrush"
@@ -47,6 +50,7 @@
     <SolidColorBrush x:Key="DarkAlertBrush"
                      Color="{DynamicResource DarkAlertDarkColor}" />
 
+    <!-- Text Fill -->
     <SolidColorBrush x:Key="TextFillColorPrimaryBrush"
                      Color="{StaticResource TextFillColorDarkThemePrimary}" />
     <SolidColorBrush x:Key="TextFillColorSecondaryBrush"
@@ -55,36 +59,61 @@
                      Color="{StaticResource TextFillColorDarkThemeTertiary}" />
     <SolidColorBrush x:Key="TextFillColorDisabledBrush"
                      Color="{StaticResource TextFillColorDarkThemeDisabled}" />
-    <SolidColorBrush x:Key="TextFillPlaceholderColorBrush"
+    <SolidColorBrush x:Key="TextFillColorPlaceholderBrush"
                      Color="{StaticResource TextFillColorDarkThemePlaceholder}" />
+    <SolidColorBrush x:Key="TextFillColorInverseBrush"
+                     Color="{StaticResource TextFillColorDarkThemeInverse}" />
 
+    <!-- Text Fill Accent -->
     <SolidColorBrush x:Key="TextFillAccentColorPrimaryBrush"
-                     Color="{StaticResource LightTheme_SecondaryHueDarkBrush}" />
+                     Color="{StaticResource DarkTheme_SecondaryHueLightColor}" />
     <SolidColorBrush x:Key="TextFillAccentColorSecondaryBrush"
-                     Color="{StaticResource TextFillColorLightThemeSecondary}" />
+                     Color="{StaticResource DarkTheme_SecondaryHueMidColor}" />
     <SolidColorBrush x:Key="TextFillAccentColorTertiaryBrush"
-                     Color="{StaticResource TextFillColorLightThemeTertiary}" />
+                     Color="{StaticResource DarkTheme_SecondaryHueDarkColor}" />
     <SolidColorBrush x:Key="TextFillAccentColorDisabledBrush"
                      Color="{StaticResource TextFillColorLightThemeDisabled}" />
     <SolidColorBrush x:Key="TextFillAccentPlaceholderColorBrush"
                      Color="{StaticResource TextFillColorLightThemePlaceholder}" />
 
+    <!-- Control Background -->
     <SolidColorBrush x:Key="ControlBackground"
-                     Color="{StaticResource ControlFillColorLightThemeDefault}" />
+                     Color="{StaticResource ControlFillAccentColorDarkThemeDefault}" />
     <SolidColorBrush x:Key="ControlBackgroundHover"
-                     Color="{StaticResource ControlFillColorLightThemeSecondary}" />
+                     Color="{StaticResource ControlFillAccentColorDarkThemeSecondary}" />
     <SolidColorBrush x:Key="ControlBackgroundPressed"
-                     Color="{StaticResource ControlFillColorLightThemeTertiary}" />
+                     Color="{StaticResource ControlFillAccentColorDarkThemeTeritary}" />
     <SolidColorBrush x:Key="ControlBackgroundDisabled"
+                     Color="{StaticResource ControlFillColorDarkThemeDisabled}" />
+
+    <!-- Control Accent Background -->
+    <SolidColorBrush x:Key="ControlAccentBackground"
+                     Color="{StaticResource ControlFillAccentColorDarkThemeDefault}" />
+    <SolidColorBrush x:Key="ControlAccentBackgroundHover"
+                     Color="{StaticResource ControlFillAccentColorDarkThemeSecondary}" />
+    <SolidColorBrush x:Key="ControlAccentBackgroundPressed"
+                     Color="{StaticResource ControlFillAccentColorDarkThemeTeritary}" />
+    <SolidColorBrush x:Key="ControlAccentBackgroundDisabled"
                      Color="{StaticResource ControlFillColorLightThemeDisabled}" />
 
+    <!-- Control Foreground -->
     <SolidColorBrush x:Key="ControlForeground"
-                     Color="{StaticResource TextFillColorLightThemePrimary}" />
+                     Color="{StaticResource TextFillColorDarkThemePrimary}" />
     <SolidColorBrush x:Key="ControlForegroundHover"
-                     Color="{StaticResource TextFillColorLightThemePrimary}" />
+                     Color="{StaticResource TextFillColorDarkThemePrimary}" />
     <SolidColorBrush x:Key="ControlForegroundPressed"
-                     Color="{StaticResource TextFillColorLightThemeSecondary}" />
+                     Color="{StaticResource TextFillColorDarkThemeSecondary}" />
     <SolidColorBrush x:Key="ControlForegroundDisabled"
-                     Color="{StaticResource TextFillColorLightThemeDisabled}" />
+                     Color="{StaticResource TextFillColorDarkThemeDisabled}" />
 
+    <!-- Control Accent Foreground -->
+    <SolidColorBrush x:Key="ControlAccentForeground"
+                     Color="{StaticResource TextFillColorDarkThemeInverse}" />
+    <SolidColorBrush x:Key="ControlAccentForegroundHover"
+                     Color="{StaticResource TextFillColorDarkThemeInverse}" />
+    <SolidColorBrush x:Key="ControlAccentForegroundPressed"
+                     Color="{StaticResource TextFillColorDarkThemeInverse}" />
+    <SolidColorBrush x:Key="ControlAccentForegroundDisabled"
+                     Color="{StaticResource TextFillColorLightThemeDisabled}" />
+    
 </ResourceDictionary>

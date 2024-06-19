@@ -18,19 +18,23 @@
             <converters:TimeSpanSecondToDoubleConverter x:Key="TimeSpanSecondToDoubleConverter" />
             <converters:BoolNotNullToVisibilityConverter x:Key="BoolNotNullToVisibilityConverter" />
             <converters:InvertBoolNullToVisibilityConverter x:Key="InvertBoolNullToVisibilityConverter" />
-            <Style TargetType="{x:Type local:TimerWidget}">
-                <Style.Triggers>
-                    <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}"
-                                 Value="True">
-                        <Setter Property="Background"
-                                Value="LightGray" />
-                    </DataTrigger>
 
-                    <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}"
-                                 Value="False">
+            <Style TargetType="{x:Type local:TimerWidget}">
+                <Setter Property="Background"
+                        Value="Transparent" />
+                <Style.Triggers>
+                    <MultiDataTrigger>
+                        <MultiDataTrigger.Conditions>
+                            <Condition Binding="{Binding DataContext.EditMode, RelativeSource={RelativeSource Self}}"
+                                       Value="False" />
+                            <Condition Binding="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}"
+                                       Value="True" />
+                        </MultiDataTrigger.Conditions>
                         <Setter Property="Background"
-                                Value="Transparent" />
-                    </DataTrigger>
+                                Value="{DynamicResource ControlBackgroundHover}" />
+                        <Setter Property="Cursor"
+                                Value="Hand" />
+                    </MultiDataTrigger>
                 </Style.Triggers>
             </Style>
         </ResourceDictionary>

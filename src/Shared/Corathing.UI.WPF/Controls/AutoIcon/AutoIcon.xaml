@@ -7,6 +7,25 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        
+        <!--<ControlTemplate TargetType="{x:Type TabItem}">
+            <Border x:Name="Border">
+                <Border.Background>
+                    <ImageBrush ImageSource="기본.png"
+                                Stretch="None" />
+                </Border.Background>
+            </Border>
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsSelected"
+                         Value="true">
+                    <Setter TargetName="Border"
+                            Property="Background">
+                        <Setter.Value>
+                            <ImageBrush ImageSource="선택.png"
+                                        Stretch="None" />
+                        </Setter.Value>
+                    </Setter>
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>-->
     </Grid>
 </UserControl>

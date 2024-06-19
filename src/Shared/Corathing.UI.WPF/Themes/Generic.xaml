@@ -47,6 +47,7 @@
     <Color x:Key="TextFillColorLightThemeTertiary">#72000000</Color>
     <Color x:Key="TextFillColorLightThemeDisabled">#5C000000</Color>
     <Color x:Key="TextFillColorLightThemePlaceholder">#9E000000</Color>
+    <Color x:Key="TextFillColorLightThemeInverse">#FFFFFF</Color>
 
     <!-- 6. Dark Theme Text Colors -->
     <Color x:Key="TextFillColorDarkThemePrimary">#FFFFFF</Color>
@@ -54,25 +55,39 @@
     <Color x:Key="TextFillColorDarkThemeTertiary">#87FFFFFF</Color>
     <Color x:Key="TextFillColorDarkThemeDisabled">#5DFFFFFF</Color>
     <Color x:Key="TextFillColorDarkThemePlaceholder">#87FFFFFF</Color>
+    <Color x:Key="TextFillColorDarkThemeInverse">#E4000000</Color>
 
     <!-- ================================================================ -->
-    <!-- Cpmtrp; Colors for Event                                         -->
+    <!-- Colors for Event                                                 -->
     <!-- 1. Light Theme Primary Colors                                    -->
     <!-- 2. Dark Theme Primary Colors                                     -->
     <!-- ================================================================ -->
     <Color x:Key="ControlFillColorLightThemeDefault">#B3FFFFFF</Color>
-    <Color x:Key="ControlFillColorLightThemeSecondary">#80F9F9F9</Color>
-    <Color x:Key="ControlFillColorLightThemeTertiary">#4DF9F9F9</Color>
-    <Color x:Key="ControlFillColorLightThemeDisabled">#4DF9F9F9</Color>
+    <Color x:Key="ControlFillColorLightThemeSecondary">#60E8E8E8</Color>
+    <Color x:Key="ControlFillColorLightThemeTertiary">#4DE0E0E0</Color>
+    <Color x:Key="ControlFillColorLightThemeDisabled">#4DE0E0E0</Color>
     <Color x:Key="ControlFillColorLightThemeTransparent">#00FFFFFF</Color>
     <Color x:Key="ControlFillColorLightThemeInputActive">#FFFFFF</Color>
     
-    <Color x:Key="ControlFillColorDarkDefault">#0FFFFFFF</Color>
-    <Color x:Key="ControlFillColorDarkSecondary">#15FFFFFF</Color>
-    <Color x:Key="ControlFillColorDarkTertiary">#08FFFFFF</Color>
-    <Color x:Key="ControlFillColorDarkDisabled">#0BFFFFFF</Color>
-    <Color x:Key="ControlFillColorDarkTransparent">#00FFFFFF</Color>
-    <Color x:Key="ControlFillColorDarkInputActive">#B31E1E1E</Color>
+    <Color x:Key="ControlFillColorDarkThemeDefault">#0FFFFFFF</Color>
+    <Color x:Key="ControlFillColorDarkThemeSecondary">#15FFFFFF</Color>
+    <Color x:Key="ControlFillColorDarkThemeTertiary">#08FFFFFF</Color>
+    <Color x:Key="ControlFillColorDarkThemeDisabled">#0BFFFFFF</Color>
+    <Color x:Key="ControlFillColorDarkThemeTransparent">#00FFFFFF</Color>
+    <Color x:Key="ControlFillColorDarkThemeInputActive">#B31E1E1E</Color>
+    
+    <!-- ================================================================ -->
+    <!-- Accent Colors for Event                                          -->
+    <!-- 1. Light Theme Primary Colors                                    -->
+    <!-- 2. Dark Theme Primary Colors                                     -->
+    <!-- ================================================================ -->
+    <Color x:Key="ControlFillAccentColorLightThemeDefault">#5ea6ff</Color>
+    <Color x:Key="ControlFillAccentColorLightThemeSecondary">#0078d4</Color>
+    <Color x:Key="ControlFillAccentColorLightThemeTeritary">#004da2</Color>
+    
+    <Color x:Key="ControlFillAccentColorDarkThemeDefault">#5ea6ff</Color>
+    <Color x:Key="ControlFillAccentColorDarkThemeSecondary">#0078d4</Color>
+    <Color x:Key="ControlFillAccentColorDarkThemeTeritary">#004da2</Color>
 
     <!-- ================================================================ -->
     <!-- Alert Colors and Brushes from Bootstrap                          -->

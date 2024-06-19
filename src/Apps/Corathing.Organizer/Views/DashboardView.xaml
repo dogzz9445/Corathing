@@ -275,7 +275,20 @@
                               FocusVisualStyle="{x:Null}"
                               Command="{Binding ToggleEditDashboardCommand}"
                               ToolTip="Edit the dashboard">
-                    <ui:SymbolIcon Symbol="Whiteboard24" FontSize="24"/>
+                    <ToggleButton.Style>
+                        <Style TargetType="ToggleButton"
+                               BasedOn="{StaticResource DefaultToggleButtonStyle}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding EditMode}"
+                                             Value="True">
+                                    <Setter Property="Foreground"
+                                            Value="{DynamicResource TextFillColorInverseBrush}" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ToggleButton.Style>
+                    <ui:SymbolIcon Symbol="Whiteboard24"
+                                   FontSize="24" />
                 </ToggleButton>
 
                 <!-- Tool bar (Editing) -->

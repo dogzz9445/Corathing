@@ -65,7 +65,7 @@
                                                        Value="True" />
                                         </MultiDataTrigger.Conditions>
                                         <Setter Property="BorderBrush"
-                                                Value="{DynamicResource CardStrokeColorDefaultSolidBrush}" />
+                                                Value="{DynamicResource SecondaryHueMidBrush}" />
                                     </MultiDataTrigger>
                                     <MultiDataTrigger>
                                         <MultiDataTrigger.Conditions>
@@ -95,7 +95,7 @@
                                            VerticalAlignment="Top"
                                            FontSize="12"
                                            FontWeight="SemiBold"
-                                           Foreground="{DynamicResource CardForeground}"
+                                           Foreground="{DynamicResource TextFillColorPrimaryBrush}"
                                            Text="{Binding WidgetTitle}"
                                            TextTrimming="CharacterEllipsis" />
                             </Border>

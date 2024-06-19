@@ -55,15 +55,17 @@
                      Color="{StaticResource TextFillColorLightThemeTertiary}" />
     <SolidColorBrush x:Key="TextFillColorDisabledBrush"
                      Color="{StaticResource TextFillColorLightThemeDisabled}" />
-    <SolidColorBrush x:Key="TextFillPlaceholderColorBrush"
+    <SolidColorBrush x:Key="TextFillColorPlaceholderBrush"
                      Color="{StaticResource TextFillColorLightThemePlaceholder}" />
+    <SolidColorBrush x:Key="TextFillColorInverseBrush"
+                     Color="{StaticResource TextFillColorLightThemeInverse}" />
 
     <SolidColorBrush x:Key="TextFillAccentColorPrimaryBrush"
-                     Color="{StaticResource LightTheme_SecondaryHueDarkBrush}" />
+                     Color="{StaticResource LightTheme_SecondaryHueDarkColor}" />
     <SolidColorBrush x:Key="TextFillAccentColorSecondaryBrush"
-                     Color="{StaticResource TextFillColorLightThemeSecondary}" />
+                     Color="{StaticResource LightTheme_SecondaryHueMidColor}" />
     <SolidColorBrush x:Key="TextFillAccentColorTertiaryBrush"
-                     Color="{StaticResource TextFillColorLightThemeTertiary}" />
+                     Color="{StaticResource LightTheme_SecondaryHueLightColor}" />
     <SolidColorBrush x:Key="TextFillAccentColorDisabledBrush"
                      Color="{StaticResource TextFillColorLightThemeDisabled}" />
     <SolidColorBrush x:Key="TextFillAccentPlaceholderColorBrush"
@@ -78,6 +80,15 @@
     <SolidColorBrush x:Key="ControlBackgroundDisabled"
                      Color="{StaticResource ControlFillColorLightThemeDisabled}" />
 
+    <SolidColorBrush x:Key="ControlAccentBackground"
+                     Color="{StaticResource ControlFillAccentColorLightThemeDefault}" />
+    <SolidColorBrush x:Key="ControlAccentBackgroundHover"
+                     Color="{StaticResource ControlFillAccentColorLightThemeSecondary}" />
+    <SolidColorBrush x:Key="ControlAccentBackgroundPressed"
+                     Color="{StaticResource ControlFillAccentColorLightThemeTeritary}" />
+    <SolidColorBrush x:Key="ControlAccentBackgroundDisabled"
+                     Color="{StaticResource ControlFillColorLightThemeDisabled}" />
+
     <SolidColorBrush x:Key="ControlForeground"
                      Color="{StaticResource TextFillColorLightThemePrimary}" />
     <SolidColorBrush x:Key="ControlForegroundHover"
@@ -86,4 +97,14 @@
                      Color="{StaticResource TextFillColorLightThemeSecondary}" />
     <SolidColorBrush x:Key="ControlForegroundDisabled"
                      Color="{StaticResource TextFillColorLightThemeDisabled}" />
+
+    <SolidColorBrush x:Key="ControlAccentForeground"
+                     Color="{StaticResource TextFillColorLightThemeInverse}" />
+    <SolidColorBrush x:Key="ControlAccentForegroundHover"
+                     Color="{StaticResource TextFillColorLightThemeInverse}" />
+    <SolidColorBrush x:Key="ControlAccentForegroundPressed"
+                     Color="{StaticResource TextFillColorLightThemeInverse}" />
+    <SolidColorBrush x:Key="ControlAccentForegroundDisabled"
+                     Color="{StaticResource TextFillColorLightThemeDisabled}" />
+
 </ResourceDictionary>
