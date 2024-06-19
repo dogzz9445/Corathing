@@ -3,6 +3,10 @@
 
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="pack://application:,,,/Corathing.UI.WPF;component/Controls/CircularProgressBars/AutoCircularProgressBar.xaml" />
+
+        <ResourceDictionary Source="pack://application:,,,/Corathing.UI.WPF;component/Styles/Button.xaml" />
     </ResourceDictionary.MergedDictionaries>
+
+    <CornerRadius x:Key="ControlCornerRadius">4,4,4,4</CornerRadius>
 
 </ResourceDictionary>

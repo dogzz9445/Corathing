@@ -155,24 +155,8 @@
                                 CommandParameter="{Binding DataContext, RelativeSource={RelativeSource AncestorType={x:Type TabItem}}}"-->
 
                         <Button Cursor="Arrow"
-                                ToolTip="Configure Workflow">
-                            <Button.Style>
-                                <Style BasedOn="{StaticResource ButtonNoStyle}"
-                                       TargetType="{x:Type Button}">
-                                    <Style.Triggers>
-                                        <Trigger Property="IsMouseOver"
-                                                 Value="True">
-                                            <Setter Property="Background"
-                                                    Value="LightGray" />
-                                        </Trigger>
-                                        <Trigger Property="IsPressed"
-                                                 Value="True">
-                                            <Setter Property="Background"
-                                                    Value="DarkGray" />
-                                        </Trigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Button.Style>
+                                ToolTip="Configure Workflow"
+                                Style="{DynamicResource ButtonNoStyleWithEvent}">
 
                             <Path Width="11"
                                   Height="11"
@@ -185,25 +169,8 @@
                                 CommandParameter="{Binding DataContext, RelativeSource={RelativeSource AncestorType={x:Type TabItem}}}"-->
 
                         <Button Cursor="Arrow"
-                                ToolTip="Remove Widget">
-                            <Button.Style>
-                                <Style BasedOn="{StaticResource ButtonNoStyle}"
-                                       TargetType="{x:Type Button}">
-                                    <Style.Triggers>
-                                        <Trigger Property="IsMouseOver"
-                                                 Value="True">
-                                            <Setter Property="Background"
-                                                    Value="LightGray" />
-                                        </Trigger>
-                                        <Trigger Property="IsPressed"
-                                                 Value="True">
-                                            <Setter Property="Background"
-                                                    Value="DarkGray" />
-                                        </Trigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Button.Style>
-
+                                ToolTip="Remove Workflow"
+                                Style="{DynamicResource ButtonNoStyleWithEvent}">
                             <Path Width="10"
                                   Height="10"
                                   Margin="5,5,4,4"

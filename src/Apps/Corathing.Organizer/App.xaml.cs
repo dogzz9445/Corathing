@@ -82,11 +82,6 @@ public partial class App : Application
         if (themeService != null)
         {
             themeService.Register(
-                "Corathing.Dashboards.WPF",
-                "pack://application:,,,/Corathing.Dashboards.WPF;component/Themes/Light.xaml",
-                "pack://application:,,,/Corathing.Dashboards.WPF;component/Themes/Dark.xaml"
-                );
-            themeService.Register(
                 "MaterialDesignThemes.Wpf",
                 "pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml",
                 "pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Dark.xaml"
@@ -95,6 +90,11 @@ public partial class App : Application
                 "MahApps.Metro",
                 "pack://application:,,,/MahApps.Metro;component/Styles/Themes/Light.Blue.xaml",
                 "pack://application:,,,/MahApps.Metro;component/Styles/Themes/Dark.Cyan.xaml"
+                );
+            themeService.Register(
+                "Corathing.UI.WPF",
+                "pack://application:,,,/Corathing.UI.WPF;component/Themes/Light.xaml",
+                "pack://application:,,,/Corathing.UI.WPF;component/Themes/Dark.xaml"
                 );
 
             if (appPreferences.UseSystemTheme)

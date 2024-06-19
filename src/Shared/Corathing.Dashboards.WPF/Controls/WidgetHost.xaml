@@ -12,8 +12,8 @@
     <ContentControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="pack://application:,,,/Corathing.Dashboards.WPF;component/Themes/Generic.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/Corathing.Dashboards.WPF;component/Styles/CustomStyles.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/Corathing.UI.WPF;component/Styles/Controls.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/Corathing.Dashboards.WPF;component/Controls/Styles.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <BooleanToVisibilityConverter x:Key="BoolToVis" />
         </ResourceDictionary>
@@ -34,7 +34,7 @@
                             <DropShadowEffect BlurRadius="20"
                                               Opacity="0.9"
                                               ShadowDepth="10"
-                                              Color="{DynamicResource LightTheme_PrimaryHueDarkBrush}" />
+                                              Color="DarkGray" />
                         </Border.Effect>
                     </Border>
                     <Border HorizontalAlignment="Stretch"
@@ -45,7 +45,7 @@
                                 <Setter Property="FocusVisualStyle"
                                         Value="{DynamicResource DefaultControlFocusVisualStyle}" />
                                 <Setter Property="Background"
-                                        Value="{DynamicResource CardBackground}" />
+                                        Value="{DynamicResource ControlBackground}" />
                                 <Setter Property="BorderBrush"
                                         Value="{DynamicResource CardBorderBrush}" />
                                 <Setter Property="BorderThickness"
@@ -57,11 +57,6 @@
                                 <Setter Property="OverridesDefaultStyle"
                                         Value="True" />
                                 <Style.Triggers>
-                                    <!--<DataTrigger Binding="{Binding EditMode, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:DashboardHost}}}"
-                                                 Value="True">
-                                        <Setter Property="Cursor"
-                                                Value="SizeAll" />
-                                    </DataTrigger>-->
                                     <MultiDataTrigger>
                                         <MultiDataTrigger.Conditions>
                                             <Condition Binding="{Binding EditMode, RelativeSource={RelativeSource AncestorType={x:Type local:WidgetHost}, Mode=FindAncestor}}"
@@ -70,7 +65,7 @@
                                                        Value="True" />
                                         </MultiDataTrigger.Conditions>
                                         <Setter Property="BorderBrush"
-                                                Value="{DynamicResource PrimaryHueLightForegroundBrush}" />
+                                                Value="{DynamicResource CardStrokeColorDefaultSolidBrush}" />
                                     </MultiDataTrigger>
                                     <MultiDataTrigger>
                                         <MultiDataTrigger.Conditions>
@@ -80,7 +75,7 @@
                                                        Value="False" />
                                         </MultiDataTrigger.Conditions>
                                         <Setter Property="BorderBrush"
-                                                Value="LightGray" />
+                                                Value="{DynamicResource CardStrokeColorDefaultSolidBrush}" />
                                     </MultiDataTrigger>
                                 </Style.Triggers>
                             </Style>
@@ -131,24 +126,8 @@
                                 <Button Command="{Binding DataContext.ConfigureWidgetCommand, RelativeSource={RelativeSource AncestorType={x:Type local:DashboardHost}, Mode=FindAncestor}}"
                                         CommandParameter="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:WidgetHost}}}"
                                         Cursor="Arrow"
-                                        ToolTip="Configure Widget">
-                                    <Button.Style>
-                                        <Style BasedOn="{StaticResource ButtonNoStyle}"
-                                               TargetType="{x:Type Button}">
-                                            <Style.Triggers>
-                                                <Trigger Property="IsMouseOver"
-                                                         Value="True">
-                                                    <Setter Property="Background"
-                                                            Value="LightGray" />
-                                                </Trigger>
-                                                <Trigger Property="IsPressed"
-                                                         Value="True">
-                                                    <Setter Property="Background"
-                                                            Value="DarkGray" />
-                                                </Trigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </Button.Style>
+                                        ToolTip="Configure Widget"
+                                        Style="{StaticResource ButtonNoStyleWithEvent}">
 
                                     <Path Width="11"
                                           Height="11"
@@ -161,25 +140,9 @@
                                 <Button Command="{Binding DataContext.RemoveWidgetCommand, RelativeSource={RelativeSource AncestorType={x:Type local:DashboardHost}, Mode=FindAncestor}}"
                                         CommandParameter="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:WidgetHost}}}"
                                         Cursor="Arrow"
-                                        ToolTip="Remove Widget">
-                                    <Button.Style>
-                                        <Style BasedOn="{StaticResource ButtonNoStyle}"
-                                               TargetType="{x:Type Button}">
-                                            <Style.Triggers>
-                                                <Trigger Property="IsMouseOver"
-                                                         Value="True">
-                                                    <Setter Property="Background"
-                                                            Value="LightGray" />
-                                                </Trigger>
-                                                <Trigger Property="IsPressed"
-                                                         Value="True">
-                                                    <Setter Property="Background"
-                                                            Value="DarkGray" />
-                                                </Trigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </Button.Style>
-
+                                        ToolTip="Remove Widget"
+                                        Style="{StaticResource ButtonNoStyleWithEvent}">
+                                    
                                     <Path Width="10"
                                           Height="10"
                                           Margin="5,5,4,4"

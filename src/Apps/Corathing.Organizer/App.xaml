@@ -13,18 +13,11 @@
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesign3.Defaults.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/MaterialDesignColor.Grey.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Secondary/MaterialDesignColor.Indigo.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/Corathing.Dashboards.WPF;component/Themes/Light.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/Corathing.Dashboards.WPF;component/Styles/CustomStyles.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/Corathing.UI.WPF;component/Themes/Light.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/Corathing.UI.WPF;component/Styles/Controls.xaml" />
                 <ui:ThemesDictionary Theme="Light" />
                 <ui:ControlsDictionary />
             </ResourceDictionary.MergedDictionaries>
-
-            <Style TargetType="{x:Type Menu}">
-                <Setter Property="HorizontalContentAlignment"
-                        Value="Left" />
-                <Setter Property="VerticalContentAlignment"
-                        Value="Center" />
-            </Style>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

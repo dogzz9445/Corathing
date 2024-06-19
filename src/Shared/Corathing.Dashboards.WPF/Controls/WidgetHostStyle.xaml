@@ -2,10 +2,11 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:controls="clr-namespace:Corathing.Dashboards.WPF.Controls">
     <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="pack://application:,,,/Corathing.Dashboards.WPF;component/Themes/Generic.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/Corathing.Dashboards.WPF;component/Styles/CustomStyles.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Corathing.Dashboards.WPF;component/Controls/Styles.xaml" />
     </ResourceDictionary.MergedDictionaries>
     <BooleanToVisibilityConverter x:Key="BoolToVis" />
+    
+    <CornerRadius x:Key="ControlCornerRadius">4,4,4,4</CornerRadius>
 
     <Style TargetType="{x:Type controls:WidgetHost}"
            x:Key="DefaultWidgetHostStyle">

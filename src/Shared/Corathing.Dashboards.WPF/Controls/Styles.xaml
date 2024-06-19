@@ -1,11 +1,8 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:converters="clr-namespace:Corathing.Dashboards.WPF.Converters">
-    <BooleanToVisibilityConverter x:Key="BoolToVis" />
-    <converters:InvertBoolToVisibilityConverter x:Key="InvertBoolToVis" />
+
     <converters:DashboardSelectorIsCheckedConverter x:Key="DashboardSelectorIsCheckedConverter" />
-    <converters:NullToVisibilityConverter x:Key="NullToVisibilityConverter" />
-    <converters:InvertNullToVisibilityConverter x:Key="InvertNullToVisibilityConverter" />
 
     <Style TargetType="{x:Type Button}">
         <Setter Property="Background"
@@ -171,5 +168,4 @@
             </Setter.Value>
         </Setter>
     </Style>
-
 </ResourceDictionary>
