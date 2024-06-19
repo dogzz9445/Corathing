@@ -21,8 +21,8 @@ namespace Corathing.Dashboards.Bases
                 {
                     X = 0,
                     Y = 0,
-                    W = 2,
-                    H = 2,
+                    W = context.MinColumns ?? 2,
+                    H = context.MinRows ?? 2,
                 }
             };
         #endregion

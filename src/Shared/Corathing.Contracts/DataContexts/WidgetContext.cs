@@ -27,6 +27,10 @@ public partial class WidgetContext : ObservableRecipient
     private bool? _visibleTitle;
     [ObservableProperty]
     private bool? _editMode;
+    [ObservableProperty]
+    private int? _minColumns;
+    [ObservableProperty]
+    private int? _minRows;
     #endregion
 
     [ObservableProperty]
@@ -45,6 +49,9 @@ public partial class WidgetContext : ObservableRecipient
         WidgetTitle = "Widget";
         VisibleTitle = true;
         EditMode = true;
+
+        MinColumns = 2;
+        MinRows = 2;
 
         IsSelecting = false;
         IsDragging = false;

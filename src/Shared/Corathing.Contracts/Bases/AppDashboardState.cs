@@ -15,4 +15,5 @@ public class AppDashboardState
     public Dictionary<Guid, ProjectState> Projects { get; set; }
     public Dictionary<Guid, WorkflowState> Workflows { get; set; }
     public Dictionary<Guid, WidgetState> Widgets { get; set; }
+
 }

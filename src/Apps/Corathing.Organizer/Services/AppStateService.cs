@@ -8,6 +8,7 @@ using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
 using System.Text.Json.Serialization.Metadata;
 using System.Threading.Tasks;
+using System.Windows;
 
 using Corathing.Contracts.Bases;
 using Corathing.Contracts.Factories;
@@ -154,19 +155,64 @@ public class AppStateService : IAppStateService
     }
 
 
-    public void UpdateProject(ProjectState project)
+    public async void UpdateProject(ProjectState project)
     {
+        if (_cachedAppDashboardState == null)
+            await ReadOrCreateAppStateByAppSettings();
 
+        if (project == null)
+        {
+            MessageBox.Show("Project is null");
+            return;
+        }
+
+        if (_cachedAppDashboardState.Projects == null)
+            _cachedAppDashboardState.Projects = new Dictionary<Guid, ProjectState>();
+
+        _cachedAppDashboardState.Projects.ContainsKey(project.Id);
+        _cachedAppDashboardState.Projects[project.Id] = project;
+
+        await WrtieAppState();
     }
 
-    public void UpdateWorkflow(WorkflowState workflow)
+    public async void UpdateWorkflow(WorkflowState workflow)
     {
+        if (_cachedAppDashboardState == null)
+            await ReadOrCreateAppStateByAppSettings();
 
+        if (workflow == null)
+        {
+            MessageBox.Show("Workflow is null");
+            return;
+        }
+
+        if (_cachedAppDashboardState.Workflows == null)
+            _cachedAppDashboardState.Workflows = new Dictionary<Guid, WorkflowState>();
+
+        _cachedAppDashboardState.Workflows.ContainsKey(workflow.Id);
+        _cachedAppDashboardState.Workflows[workflow.Id] = workflow;
+
+        await WrtieAppState();
     }
 
-    public void UpdateWidget(WidgetState widget)
+    public async void UpdateWidget(WidgetState widget)
     {
+        if (_cachedAppDashboardState == null)
+            await ReadOrCreateAppStateByAppSettings();
 
+        if (widget == null)
+        {
+            MessageBox.Show("Widget is null");
+            return;
+        }
+
+        if (_cachedAppDashboardState.Widgets == null)
+            _cachedAppDashboardState.Widgets = new Dictionary<Guid, WidgetState>();
+
+        _cachedAppDashboardState.Widgets.ContainsKey(widget.Id);
+        _cachedAppDashboardState.Widgets[widget.Id] = widget;
+
+        await WrtieAppState();
     }
 
     public void UpdateOrAdd(Guid id, object value)
@@ -292,7 +338,13 @@ public class AppStateService : IAppStateService
         }
     }
 
-    private async Task WrtieAppState(string json)
+    private async Task PendingWriteAppState()
+    {
+        // lock or Write
+        await WrtieAppState();
+    }
+
+    private async Task WrtieAppState()
     {
         string jsonString = await File.ReadAllTextAsync(GetAppStatePathByAppSettings());
         if (string.IsNullOrEmpty(jsonString))
