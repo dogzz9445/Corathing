@@ -87,6 +87,18 @@ public partial class TimerWidgetViewModel : WidgetContext
     }
 
     [RelayCommand]
+    public void ToggleTimer()
+    {
+        if (EditMode == true)
+            return;
+
+        if (IsRunning)
+            Stop();
+        else
+            Start();
+    }
+
+    [RelayCommand]
     public void Start()
     {
         if (EditMode == true)

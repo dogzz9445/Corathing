@@ -6,6 +6,8 @@
              xmlns:local="clr-namespace:Corathing.Widgets.Basics.Widgets.Timers"
              xmlns:circulars="clr-namespace:Corathing.UI.WPF.Controls.CircularProgressBars;assembly=Corathing.UI.WPF"
              xmlns:converters="clr-namespace:Corathing.UI.WPF.Converters;assembly=Corathing.UI.WPF"
+             xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
+             x:Name="TimerWidgetMainControl"
              mc:Ignorable="d"
              d:DesignHeight="128" d:DesignWidth="128">
     <UserControl.Resources>
@@ -16,9 +18,30 @@
             <converters:TimeSpanSecondToDoubleConverter x:Key="TimeSpanSecondToDoubleConverter" />
             <converters:BoolNotNullToVisibilityConverter x:Key="BoolNotNullToVisibilityConverter" />
             <converters:InvertBoolNullToVisibilityConverter x:Key="InvertBoolNullToVisibilityConverter" />
+            <Style TargetType="{x:Type local:TimerWidget}">
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}"
+                                 Value="True">
+                        <Setter Property="Background"
+                                Value="LightGray" />
+                    </DataTrigger>
+
+                    <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}"
+                                 Value="False">
+                        <Setter Property="Background"
+                                Value="Transparent" />
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid>
+        <b:Interaction.Triggers>
+            <b:EventTrigger EventName="MouseLeftButtonDown"
+                                    SourceObject="{Binding ElementName=TimerWidgetMainControl}">
+                <b:InvokeCommandAction Command="{Binding ToggleTimerCommand}" />
+            </b:EventTrigger>
+        </b:Interaction.Triggers>
         <circulars:CircularProgressBar Padding="4"
                                        Style="{StaticResource AutoCircularProgressBar}"
                                        Maximum="{Binding ConfiguringTime, Converter={StaticResource TimeSpanSecondToDoubleConverter}}"
