@@ -30,6 +30,20 @@ public class ProjectState : IProjectState
         };
     }
 
+    public static ProjectState Create()
+    {
+        return new ProjectState
+        {
+            Id = Guid.NewGuid(),
+            Settings = new ProjectSettings
+            {
+                Name = "My Project"
+            },
+            WorkflowIds = new List<Guid>(),
+            CurrentWorkflowId = Guid.Empty
+        };
+    }
+
     public static string GenerateProjectName(List<string> usedNames)
     {
         return NameHelper.GenerateUniqueName("Project", usedNames);

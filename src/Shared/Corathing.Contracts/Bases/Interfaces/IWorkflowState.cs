@@ -20,6 +20,7 @@ public class WorkflowSettings : IWorkflowSettings
 
 public interface IWorkflowState : IEntity
 {
+    public List<Guid> WidgetIds { get; set; }
     List<WidgetLayout> Layouts { get; }
     IWorkflowSettings Settings { get; }
     int MaxColumns { get; }

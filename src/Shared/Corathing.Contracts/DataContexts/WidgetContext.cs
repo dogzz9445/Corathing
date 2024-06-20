@@ -33,12 +33,14 @@ public partial class WidgetContext : ObservableRecipient
     [ObservableProperty]
     private bool? _visibleTitle;
     [ObservableProperty]
-    private bool? _editMode;
-    [ObservableProperty]
     private int? _minColumns;
     [ObservableProperty]
     private int? _minRows;
     #endregion
+
+    #region Only Used Properties in Context
+    [ObservableProperty]
+    private bool? _editMode;
 
     [ObservableProperty]
     private bool? _isSelecting;
@@ -46,28 +48,24 @@ public partial class WidgetContext : ObservableRecipient
     private bool? _isDragging;
     [ObservableProperty]
     private bool? _isResizing;
-    [ObservableProperty]
-    private bool? _isEditing;
+    #endregion
 
     public WidgetContext()
     {
-        EditMode = true;
-
         MinColumns = 2;
         MinRows = 2;
 
         IsSelecting = false;
         IsDragging = false;
         IsResizing = false;
-        IsEditing = false;
     }
 
     public WidgetContext(IServiceProvider services, WidgetState state) : this()
     {
         _services = services;
 
-        WidgetId = state.Id;
         State = state;
+        WidgetId = state.Id;
         WidgetTitle = state.CoreSettings.Title;
         VisibleTitle = state.CoreSettings.VisibleTitle;
     }

@@ -18,7 +18,6 @@ using Corathing.Contracts.Bases;
 using Corathing.Contracts.Bases.Interfaces;
 using Corathing.Contracts.Entries;
 using Corathing.Contracts.Services;
-using Corathing.Dashboards.Bases;
 using Corathing.Dashboards.WPF.Controls;
 using Corathing.Organizer.Controls;
 using Corathing.Organizer.Extensions;
@@ -45,6 +44,7 @@ namespace Corathing.Organizer.ViewModels;
 public partial class DashboardViewModel : ObservableObject
 {
     #region Private Fields
+    private IServiceProvider _services;
 
     [ObservableProperty]
     private ObservableCollection<ProjectContext>? _projects;
@@ -224,6 +224,8 @@ public partial class DashboardViewModel : ObservableObject
     /// <returns>Task.</returns>
     public Task Start(IServiceProvider services)
     {
+        _services = services;
+
         // --------------------------------------------------------------------------
         // Load Component Data
         // --------------------------------------------------------------------------
@@ -237,19 +239,21 @@ public partial class DashboardViewModel : ObservableObject
             services.GetService<WorkflowContext>()
         });
 
-        // --------------------------------------------------------------------------
-        // Add Widget Menu
-        // --------------------------------------------------------------------------
+        UpdateAvailableWidgets();
+
+        return Task.CompletedTask;
+    }
+
+    private void UpdateAvailableWidgets()
+    {
+        AddWidgetMenuItemViewModels.Clear();
         AddWidgetMenuItemViewModels.Add(new MenuItemViewModel()
         {
             Header = "Add Widget",
             MenuItems = new ObservableCollection<MenuItemViewModel>(),
         });
 
-        // --------------------------------------------------------------------------
-        // Add Widget Menu
-        // --------------------------------------------------------------------------
-        IPackageService packageService = services.GetService<IPackageService>();
+        IPackageService packageService = _services.GetService<IPackageService>();
         foreach (var widget in packageService.GetAvailableWidgets())
         {
             var fullMenuHeader = widget.Info.MenuPath;
@@ -269,12 +273,7 @@ public partial class DashboardViewModel : ObservableObject
                     parentMenuCollection.Add(new MenuItemViewModel()
                     {
                         Header = splitedMenuHeaders[i],
-                        Command = new RelayCommand(() =>
-                        {
-                            var context = widget.CreateWidget();
-                            context.Layout = WidgetLayoutUtils.Create(context);
-                            SelectedProject.SelectedWorkflow.Widgets.Add(context);
-                        }, () => true),
+                        Command = new RelayCommand(() => AppendWidget(widget), () => true),
                     });
                 }
                 else
@@ -291,8 +290,24 @@ public partial class DashboardViewModel : ObservableObject
             }
 
         }
+    }
 
-        return Task.CompletedTask;
+    private void AppendWidget(CoraWidgetGenerator? generator)
+    {
+        var dialogService = _services.GetService<IDialogService>();
+        if (SelectedProject == null)
+        {
+            dialogService.ShowErrorMeessage("Empty Proejct");
+            return;
+        }
+        if (SelectedProject.SelectedWorkflow == null)
+        {
+            dialogService.ShowErrorMeessage("Empty Workflow");
+            return;
+        }
+
+        var context = generator.CreateWidget();
+        SelectedProject.SelectedWorkflow.Widgets.Add(context);
     }
 
     #endregion Public Methods

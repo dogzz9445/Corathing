@@ -17,6 +17,25 @@ public class AppDashboardState
     public Dictionary<Guid, WorkflowState> Workflows { get; set; }
     public Dictionary<Guid, WidgetState> Widgets { get; set; }
 
+    public ProjectState AddProject()
+    {
+        if (Projects == null)
+            Projects = new Dictionary<Guid, ProjectState>();
+
+        var project = new ProjectState();
+        Projects[project.Id] = project;
+        return project;
+    }
+
+    public WorkflowState AddWorkflow()
+    {
+        if (Workflows == null)
+            Workflows = new Dictionary<Guid, WorkflowState>();
+
+        var workflow = new WorkflowState();
+        Workflows[workflow.Id] = workflow;
+        return workflow;
+    }
 
     public void UpdateProject(ProjectState project)
     {

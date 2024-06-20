@@ -4,9 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Corathing.Contracts.Services;
+namespace Corathing.Contracts.Factories;
 
-public interface IDialogService
+public class WidgetStateUtils
 {
-    void ShowErrorMeessage(string message);
 }

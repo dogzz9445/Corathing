@@ -73,9 +73,9 @@ public class PackageService : IPackageService
         return _widgetGenerators.Values.ToList();
     }
 
-    public bool TryGetWidgetGenerator(Type viewType, out CoraWidgetGenerator generator)
+    public bool TryGetWidgetGenerator(Type contextType, out CoraWidgetGenerator generator)
     {
-        return _widgetGenerators.TryGetValue(viewType, out generator);
+        return _widgetGenerators.TryGetValue(contextType, out generator);
     }
 
     public void LoadAssembly(Assembly assembly)

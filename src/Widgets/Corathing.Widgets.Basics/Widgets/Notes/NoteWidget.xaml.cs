@@ -37,7 +37,7 @@ public partial class NoteWidgetViewModel : WidgetContext
     /// <summary>
     /// Initializes a new instance of the <see cref="OneByOneViewModel"/> class.
     /// </summary>
-    public NoteWidgetViewModel(IServiceProvider services) : base(services)
+    public NoteWidgetViewModel(IServiceProvider services, WidgetState state) : base(services, state)
     {
         ILocalizationService localizationService = services.GetService<ILocalizationService>();
         localizationService.Provide("Corathing.Widgets.Basics.NoteName", value => WidgetTitle = value);

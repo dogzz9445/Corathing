@@ -27,9 +27,9 @@ using System.ComponentModel;
 using Corathing.Dashboards.WPF.Bindings;
 using Corathing.Contracts.Bases.Interfaces;
 using System.Windows.Media.Animation;
-using Corathing.Dashboards.Bases;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.Specialized;
+using Corathing.Contracts.Factories;
 
 namespace Corathing.Dashboards.WPF.Controls
 {
@@ -295,6 +295,7 @@ namespace Corathing.Dashboards.WPF.Controls
                 return;
 
             var widgetContext = widgetHost.DataContext as WidgetContext;
+            widgetContext.EditMode = EditMode;
 
             Debug.Assert(widgetContext != null, nameof(widgetContext) + " != null");
 
@@ -349,7 +350,7 @@ namespace Corathing.Dashboards.WPF.Controls
                 DashboardScrollViewer.ScrollToVerticalOffset(
                     widgetEndVerticalLocation - widgetsHeight - ScrollIncrement);
 
-            if(LayoutChangedCommand != null && LayoutChangedCommand.CanExecute(this))
+            if(LayoutChangedCommand != null && LayoutChangedCommand.CanExecute(true))
             {
                 LayoutChangedCommand.Execute(this);
             }
@@ -365,7 +366,7 @@ namespace Corathing.Dashboards.WPF.Controls
                 {
                     Trace.WriteLine("Item is removed");
 
-                    if (LayoutChangedCommand != null && LayoutChangedCommand.CanExecute(this))
+                    if (LayoutChangedCommand != null && LayoutChangedCommand.CanExecute(null))
                     {
                         LayoutChangedCommand.Execute(this);
                     }
@@ -1199,8 +1200,7 @@ namespace Corathing.Dashboards.WPF.Controls
         private IEnumerable<WidgetLayout> WidgetsAtLocation(IWidgetLayoutWH widgetSpan, IWidgetLayoutXY widgetIndex)
         {
             // Need to see if a widget is already at the specific row and column
-            return _widgetLayouts
-                .Where(widgetData => WidgetLayoutUtils.ItemsCollide(widgetData, widgetIndex, widgetSpan));
+            return _widgetLayouts.Where(widgetData => WidgetLayoutUtils.ItemsCollide(widgetData, widgetIndex, widgetSpan));
         }
 
         /// <summary>

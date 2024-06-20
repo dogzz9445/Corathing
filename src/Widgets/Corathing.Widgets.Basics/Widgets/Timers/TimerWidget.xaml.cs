@@ -55,7 +55,7 @@ public partial class TimerWidgetViewModel : WidgetContext
     /// <summary>
     /// Initializes a new instance of the <see cref="OneByOneViewModel"/> class.
     /// </summary>
-    public TimerWidgetViewModel(IServiceProvider services) : base(services)
+    public TimerWidgetViewModel(IServiceProvider services, WidgetState state) : base(services, state)
     {
         ILocalizationService localizationService = services.GetService<ILocalizationService>();
         localizationService.Provide(

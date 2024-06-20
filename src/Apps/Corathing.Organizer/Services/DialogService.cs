@@ -10,4 +10,8 @@ namespace Corathing.Organizer.Services;
 
 public class DialogService : IDialogService
 {
+    public void ShowErrorMeessage(string message)
+    {
+        throw new NotImplementedException();
+    }
 }

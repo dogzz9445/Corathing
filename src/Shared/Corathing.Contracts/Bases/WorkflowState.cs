@@ -12,6 +12,7 @@ namespace Corathing.Contracts.Bases;
 public class WorkflowState : IWorkflowState
 {
     public Guid Id { get; set; }
+    public List<Guid> WidgetIds { get; set; }
     public List<WidgetLayout> Layouts { get; set; }
     public IWorkflowSettings Settings { get; set; }
     public int MaxColumns { get; set; } = 16;
@@ -29,6 +30,17 @@ public class WorkflowState : IWorkflowState
             }
         };
     }
+
+    public static WorkflowState Create()
+        => new WorkflowState
+        {
+            Id = Guid.NewGuid(),
+            Layouts = new List<WidgetLayout>(),
+            Settings = new WorkflowSettings
+            {
+                Name = "My Workflow"
+            }
+        };
 
     public static string GenerateWorkflowName(List<string> usedNames)
     {

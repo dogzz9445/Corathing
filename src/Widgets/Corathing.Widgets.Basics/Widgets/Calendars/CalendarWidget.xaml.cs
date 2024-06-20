@@ -46,8 +46,8 @@ public partial class CalendarWidgetViewModel : WidgetContext
     /// Initializes a new instance of the <see cref="OneByOneViewModel"/> class.
     /// </summary>
     public CalendarWidgetViewModel(
-        IServiceProvider services)
-        : base(services)
+        IServiceProvider services, WidgetState state)
+        : base(services, state)
     {
         ILocalizationService localizationService = services.GetService<ILocalizationService>();
         localizationService.Provide("Corathing.Widgets.Basics.CalendarName", value => WidgetTitle = value);

@@ -37,7 +37,7 @@ public partial class LinkOpenerWidgetViewModel : WidgetContext
     /// <summary>
     /// Initializes a new instance of the <see cref="OneByOneViewModel"/> class.
     /// </summary>
-    public LinkOpenerWidgetViewModel(IServiceProvider services) : base(services)
+    public LinkOpenerWidgetViewModel(IServiceProvider services, WidgetState state) : base(services, state)
     {
         ILocalizationService localizationService = services.GetService<ILocalizationService>();
         localizationService.Provide("Corathing.Widgets.Basics.LinkOpenerName", value => WidgetTitle = value);

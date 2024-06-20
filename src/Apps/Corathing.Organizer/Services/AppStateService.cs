@@ -203,6 +203,22 @@ public class AppStateService : IAppStateService
         await PendingWriteAppState();
     }
 
+    public ProjectState AddProject()
+    {
+
+        return 
+    }
+
+    public WorkflowState AddWorkflow()
+    {
+
+    }
+
+    public WidgetState AddWidgetState()
+    {
+
+    }
+
     #region Private Methods
 
     private async Task<AppSettings> ReadOrCreateAppSettingsFromAppPath()
@@ -321,6 +337,11 @@ public class AppStateService : IAppStateService
     private async Task PendingWriteAppState()
     {
         // lock or Write
+        // await WrtieAppState();
+    }
+
+    public async void UpdateForce()
+    {
         await WrtieAppState();
     }
 

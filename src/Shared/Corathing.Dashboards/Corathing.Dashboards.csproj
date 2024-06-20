@@ -10,4 +10,8 @@
     <ProjectReference Include="..\Corathing.Contracts\Corathing.Contracts.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Bases\" />
+  </ItemGroup>
+
 </Project>

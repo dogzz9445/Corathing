@@ -43,7 +43,7 @@ public partial class MonacoWidgetViewModel : WidgetContext
     [ObservableProperty]
     private WebView2 _webView;
 
-    public MonacoWidgetViewModel(IServiceProvider services) : base(services)
+    public MonacoWidgetViewModel(IServiceProvider services, WidgetState state) : base(services, state)
     {
         ILocalizationService localizationService = services.GetService<ILocalizationService>();
         localizationService.Provide("Corathing.Widgets.Basics.TextEditorName", value => WidgetTitle = value);

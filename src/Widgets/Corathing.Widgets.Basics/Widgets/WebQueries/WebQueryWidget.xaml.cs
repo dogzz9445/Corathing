@@ -36,7 +36,7 @@ public partial class WebQueryViewModel : WidgetContext
     /// <summary>
     /// Initializes a new instance of the <see cref="OneByOneViewModel"/> class.
     /// </summary>
-    public WebQueryViewModel(IServiceProvider services) : base(services)
+    public WebQueryViewModel(IServiceProvider services, WidgetState state) : base(services, state)
     {
         ILocalizationService localizationService = services.GetService<ILocalizationService>();
         localizationService.Provide("Corathing.Widgets.Basics.WebQueryName", value => WidgetTitle = value);

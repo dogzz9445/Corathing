@@ -80,7 +80,7 @@ public partial class WebPageViewModel : WidgetContext
     /// <summary>
     /// Initializes a new instance of the <see cref="OneByOneViewModel"/> class.
     /// </summary>
-    public WebPageViewModel(IServiceProvider services) : base(services)
+    public WebPageViewModel(IServiceProvider services, WidgetState state) : base(services, state)
     {
         ILocalizationService localizationService = services.GetService<ILocalizationService>();
         localizationService.Provide("Corathing.Widgets.Basics.WebPageName", value => WidgetTitle = value);

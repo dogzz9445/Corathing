@@ -16,8 +16,17 @@ namespace Corathing.UI.WPF.Behaviors;
 public class SymbolIconScaleFontBehavior : Behavior<SymbolIcon>
 {
     // MaxFontSize
-    public double MaxFontSize { get { return (double)GetValue(MaxFontSizeProperty); } set { SetValue(MaxFontSizeProperty, value); } }
-    public static readonly DependencyProperty MaxFontSizeProperty = DependencyProperty.Register("MaxFontSize", typeof(double), typeof(ScaleFontBehavior), new PropertyMetadata(128d));
+    public double MaxFontSize
+    {
+        get => (double)GetValue(MaxFontSizeProperty);
+        set => SetValue(MaxFontSizeProperty, value);
+    }
+    public static readonly DependencyProperty MaxFontSizeProperty =
+        DependencyProperty.Register(
+            nameof(MaxFontSize),
+            typeof(double),
+            typeof(SymbolIconScaleFontBehavior),
+            new PropertyMetadata(128d));
 
     private const string MagicChar = "O";
 

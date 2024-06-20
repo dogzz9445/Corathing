@@ -17,6 +17,9 @@ public interface IAppStateService
     AppPackageState GetAppPackageState();
     AppDashboardState GetAppDashboardState();
 
+    ProjectState AddProject();
+    WorkflowState AddWorkflow();
+
     bool TryGetProject(Guid id, out ProjectState project);
     bool TryGetWorkflow(Guid id, out WorkflowState workflow);
     bool TryGetWidget(Guid id, out WidgetState widget);
@@ -27,4 +30,5 @@ public interface IAppStateService
     void UpdateProject(ProjectState project);
     void UpdateWorkflow(WorkflowState workflow);
     void UpdateWidget(WidgetState widget);
+    void UpdateForce();
 }

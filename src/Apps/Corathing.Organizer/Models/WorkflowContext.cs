@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Net.NetworkInformation;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -52,6 +53,10 @@ public partial class WorkflowContext : ObservableObject
 
     #endregion
 
+    [ObservableProperty]
+    private Guid? _workflowId;
+    private WorkflowState _workflowState;
+
     #region Public Properties
     /// <summary>
     /// Gets or sets the title.
@@ -68,9 +73,6 @@ public partial class WorkflowContext : ObservableObject
     [ObservableProperty]
     private bool? _editMode;
 
-    [ObservableProperty]
-    private Guid? _workflowId;
-
     /// <summary>
     /// Gets or sets the widgets.
     /// </summary>
@@ -78,34 +80,11 @@ public partial class WorkflowContext : ObservableObject
     [ObservableProperty]
     private ObservableCollection<WidgetContext> _widgets;
 
-    //private IAppStateService? _appState;
+    [RelayCommand]
+    public void AddWidget()
+    {
 
-    //[ObservableProperty]
-    //private WorkflowState? _workflow;
-    //[ObservableProperty]
-    //private ObservableCollection<WidgetHost> _widgetHosts;
-    //[ObservableProperty]
-    //private ObservableCollection<WidgetLayouts> _widgetLayouts;
-
-    //public DashboardHostViewModel()
-    //{
-    //    WidgetHosts = new ObservableCollection<WidgetHost>();
-    //    WidgetLayouts = new ObservableCollection<WidgetLayouts>();
-    //}
-
-    //public Task Start(IServiceProvider services, Guid workflowId)
-    //{
-    //    _appState = services.GetService<IAppStateService>();
-    //    if (_appState != null && _appState.TryGetWorkflow(workflowId, out var workflow))
-    //    {
-    //        Workflow = workflow;
-    //    }
-    //    else
-    //    {
-    //        Workflow = null;
-    //    }
-    //    return Task.CompletedTask;
-    //}
+    }
 
     /// <summary>
     /// Gets the command remove widget.
@@ -141,7 +120,12 @@ public partial class WorkflowContext : ObservableObject
     [RelayCommand]
     public void LayoutChanged(DashboardHost host)
     {
-        Trace.WriteLine($"dashboard host changed");
+        var appState = _services.GetService<IAppStateService>();
+        if (WorkflowId != null && appState.TryGetWorkflow(WorkflowId.Value, out var workflowState))
+        {
+            appState.UpdateWorkflow(workflowState);
+            appState.UpdateForce();
+        }
     }
 
     protected override void OnPropertyChanging(PropertyChangingEventArgs e)
@@ -164,8 +148,8 @@ public partial class WorkflowContext : ObservableObject
     {
         base.OnPropertyChanged(e);
 
-        if (Widgets != null)
-        {
+        if (e.PropertyName == nameof(EditMode))
+        { 
             foreach (var widgetContext in Widgets)
             {
                 widgetContext.EditMode = EditMode;

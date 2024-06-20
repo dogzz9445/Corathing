@@ -8,6 +8,13 @@ using Corathing.Contracts.Bases.Interfaces;
 
 namespace Corathing.Contracts.Bases;
 
+public interface IWidgetCoreState
+{
+    string Name { get; }
+    string Title { get; }
+    bool VisibleTitle { get; }
+}
+
 public class WidgetCoreState : IWidgetCoreState
 {
     /// <summary>
@@ -33,4 +40,18 @@ public class WidgetCoreState : IWidgetCoreState
     /// 로직 상에서 아무런 영향을 미치지 않음
     /// </summary>
     public string NamespaceName { get; set; }
+
+    /// <summary>
+    /// Just known namespace name of the widget in settings file.
+    /// This is not for converting namespace or logic of system.
+    /// 제목에 대한 설정이 필요하면 사용
+    /// </summary>
+    public string Title { get; set; }
+
+    /// <summary>
+    /// Just known namespace name of the widget in settings file.
+    /// This is not for converting namespace or logic of system.
+    /// 기본적으로 제목을 보여줄지에 대한 설정
+    /// </summary>
+    public bool VisibleTitle { get; set; }
 }

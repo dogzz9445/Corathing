@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using Corathing.Contracts.Bases;
+using Corathing.Contracts.Factories;
 
 namespace Corathing.Contracts.Entries;
 
@@ -26,26 +27,11 @@ public class CoraWidgetGenerator
 
     #region Public Properties
 
-    /// <summary>
-    /// Gets the description.
-    /// </summary>
-    /// <value>The description.</value>
-    public string Description { get; }
-
-    /// <summary>
-    /// Gets the name.
-    /// </summary>
-    /// <value>The name.</value>
-    public string Name { get; }
-
-    public CoraWidgetInfo Info { get; set; }
+    public ICoraWidgetInfo Info { get; set; }
 
     public Type ViewType { get; }
-
     public Type ContextType { get; }
-
     public string DataTemplateSource { get; }
-
     public Type OptionType { get; }
 
     #endregion Public Properties
@@ -86,15 +72,20 @@ public class CoraWidgetGenerator
             state = CreateEmptyState();
         }
         var context = (WidgetContext)Activator.CreateInstance(ContextType, Services, state);
+        context.Layout = WidgetLayoutUtils.Create(context);
         return context;
     }
 
     public WidgetState CreateEmptyState()
     {
         WidgetState state = new WidgetState();
-        state.Id = new Guid();
-        state.CoreSettings = new WidgetCoreState();
-        state.CustomSettings = Activator.CreateInstance(OptionType);
+        state.Id = Guid.NewGuid();
+        state.CoreSettings = new WidgetCoreState()
+        {
+            VisibleTitle = Info.VisibleTitle,
+        };
+        if (OptionType != null)
+            state.CustomSettings = Activator.CreateInstance(OptionType);
         return state;
     }
 
