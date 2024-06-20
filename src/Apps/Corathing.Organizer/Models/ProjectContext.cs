@@ -61,15 +61,12 @@ public partial class ProjectContext : ObservableObject
     [RelayCommand]
     public void AddWorkflow()
     {
-        // FIXME:
-        // 적용되게 수정
         var appState = _services.GetService<IAppStateService>();
         var workflow = appState.AddWorkflow();
         //appState.NewWorkflowState();
         var workflowContext = _services.GetService<WorkflowContext>();
         workflowContext.WorkflowId = workflow.Id;
         workflowContext.EditMode = EditMode;
-        workflowContext.WorkflowId = Guid.NewGuid();
 
         Workflows.Add(workflowContext);
         SelectedWorkflow = workflowContext;

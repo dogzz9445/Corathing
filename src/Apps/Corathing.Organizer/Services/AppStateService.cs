@@ -205,18 +205,16 @@ public class AppStateService : IAppStateService
 
     public ProjectState AddProject()
     {
-
-        return 
+        var project = ProjectState.Create();
+        _cachedAppDashboardState.AddProject(project);
+        return project;
     }
 
     public WorkflowState AddWorkflow()
     {
-
-    }
-
-    public WidgetState AddWidgetState()
-    {
-
+        var workflow = WorkflowState.Create();
+        _cachedAppDashboardState.AddWorkflow(workflow);
+        return workflow;
     }
 
     #region Private Methods

@@ -234,10 +234,7 @@ public partial class DashboardViewModel : ObservableObject
             services.GetService<ProjectContext>()
         });
         SelectedProject = Projects.FirstOrDefault();
-        SelectedProject.Workflows.AddRange(new[]
-        {
-            services.GetService<WorkflowContext>()
-        });
+        SelectedProject.AddWorkflow();
 
         UpdateAvailableWidgets();
 
