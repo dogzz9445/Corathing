@@ -15,9 +15,10 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
 using Corathing.Contracts.Bases;
+using Corathing.Contracts.Bases.Interfaces;
 using Corathing.Contracts.Entries;
 using Corathing.Contracts.Services;
-
+using Corathing.Dashboards.Bases;
 using Corathing.Dashboards.WPF.Controls;
 using Corathing.Organizer.Controls;
 using Corathing.Organizer.Extensions;
@@ -270,7 +271,9 @@ public partial class DashboardViewModel : ObservableObject
                         Header = splitedMenuHeaders[i],
                         Command = new RelayCommand(() =>
                         {
-                            SelectedProject.SelectedWorkflow.Widgets.Add(widget.CreateWidget());
+                            var context = widget.CreateWidget();
+                            context.Layout = WidgetLayoutUtils.Create(context);
+                            SelectedProject.SelectedWorkflow.Widgets.Add(context);
                         }, () => true),
                     });
                 }

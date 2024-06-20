@@ -6,6 +6,3 @@ using System.Threading.Tasks;
 
 namespace Corathing.Contracts.Bases.Interfaces;
 
-public interface IWidgetCoreState
-{
-}

@@ -302,27 +302,17 @@ namespace Corathing.Dashboards.WPF.Controls
             // 여기서 WidgetHost의 Layout을 설정하고, WidgetHost의 위치를 설정해야 함
             // 설정을 읽게 된다면 여기서 WidgetContext 의 정보는 설정으로부터 읽어져옴
             var widgetLayout = widgetContext.Layout;
-            if (widgetLayout == null)
-            {
-                // 위젯이 처음 생성 됨
-                widgetContext.Layout = widgetLayout = WidgetLayoutUtils.Create(widgetHost.Id, widgetContext);
 
-                // 초기 위치 및 는 
-                // Set min/max dimensions of host so it isn't allowed to grow any larger or smaller
-                widgetHost.MinHeight = (WidgetMinimumHeight * widgetLayout.H) - widgetHost.Margin.Top - widgetHost.Margin.Bottom;
-                widgetHost.MinWidth = (WidgetMinimumWidth * widgetLayout.W) - widgetHost.Margin.Left - widgetHost.Margin.Right;
-                widgetHost.Height = (_widgetSize.Height * widgetLayout.H) - widgetHost.Margin.Top - widgetHost.Margin.Bottom;
-                widgetHost.Width = (_widgetSize.Width * widgetLayout.W) - widgetHost.Margin.Left - widgetHost.Margin.Right;
-            }
-            else
-            {
-                // 위젯이 탭컨트롤 변경 혹은 설정에 의해서 읽어짐
-                widgetHost.Id = widgetLayout.WidgetStateId;
-                widgetHost.MinHeight = (WidgetMinimumHeight * widgetLayout.H) - widgetHost.Margin.Top - widgetHost.Margin.Bottom;
-                widgetHost.MinWidth = (WidgetMinimumWidth * widgetLayout.W) - widgetHost.Margin.Left - widgetHost.Margin.Right;
-                widgetHost.Height = (_widgetSize.Height * widgetLayout.H) - widgetHost.Margin.Top - widgetHost.Margin.Bottom;
-                widgetHost.Width = (_widgetSize.Width * widgetLayout.W) - widgetHost.Margin.Left - widgetHost.Margin.Right;
-            }
+            Debug.Assert(widgetLayout != null, nameof(widgetLayout) + " != null");
+
+            // 초기 위치
+            // 위젯이 탭컨트롤 변경 혹은 설정에 의해서 읽어짐
+            // Set min/max dimensions of host so it isn't allowed to grow any larger or smaller
+            widgetHost.Id = widgetLayout.WidgetStateId;
+            widgetHost.MinHeight = (WidgetMinimumHeight * widgetLayout.H) - widgetHost.Margin.Top - widgetHost.Margin.Bottom;
+            widgetHost.MinWidth = (WidgetMinimumWidth * widgetLayout.W) - widgetHost.Margin.Left - widgetHost.Margin.Right;
+            widgetHost.Height = (_widgetSize.Height * widgetLayout.H) - widgetHost.Margin.Top - widgetHost.Margin.Bottom;
+            widgetHost.Width = (_widgetSize.Width * widgetLayout.W) - widgetHost.Margin.Left - widgetHost.Margin.Right;
 
             // Subscribe to the widgets drag started and add the widget
             // to the _widgetHosts to keep tabs on it

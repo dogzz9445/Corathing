@@ -12,8 +12,33 @@ public record StateRecord(string key, string value);
 
 public class AppDashboardState
 {
+    public Guid Id { get; set; }
     public Dictionary<Guid, ProjectState> Projects { get; set; }
     public Dictionary<Guid, WorkflowState> Workflows { get; set; }
     public Dictionary<Guid, WidgetState> Widgets { get; set; }
 
+
+    public void UpdateProject(ProjectState project)
+    {
+        if (Projects == null)
+            Projects = new Dictionary<Guid, ProjectState>();
+
+        Projects[project.Id] = project;
+    }
+
+    public void UpdateWorkflow(WorkflowState workflow)
+    {
+        if (Workflows == null)
+            Workflows = new Dictionary<Guid, WorkflowState>();
+
+        Workflows[workflow.Id] = workflow;
+    }
+
+    public void UpdateWidget(WidgetState widget)
+    {
+        if (Widgets == null)
+            Widgets = new Dictionary<Guid, WidgetState>();
+
+        Widgets[widget.Id] = widget;
+    }
 }

@@ -20,6 +20,13 @@ public partial class WidgetContext : ObservableRecipient
     private Guid _widgetId;
     #endregion
 
+    #region 확정된 프로퍼티 건드리지 말기
+    [ObservableProperty]
+    private WidgetState? _state;
+    [ObservableProperty]
+    private WidgetLayout? _layout;
+    #endregion
+
     #region 확정된 프로퍼티
     [ObservableProperty]
     private string _widgetTitle;
@@ -41,13 +48,9 @@ public partial class WidgetContext : ObservableRecipient
     private bool? _isResizing;
     [ObservableProperty]
     private bool? _isEditing;
-    [ObservableProperty]
-    private WidgetLayout? _layout;
 
     public WidgetContext()
     {
-        WidgetTitle = "Widget";
-        VisibleTitle = true;
         EditMode = true;
 
         MinColumns = 2;
@@ -59,9 +62,14 @@ public partial class WidgetContext : ObservableRecipient
         IsEditing = false;
     }
 
-    public WidgetContext(IServiceProvider services) : this()
+    public WidgetContext(IServiceProvider services, WidgetState state) : this()
     {
         _services = services;
+
+        WidgetId = state.Id;
+        State = state;
+        WidgetTitle = state.CoreSettings.Title;
+        VisibleTitle = state.CoreSettings.VisibleTitle;
     }
 
     public virtual void OnDestroy()

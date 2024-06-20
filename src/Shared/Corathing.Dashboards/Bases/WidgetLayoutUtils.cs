@@ -25,6 +25,21 @@ namespace Corathing.Dashboards.Bases
                     H = context.MinRows ?? 2,
                 }
             };
+
+        public static WidgetLayout Create(WidgetContext context) =>
+            new WidgetLayout()
+            {
+                Id = Guid.NewGuid(),
+                WidgetStateId = context.WidgetId,
+                Rect = new WidgetLayoutRect()
+                {
+                    X = 0,
+                    Y = 0,
+                    W = context.MinColumns ?? 2,
+                    H = context.MinRows ?? 2,
+                }
+            };
+
         #endregion
 
         #region 02. Update

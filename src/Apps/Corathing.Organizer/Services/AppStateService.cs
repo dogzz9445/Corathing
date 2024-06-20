@@ -166,13 +166,9 @@ public class AppStateService : IAppStateService
             return;
         }
 
-        if (_cachedAppDashboardState.Projects == null)
-            _cachedAppDashboardState.Projects = new Dictionary<Guid, ProjectState>();
+        _cachedAppDashboardState.UpdateProject(project);
 
-        _cachedAppDashboardState.Projects.ContainsKey(project.Id);
-        _cachedAppDashboardState.Projects[project.Id] = project;
-
-        await WrtieAppState();
+        await PendingWriteAppState();
     }
 
     public async void UpdateWorkflow(WorkflowState workflow)
@@ -186,13 +182,9 @@ public class AppStateService : IAppStateService
             return;
         }
 
-        if (_cachedAppDashboardState.Workflows == null)
-            _cachedAppDashboardState.Workflows = new Dictionary<Guid, WorkflowState>();
+        _cachedAppDashboardState.UpdateWorkflow(workflow);
 
-        _cachedAppDashboardState.Workflows.ContainsKey(workflow.Id);
-        _cachedAppDashboardState.Workflows[workflow.Id] = workflow;
-
-        await WrtieAppState();
+        await PendingWriteAppState();
     }
 
     public async void UpdateWidget(WidgetState widget)
@@ -206,21 +198,9 @@ public class AppStateService : IAppStateService
             return;
         }
 
-        if (_cachedAppDashboardState.Widgets == null)
-            _cachedAppDashboardState.Widgets = new Dictionary<Guid, WidgetState>();
+        _cachedAppDashboardState.UpdateWidget(widget);
 
-        _cachedAppDashboardState.Widgets.ContainsKey(widget.Id);
-        _cachedAppDashboardState.Widgets[widget.Id] = widget;
-
-        await WrtieAppState();
-    }
-
-    public void UpdateOrAdd(Guid id, object value)
-    {
-    }
-
-    public void UpdateOverwrite(Guid id, object value)
-    {
+        await PendingWriteAppState();
     }
 
     #region Private Methods

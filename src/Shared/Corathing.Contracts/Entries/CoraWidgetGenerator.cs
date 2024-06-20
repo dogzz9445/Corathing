@@ -79,9 +79,23 @@ public class CoraWidgetGenerator
     /// Creates the widget.
     /// </summary>
     /// <returns>WidgetBase.</returns>
-    public WidgetContext CreateWidget()
+    public WidgetContext CreateWidget(WidgetState? state = null)
     {
-        return (WidgetContext)Activator.CreateInstance(ContextType, Services);
+        if (state == null)
+        {
+            state = CreateEmptyState();
+        }
+        var context = (WidgetContext)Activator.CreateInstance(ContextType, Services, state);
+        return context;
+    }
+
+    public WidgetState CreateEmptyState()
+    {
+        WidgetState state = new WidgetState();
+        state.Id = new Guid();
+        state.CoreSettings = new WidgetCoreState();
+        state.CustomSettings = Activator.CreateInstance(OptionType);
+        return state;
     }
 
     #endregion Public Methods

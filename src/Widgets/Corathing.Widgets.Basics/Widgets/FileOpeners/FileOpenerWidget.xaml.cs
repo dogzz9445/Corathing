@@ -50,12 +50,11 @@ public partial class FileOpenerWidgetViewModel : WidgetContext
     /// Initializes a new instance of the <see cref="OneByOneViewModel"/> class.
     /// </summary>
     public FileOpenerWidgetViewModel(
-        IServiceProvider services)
-        : base(services)
+        IServiceProvider services, WidgetState state)
+        : base(services, state)
     {
         ILocalizationService localizationService = services.GetService<ILocalizationService>();
         localizationService.Provide("Corathing.Widgets.Basics.FileOpenerName", value => WidgetTitle = value);
-        VisibleTitle = true;
     }
 }
 

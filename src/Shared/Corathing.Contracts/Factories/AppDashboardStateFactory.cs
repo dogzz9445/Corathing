@@ -13,5 +13,6 @@ public static class AppDashboardStateFactory
     public static AppDashboardState Create()
         => new AppDashboardState()
         {
+            Id = new Guid(),
         };
 }
