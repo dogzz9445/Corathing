@@ -20,7 +20,9 @@ using Microsoft.Extensions.DependencyInjection;
 
 using Wpf.Ui;
 
+using Application = System.Windows.Application;
 using IThemeService = Corathing.Contracts.Services.IThemeService;
+using MessageBox = System.Windows.MessageBox;
 using ThemeService = Corathing.Organizer.Services.ThemeService;
 
 namespace Corathing.Organizer;

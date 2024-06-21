@@ -11,6 +11,9 @@ using Microsoft.Xaml.Behaviors;
 using System.Windows.Controls;
 using ControlzEx.Behaviors;
 using Corathing.Dashboards.WPF.Controls;
+using KeyEventArgs = System.Windows.Input.KeyEventArgs;
+using Cursors = System.Windows.Input.Cursors;
+using TextBox = System.Windows.Controls.TextBox;
 
 namespace Corathing.Organizer.Behaviors;
 

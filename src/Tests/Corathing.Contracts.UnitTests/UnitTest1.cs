@@ -1,4 +1,4 @@
-namespace Corathing.Organizer.UnitTests
+namespace Corathing.Contracts.UnitTests
 {
     [TestClass]
     public class UnitTest1

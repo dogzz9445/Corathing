@@ -14,6 +14,8 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using Corathing.Contracts.Services;
 using Microsoft.Win32;
 
+using Color = System.Windows.Media.Color;
+
 namespace Corathing.Organizer.Services;
 
 public class ThemeInfo

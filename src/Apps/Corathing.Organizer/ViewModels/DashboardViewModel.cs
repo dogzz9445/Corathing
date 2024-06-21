@@ -32,6 +32,8 @@ using Wpf.Ui;
 
 using static MaterialDesignThemes.Wpf.Theme.ToolBar;
 
+using Application = System.Windows.Application;
+
 namespace Corathing.Organizer.ViewModels;
 
 /// <summary>

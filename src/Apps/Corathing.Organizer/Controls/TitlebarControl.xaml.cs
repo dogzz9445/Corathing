@@ -15,6 +15,8 @@ using System.Windows.Shapes;
 
 using CommunityToolkit.Mvvm.Input;
 
+using UserControl = System.Windows.Controls.UserControl;
+
 namespace Corathing.Organizer.Controls;
 
 /// <summary>

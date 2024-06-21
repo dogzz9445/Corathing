@@ -10,6 +10,8 @@ using MahApps.Metro.Controls;
 
 using Microsoft.Xaml.Behaviors;
 
+using DateTimePicker = MahApps.Metro.Controls.DateTimePicker;
+
 namespace Corathing.Organizer.Behaviors;
 
 public class DateTimeNowBehavior : Behavior<DateTimePicker>

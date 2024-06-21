@@ -28,6 +28,8 @@ using Corathing.Organizer.ViewModels;
 
 using Microsoft.Extensions.DependencyInjection;
 
+using UserControl = System.Windows.Controls.UserControl;
+
 namespace Corathing.Organizer.Views;
 
 /// <summary>

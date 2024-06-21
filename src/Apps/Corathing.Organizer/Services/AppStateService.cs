@@ -15,6 +15,8 @@ using Corathing.Contracts.Factories;
 using Corathing.Contracts.Services;
 using Corathing.Organizer.Models;
 
+using MessageBox = System.Windows.MessageBox;
+
 namespace Corathing.Organizer.Services;
 
 #pragma warning disable CS8601 // Possible null reference assignment.
