@@ -20,7 +20,7 @@ public class ProjectSettings : IProjectSettings
 
 public interface IProjectState : IEntity
 {
+    Guid SelectedWorkflowId { get; }
     IProjectSettings Settings { get; }
     List<Guid> WorkflowIds { get; }
-    Guid CurrentWorkflowId { get; }
 }

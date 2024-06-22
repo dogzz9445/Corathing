@@ -21,9 +21,11 @@ public partial class ProjectContext : ObservableObject
 {
     #region Readonly Properties
     private IServiceProvider _services;
-    private ProjectState _projectState;
     #endregion
     #region Public Properties
+    public Guid ProjectId { get; set; }
+    public ProjectState ProjectState;
+
     /// <summary>
     /// Gets or sets the title.
     /// </summary>
@@ -78,6 +80,15 @@ public partial class ProjectContext : ObservableObject
     {
         _services = services;
         Workflows = new ObservableCollection<WorkflowContext>();
+    }
+
+    public void UpdateProject(ProjectState projectState)
+    {
+        var packageService = _services.GetService<IPackageService>();
+        var appStateService = _services.GetService<IAppStateService>();
+        var dashboardState = appStateService.GetAppDashboardState();
+
+
     }
 
     protected override void OnPropertyChanged(PropertyChangedEventArgs e)

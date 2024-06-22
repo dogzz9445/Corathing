@@ -37,7 +37,7 @@ public partial class WidgetSettingsViewModel : ObservableObject
         _originalContext = _originalWidget.DataContext as WidgetContext;
 
         var packageService = _services.GetService<IPackageService>();
-        packageService.TryGetWidgetGenerator(_originalContext.WidgetType, out var generator);
+        packageService.TryGetWidgetGenerator(_originalContext.GetType().FullName, out var generator);
 
         // TODO:
         // 24-06-16:

@@ -12,9 +12,9 @@ namespace Corathing.Contracts.Bases;
 public class ProjectState : IProjectState
 {
     public Guid Id { get; set; }
+    public Guid SelectedWorkflowId { get; set; }
     public IProjectSettings Settings { get; set; }
     public List<Guid> WorkflowIds { get; set; }
-    public Guid CurrentWorkflowId { get; set; }
 
     public static ProjectState CreateProject(Guid id, string projectName)
     {
@@ -26,7 +26,7 @@ public class ProjectState : IProjectState
                 Name = projectName
             },
             WorkflowIds = new List<Guid>(),
-            CurrentWorkflowId = Guid.Empty
+            SelectedWorkflowId = Guid.Empty
         };
     }
 
@@ -40,7 +40,7 @@ public class ProjectState : IProjectState
                 Name = "My Project"
             },
             WorkflowIds = new List<Guid>(),
-            CurrentWorkflowId = Guid.Empty
+            SelectedWorkflowId = Guid.Empty
         };
     }
 
@@ -56,7 +56,7 @@ public class ProjectState : IProjectState
             Id = project.Id,
             Settings = settings,
             WorkflowIds = project.WorkflowIds,
-            CurrentWorkflowId = project.CurrentWorkflowId
+            SelectedWorkflowId = project.SelectedWorkflowId
         };
     }
 
@@ -67,7 +67,7 @@ public class ProjectState : IProjectState
             Id = project.Id,
             Settings = project.Settings,
             WorkflowIds = workflowIds,
-            CurrentWorkflowId = project.CurrentWorkflowId
+            SelectedWorkflowId = project.SelectedWorkflowId
         };
     }
 }

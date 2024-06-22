@@ -103,7 +103,7 @@ public partial class DashboardViewModel : ObservableObject
             return;
         if (SelectedProject.SelectedWorkflow == null)
             return;
-        SelectedProject.SelectedWorkflow.Widgets.Add(generator.CreateWidget());
+        SelectedProject.SelectedWorkflow.AddWidget(generator);
     }
 
     [RelayCommand]
@@ -228,19 +228,55 @@ public partial class DashboardViewModel : ObservableObject
     {
         _services = services;
 
-        // --------------------------------------------------------------------------
-        // Load Component Data
-        // --------------------------------------------------------------------------
-        Projects.AddRange(new []
-        {
-            services.GetService<ProjectContext>()
-        });
-        SelectedProject = Projects.FirstOrDefault();
-        SelectedProject.AddWorkflow();
-
         UpdateAvailableWidgets();
+        UpdateDashboard();
 
         return Task.CompletedTask;
+    }
+
+    private void UpdateDashboard()
+    {
+        Projects.Clear();
+
+        var packageService = _services.GetService<IPackageService>();
+        var appStateService = _services.GetService<IAppStateService>();
+        var dashboardState = appStateService.GetAppDashboardState();
+
+        List<WidgetContext> widgetContexts = new List<WidgetContext>();
+        foreach (var widgetState in dashboardState.Widgets)
+        {
+            if (!packageService.TryGetWidgetGenerator(widgetState.CoreSettings.TypeName, out var generator))
+            {
+                continue;
+            }
+            widgetContexts.Add(generator.CreateWidget(widgetState));
+        }
+
+        List<WorkflowContext> workflowContexts = new List<WorkflowContext>();
+        foreach (var workflowState in dashboardState.Workflows)
+        {
+            var workflowContext = _services.GetService<WorkflowContext>();
+            workflowContext.UpdateWorkflow(workflowState);
+            workflowContexts.Add(workflowContext);
+        }
+
+        foreach (var projectState in dashboardState.Projects)
+        {
+            var projectContext = _services.GetService<ProjectContext>();
+            projectContext.Title = projectState.Settings.Name;
+            //projectContext.ProjectId
+                // TODO::::
+        }
+
+//        Projects.AddRange(new[]
+//{
+//            services.GetService<ProjectContext>()
+//        });
+        SelectedProject = Projects.FirstOrDefault();
+        SelectedProject.AddWorkflow();
+        appStateService.AddProject();
+        //dashboardState.Projects;
+        //Projects.AddRange()
     }
 
     private void UpdateAvailableWidgets()
@@ -272,7 +308,7 @@ public partial class DashboardViewModel : ObservableObject
                     parentMenuCollection.Add(new MenuItemViewModel()
                     {
                         Header = splitedMenuHeaders[i],
-                        Command = new RelayCommand(() => AppendWidget(widget), () => true),
+                        Command = new RelayCommand(() => AddWidget(widget), () => true),
                     });
                 }
                 else
@@ -289,24 +325,6 @@ public partial class DashboardViewModel : ObservableObject
             }
 
         }
-    }
-
-    private void AppendWidget(CoraWidgetGenerator? generator)
-    {
-        var dialogService = _services.GetService<IDialogService>();
-        if (SelectedProject == null)
-        {
-            dialogService.ShowErrorMeessage("Empty Proejct");
-            return;
-        }
-        if (SelectedProject.SelectedWorkflow == null)
-        {
-            dialogService.ShowErrorMeessage("Empty Workflow");
-            return;
-        }
-
-        var context = generator.CreateWidget();
-        SelectedProject.SelectedWorkflow.Widgets.Add(context);
     }
 
     #endregion Public Methods

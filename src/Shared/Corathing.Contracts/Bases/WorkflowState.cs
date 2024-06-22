@@ -13,8 +13,7 @@ public class WorkflowState : IWorkflowState
 {
     public Guid Id { get; set; }
     public List<Guid> WidgetIds { get; set; }
-    public List<WidgetLayout> Layouts { get; set; }
-    public IWorkflowSettings Settings { get; set; }
+    public WorkflowSettings Settings { get; set; }
     public int MaxColumns { get; set; } = 16;
     public int VisibleRows { get; set; } = 8;
 
@@ -23,7 +22,6 @@ public class WorkflowState : IWorkflowState
         return new WorkflowState
         {
             Id = id,
-            Layouts = new List<WidgetLayout>(),
             Settings = new WorkflowSettings
             {
                 Name = name
@@ -35,7 +33,6 @@ public class WorkflowState : IWorkflowState
         => new WorkflowState
         {
             Id = Guid.NewGuid(),
-            Layouts = new List<WidgetLayout>(),
             Settings = new WorkflowSettings
             {
                 Name = "My Workflow"
@@ -47,12 +44,11 @@ public class WorkflowState : IWorkflowState
         return NameHelper.GenerateUniqueName("Workflow", usedNames);
     }
 
-    public static WorkflowState UpdateWorkflowSettings(WorkflowState workflow, IWorkflowSettings settings)
+    public static WorkflowState UpdateWorkflowSettings(WorkflowState workflow, WorkflowSettings settings)
     {
         return new WorkflowState
         {
             Id = workflow.Id,
-            Layouts = workflow.Layouts,
             Settings = settings
         };
     }
@@ -62,7 +58,6 @@ public class WorkflowState : IWorkflowState
         return new WorkflowState
         {
             Id = workflow.Id,
-            Layouts = layout,
             Settings = workflow.Settings
         };
     }

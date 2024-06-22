@@ -15,6 +15,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
 using Corathing.Contracts.Bases;
+using Corathing.Contracts.Entries;
 using Corathing.Contracts.Services;
 using Corathing.Dashboards.WPF.Controls;
 using Corathing.Organizer.Controls;
@@ -53,9 +54,8 @@ public partial class WorkflowContext : ObservableObject
 
     #endregion
 
-    [ObservableProperty]
-    private Guid? _workflowId;
-    private WorkflowState _workflowState;
+    public Guid? WorkflowId { get; set; }
+    public WorkflowState WorkflowState { get; set; }
 
     #region Public Properties
     /// <summary>
@@ -80,10 +80,40 @@ public partial class WorkflowContext : ObservableObject
     [ObservableProperty]
     private ObservableCollection<WidgetContext> _widgets;
 
-    [RelayCommand]
-    public void AddWidget()
+    public void UpdateWorkflow(WorkflowState workflowState)
     {
+        var packageService = _services.GetService<IPackageService>();
+        var appStateService = _services.GetService<IAppStateService>();
+        var dashboardState = appStateService.GetAppDashboardState();
 
+        Title = workflowState.Settings.Name;
+        WorkflowId = workflowState.Id;
+        foreach (var widgetId in workflowState.WidgetIds)
+        {
+            var widgetState = dashboardState.Widgets.FirstOrDefault(widget => widget.Id == widgetId);
+            if (widgetState == null)
+                continue;
+
+            if (!packageService.TryGetWidgetGenerator(widgetState.CoreSettings.TypeName, out var generator))
+                continue;
+
+            var widgetContext = generator.CreateWidget(widgetState);
+            AddWidget(widgetContext);
+        }
+    }
+
+    [RelayCommand]
+    public void AddWidget(CoraWidgetGenerator generator)
+    {
+        var context = generator.CreateWidget();
+        AddWidget(context);
+    }
+
+    public void AddWidget(WidgetContext context)
+    {
+        var dialogService = _services.GetService<IDialogService>();
+        var appState = _services.GetService<IAppStateService>();
+        Widgets.Add(context);
     }
 
     /// <summary>
