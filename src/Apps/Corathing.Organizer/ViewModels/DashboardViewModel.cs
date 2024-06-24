@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -250,42 +251,23 @@ public partial class DashboardViewModel : ObservableObject
         var appStateService = _services.GetService<IAppStateService>();
         var dashboardState = appStateService.GetAppDashboardState();
 
-        List<WidgetContext> widgetContexts = new List<WidgetContext>();
-        foreach (var widgetState in dashboardState.Widgets)
-        {
-            if (!packageService.TryGetWidgetGenerator(widgetState.CoreSettings.TypeName, out var generator))
-            {
-                continue;
-            }
-            widgetContexts.Add(generator.CreateWidget(widgetState));
-        }
-
-        List<WorkflowContext> workflowContexts = new List<WorkflowContext>();
-        foreach (var workflowState in dashboardState.Workflows)
-        {
-            var workflowContext = _services.GetService<WorkflowContext>();
-            workflowContext.UpdateWorkflow(workflowState);
-            workflowContexts.Add(workflowContext);
-        }
-
         foreach (var projectState in dashboardState.Projects)
         {
             var projectContext = _services.GetService<ProjectContext>();
             projectContext.Name = projectState.Settings.Name;
-            //projectContext.ProjectId
-                // TODO::::
-        }
+            projectContext.EditMode = EditMode;
+            projectContext.UpdateProject(projectState);
 
-//        Projects.AddRange(new[]
-//{
-//            services.GetService<ProjectContext>()
-//        });
-        SelectedProject = Projects.FirstOrDefault();
-        if (SelectedProject != null)
-        {
+            Projects.Add(projectContext);
         }
-        //dashboardState.Projects;
-        //Projects.AddRange()
+        if (dashboardState.SelectedProjectId != null)
+        {
+            SelectedProject = Projects.FirstOrDefault(context => context.ProjectId == dashboardState.SelectedProjectId);
+        }
+        if (SelectedProject == null)
+        { 
+            SelectedProject = Projects.FirstOrDefault();
+        }
     }
 
     private void UpdateAvailableWidgets()

@@ -16,6 +16,7 @@ using CommunityToolkit.Mvvm.Input;
 
 using Corathing.Contracts.Bases;
 using Corathing.Contracts.Entries;
+using Corathing.Contracts.Factories;
 using Corathing.Contracts.Services;
 using Corathing.Dashboards.WPF.Controls;
 using Corathing.Organizer.Controls;
@@ -54,7 +55,7 @@ public partial class WorkflowContext : ObservableObject
 
     #endregion
 
-    public Guid? WorkflowId { get; set; }
+    public Guid WorkflowId { get; set; }
     public WorkflowState WorkflowState { get; set; }
 
     #region Public Properties
@@ -63,7 +64,7 @@ public partial class WorkflowContext : ObservableObject
     /// </summary>
     /// <value>The title.</value>
     [ObservableProperty]
-    private string _title = "My Workflow";
+    private string _name = "My Workflow";
 
     [DefaultValue(false)]
     [ObservableProperty]
@@ -80,24 +81,33 @@ public partial class WorkflowContext : ObservableObject
     [ObservableProperty]
     private ObservableCollection<WidgetContext> _widgets;
 
+    public WorkflowContext(IServiceProvider services)
+    {
+        _services = services;
+        Widgets = new ObservableCollection<WidgetContext>();
+    }
+
     public void UpdateWorkflow(WorkflowState workflowState)
     {
         var packageService = _services.GetService<IPackageService>();
         var appStateService = _services.GetService<IAppStateService>();
-        var dashboardState = appStateService.GetAppDashboardState();
 
-        Title = workflowState.Settings.Name;
+        Name = workflowState.Settings.Name;
         WorkflowId = workflowState.Id;
-        foreach (var widgetId in workflowState.WidgetIds)
+        foreach (var widgetStateId in workflowState.WidgetIds)
         {
-            var widgetState = dashboardState.Widgets.FirstOrDefault(widget => widget.Id == widgetId);
-            if (widgetState == null)
-                continue;
+            if (!appStateService.TryGetWidget(widgetStateId, out var widgetState))
+            {
+                // TODO:
+                // Change Exception Type
+                throw new Exception();
+            }
 
             if (!packageService.TryGetWidgetGenerator(widgetState.CoreSettings.TypeName, out var generator))
                 continue;
 
             var widgetContext = generator.CreateWidget(widgetState);
+            widgetContext.EditMode = EditMode;
             AddWidget(widgetContext);
         }
     }
@@ -111,8 +121,18 @@ public partial class WorkflowContext : ObservableObject
 
     public void AddWidget(WidgetContext context)
     {
-        var dialogService = _services.GetService<IDialogService>();
         var appState = _services.GetService<IAppStateService>();
+
+        if (!appState.TryGetWorkflow(WorkflowId, out var workflowState))
+        {
+            // TODO:
+            // Change Exception Type
+            throw new Exception();
+        }
+
+        appState.UpdateWidget(context.State);
+        workflowState.WidgetIds.Add(context.WidgetId);
+        appState.UpdateWorkflow(workflowState);
         Widgets.Add(context);
     }
 
@@ -151,7 +171,7 @@ public partial class WorkflowContext : ObservableObject
     public void LayoutChanged(DashboardHost host)
     {
         var appState = _services.GetService<IAppStateService>();
-        if (WorkflowId != null && appState.TryGetWorkflow(WorkflowId.Value, out var workflowState))
+        if (WorkflowId != null && appState.TryGetWorkflow(WorkflowId, out var workflowState))
         {
             appState.UpdateWorkflow(workflowState);
             appState.UpdateForce();
@@ -166,12 +186,6 @@ public partial class WorkflowContext : ObservableObject
         //appState.UpdateWorkflow();
     }
 
-
-    public WorkflowContext(IServiceProvider services)
-    {
-        _services = services;
-        Widgets = new ObservableCollection<WidgetContext>();
-    }
 
     #endregion Public Properties
     protected override void OnPropertyChanged(PropertyChangedEventArgs e)

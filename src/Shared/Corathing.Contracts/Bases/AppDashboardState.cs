@@ -116,7 +116,7 @@ public class AppDashboardState
         Widgets.Add(widget);
     }
 
-    public void Refresh()
+    public void RefreshCache()
     {
         HashedProjects.Clear();
         HashedWorkflows.Clear();

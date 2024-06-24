@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using Corathing.Contracts.Bases.Interfaces;
+
 namespace Corathing.Contracts.Services;
 
 public interface IWidgetService

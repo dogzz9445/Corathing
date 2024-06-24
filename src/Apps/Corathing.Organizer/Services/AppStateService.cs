@@ -15,6 +15,10 @@ using Corathing.Contracts.Factories;
 using Corathing.Contracts.Services;
 using Corathing.Organizer.Models;
 
+using Microsoft.Extensions.DependencyInjection;
+
+using Windows.ApplicationModel.Calls;
+
 using MessageBox = System.Windows.MessageBox;
 
 namespace Corathing.Organizer.Services;
@@ -24,8 +28,11 @@ namespace Corathing.Organizer.Services;
 public class AppStateService : IAppStateService
 {
     #region Readonly Properties
+    private readonly IServiceProvider _services;
+
     private const string AppSettingsFilename = "appsettings.json";
-    private const string CorathingSettingsFilename = "corathing-settings.json";
+    private const string OrganizerSettingsFilename = "cora-organizer-settings.json";
+
 
     private const string AppStateJsonDomBase = """
         {
@@ -58,17 +65,9 @@ public class AppStateService : IAppStateService
     private object _lockAppState;
     #endregion
 
-    private void SaveAppSate()
+    public AppStateService(IServiceProvider services)
     {
-        lock (_lockAppState)
-        {
-
-        }
-    }
-
-    private void ReadAppSate()
-    {
-
+        _services = services;
     }
 
     public async Task InitializeAsync()
@@ -129,8 +128,7 @@ public class AppStateService : IAppStateService
         if (_cachedAppDashboardState == null)
             ReadOrCreateAppStateByAppSettings().Wait();
 
-        project = ProjectState.Create();
-        return true;
+        return _cachedAppDashboardState.HashedProjects.TryGetValue(id, out project);
     }
 
     public bool TryGetWorkflow(Guid id, out WorkflowState workflow)
@@ -138,17 +136,15 @@ public class AppStateService : IAppStateService
         if (_cachedAppDashboardState == null)
             ReadOrCreateAppStateByAppSettings().Wait();
 
-        workflow = WorkflowState.Create();
-        return true;
+        return _cachedAppDashboardState.HashedWorkflows.TryGetValue(id, out workflow);
     }
 
-    public bool TryGetWidget(Guid id, out WidgetState option)
+    public bool TryGetWidget(Guid id, out WidgetState widget)
     {
         if (_cachedAppDashboardState == null)
             ReadOrCreateAppStateByAppSettings().Wait();
 
-        option = default;
-        return true;
+        return _cachedAppDashboardState.HashedWidgets.TryGetValue(id, out widget);
     }
 
     public ProjectState GetOrAddProject(Guid? id = null)
@@ -274,26 +270,74 @@ public class AppStateService : IAppStateService
 
     public async void RemoveProject(ProjectState project)
     {
+        foreach (var workflowId in project.WorkflowIds)
+        {
+            RemoveWorkflow(workflowId);
+        }
         _cachedAppDashboardState.RemoveProject(project);
 
         await PendingWriteAppState();
     }
 
-    public void RemoveWorkflow(Guid guid)
+    public void RemoveWorkflow(Guid workflowId)
     {
-
+        if (!TryGetWorkflow(workflowId, out var workflow))
+        {
+            // TODO:
+            // Change Exception Type
+            throw new Exception();
+        }
+        RemoveWorkflow(workflow);
     }
 
     public async void RemoveWorkflow(WorkflowState workflow)
     {
+        foreach (var widgetId in workflow.WidgetIds)
+        {
+            RemoveWidget(widgetId);
+        }
         _cachedAppDashboardState.RemoveWorkflow(workflow);
 
+        await PendingWriteAppState();
+    }
 
+    public void RemoveWidget(Guid widgetId)
+    {
+        if (!TryGetWidget(widgetId, out var widget))
+        {
+            // TODO:
+            // Change Exception Type
+            throw new Exception();
+        }
+        RemoveWidget(widget);
+    }
+
+    public async void RemoveWidget(WidgetState widget)
+    {
+        _cachedAppDashboardState.RemoveWidget(widget);
 
         await PendingWriteAppState();
     }
 
     #region Private Methods
+    private string GetOrganizerSettingsFilename()
+    {
+        AppSettings appSettings = GetAppSettings();
+
+        // Read or Create AppState Data
+        if ((appSettings.UseCustomConfiguration ?? false) &&
+            !string.IsNullOrEmpty(appSettings.CustomConfigurationFilename))
+        {
+            return appSettings.CustomConfigurationFilename;
+        }
+        else
+        {
+            var storageService = _services.GetService<IStorageService>();
+            string appDataPath = storageService.GetAppDataPath();
+            return Path.Combine(appDataPath, OrganizerSettingsFilename);
+        }
+    }
+
 
     private async Task<AppSettings> ReadOrCreateAppSettingsFromAppPath()
     {
@@ -333,48 +377,21 @@ public class AppStateService : IAppStateService
         await File.WriteAllTextAsync(AppSettingsFilename, json);
     }
 
-    /// <summary>
-    /// AppState 파일 이름을 가져옴
-    /// </summary>
-    /// <returns></returns>
-    private string GetAppStatePathByAppSettings()
-    {
-        // Read or Create AppState Data
-        if (_cachedAppSettings.UseGlobalConfiguration ?? false)
-        {
-            return Path.Combine(
-                Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-                CorathingSettingsFilename
-                );
-        }
-        else if (_cachedAppSettings.UseAppPathConfiguration ?? false)
-        {
-            return CorathingSettingsFilename;
-        }
-        else if (!string.IsNullOrEmpty(_cachedAppSettings.CustomConfigurationFilename))
-        {
-            return _cachedAppSettings.CustomConfigurationFilename;
-        }
-        else
-        {
-            return CorathingSettingsFilename;
-        }
-    }
-
     private async Task ReadOrCreateAppStateByAppSettings()
     {
-        var path = GetAppStatePathByAppSettings();
-        await ReadOrCreateAppStateFromPath(path);
+        await ReadOrCreateAppStateFromPath(GetOrganizerSettingsFilename());
     }
 
     private async Task ReadOrCreateAppStateFromPath(string path)
     {
+        _isReading = true;
         if (!File.Exists(path))
         {
             if (!Directory.Exists(Path.GetDirectoryName(Path.GetFullPath(path))))
             {
                 Directory.CreateDirectory(Path.GetDirectoryName(Path.GetFullPath(path)));
             }
+
             _cachedAppPreferenceState = AppPreferenceStateFactory.Create();
             _cachedAppPackageState = AppPackageStateFactory.Create();
             _cachedAppDashboardState = AppDashboardStateFactory.Create();
@@ -406,14 +423,33 @@ public class AppStateService : IAppStateService
                 .GetProperty("Dashboards")
                 .Deserialize<AppDashboardState>();
 
-            _cachedAppDashboardState.Refresh();
+            _cachedAppDashboardState.RefreshCache();
         }
+        _isReading = false;
     }
+
+    bool _isPending = false;
+    bool _isReading = false;
+    bool _isWriting = false;
 
     private async Task PendingWriteAppState()
     {
-        // lock or Write
-        // await WrtieAppState();
+        if (_isPending)
+            return;
+        _isPending = true;
+
+        while (_isWriting || _isReading)
+        {
+            await Task.Delay(1);
+        }
+        await WrtieAppState();
+
+        _isPending = false;
+    }
+
+    public async void Flush()
+    {
+        await PendingWriteAppState();
     }
 
     public async void UpdateForce()
@@ -423,7 +459,8 @@ public class AppStateService : IAppStateService
 
     private async Task WrtieAppState()
     {
-        string jsonString = await File.ReadAllTextAsync(GetAppStatePathByAppSettings());
+        _isWriting = true;
+        string jsonString = await File.ReadAllTextAsync(GetOrganizerSettingsFilename());
         if (string.IsNullOrEmpty(jsonString))
             jsonString = AppStateJsonDomBase;
 
@@ -433,11 +470,10 @@ public class AppStateService : IAppStateService
         rootNode["Packages"].ReplaceWith(_cachedAppPackageState);
         rootNode["Dashboards"].ReplaceWith(_cachedAppDashboardState);
 
-        await File.WriteAllTextAsync(GetAppStatePathByAppSettings(),
+        await File.WriteAllTextAsync(GetOrganizerSettingsFilename(),
             rootNode.ToJsonString(_serializerOptions));
+        _isWriting = false;
     }
-
-
 
     private async Task UpdateInternal(AppDashboardState appState)
     {

@@ -12,7 +12,7 @@ namespace Corathing.Contracts.Bases;
 public class WorkflowState : IWorkflowState
 {
     public Guid Id { get; set; }
-    public List<Guid> WidgetIds { get; set; }
+    public List<Guid> WidgetIds { get; set; } = new List<Guid>();
     public WorkflowSettings Settings { get; set; }
     public int MaxColumns { get; set; } = 16;
     public int VisibleRows { get; set; } = 8;

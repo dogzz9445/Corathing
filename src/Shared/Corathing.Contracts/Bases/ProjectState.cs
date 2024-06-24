@@ -14,7 +14,7 @@ public class ProjectState : IProjectState
     public Guid Id { get; set; }
     public Guid? SelectedWorkflowId { get; set; }
     public ProjectSettings Settings { get; set; }
-    public List<Guid> WorkflowIds { get; set; }
+    public List<Guid> WorkflowIds { get; set; } = new List<Guid>();
 
     public static ProjectState Create()
     {

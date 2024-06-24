@@ -80,7 +80,7 @@
         <!-- When not Running-->
         <Grid HorizontalAlignment="Center"
               VerticalAlignment="Bottom"
-              Visibility="{Binding IsRunning, Converter={StaticResource InverseBooleanToVisibilityConverter}}">
+              Visibility="{Binding IsRunning, Converter={StaticResource InvertBoolNullToVisibilityConverter}}">
             <Button Content="Reset"
                     Foreground="{DynamicResource TextFillColorPrimaryBrush}"
                     Style="{StaticResource MahApps.Styles.Button.MetroSquare}"

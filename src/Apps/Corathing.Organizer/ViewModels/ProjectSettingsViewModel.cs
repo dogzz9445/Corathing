@@ -103,7 +103,7 @@ public partial class ProjectSettingsViewModel : ObservableObject
             }
         }
 
-        appStateService.UpdateForce();
+        appStateService.Flush();
     }
 
     private ProjectState CopyProject(Guid originalProjectId)

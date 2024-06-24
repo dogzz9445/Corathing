@@ -11,7 +11,9 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
 using Corathing.Contracts.Bases;
+using Corathing.Contracts.Bases.Interfaces;
 using Corathing.Contracts.Services;
+using Corathing.Organizer.Services;
 
 using Microsoft.Extensions.DependencyInjection;
 
@@ -24,7 +26,6 @@ public partial class ProjectContext : ObservableObject
     #endregion
     #region Public Properties
     public Guid ProjectId { get; set; }
-    public ProjectState ProjectState;
 
     /// <summary>
     /// Gets or sets the title.
@@ -64,11 +65,20 @@ public partial class ProjectContext : ObservableObject
     public void AddWorkflow()
     {
         var appState = _services.GetService<IAppStateService>();
-        var workflow = appState.CreateAddWorkflow();
-        //appState.NewWorkflowState();
+
+        var workflowState = appState.CreateAddWorkflow();
         var workflowContext = _services.GetService<WorkflowContext>();
-        workflowContext.WorkflowId = workflow.Id;
         workflowContext.EditMode = EditMode;
+        workflowContext.UpdateWorkflow(workflowState);
+
+        if (!appState.TryGetProject(ProjectId, out var projectState))
+        {
+            // TODO:
+            // Change Exception Type
+            throw new Exception();
+        }
+        projectState.WorkflowIds.Add(workflowState.Id);
+        appState.UpdateProject(projectState);
 
         Workflows.Add(workflowContext);
         SelectedWorkflow = workflowContext;
@@ -97,11 +107,23 @@ public partial class ProjectContext : ObservableObject
 
     public void UpdateProject(ProjectState projectState)
     {
-        var packageService = _services.GetService<IPackageService>();
         var appStateService = _services.GetService<IAppStateService>();
-        var dashboardState = appStateService.GetAppDashboardState();
 
+        ProjectId = projectState.Id;
+        Name = projectState.Settings.Name;
 
+        foreach (var workflowStateId in projectState.WorkflowIds)
+        {
+            if (!appStateService.TryGetWorkflow(workflowStateId, out var workflowState))
+            {
+                // TODO:
+                // Change Exception Type
+                throw new Exception();
+            }
+            var workflowContext = _services.GetService<WorkflowContext>();
+            workflowContext.EditMode = EditMode;
+            workflowContext.UpdateWorkflow(workflowState);
+        }
     }
 
     protected override void OnPropertyChanged(PropertyChangedEventArgs e)

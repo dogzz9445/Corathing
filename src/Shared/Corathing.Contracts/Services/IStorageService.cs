@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using Corathing.Contracts.Bases.Interfaces;
+
 namespace Corathing.Contracts.Services;
 
 public enum StorageHandleCode
@@ -30,6 +32,14 @@ public class StorageHandleArgs<T> : IStorageHandleArgs<T>
 
 public interface IStorageService
 {
+    string GetAppDataPath();
+
+    string GetAppPackagePath();
+
+    string GetEntityFolder(IEntity entity);
+
+    FileStream OpenFile(IEntity entity, string path, FileMode mode);
+
     Task<StorageHandleArgs<T>> ReadAsync<T>(string filename);
 
     Task<StorageHandleArgs<T>> SaveAsync<T>(string filename, T content);

@@ -180,7 +180,7 @@
                         </Button>
                     </StackPanel>
 
-                    <TextBox Text="{Binding Title}">
+                    <TextBox Text="{Binding Name}">
                         <i:Interaction.Behaviors>
                             <behavior:DoubleClickTextBoxBehavior EditMode="{Binding EditMode}"
                                                                  TextBoxEditingStyle="{StaticResource DefaultTextBoxStyle}"
@@ -242,7 +242,7 @@
                           Grid.Column="0">
                     <ComboBox.ItemTemplate>
                         <DataTemplate DataType="{x:Type models:ProjectContext}">
-                            <TextBlock Text="{Binding Title}" />
+                            <TextBlock Text="{Binding Name}" />
                         </DataTemplate>
                     </ComboBox.ItemTemplate>
                 </ComboBox>
