@@ -129,7 +129,7 @@ public class AppStateService : IAppStateService
         if (_cachedAppDashboardState == null)
             ReadOrCreateAppStateByAppSettings().Wait();
 
-        project = new ProjectState();
+        project = ProjectState.Create();
         return true;
     }
 
@@ -138,7 +138,7 @@ public class AppStateService : IAppStateService
         if (_cachedAppDashboardState == null)
             ReadOrCreateAppStateByAppSettings().Wait();
 
-        workflow = new WorkflowState();
+        workflow = WorkflowState.Create();
         return true;
     }
 
@@ -205,18 +205,92 @@ public class AppStateService : IAppStateService
         await PendingWriteAppState();
     }
 
-    public ProjectState AddProject()
+    public ProjectState CreateAddProject()
     {
         var project = ProjectState.Create();
         _cachedAppDashboardState.AddProject(project);
         return project;
     }
 
-    public WorkflowState AddWorkflow()
+    public WorkflowState CreateAddWorkflow()
     {
         var workflow = WorkflowState.Create();
         _cachedAppDashboardState.AddWorkflow(workflow);
         return workflow;
+    }
+
+    public ProjectState CopyProject(Guid originalProjectId)
+    {
+        if (!TryGetProject(originalProjectId, out var originalProject))
+        {
+            // TODO:
+            // Change Exception Type;
+            throw new Exception();
+        }
+        return CopyProject(originalProject);
+    }
+
+    public ProjectState CopyProject(ProjectState originalProject)
+    {
+        var cloneProject = ProjectState.Create();
+        foreach (var originalWorkflowId in originalProject.WorkflowIds)
+        {
+            var workflowState = CopyWorkflow(originalWorkflowId);
+            cloneProject.WorkflowIds.Add(workflowState.Id);
+        }
+        return cloneProject;
+    }
+
+    public WorkflowState CopyWorkflow(Guid originalWorkflowId)
+    {
+        if (!TryGetWorkflow(originalWorkflowId, out var originalWorkflow))
+        {
+            // TODO:
+            // Change Exception Type
+            throw new Exception();
+        }
+        return CopyWorkflow(originalWorkflow);
+    }
+
+    public WorkflowState CopyWorkflow(WorkflowState workflowState)
+    {
+        var cloneWorkflow = WorkflowState.Create();
+
+
+        _cachedAppDashboardState.AddWorkflow(cloneWorkflow);
+        return cloneWorkflow;
+    }
+
+    public void RemoveProject(Guid projectid)
+    {
+        if (!TryGetProject(projectid, out var project))
+        {
+            // TODO:
+            // Change Exception Type;
+            throw new Exception();
+        }
+        RemoveProject(project);
+    }
+
+    public async void RemoveProject(ProjectState project)
+    {
+        _cachedAppDashboardState.RemoveProject(project);
+
+        await PendingWriteAppState();
+    }
+
+    public void RemoveWorkflow(Guid guid)
+    {
+
+    }
+
+    public async void RemoveWorkflow(WorkflowState workflow)
+    {
+        _cachedAppDashboardState.RemoveWorkflow(workflow);
+
+
+
+        await PendingWriteAppState();
     }
 
     #region Private Methods
@@ -331,6 +405,8 @@ public class AppStateService : IAppStateService
             _cachedAppDashboardState = document.RootElement
                 .GetProperty("Dashboards")
                 .Deserialize<AppDashboardState>();
+
+            _cachedAppDashboardState.Refresh();
         }
     }
 

@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 
 using Corathing.Contracts.Services;
 
+using Microsoft.Extensions.DependencyInjection;
+
 namespace Corathing.Organizer.Services
 {
     public class ApplicationService : IApplicationService
@@ -20,6 +22,16 @@ namespace Corathing.Organizer.Services
         {
             var result = await App.Current.Dispatcher.InvokeAsync(callback);
             return result.Result;
+        }
+
+        public IServiceProvider GetServiceProvider()
+        {
+            return App.Current.Services;
+        }
+
+        public TService GetService<TService>()
+        {
+            return App.Current.Services.GetService<TService>();
         }
     }
 }

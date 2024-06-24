@@ -28,6 +28,8 @@ namespace Corathing.Organizer.Views
     {
         public WidgetSettingsViewModel ViewModel { get; set; }
 
+        public ContentPresenter? WidgetPreseneter { get; set; }
+
         public WidgetSettingsView(WidgetHost widgetHost)
         {
             InitializeComponent();
@@ -38,7 +40,8 @@ namespace Corathing.Organizer.Views
             Loaded += (s, e) =>
             {
                 var window = Window.GetWindow(this);
-                window.Width = 1000;
+                window.Width = 800;
+                window.Height = 800;
                 window.CenterWindowToParent();
             };
         }

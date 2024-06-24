@@ -22,6 +22,7 @@ using Corathing.Dashboards.WPF.Controls;
 using Corathing.Organizer.Controls;
 using Corathing.Organizer.Extensions;
 using Corathing.Organizer.Models;
+using Corathing.Organizer.Services;
 using Corathing.Organizer.Views;
 
 using Microsoft.Extensions.DependencyInjection;
@@ -112,6 +113,13 @@ public partial class DashboardViewModel : ObservableObject
         if (SelectedProject == null)
             return;
         SelectedProject.AddWorkflow();
+    }
+
+    [RelayCommand]
+    public void AddProject()
+    {
+        var projectContext = ProjectContext.Create();
+        Projects.Add(projectContext);
     }
 
     [RelayCommand]
@@ -263,7 +271,7 @@ public partial class DashboardViewModel : ObservableObject
         foreach (var projectState in dashboardState.Projects)
         {
             var projectContext = _services.GetService<ProjectContext>();
-            projectContext.Title = projectState.Settings.Name;
+            projectContext.Name = projectState.Settings.Name;
             //projectContext.ProjectId
                 // TODO::::
         }
@@ -273,8 +281,9 @@ public partial class DashboardViewModel : ObservableObject
 //            services.GetService<ProjectContext>()
 //        });
         SelectedProject = Projects.FirstOrDefault();
-        SelectedProject.AddWorkflow();
-        appStateService.AddProject();
+        if (SelectedProject != null)
+        {
+        }
         //dashboardState.Projects;
         //Projects.AddRange()
     }

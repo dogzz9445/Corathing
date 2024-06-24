@@ -16,7 +16,7 @@ public class AppDashboardState
     #region Serialized Properties
     public Guid Id { get; set; }
 
-    public Guid SelectedDashboardId { get; set; }
+    public Guid? SelectedProjectId { get; set; }
 
     public List<ProjectState> Projects { get; set; }
     public List<WorkflowState> Workflows { get; set; }
@@ -34,6 +34,7 @@ public class AppDashboardState
 
     public AppDashboardState()
     {
+        Id = Guid.NewGuid();
         Projects = new List<ProjectState>();
         Workflows = new List<WorkflowState>();
         Widgets = new List<WidgetState>();
@@ -87,7 +88,7 @@ public class AppDashboardState
         if (HashedProjects.ContainsKey(project.Id))
         {
             var oldProject = HashedProjects[project.Id];
-            Projects.Remove(oldProject);
+            Projects.RemoveAll(item => item.Id == oldProject.Id);
         }
         HashedProjects[project.Id] = project;
         Projects.Add(project);
@@ -98,7 +99,7 @@ public class AppDashboardState
         if (HashedWorkflows.ContainsKey(workflow.Id))
         {
             var oldWorkflow = HashedWorkflows[workflow.Id];
-            Workflows.Remove(oldWorkflow);
+            Workflows.RemoveAll(item => item.Id == oldWorkflow.Id);
         }
         HashedWorkflows[workflow.Id] = workflow;
         Workflows.Add(workflow);
@@ -113,5 +114,25 @@ public class AppDashboardState
         }
         HashedWidgets[widget.Id] = widget;
         Widgets.Add(widget);
+    }
+
+    public void Refresh()
+    {
+        HashedProjects.Clear();
+        HashedWorkflows.Clear();
+        HashedWidgets.Clear();
+
+        foreach (var project in Projects)
+        {
+            HashedProjects[project.Id] = project;
+        }
+        foreach (var workflow in Workflows)
+        {
+            HashedWorkflows[workflow.Id] = workflow;
+        }
+        foreach (var widget in Widgets)
+        {
+            HashedWidgets[widget.Id] = widget;
+        }
     }
 }

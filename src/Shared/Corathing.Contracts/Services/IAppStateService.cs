@@ -17,15 +17,22 @@ public interface IAppStateService
     AppPackageState GetAppPackageState();
     AppDashboardState GetAppDashboardState();
 
-    ProjectState AddProject();
-    WorkflowState AddWorkflow();
+    ProjectState CreateAddProject();
+    WorkflowState CreateAddWorkflow();
+
+    ProjectState CopyProject(Guid originalProjectId);
+    ProjectState CopyProject(ProjectState originalProject);
+    WorkflowState CopyWorkflow(Guid originalWorkflowId);
+    WorkflowState CopyWorkflow(WorkflowState originalWorkflow);
+
+    void RemoveProject(ProjectState project);
+    void RemoveProject(Guid projectId);
+    void RemoveWorkflow(WorkflowState workflow);
+    void RemoveWorkflow(Guid workflowId);
 
     bool TryGetProject(Guid id, out ProjectState project);
     bool TryGetWorkflow(Guid id, out WorkflowState workflow);
     bool TryGetWidget(Guid id, out WidgetState widget);
-
-    //ProjectState GetOrAddProject(Guid? projectId = null);
-    //IEnumerable<WidgetState> GetWidgets(Guid? workflowId = null);
 
     void UpdateProject(ProjectState project);
     void UpdateWorkflow(WorkflowState workflow);

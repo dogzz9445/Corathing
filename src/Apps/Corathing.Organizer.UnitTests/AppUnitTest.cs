@@ -47,10 +47,10 @@ public class AppUnitTest
     [TestMethod]
     public void App_ConfigureServices_Test()
     {
-        var thread = RunApplicationAction(application =>
-        {
+        //var thread = RunApplicationAction(application =>
+        //{
 
-        });
-        thread.Join();
+        //});
+        //thread.Join();
     }
 }

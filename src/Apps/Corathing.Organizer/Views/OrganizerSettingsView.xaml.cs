@@ -37,6 +37,7 @@ namespace Corathing.Organizer.Views
             {
                 var window = Window.GetWindow(this);
                 window.Width = 800;
+                window.Height = 800;
                 window.CenterWindowToParent();
             };
         }

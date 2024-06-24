@@ -7,6 +7,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Media;
 using System.Windows;
 using System.Drawing;
+using Corathing.Organizer.Utils;
 
 namespace Corathing.Organizer.Natives;
 
@@ -19,5 +20,10 @@ public static class FileHelper
                     icon.Handle,
                     Int32Rect.Empty,
                     BitmapSizeOptions.FromEmptyOptions());
+    }
+
+    public static string GenerateUniqueFolder(Guid guid)
+    {
+        return ZBase32Encoder.ToString(guid.ToByteArray());
     }
 }

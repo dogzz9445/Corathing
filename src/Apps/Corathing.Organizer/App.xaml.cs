@@ -21,8 +21,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Wpf.Ui;
 
 using Application = System.Windows.Application;
+using INavigationService = Corathing.Contracts.Services.INavigationService;
 using IThemeService = Corathing.Contracts.Services.IThemeService;
 using MessageBox = System.Windows.MessageBox;
+using NavigationService = Corathing.Organizer.Services.NavigationService;
 using ThemeService = Corathing.Organizer.Services.ThemeService;
 
 namespace Corathing.Organizer;
@@ -174,6 +176,7 @@ public partial class App : Application
         serviceCollection.AddSingleton<IAuthService, AuthService>();
         serviceCollection.AddSingleton<IDialogService, DialogService>();
         serviceCollection.AddSingleton<ILocalizationService>(LocalizationService.Instance);
+        serviceCollection.AddSingleton<INavigationService, NavigationService>();
         serviceCollection.AddSingleton<IPackageService, PackageService>();
         serviceCollection.AddSingleton<IResourceDictionaryService, ResourceDictionaryService>();
         serviceCollection.AddSingleton<ISecretService, ModelVersionSecretService>();
@@ -188,8 +191,9 @@ public partial class App : Application
         serviceCollection.AddScoped<WidgetSettingsViewModel>();
         serviceCollection.AddScoped<ProjectSettingsViewModel>();
         serviceCollection.AddScoped<WorkflowSettingsViewModel>();
-        serviceCollection.AddScoped<ProjectContext>();
-        serviceCollection.AddScoped<WorkflowContext>();
+        serviceCollection.AddTransient<ProjectContext>();
+        serviceCollection.AddTransient<ProjectSettingsContext>();
+        serviceCollection.AddTransient<WorkflowContext>();
 
         // TODO:
         // Logger 및 Localizer 설정

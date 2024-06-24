@@ -62,7 +62,7 @@
     <!-- 1. Light Theme Primary Colors                                    -->
     <!-- 2. Dark Theme Primary Colors                                     -->
     <!-- ================================================================ -->
-    <Color x:Key="ControlFillColorLightThemeDefault">#B3FFFFFF</Color>
+    <Color x:Key="ControlFillColorLightThemeDefault">#B3E8E8E8</Color>
     <Color x:Key="ControlFillColorLightThemeSecondary">#60E8E8E8</Color>
     <Color x:Key="ControlFillColorLightThemeTertiary">#4DE0E0E0</Color>
     <Color x:Key="ControlFillColorLightThemeDisabled">#4DE0E0E0</Color>

@@ -31,7 +31,7 @@ public partial class ProjectContext : ObservableObject
     /// </summary>
     /// <value>The title.</value>
     [ObservableProperty]
-    private string _title = "My Project";
+    private string _name = "My Project";
 
     [DefaultValue(false)]
     [ObservableProperty]
@@ -64,7 +64,7 @@ public partial class ProjectContext : ObservableObject
     public void AddWorkflow()
     {
         var appState = _services.GetService<IAppStateService>();
-        var workflow = appState.AddWorkflow();
+        var workflow = appState.CreateAddWorkflow();
         //appState.NewWorkflowState();
         var workflowContext = _services.GetService<WorkflowContext>();
         workflowContext.WorkflowId = workflow.Id;
@@ -80,6 +80,19 @@ public partial class ProjectContext : ObservableObject
     {
         _services = services;
         Workflows = new ObservableCollection<WorkflowContext>();
+    }
+
+    public static ProjectContext Create(ProjectState? state = null)
+    {
+        if (state == null)
+        {
+            var appStateService = App.Current.Services.GetService<IAppStateService>();
+            state = appStateService.CreateAddProject();
+        }
+        var context = App.Current.Services.GetService<ProjectContext>();
+        context.Name = state.Settings.Name;
+
+        return context;
     }
 
     public void UpdateProject(ProjectState projectState)
