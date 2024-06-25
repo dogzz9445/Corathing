@@ -99,6 +99,12 @@ public partial class DashboardViewModel : ObservableObject
     }
 
     [RelayCommand]
+    public void ToggleEditDashboard()
+    {
+        EditMode = !EditMode;
+    }
+
+    [RelayCommand]
     public void AddWidget(CoraWidgetGenerator generator)
     {
         if (SelectedProject == null)
@@ -140,74 +146,27 @@ public partial class DashboardViewModel : ObservableObject
         var window = new BaseWindow();
         window.Content = new ProjectSettingsView();
         window.Owner = Application.Current.MainWindow;
+        Application.Current.MainWindow.Effect = new BlurEffect();
         window.ShowDialog();
+        Application.Current.MainWindow.Effect = null;
     }
 
     [RelayCommand]
-    public void ToggleEditDashboard()
+    public void OpenWorkflowSettings()
     {
-        EditMode = !EditMode;
-    }
-
-    [RelayCommand]
-    public async void ConfigureWidget(WidgetHost widgetHost)
-    {
-        var parentWindow = Window.GetWindow(widgetHost);
         var window = new BaseWindow();
-        if (parentWindow != null)
-        {
-            window.Owner = parentWindow;
-            parentWindow.Effect = new BlurEffect();
-            window.CenterWindowToParent();
-        }
-        var view = new WidgetSettingsView(widgetHost);
-        window.Content = view;
+        window.Content = new WorkflowSettingsView();
+        window.Owner = Application.Current.MainWindow;
+        Application.Current.MainWindow.Effect = new BlurEffect();
         window.ShowDialog();
-        if (parentWindow != null)
-        {
-            parentWindow.Effect = null;
-        }
-    }
-
-    // TEST
-    [RelayCommand]
-    public async void OpenNavigation()
-    {
-        //App.Current.Services.GetService<INavigationDialogService>().Navigate(typeof(MultiLevelNavigationPage));
-        await App.Current.Services.GetService<IContentDialogService>().ShowAsync(new Wpf.Ui.Controls.ContentDialog(), new CancellationToken());
+        Application.Current.MainWindow.Effect = null;
     }
 
     [RelayCommand]
-    public void RemoveWidget(object widgetHost)
+    public void RemoveWorkflow()
     {
-        if (widgetHost == null)
-            return;
-        if (!(widgetHost is WidgetHost))
-            return;
-        SelectedProject.SelectedWorkflow.Widgets.Remove((widgetHost as WidgetHost).DataContext as WidgetContext);
+
     }
-
-    /// <summary>
-    /// Gets the command done configuring widget.
-    /// </summary>
-    /// <value>The command done configuring widget.</value>
-    //public ICommand CommandDoneConfiguringWidget => new RelayCommand(() => ConfiguringWidget = null);
-
-    ///// <summary>
-    ///// Gets the command manage dashboard.
-    ///// </summary>
-    ///// <value>The command manage dashboard.</value>
-    //public ICommand CommandManageDashboard => new RelayCommand(() =>
-    //    ConfiguringDashboard =
-    //        new DashboardSettingsPromptViewModel(DashboardConfigurationType.Existing, this,
-    //            SelectedDashboard.Title));
-
-    ///// <summary>
-    ///// Gets the command new dashboard.
-    ///// </summary>
-    ///// <value>The command new dashboard.</value>
-    //public ICommand CommandNewDashboard => new RelayCommand(() =>
-    //    ConfiguringDashboard = new DashboardSettingsPromptViewModel(DashboardConfigurationType.New, this));
 
     #endregion Public Properties
 

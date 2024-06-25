@@ -201,8 +201,9 @@ public partial class App : Application
         serviceCollection.AddTransient<MultiLevelNavigationViewModel>();
 
         // --------------------------------------------------------------------------
-        // Register viewmodels
+        // Register views and viewmodels
         // --------------------------------------------------------------------------
+        serviceCollection.AddScoped<OrganizerSettingsView>();
         serviceCollection.AddScoped<OrganizerSettingsViewModel>();
         serviceCollection.AddScoped<WidgetSettingsViewModel>();
         serviceCollection.AddScoped<ProjectSettingsViewModel>();

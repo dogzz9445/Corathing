@@ -340,14 +340,21 @@
                             Grid.Column="6">
                     
                     <ui:Button Style="{StaticResource IconButton24}"
-                               Icon="{ui:SymbolIcon Add24}"
-                               Command="{Binding OpenNavigationCommand}"
-                               ToolTip="Open settings dashboard" />
+                               Icon="{ui:SymbolIcon Settings24}"
+                               Margin="0,0,10,0"
+                               Command="{Binding OpenOrganizerSettingsCommand}"
+                               ToolTip="Open settings organizer" />
                     
                     <ui:Button Style="{StaticResource IconButton24}"
-                               Icon="{ui:SymbolIcon Settings24}"
-                               Command="{Binding OpenOrganizerSettingsCommand}"
-                               ToolTip="Open settings dashboard" />
+                               Icon="{ui:SymbolIcon LineHorizontal120}"
+                               Margin="0,0,10,0"
+                               ToolTip="Minimize organizer" />
+
+                    <ui:Button Style="{StaticResource IconButton24}"
+                               Icon="{ui:SymbolIcon Dismiss24}"
+                               Margin="0,0,10,0"
+                               ToolTip="Close oranigzer" />
+
                 </StackPanel>
             </Grid>
 
@@ -361,7 +368,7 @@
         <!--  Dashboard Contents  -->
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <TabControl HorizontalContentAlignment="Left"
                         x:Name="DashboardHostTabControl"

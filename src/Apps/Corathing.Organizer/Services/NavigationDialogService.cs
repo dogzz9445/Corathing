@@ -1,34 +1,32 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO.IsolatedStorage;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Navigation;
 
 using Corathing.Contracts.Services;
+using Corathing.Organizer.Controls;
 using Corathing.Organizer.Views;
 
 using Wpf.Ui;
+using Wpf.Ui.Controls;
 
 namespace Corathing.Organizer.Services;
 
 public class NavigationDialogService : INavigationDialogService
 {
     private INavigationService _uiNavigationService;
-    private IContentDialogService _contentDialogService;
-    private MainWindow _mainWindow;
-
+    private NavigationDialogView _navigationView;
     public NavigationDialogService(
         INavigationService uiNavigationService,
-        IContentDialogService contentDialogService,
-        MainWindow mainWindow,
+        NavigationDialogView navigationDialogView,
         IPageService pageService
         )
     {
         _uiNavigationService = uiNavigationService;
-        _contentDialogService = contentDialogService;
-        _mainWindow = mainWindow;
-        _uiNavigationService.SetPageService(pageService);
+        _navigationView = navigationDialogView;
     }
 
     public bool GoBack()
@@ -37,33 +35,35 @@ public class NavigationDialogService : INavigationDialogService
         return isSucceeded;
     }
 
-    public bool Navigate(Type pageType)
+    public async Task<bool> Navigate(Type pageType, CancellationToken cancellationToken = default)
     {
-        return NavigateWithHierarchy(pageType);
+        return await NavigateWithHierarchy(pageType);
     }
 
-    public bool Navigate(Type pageType, object? dataContext)
+    public async Task<bool> Navigate(Type pageType, object? dataContext, CancellationToken cancellationToken = default)
     {
-        return NavigateWithHierarchy(pageType, dataContext);
+        return await NavigateWithHierarchy(pageType, dataContext);
     }
 
-    public bool Navigate(string pageIdOrTargetTag)
+    public async Task<bool> Navigate(string pageIdOrTargetTag, CancellationToken cancellationToken = default)
     {
         return true;
     }
 
-    public bool Navigate(string pageIdOrTargetTag, object? dataContext)
+    public async Task<bool> Navigate(string pageIdOrTargetTag, object? dataContext, CancellationToken cancellationToken = default)
     {
         return true;
     }
 
-    public bool NavigateWithHierarchy(Type pageType)
+    public async Task<bool> NavigateWithHierarchy(Type pageType, CancellationToken cancellationToken = default)
     {
-        return _uiNavigationService.NavigateWithHierarchy(pageType);
+        _navigationView.Show();
+        return true;
     }
 
-    public bool NavigateWithHierarchy(Type pageType, object? dataContext)
+    public async Task<bool> NavigateWithHierarchy(Type pageType, object? dataContext, CancellationToken cancellationToken = default)
     {
-        return _uiNavigationService.NavigateWithHierarchy(pageType, dataContext);
+        _navigationView.Show();
+        return _uiNavigationService.NavigateWithHierarchy(typeof(MultiLevelNavigationPage), dataContext);
     }
 }

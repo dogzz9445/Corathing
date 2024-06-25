@@ -10,21 +10,23 @@ namespace Corathing.Contracts.Bases;
 
 public interface IWidgetCoreState
 {
-    string Name { get; }
     string TypeName { get; }
     string NamespaceName { get; }
+    int RowIndex { get; }
+    int ColumnIndex { get; }
+    int RowSpan { get; }
+    int ColumnSpan { get; }
+
+    // 설정 가능한 변수
     string Title { get; }
+    string Description { get; }
     bool VisibleTitle { get; }
+    bool UseDefaultBackgroundColor { get; }
+    string BackgroundColor { get; }
 }
 
 public class WidgetCoreState : IWidgetCoreState
 {
-    /// <summary>
-    /// Shows the name of the widget.
-    /// 화면에 표시되는 위젯의 이름
-    /// </summary>
-    public string Name { get; set; }
-
     /// <summary>
     /// Just known type name of the widget in settings file.
     /// This is not for converting type.
@@ -40,12 +42,18 @@ public class WidgetCoreState : IWidgetCoreState
     /// </summary>
     public string NamespaceName { get; set; }
 
+    public int RowIndex { get; set; }
+    public int ColumnIndex { get; set; }
+    public int RowSpan { get; set; }
+    public int ColumnSpan { get; set; }
+
     /// <summary>
-    /// Just known namespace name of the widget in settings file.
-    /// This is not for converting namespace or logic of system.
-    /// 제목에 대한 설정이 필요하면 사용
+    /// Shows the name of the widget.
+    /// 화면에 표시되는 위젯의 이름
     /// </summary>
     public string Title { get; set; }
+
+    public string Description { get; set; }
 
     /// <summary>
     /// Just known namespace name of the widget in settings file.
@@ -53,4 +61,6 @@ public class WidgetCoreState : IWidgetCoreState
     /// 기본적으로 제목을 보여줄지에 대한 설정
     /// </summary>
     public bool VisibleTitle { get; set; }
+    public bool UseDefaultBackgroundColor { get; set; }
+    public string BackgroundColor { get; set; }
 }

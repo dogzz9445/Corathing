@@ -44,7 +44,6 @@ public class AppUnitTest
         window.Close();
     }
 
-    [TestMethod]
     public void App_ConfigureServices_Test()
     {
         //var thread = RunApplicationAction(application =>

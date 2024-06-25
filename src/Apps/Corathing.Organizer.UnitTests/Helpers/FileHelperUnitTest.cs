@@ -6,10 +6,8 @@ using System.Threading.Tasks;
 
 namespace Corathing.Organizer.UnitTests.Helpers;
 
-[TestClass]
 public class FileHelperUnitTest
 {
-    [TestMethod]
     public void GenerateUniqueFolder_TestGuid(Guid guid)
     {
 

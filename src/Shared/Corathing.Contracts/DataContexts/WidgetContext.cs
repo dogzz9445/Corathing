@@ -7,6 +7,10 @@ using System.Xml.Linq;
 
 using CommunityToolkit.Mvvm.ComponentModel;
 
+using Corathing.Contracts.Services;
+
+using Microsoft.Extensions.DependencyInjection;
+
 namespace Corathing.Contracts.Bases;
 
 public partial class WidgetContext : ObservableRecipient
@@ -68,6 +72,12 @@ public partial class WidgetContext : ObservableRecipient
         WidgetId = state.Id;
         WidgetTitle = state.CoreSettings.Title;
         VisibleTitle = state.CoreSettings.VisibleTitle;
+    }
+
+    public virtual void Update(WidgetState state)
+    {
+        var appStateService = _services.GetService<IAppStateService>();
+        appStateService.UpdateWidget(State);
     }
 
     public virtual void OnDestroy()

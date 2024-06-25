@@ -10,6 +10,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
 using Corathing.Contracts.Bases;
+using Corathing.Contracts.Helpers;
 using Corathing.Contracts.Services;
 using Corathing.Dashboards.WPF.Controls;
 
@@ -22,7 +23,10 @@ public partial class WidgetSettingsViewModel : ObservableObject
     private IServiceProvider _services;
 
     private WidgetHost _originalWidget;
+    private WidgetHost _settingsWidgetHost;
     private WidgetContext _originalContext;
+
+    [ObservableProperty]
     private WidgetContext _tempWidgetContext;
 
     public WidgetSettingsViewModel(IServiceProvider services)
@@ -30,9 +34,10 @@ public partial class WidgetSettingsViewModel : ObservableObject
         _services = services;
     }
 
-    public void RegisterWidget(WidgetHost widgetHost)
+    public Type RegisterWidget(WidgetHost settingsWidgetHost, WidgetHost originalWidgetHost)
     {
-        _originalWidget = widgetHost;
+        _originalWidget = originalWidgetHost;
+        _settingsWidgetHost = settingsWidgetHost;
 
         _originalContext = _originalWidget.DataContext as WidgetContext;
 
@@ -47,12 +52,27 @@ public partial class WidgetSettingsViewModel : ObservableObject
         // 4. Set the new widget context as the temporary widget context
         // 5. Set the original widget context as the original widget context
 
-        //(WidgetContext)Activator.CreateInstance(ContextType, _services);
+
+        TempWidgetContext = generator.CreateWidget();
+        _settingsWidgetHost.DataContext = TempWidgetContext;
+
+        TempWidgetContext.State.CustomSettings =
+            JsonHelper.DeepCopy(_originalContext.State.CustomSettings, generator.OptionType);
+        TempWidgetContext.Update(TempWidgetContext.State);
+        //TempWidgetContext.State = JsonHelper.DeepCopy<WidgetState>(_tempWidgetContext.State);
+        //TempWidgetContext.State = _originalContext.State.CustomSettings;
+
+        return generator.ContextType;
+    }
+
+    [RelayCommand]
+    public void Apply()
+    {
 
     }
 
     [RelayCommand]
-    public void Close(Window window)
+    public void GoBack(Window window)
     {
         window.Close();
     }

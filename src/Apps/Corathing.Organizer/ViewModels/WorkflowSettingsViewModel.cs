@@ -4,9 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Corathing.Organizer.ViewModels
+namespace Corathing.Organizer.ViewModels;
+
+public class WorkflowSettingsViewModel
 {
-    internal class WorkflowSettingsViewModel
-    {
-    }
 }

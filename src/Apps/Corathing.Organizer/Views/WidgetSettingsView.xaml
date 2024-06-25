@@ -7,8 +7,9 @@
       xmlns:viewmodels="clr-namespace:Corathing.Organizer.ViewModels"
       xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
       xmlns:hosts="clr-namespace:Corathing.Dashboards.WPF.Controls;assembly=Corathing.Dashboards.WPF"
+      xmlns:localizations="clr-namespace:Corathing.Dashboards.WPF.Bindings;assembly=Corathing.Dashboards.WPF"
       mc:Ignorable="d"
-      d:DesignHeight="450"
+      d:DesignHeight="800"
       d:DesignWidth="800"
       Margin="16"
       Title="WidgetSettingsView">
@@ -21,13 +22,12 @@
     </Page.Resources>
 
     <DockPanel LastChildFill="True">
-        <StackPanel DockPanel.Dock="Top"
-                    Margin="0, 10, 0, 0"
-                    Orientation="Horizontal"
-                    VerticalAlignment="Top"
-                    Height="48">
+        <DockPanel DockPanel.Dock="Top"
+                   Margin="0, 10, 0, 0"
+                   VerticalAlignment="Top"
+                   Height="48">
             <ui:Button VerticalAlignment="Top"
-                       Command="{Binding CloseCommand}"
+                       Command="{Binding GoBackCommand}"
                        CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, 
                                         AncestorType={x:Type Window}}}"
                        Height="40"
@@ -37,33 +37,79 @@
             <ui:TextBlock Margin="16,0,0,0"
                           VerticalAlignment="Top"
                           FontTypography="Title"
-                          Text="Setting Widget" />
-        </StackPanel>
+                          Text="Manage Widget" />
+
+            <ui:Button HorizontalAlignment="Right"
+                       Margin="0,0,16,0"
+                       Appearance="Primary"
+                       Command="{Binding ApplyCommand}"
+                       Content="Apply"
+                       Icon="Checkmark24"
+                       Height="40" />
+
+        </DockPanel>
         <Separator DockPanel.Dock="Top" />
 
         <DockPanel DockPanel.Dock="Left"
-                   Margin="8"
-                   Width="300">
+                   Width="375"
+                   Margin="16,16,8,8">
             <Border BorderThickness="1"
                     Background="#24242424"
                     BorderBrush="Black">
-                <hosts:WidgetHost Width="256"
+                <ContentPresenter x:Name="WidgetHostContentPresenter"
+                                  Width="256"
                                   Height="256"/>
             </Border>
         </DockPanel>
 
         <ScrollViewer FocusVisualStyle="{x:Null}">
 
-            <StackPanel Margin="24,8,16,8"
+            <StackPanel Margin="8,8,16,8"
                         FocusVisualStyle="{x:Null}">
-
-                <!-- 기본 위젯 설정 -->
-                <!-- 1. 설정 버튼 숨기기 -->
-                <!-- 2. 유저 인증 -->
-                
                 <ui:TextBlock Margin="0,16,0,8"
                               FontTypography="BodyStrong"
-                              Text="기본 위젯 설정" />
+                              Text="위젯 설정" />
+
+                <!-- 기본 위젯 설정 -->
+
+                <!-- 이름 설정 -->
+                <ui:CardControl Margin="0,8,0,8"
+                                Icon="{ui:SymbolIcon KeyboardLayoutResize24}">
+                    <ui:CardControl.Header>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <ui:TextBlock Grid.Row="0"
+                                          FontTypography="Body"
+                                          Text="위젯 이름" />
+                            <ui:TextBox Grid.Row="1"
+                                        Text="{Binding TempWidgetContext.WidgetTitle, UpdateSourceTrigger=PropertyChanged}" />
+                        </Grid>
+                    </ui:CardControl.Header>
+                </ui:CardControl>
+                <ui:CardControl Margin="0,0,0,8"
+                                Icon="{ui:SymbolIcon KeyboardLayoutResize24}">
+                    <ui:CardControl.Header>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <ui:TextBlock Grid.Column="0"
+                                          FontTypography="Body"
+                                          Text="위젯 이름 표시" />
+                            <CheckBox Grid.Column="1"
+                                      IsChecked="{Binding TempWidgetContext.VisibleTitle}"/>
+                        </Grid>
+                    </ui:CardControl.Header>
+                </ui:CardControl>
+
+
                 <ui:CardExpander Margin="0,0,0,8"
                                  Icon="{ui:SymbolIcon Folder24}"
                                  ContentPadding="0">
@@ -90,8 +136,7 @@
                                        Grid.Column="1"
                                        Margin="0,0,16,0"
                                        VerticalAlignment="Center"
-                                       Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
-                                       Text="{Binding AppVersion, Mode=OneWay}" />
+                                       Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}" />
                         </Grid>
                     </ui:CardExpander.Header>
                     <StackPanel>
@@ -122,8 +167,7 @@
                                               Text="ddd" />
                                 <CheckBox Grid.Row="0"
                                           Grid.RowSpan="2"
-                                          Grid.Column="1"
-                                          IsChecked="{Binding UseGlobalConfiguration}" />
+                                          Grid.Column="1"/>
                             </Grid>
                         </ui:Anchor>
 

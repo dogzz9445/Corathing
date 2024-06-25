@@ -31,7 +31,13 @@
             </tray:NotifyIcon.Menu>
         </tray:NotifyIcon>-->
 
-        <ContentPresenter x:Name="NavigationContentDialog"
+        <!--<views:NavigationDialogView x:Name="NavigationContentDialog"
+                                    Visibility="Collapsed"
+                                    Height="800"
+                                    Width="800"
+                                    Grid.Row="0" />-->
+        
+        <ContentPresenter x:Name="RootContentDialog"
                           Grid.Row="0"/>
     </Grid>
 </metro:MetroWindow>

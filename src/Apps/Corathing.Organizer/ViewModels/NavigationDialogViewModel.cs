@@ -9,15 +9,16 @@ using CommunityToolkit.Mvvm.Input;
 
 using Corathing.Contracts.Services;
 
+using Microsoft.Extensions.DependencyInjection;
+
 namespace Corathing.Organizer.ViewModels;
 
-public partial class NavigationDialogViewModel(
-    INavigationDialogService navigationDialogServie
-    ): ObservableObject
+public partial class NavigationDialogViewModel : ObservableObject
 {
     [RelayCommand]
     public void GoBack()
     {
+        INavigationDialogService navigationDialogServie = App.Current.Services.GetService<INavigationDialogService>();
         _ = navigationDialogServie.GoBack();
     }
 }

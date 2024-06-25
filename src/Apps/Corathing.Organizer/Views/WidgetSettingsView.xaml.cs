@@ -28,14 +28,20 @@ namespace Corathing.Organizer.Views
     {
         public WidgetSettingsViewModel ViewModel { get; set; }
 
-        public ContentPresenter? WidgetPreseneter { get; set; }
-
         public WidgetSettingsView(WidgetHost widgetHost)
         {
-            InitializeComponent();
-
             DataContext = ViewModel = App.Current.Services.GetService<WidgetSettingsViewModel>();
-            ViewModel.RegisterWidget(widgetHost);
+            WidgetHost tempWidgetHost = new WidgetHost();
+            Type contextType = ViewModel.RegisterWidget(tempWidgetHost, widgetHost);
+
+            InitializeComponent();
+            WidgetHostContentPresenter.Content = tempWidgetHost;
+            var dataTemplateKey = new DataTemplateKey(contextType);
+            var dataTemplate = FindResource(dataTemplateKey) as DataTemplate;
+            if (dataTemplate != null)
+            {
+                tempWidgetHost.ContentTemplate = dataTemplate;
+            }
 
             Loaded += (s, e) =>
             {

@@ -37,7 +37,7 @@ public partial class MainWindow : MetroWindow
     {
         InitializeComponent();
 
-        contentDialogService.SetDialogHost(NavigationContentDialog);
+        contentDialogService.SetDialogHost(RootContentDialog);
 
         DataContext = ViewModel = viewModel;
 
