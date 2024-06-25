@@ -19,7 +19,7 @@
                    Width="1600">
 
     <Grid>
-        <views:DashboardView DockPanel.Dock="Bottom" />
+        <views:DashboardView />
 
         <!--<tray:NotifyIcon Grid.Row="0"
                          FocusOnLeftClick="True"
@@ -30,5 +30,8 @@
                 <ContextMenu ItemsSource="{Binding ViewModel.TrayMenuItems, Mode=OneWay}" />
             </tray:NotifyIcon.Menu>
         </tray:NotifyIcon>-->
+
+        <ContentPresenter x:Name="NavigationContentDialog"
+                          Grid.Row="0"/>
     </Grid>
 </metro:MetroWindow>

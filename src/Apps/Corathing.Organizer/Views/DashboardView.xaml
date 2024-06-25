@@ -335,12 +335,20 @@
                     </Menu>
                 </StackPanel>
 
-                <ui:Button Grid.Column="6"
-                           Style="{StaticResource IconButton24}"
-                           Margin="0,0,10,0"
-                           Icon="{ui:SymbolIcon Settings24}"
-                           Command="{Binding OpenOrganizerSettingsCommand}"
-                           ToolTip="Open settings dashboard" />
+                <StackPanel Orientation="Horizontal"
+                            Margin="0,0,10,0"
+                            Grid.Column="6">
+                    
+                    <ui:Button Style="{StaticResource IconButton24}"
+                               Icon="{ui:SymbolIcon Add24}"
+                               Command="{Binding OpenNavigationCommand}"
+                               ToolTip="Open settings dashboard" />
+                    
+                    <ui:Button Style="{StaticResource IconButton24}"
+                               Icon="{ui:SymbolIcon Settings24}"
+                               Command="{Binding OpenOrganizerSettingsCommand}"
+                               ToolTip="Open settings dashboard" />
+                </StackPanel>
             </Grid>
 
             <!--  Separator  -->

@@ -9,6 +9,6 @@ namespace Corathing.Organizer.UnitTests.Factories;
 
 public static class WindowFactory
 {
-    public static Window Create() =>
-        new MainWindow();
+    //public static Window Create() =>
+    //    new MainWindow();
 }

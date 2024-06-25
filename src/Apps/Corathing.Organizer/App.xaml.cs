@@ -7,6 +7,7 @@ using System.Windows;
 
 using Corathing.Contracts.Services;
 using Corathing.Dashboards.WPF.Services;
+using Corathing.Organizer.Controls;
 using Corathing.Organizer.Models;
 using Corathing.Organizer.Resources;
 using Corathing.Organizer.Services;
@@ -21,10 +22,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Wpf.Ui;
 
 using Application = System.Windows.Application;
-using INavigationService = Corathing.Contracts.Services.INavigationService;
+using INavigationDialogService = Corathing.Contracts.Services.INavigationDialogService;
 using IThemeService = Corathing.Contracts.Services.IThemeService;
 using MessageBox = System.Windows.MessageBox;
-using NavigationService = Corathing.Organizer.Services.NavigationService;
+using NavigationDialogService = Corathing.Organizer.Services.NavigationDialogService;
 using ThemeService = Corathing.Organizer.Services.ThemeService;
 
 namespace Corathing.Organizer;
@@ -136,7 +137,8 @@ public partial class App : Application
         }
 
         // Create a new MainWindow and set its DataContext to a new MainWindowViewModel which binds the view to the viewmodel
-        new MainWindow().Show();
+        var window = Services.GetService<MainWindow>();
+        window.Show();
     }
 
     private static IConfigurationRoot BuildConfiguration(string[] args)
@@ -166,7 +168,10 @@ public partial class App : Application
         // Currently, use Wpf.Ui service,
         // This should be implmented with IDialogService (Corathing.Contracts.Services)
         // RoadMap 3, Content Presenter (Binding using Context)
-        serviceCollection.AddSingleton<IContentDialogService, ContentDialogService>();
+        //serviceCollection.AddSingleton<IContentDialogService, ContentDialogService>();
+
+        serviceCollection.AddSingleton<MainWindow>();
+        serviceCollection.AddSingleton<MainViewModel>();
 
         // --------------------------------------------------------------------------
         // Register services
@@ -177,12 +182,23 @@ public partial class App : Application
         serviceCollection.AddSingleton<IDialogService, DialogService>();
         serviceCollection.AddSingleton<ILocalizationService>(LocalizationService.Instance);
         serviceCollection.AddSingleton<INavigationService, NavigationService>();
+        serviceCollection.AddSingleton<IPageService, PageService>();
+        serviceCollection.AddSingleton<IContentDialogService, ContentDialogService>();
+        serviceCollection.AddSingleton<INavigationDialogService, NavigationDialogService>();
         serviceCollection.AddSingleton<IPackageService, PackageService>();
         serviceCollection.AddSingleton<IResourceDictionaryService, ResourceDictionaryService>();
         serviceCollection.AddSingleton<ISecretService, ModelVersionSecretService>();
         serviceCollection.AddSingleton<IStorageService, StorageService>();
         serviceCollection.AddSingleton<IThemeService, ThemeService>();
         serviceCollection.AddSingleton<IWidgetService, WidgetService>();
+
+        // --------------------------------------------------------------------------
+        // Navigation Service
+        // --------------------------------------------------------------------------
+        serviceCollection.AddSingleton<NavigationDialogView>();
+        serviceCollection.AddSingleton<NavigationDialogViewModel>();
+        serviceCollection.AddTransient<MultiLevelNavigationPage>();
+        serviceCollection.AddTransient<MultiLevelNavigationViewModel>();
 
         // --------------------------------------------------------------------------
         // Register viewmodels
@@ -194,6 +210,7 @@ public partial class App : Application
         serviceCollection.AddTransient<ProjectContext>();
         serviceCollection.AddTransient<ProjectSettingsContext>();
         serviceCollection.AddTransient<WorkflowContext>();
+
 
         // TODO:
         // Logger 및 Localizer 설정

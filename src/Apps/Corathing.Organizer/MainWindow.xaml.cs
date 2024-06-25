@@ -11,9 +11,13 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 using Corathing.Organizer.ViewModels;
+using Corathing.Organizer.Views;
 
 using MahApps.Metro.Controls;
 
+using Microsoft.Extensions.DependencyInjection;
+
+using Wpf.Ui;
 using Wpf.Ui.Controls;
 
 namespace Corathing.Organizer;
@@ -25,16 +29,22 @@ public partial class MainWindow : MetroWindow
 {
     public MainViewModel ViewModel;
 
-    public MainWindow()
+    public MainWindow(
+        IServiceProvider services,
+        IContentDialogService contentDialogService,
+        MainViewModel viewModel
+        )
     {
         InitializeComponent();
 
-        DataContext = ViewModel = new MainViewModel();
+        contentDialogService.SetDialogHost(NavigationContentDialog);
+
+        DataContext = ViewModel = viewModel;
 
         MouseDown += Window_MouseDown;
         MouseDoubleClick += Window_MouseDoubleClick;
-
     }
+
 
     private void Window_MouseDoubleClick(object sender, MouseButtonEventArgs e)
     {

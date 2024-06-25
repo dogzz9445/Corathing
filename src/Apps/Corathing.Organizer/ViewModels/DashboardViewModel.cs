@@ -169,6 +169,14 @@ public partial class DashboardViewModel : ObservableObject
         }
     }
 
+    // TEST
+    [RelayCommand]
+    public async void OpenNavigation()
+    {
+        //App.Current.Services.GetService<INavigationDialogService>().Navigate(typeof(MultiLevelNavigationPage));
+        await App.Current.Services.GetService<IContentDialogService>().ShowAsync(new Wpf.Ui.Controls.ContentDialog(), new CancellationToken());
+    }
+
     [RelayCommand]
     public void RemoveWidget(object widgetHost)
     {

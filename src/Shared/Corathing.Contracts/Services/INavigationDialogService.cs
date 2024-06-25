@@ -15,8 +15,9 @@ namespace Corathing.Contracts.Services;
 /// Represents a contract with a <see cref="System.Windows.FrameworkElement"/> that contains <see cref="INavigationView"/>.
 /// Through defined <see cref="IPageService"/> service allows you to use the Dependency Injection pattern in <c>WPF UI</c> navigation.
 /// </summary>
-public interface INavigationService
+public interface INavigationDialogService
 {
+    
 
     /// <summary>
     /// Lets you navigate to the selected page based on it's type. Should be used with <see cref="IPageService"/>.
@@ -63,22 +64,22 @@ public interface INavigationService
     /// <returns><see langword="true"/> if the operation succeeds. <see langword="false"/> otherwise.</returns>
     bool NavigateWithHierarchy(Type pageType, object? dataContext);
 
-    ///// <summary>
-    ///// Provides direct access to the control responsible for navigation.
-    ///// </summary>
-    ///// <returns>Instance of the <see cref="INavigationView"/> control.</returns>
+    /// <summary>
+    /// Provides direct access to the control responsible for navigation.
+    /// </summary>
+    /// <returns>Instance of the <see cref="INavigationView"/> control.</returns>
     //INavigationView GetNavigationControl();
 
-    ///// <summary>
-    ///// Lets you attach the control that represents the <see cref="INavigationView"/>.
-    ///// </summary>
-    ///// <param name="navigation">Instance of the <see cref="INavigationView"/>.</param>
+    /// <summary>
+    /// Lets you attach the control that represents the <see cref="INavigationView"/>.
+    /// </summary>
+    /// <param name="navigation">Instance of the <see cref="INavigationView"/>.</param>
     //void SetNavigationControl(INavigationView navigation);
 
-    ///// <summary>
-    ///// Lets you attach the service that delivers page instances to <see cref="INavigationView"/>.
-    ///// </summary>
-    ///// <param name="pageService">Instance of the <see cref="IPageService"/>.</param>
+    /// <summary>
+    /// Lets you attach the service that delivers page instances to <see cref="INavigationView"/>.
+    /// </summary>
+    /// <param name="pageService">Instance of the <see cref="IPageService"/>.</param>
     //void SetPageService(IPageService pageService);
 
     /// <summary>

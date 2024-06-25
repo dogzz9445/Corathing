@@ -131,7 +131,7 @@ public partial class ProjectSettingsViewModel : ObservableObject
     public void GoBack(Window window)
     {
         window.Close();
-        var navigationService = _services.GetService<INavigationService>();
+        var navigationService = _services.GetService<INavigationDialogService>();
 
         // TODO:
         // navigationService.GoBack();
