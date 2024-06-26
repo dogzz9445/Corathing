@@ -10,8 +10,8 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
 using Corathing.Contracts.Bases;
-using Corathing.Contracts.Helpers;
 using Corathing.Contracts.Services;
+using Corathing.Contracts.Utils.Exetensions;
 using Corathing.Dashboards.WPF.Controls;
 
 using Microsoft.Extensions.DependencyInjection;
@@ -56,9 +56,11 @@ public partial class WidgetSettingsViewModel : ObservableObject
         TempWidgetContext = generator.CreateWidget();
         _settingsWidgetHost.DataContext = TempWidgetContext;
 
-        TempWidgetContext.State.CustomSettings =
-            JsonHelper.DeepCopy(_originalContext.State.CustomSettings, generator.OptionType);
-        TempWidgetContext.Update(TempWidgetContext.State);
+        _originalContext.CopyTo(TempWidgetContext);
+
+        // TODO:
+        //TempWidgetContext.State.CustomSettings =
+        //    JsonHelper.DeepCopy(_originalContext.State.CustomSettings, generator.OptionType);
         //TempWidgetContext.State = JsonHelper.DeepCopy<WidgetState>(_tempWidgetContext.State);
         //TempWidgetContext.State = _originalContext.State.CustomSettings;
 
@@ -68,7 +70,11 @@ public partial class WidgetSettingsViewModel : ObservableObject
     [RelayCommand]
     public void Apply()
     {
+        TempWidgetContext.CopyToWithoutLayout(_originalContext);
+        _originalContext.UpdateTo(_originalContext.State);
 
+        var appStateService = _services.GetService<IAppStateService>();
+        appStateService.UpdateWidget(_originalContext.State);
     }
 
     [RelayCommand]

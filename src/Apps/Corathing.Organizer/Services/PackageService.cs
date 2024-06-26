@@ -88,7 +88,21 @@ public class PackageService : IPackageService
         //    ApplicationBase = AppDomain.CurrentDomain.BaseDirectory,
         //    PrivateBinPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)
         //};
-        ;
+        
+        // Load DataTemplates
+        assembly.GetCustomAttributes<AssemblyCoraPackageDataTemplateAttribute>()
+            .ToList()
+            .ForEach(attribute =>
+        {
+            App.Current.Resources.MergedDictionaries.Add(
+                new ResourceDictionary()
+                {
+                    Source = new Uri($"pack://application:,,,/{assembly.GetName().Name};component/{attribute.DataTemplateSource}", UriKind.Absolute)
+                }
+            );
+        });
+
+        // Load Cora Widgets
         foreach (var type in types)
         {
             System.Reflection.MemberInfo info = type;
@@ -102,13 +116,6 @@ public class PackageService : IPackageService
                 var attribute = ((EntryCoraWidgetAttribute)attributes[i]);
                 attribute.Configure(_services);
                 _widgetGenerators.Add(attribute.Generator.ContextType.FullName, attribute.Generator);
-
-                App.Current.Resources.MergedDictionaries.Add(
-                    new ResourceDictionary()
-                    {
-                        Source = new Uri($"pack://application:,,,/{assembly.GetName().Name};component/{attribute.Generator.DataTemplateSource}", UriKind.Absolute)
-                    }
-                    );
             }
         }
 

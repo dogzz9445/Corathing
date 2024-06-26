@@ -23,7 +23,6 @@ public class EntryCoraWidgetAttribute : Attribute
     public EntryCoraWidgetAttribute(
         Type viewType,
         Type contextType,
-        string? dataTemplateSource = null,
         Type? optionType = null,
         // Information
         string? name = null,
@@ -46,7 +45,6 @@ public class EntryCoraWidgetAttribute : Attribute
         Generator = new CoraWidgetGenerator(
             viewType: viewType,
             contextType: contextType,
-            dataTemplateSource: dataTemplateSource,
             optionType: optionType
             )
         {

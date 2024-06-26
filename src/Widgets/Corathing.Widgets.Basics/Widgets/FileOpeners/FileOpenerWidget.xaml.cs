@@ -31,7 +31,6 @@ public class FileOpenerOption
 [EntryCoraWidget(
     viewType: typeof(FileOpenerWidget),
     contextType: typeof(FileOpenerWidgetViewModel),
-    dataTemplateSource: "Widgets/FileOpeners/DataTemplates.xaml",
     optionType: typeof(FileOpenerOption),
     name: "Create File Opener",
     description: "Provides a one by one square widget.",
@@ -54,7 +53,14 @@ public partial class FileOpenerWidgetViewModel : WidgetContext
         : base(services, state)
     {
         ILocalizationService localizationService = services.GetService<ILocalizationService>();
-        localizationService.Provide("Corathing.Widgets.Basics.FileOpenerName", value => WidgetTitle = value);
+        localizationService.Provide("Corathing.Widgets.Basics.FileOpenerName", value =>
+        {
+            DefaultTitle = value;
+            if (string.IsNullOrEmpty(state.CoreSettings.Title))
+            {
+                WidgetTitle = DefaultTitle;
+            }
+        });
     }
 }
 

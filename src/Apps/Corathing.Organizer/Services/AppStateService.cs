@@ -9,17 +9,22 @@ using System.Text.Json.Serialization;
 using System.Text.Json.Serialization.Metadata;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Shapes;
 
 using Corathing.Contracts.Bases;
-using Corathing.Contracts.Factories;
+using Corathing.Contracts.Configurations;
 using Corathing.Contracts.Services;
+using Corathing.Contracts.Utils.Factories;
 using Corathing.Organizer.Models;
 
 using Microsoft.Extensions.DependencyInjection;
 
+using Smart.IO;
+
 using Windows.ApplicationModel.Calls;
 
 using MessageBox = System.Windows.MessageBox;
+using Path = System.IO.Path;
 
 namespace Corathing.Organizer.Services;
 
@@ -91,6 +96,11 @@ public class AppStateService : IAppStateService
         await WriteAppSettingsToAppPath(appSettings);
 
         await ReadOrCreateAppStateByAppSettings();
+    }
+
+    public List<ProjectState> GetProjects()
+    {
+        return GetAppDashboardState().Projects;
     }
 
     public AppPreferenceState GetAppPreferenceState()
@@ -351,7 +361,9 @@ public class AppStateService : IAppStateService
         }
         else
         {
-            var json = File.ReadAllText(AppSettingsFilename);
+            using var fileStream = File.Open(AppSettingsFilename, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+            using var streamReader = new StreamReader(fileStream);
+            var json = await streamReader.ReadToEndAsync();
             using var document = JsonDocument.Parse(json, _documentOptions);
             var appSettings = document.RootElement
                 .GetProperty("Corathing")
@@ -405,7 +417,9 @@ public class AppStateService : IAppStateService
         }
         else
         {
-            var json = File.ReadAllText(path);
+            using var fileStream = File.Open(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+            using var streamReader = new StreamReader(fileStream);
+            var json = await streamReader.ReadToEndAsync();
             using var document = JsonDocument.Parse(json, _documentOptions);
 
             // TODO:
@@ -460,18 +474,21 @@ public class AppStateService : IAppStateService
     private async Task WrtieAppState()
     {
         _isWriting = true;
-        string jsonString = await File.ReadAllTextAsync(GetOrganizerSettingsFilename());
-        if (string.IsNullOrEmpty(jsonString))
-            jsonString = AppStateJsonDomBase;
+        using var fileStream = File.Open(GetOrganizerSettingsFilename(), FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.Read);
+        using var streamReader = new StreamReader(fileStream);
+        var json = await streamReader.ReadToEndAsync();
+        if (string.IsNullOrEmpty(json))
+            json = AppStateJsonDomBase;
 
-        var rootNode = JsonNode.Parse(jsonString);
+        var rootNode = JsonNode.Parse(json);
 
         rootNode["Preferences"].ReplaceWith(_cachedAppPreferenceState);
         rootNode["Packages"].ReplaceWith(_cachedAppPackageState);
         rootNode["Dashboards"].ReplaceWith(_cachedAppDashboardState);
 
-        await File.WriteAllTextAsync(GetOrganizerSettingsFilename(),
-            rootNode.ToJsonString(_serializerOptions));
+        fileStream.SetLength(0);
+        fileStream.Seek(0, SeekOrigin.Begin);
+        await fileStream.WriteAsync(Encoding.UTF8.GetBytes(rootNode.ToJsonString(_serializerOptions)));
         _isWriting = false;
     }
 

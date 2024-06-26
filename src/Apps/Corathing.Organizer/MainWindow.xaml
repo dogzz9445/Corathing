@@ -15,6 +15,7 @@
                    ShowCloseButton="False"
                    IsWindowDraggable="True"
                    WindowStartupLocation="CenterScreen"
+                   Icon="/Assets/logo_256.png"
                    Height="1000"
                    Width="1600">
 

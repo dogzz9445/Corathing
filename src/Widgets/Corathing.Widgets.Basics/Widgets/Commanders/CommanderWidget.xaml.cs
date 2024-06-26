@@ -26,7 +26,6 @@ namespace Corathing.Widgets.Basics.Widgets.Commanders
     [EntryCoraWidget(
     viewType: typeof(CommanderWidget),
     contextType: typeof(CommanderWidgetViewModel),
-    dataTemplateSource: "Widgets/Commanders/DataTemplates.xaml",
         name: "Create Commander",
         description: "Provides a one by one square widget.",
         menuPath: "Default/Commander",

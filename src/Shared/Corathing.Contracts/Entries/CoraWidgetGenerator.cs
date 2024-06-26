@@ -6,7 +6,6 @@ using System.Text;
 using System.Threading.Tasks;
 
 using Corathing.Contracts.Bases;
-using Corathing.Contracts.Factories;
 
 namespace Corathing.Contracts.Entries;
 
@@ -16,13 +15,6 @@ public class CoraWidgetGenerator
 
     public IServiceProvider Services { get; set; }
 
-    public Func<WidgetContext> CreateWidgetInternal;
-
-    // FIXME:
-    // 어떤 방식을 사용할지 정의해야함
-    // Generic? Type Converting?
-    public Func<WidgetState> CreateWidgetOptionInternal;
-
     #endregion Private Fields
 
     #region Public Properties
@@ -31,7 +23,6 @@ public class CoraWidgetGenerator
 
     public Type ViewType { get; }
     public Type ContextType { get; }
-    public string DataTemplateSource { get; }
     public Type OptionType { get; }
 
     #endregion Public Properties
@@ -47,13 +38,11 @@ public class CoraWidgetGenerator
     public CoraWidgetGenerator(
         Type viewType,
         Type contextType,
-        string dataTemplateSource,
         Type optionType
         )
     {
         ViewType = viewType;
         ContextType = contextType;
-        DataTemplateSource = dataTemplateSource;
         OptionType = optionType;
     }
 
@@ -64,28 +53,59 @@ public class CoraWidgetGenerator
     /// <summary>
     /// Creates the widget.
     /// </summary>
-    /// <returns>WidgetBase.</returns>
+    /// <returns>WidgetBase</returns>
     public WidgetContext CreateWidget(WidgetState? state = null)
     {
         if (state == null)
         {
-            state = CreateEmptyState();
+            state = CreateState();
         }
         var context = (WidgetContext)Activator.CreateInstance(ContextType, Services, state);
-        context.Layout = WidgetLayoutUtils.Create(context);
+        context.Layout = new WidgetLayout()
+        {
+            Id = Guid.NewGuid(),
+            WidgetStateId = context.WidgetId,
+            Rect = new WidgetLayoutRect()
+            {
+                X = 0,
+                Y = 0,
+                W = state.CoreSettings.ColumnSpan,
+                H = state.CoreSettings.RowSpan,
+            }
+        };
         return context;
     }
 
-    public WidgetState CreateEmptyState()
+    /// <summary>
+    /// Creates the state.
+    /// </summary>
+    /// <returns>WidgetState</returns>
+    public WidgetState CreateState()
     {
         WidgetState state = new WidgetState();
         state.Id = Guid.NewGuid();
         state.CoreSettings = new WidgetCoreState()
         {
+            TypeName = ContextType.FullName,
+            AssemblyName = ContextType.Assembly.FullName,
+
+            RowIndex = 0,
+            ColumnIndex = 0,
+            RowSpan = Info.DefaultRowSpan,
+            ColumnSpan = Info.DefaultColumnSpan,
+
+            Title = Info.Title,
+            Description = Info.Description,
             VisibleTitle = Info.VisibleTitle,
+
+            UseDefaultBackgroundColor = true,
+            BackgroundColor = "#00FF00",
+
         };
         if (OptionType != null)
+        {
             state.CustomSettings = Activator.CreateInstance(OptionType);
+        }
         return state;
     }
 

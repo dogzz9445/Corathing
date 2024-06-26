@@ -5,8 +5,8 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
-using Corathing.Contracts.Helpers;
 using Corathing.Contracts.Services;
+using Corathing.Contracts.Utils.Helpers;
 using Corathing.Organizer.Configurations;
 
 using Microsoft.Data.Sqlite;

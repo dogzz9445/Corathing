@@ -29,7 +29,8 @@ using Corathing.Contracts.Bases.Interfaces;
 using System.Windows.Media.Animation;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.Specialized;
-using Corathing.Contracts.Factories;
+using Corathing.Contracts.Utils.Helpers;
+using System.Xml.Linq;
 
 namespace Corathing.Dashboards.WPF.Controls
 {
@@ -350,7 +351,7 @@ namespace Corathing.Dashboards.WPF.Controls
                 DashboardScrollViewer.ScrollToVerticalOffset(
                     widgetEndVerticalLocation - widgetsHeight - ScrollIncrement);
 
-            if(LayoutChangedCommand != null && LayoutChangedCommand.CanExecute(true))
+            if(LayoutChangedCommand != null && LayoutChangedCommand.CanExecute(null))
             {
                 LayoutChangedCommand.Execute(this);
             }
@@ -390,22 +391,6 @@ namespace Corathing.Dashboards.WPF.Controls
             args.UseDefaultCursors = false;
             Mouse.SetCursor(Cursors.SizeAll);
             args.Handled = true;
-        }
-
-        /// <summary>
-        /// Adds a column to the editing background canvas.
-        /// </summary>
-        private void AddCanvasEditingBackgroundColumn(int rowCount, int columnCount)
-        {
-            _numbersCanEditRowColumn.W += 1;
-        }
-
-        /// <summary>
-        /// Adds a row to the editing background canvas.
-        /// </summary>
-        private void AddCanvasEditingBackgroundRow(int rowCount, int columnCount)
-        {
-            _numbersCanEditRowColumn.H += 1;
         }
 
         /// <summary>
@@ -496,12 +481,6 @@ namespace Corathing.Dashboards.WPF.Controls
             // Get the closest row/column to the adorner "imaginary" position
             var closestRowColumn =
                 GetClosestRowColumn(new Point(adornerPosition.X + addToPositionX, adornerPosition.Y + addToPositionY));
-
-            // If there is no change to the stored closestRowColumn against the dragging RowIndex and ColumnIndex then there isn't
-            // anything to set or arrange.
-            //if (_draggingWidgetLayout.WidgetBase.RowIndexColumnIndex.Row == closestRowColumn.Row &&
-            //    _draggingWidgetLayout.WidgetBase.RowIndexColumnIndex.Column == closestRowColumn.Column)
-            //    return;
 
             // Use the canvas to draw a square around the closestRowColumn to indicate where the _draggingWidgetHost will be when mouse is released
             var top = closestRowColumn.Y < 0 ? 0 : closestRowColumn.Y * _widgetSize.Height;
@@ -1097,7 +1076,7 @@ namespace Corathing.Dashboards.WPF.Controls
         }
 
         private void SetElementXY(
-            UIElement uiElement, double x, double y)
+            FrameworkElement uiElement, double x, double y)
         {
             uiElement.BeginAnimation(Canvas.TopProperty, null);
             uiElement.BeginAnimation(Canvas.LeftProperty, null);
@@ -1118,6 +1097,46 @@ namespace Corathing.Dashboards.WPF.Controls
             element.Width = width;
             element.MaxWidth = width;
             element.MinWidth = width;
+        }
+
+        private void SetElementCellIndexByWidgetSize(
+            FrameworkElement uiElement, int columnIndex, int rowIndex)
+        {
+            if (uiElement == null)
+                return;
+
+            columnIndex = columnIndex < 0 ? 0 : columnIndex;
+            rowIndex = rowIndex < 0 ? 0 : rowIndex;
+
+            var left = columnIndex * _widgetSize.Width;
+            var top = rowIndex * _widgetSize.Height;
+            SetElementXY(uiElement, left, top);
+
+            if (uiElement.DataContext is WidgetContext widgetContext)
+            {
+                widgetContext.State.CoreSettings.ColumnIndex = columnIndex;
+                widgetContext.State.CoreSettings.RowIndex = rowIndex;
+            }
+        }
+
+        private void SetElementCellSpanByWidgetSize(
+            FrameworkElement uiElement, int columnSpan, int rowSpan)
+        {
+            if (uiElement == null)
+                return;
+
+            columnSpan = columnSpan < 1 ? 1 : columnSpan;
+            rowSpan = rowSpan < 1 ? 1 : rowSpan;
+
+            var width = columnSpan * _widgetSize.Width;
+            var height = rowSpan * _widgetSize.Height;
+            SetElementWH(uiElement, width, height);
+
+            if (uiElement.DataContext is WidgetContext widgetContext)
+            {
+                widgetContext.State.CoreSettings.ColumnSpan = columnSpan;
+                widgetContext.State.CoreSettings.RowSpan = rowSpan;
+            }
         }
 
         /// <summary>
@@ -1155,6 +1174,7 @@ namespace Corathing.Dashboards.WPF.Controls
             WidgetsCanvasHost.Height = maxRowsAndColumns.Y * _widgetSize.Height;
             WidgetsCanvasHost.Width = maxRowsAndColumns.X * _widgetSize.Width;
 
+
             if (withAnimate)
             {
                 int distanceFromTo = Math.Abs(rowNumber - originalRowNumber)
@@ -1168,10 +1188,22 @@ namespace Corathing.Dashboards.WPF.Controls
             }
             else
             {
-                SetElementXY(widgetHost,
-                    columnNumber * _widgetSize.Width,
-                    rowNumber * _widgetSize.Height
+                SetElementCellIndexByWidgetSize(widgetHost,
+                    columnNumber,
+                    rowNumber
                     );
+            }
+
+            SetElementCellSpanByWidgetSize(
+                widgetHost,
+                rowColumnSpan.W,
+                rowColumnSpan.H);
+
+            // Update state
+            if (widgetHost.DataContext is WidgetContext widgetContext)
+            {
+                widgetContext.State.CoreSettings.ColumnIndex = columnNumber;
+                widgetContext.State.CoreSettings.RowIndex = rowNumber;
             }
 
             if (!EnableColumnLimit)
@@ -1200,7 +1232,7 @@ namespace Corathing.Dashboards.WPF.Controls
         private IEnumerable<WidgetLayout> WidgetsAtLocation(IWidgetLayoutWH widgetSpan, IWidgetLayoutXY widgetIndex)
         {
             // Need to see if a widget is already at the specific row and column
-            return _widgetLayouts.Where(widgetData => WidgetLayoutUtils.ItemsCollide(widgetData, widgetIndex, widgetSpan));
+            return _widgetLayouts.Where(widgetData => WidgetLayoutHelper.ItemsCollide(widgetData, widgetIndex, widgetSpan));
         }
 
         /// <summary>
@@ -1291,9 +1323,11 @@ namespace Corathing.Dashboards.WPF.Controls
                 _draggingHost.ActualHeight + _draggingHost.Margin.Top + _draggingHost.Margin.Bottom;
             _widgetDestinationHighlight.Visibility = Visibility.Visible;
 
-            SetElementXY(_widgetDestinationHighlight,
-                _draggingWidgetLayout.X * _widgetSize.Width,
-                _draggingWidgetLayout.Y * _widgetSize.Height);
+            SetElementCellIndexByWidgetSize(
+                _widgetDestinationHighlight,
+                _draggingWidgetLayout.X,
+                _draggingWidgetLayout.Y
+                );
 
             // Need to create the adorner that will be used to drag a control around the DashboardHost
             MouseMove += Dashboard_MouseMove;
@@ -1326,8 +1360,11 @@ namespace Corathing.Dashboards.WPF.Controls
 
             DragInProgress = false;
 
-            SetWidgetRowAndColumn(_draggingHost, _draggingWidgetLayout.XY, _draggingWidgetLayout.WH, true);
-            SetElementWH(_draggingHost, _widgetDestinationHighlight.Width, _widgetDestinationHighlight.Height);
+            SetWidgetRowAndColumn(
+                _draggingHost,
+                _draggingWidgetLayout.XY,
+                _draggingWidgetLayout.WH,
+                true);
 
             // Need to cleanup after the DoDragDrop ends by setting back everything to its default state
             MouseLeave -= Dashboard_MouseLeave;
@@ -1418,6 +1455,7 @@ namespace Corathing.Dashboards.WPF.Controls
             int columnIndex = (int)Math.Round(new_x / _widgetSize.Width);
             int rowSpan = (int)Math.Round(new_height / _widgetSize.Height);
             int columnSpan = (int)Math.Round(new_width / _widgetSize.Width);
+
             rowIndex = rowIndex < 0 ? 0 : rowIndex;
             columnIndex = columnIndex < 0 ? 0 : columnIndex;
             rowSpan = rowSpan < 1 ? 1 : rowSpan;
@@ -1426,12 +1464,8 @@ namespace Corathing.Dashboards.WPF.Controls
             var newRowSpanColumnSpan = new WidgetLayoutWH(columnSpan, rowSpan);
 
             // Use the canvas to draw a square around the closestRowColumn to indicate where the _draggingWidgetHost will be when mouse is released
-            var top = rowIndex < 0 ? 0 : rowIndex * _widgetSize.Height;
-            var left = columnIndex < 0 ? 0 : columnIndex * _widgetSize.Width;
-
-            SetElementXY(_widgetDestinationHighlight, left, top);
-            _widgetDestinationHighlight.Width = columnSpan * _widgetSize.Height;
-            _widgetDestinationHighlight.Height = rowSpan * _widgetSize.Width;
+            SetElementCellIndexByWidgetSize(_widgetDestinationHighlight, columnIndex, rowIndex);
+            SetElementCellSpanByWidgetSize(_widgetDestinationHighlight, columnSpan, rowSpan);
 
             _draggingWidgetLayout.Rect = new WidgetLayoutRect()
             {

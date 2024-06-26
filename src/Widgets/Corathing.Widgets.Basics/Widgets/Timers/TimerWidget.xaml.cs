@@ -29,7 +29,6 @@ namespace Corathing.Widgets.Basics.Widgets.Timers;
 [EntryCoraWidget(
     viewType: typeof(TimerWidget),
     contextType: typeof(TimerWidgetViewModel),
-    dataTemplateSource: "Widgets/Timers/DataTemplates.xaml",
     name: "Create Timer",
     description: "Provides a one by one square widget.",
     menuPath: "Default/Timer",

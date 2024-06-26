@@ -13,7 +13,7 @@
         "Id": "926c252b-a158-4e05-8593-7cb55c10bf24",
         "SelectedWorkflowId": null,
         "Settings": {
-          "Name": "ABCasdasdasd"
+          "Name": "Welcome!"
         },
         "WorkflowIds": []
       },
@@ -21,15 +21,7 @@
         "Id": "22778c82-674a-41a7-9fe9-c61d76329690",
         "SelectedWorkflowId": null,
         "Settings": {
-          "Name": "\uC548\uB155\uD558\uC138\uC694!"
-        },
-        "WorkflowIds": []
-      },
-      {
-        "Id": "0c7f047c-e153-4496-9bc0-1d79d8e2c91b",
-        "SelectedWorkflowId": null,
-        "Settings": {
-          "Name": "My Project"
+          "Name": "Test"
         },
         "WorkflowIds": []
       }

@@ -12,13 +12,13 @@ namespace Corathing.Contracts.Bases;
 
 public interface IWidgetState : IEntity
 {
-    IWidgetCoreState CoreSettings { get; }
+    WidgetCoreState CoreSettings { get; }
     object CustomSettings { get; }
 }
 
 public class WidgetState : IWidgetState
 {
     public Guid Id { get; set; }
-    public IWidgetCoreState CoreSettings { get; set; }
+    public WidgetCoreState CoreSettings { get; set; }
     public object CustomSettings { get; set; }
 }

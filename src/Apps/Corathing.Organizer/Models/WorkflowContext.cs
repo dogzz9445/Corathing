@@ -16,7 +16,6 @@ using CommunityToolkit.Mvvm.Input;
 
 using Corathing.Contracts.Bases;
 using Corathing.Contracts.Entries;
-using Corathing.Contracts.Factories;
 using Corathing.Contracts.Services;
 using Corathing.Dashboards.WPF.Controls;
 using Corathing.Organizer.Controls;
@@ -174,7 +173,6 @@ public partial class WorkflowContext : ObservableObject
         if (WorkflowId != null && appState.TryGetWorkflow(WorkflowId, out var workflowState))
         {
             appState.UpdateWorkflow(workflowState);
-            appState.UpdateForce();
         }
     }
 

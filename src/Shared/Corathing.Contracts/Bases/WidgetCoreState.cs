@@ -11,7 +11,7 @@ namespace Corathing.Contracts.Bases;
 public interface IWidgetCoreState
 {
     string TypeName { get; }
-    string NamespaceName { get; }
+    string AssemblyName { get; }
     int RowIndex { get; }
     int ColumnIndex { get; }
     int RowSpan { get; }
@@ -40,7 +40,7 @@ public class WidgetCoreState : IWidgetCoreState
     /// This is not for converting namespace or logic of system.
     /// 세팅 파일에 설정되는 네임스페이스 이름
     /// </summary>
-    public string NamespaceName { get; set; }
+    public string AssemblyName { get; set; }
 
     public int RowIndex { get; set; }
     public int ColumnIndex { get; set; }

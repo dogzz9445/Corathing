@@ -28,7 +28,6 @@ namespace Corathing.Widgets.Basics.Widgets.Monacos;
 [EntryCoraWidget(
     viewType: typeof(MonacoWidget),
     contextType: typeof(MonacoWidgetViewModel),
-    dataTemplateSource: "Widgets/Monacos/DataTemplates.xaml",
     name: "Create Monaco",
     description: "Provides a one by one square widget.",
     menuPath: "Default/Monaco",

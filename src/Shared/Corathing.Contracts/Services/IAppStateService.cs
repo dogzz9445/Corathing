@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using Corathing.Contracts.Bases;
+using Corathing.Contracts.Configurations;
 
 namespace Corathing.Contracts.Services;
 

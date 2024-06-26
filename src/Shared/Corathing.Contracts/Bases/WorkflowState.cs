@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 
 using Corathing.Contracts.Bases.Interfaces;
-using Corathing.Contracts.Helpers;
 
 namespace Corathing.Contracts.Bases;
 
@@ -38,11 +37,6 @@ public class WorkflowState : IWorkflowState
                 Name = "My Workflow"
             }
         };
-
-    public static string GenerateWorkflowName(List<string> usedNames)
-    {
-        return NameHelper.GenerateUniqueName("Workflow", usedNames);
-    }
 
     public static WorkflowState UpdateWorkflowSettings(WorkflowState workflow, WorkflowSettings settings)
     {

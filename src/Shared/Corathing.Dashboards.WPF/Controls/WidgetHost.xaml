@@ -4,6 +4,7 @@
                 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                 xmlns:local="clr-namespace:Corathing.Dashboards.WPF.Controls"
+                xmlns:converters="clr-namespace:Corathing.Dashboards.WPF.Converters"
                 HorizontalContentAlignment="Center"
                 VerticalContentAlignment="Center"
                 mc:Ignorable="d"
@@ -16,6 +17,7 @@
                 <ResourceDictionary Source="pack://application:,,,/Corathing.Dashboards.WPF;component/Controls/Styles.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <BooleanToVisibilityConverter x:Key="BoolToVis" />
+            <converters:ColorNameStringToBrushConverter x:Key="ColorNameStringToBrushConverter" />
         </ResourceDictionary>
     </ContentControl.Resources>
 
@@ -77,6 +79,11 @@
                                         <Setter Property="BorderBrush"
                                                 Value="{DynamicResource CardStrokeColorDefaultSolidBrush}" />
                                     </MultiDataTrigger>
+                                    <DataTrigger Binding="{Binding DataContext.UseDefaultBackgroundColor, RelativeSource={RelativeSource AncestorType={x:Type local:WidgetHost}}}"
+                                                 Value="False">
+                                        <Setter Property="Background"
+                                                Value="{Binding DataContext.BackgroundColor, Converter={StaticResource ColorNameStringToBrushConverter}, RelativeSource={RelativeSource AncestorType={x:Type local:WidgetHost}}}" />
+                                    </DataTrigger>
                                 </Style.Triggers>
                             </Style>
                             

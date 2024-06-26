@@ -78,11 +78,11 @@
 
     <!-- Control Background -->
     <SolidColorBrush x:Key="ControlBackground"
-                     Color="{StaticResource ControlFillAccentColorDarkThemeDefault}" />
+                     Color="{StaticResource ControlFillColorDarkThemeDefault}" />
     <SolidColorBrush x:Key="ControlBackgroundHover"
-                     Color="{StaticResource ControlFillAccentColorDarkThemeSecondary}" />
+                     Color="{StaticResource ControlFillColorDarkThemeSecondary}" />
     <SolidColorBrush x:Key="ControlBackgroundPressed"
-                     Color="{StaticResource ControlFillAccentColorDarkThemeTeritary}" />
+                     Color="{StaticResource ControlFillColorDarkThemeTertiary}" />
     <SolidColorBrush x:Key="ControlBackgroundDisabled"
                      Color="{StaticResource ControlFillColorDarkThemeDisabled}" />
 

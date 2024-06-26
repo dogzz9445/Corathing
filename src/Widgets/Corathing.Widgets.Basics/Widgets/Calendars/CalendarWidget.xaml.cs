@@ -28,7 +28,6 @@ namespace Corathing.Widgets.Basics.Widgets.Calendars;
 [EntryCoraWidget(
     viewType: typeof(CalendarWidget),
     contextType: typeof(CalendarWidgetViewModel),
-    dataTemplateSource: "Widgets/Calendars/DataTemplates.xaml",
     description: "Provides a calendar widget.",
     name: "Create Calendar",
     menuPath: "Default/Calendar",

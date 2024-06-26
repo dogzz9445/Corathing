@@ -63,7 +63,6 @@ public partial class WebPageOption : ObservableObject
 [EntryCoraWidget(
     viewType: typeof(WebPageWidget),
     contextType: typeof(WebPageViewModel),
-    dataTemplateSource: "Widgets/WebPages/DataTemplates.xaml",
     name: "Create Web Page",
     description: "Provides a one by one square widget.",
     menuPath: "Default/Web Page",

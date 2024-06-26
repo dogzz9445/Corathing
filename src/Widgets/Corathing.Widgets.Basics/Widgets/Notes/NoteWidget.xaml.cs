@@ -26,7 +26,6 @@ namespace Corathing.Widgets.Basics.Widgets.Notes;
 [EntryCoraWidget(
     viewType: typeof(NoteWidget),
     contextType: typeof(NoteWidgetViewModel),
-    dataTemplateSource: "Widgets/Notes/DataTemplates.xaml",
     name: "Create Note",
     description: "Provides a one by one square widget.",
     menuPath: "Default/Note",

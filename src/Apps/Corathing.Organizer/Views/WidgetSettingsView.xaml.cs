@@ -35,6 +35,8 @@ namespace Corathing.Organizer.Views
             Type contextType = ViewModel.RegisterWidget(tempWidgetHost, widgetHost);
 
             InitializeComponent();
+
+            tempWidgetHost.Style = (Style)FindResource("WidgetSettingsHostStyle");
             WidgetHostContentPresenter.Content = tempWidgetHost;
             var dataTemplateKey = new DataTemplateKey(contextType);
             var dataTemplate = FindResource(dataTemplateKey) as DataTemplate;

@@ -18,28 +18,26 @@ public partial class WidgetContext : ObservableRecipient
     protected readonly IServiceProvider _services;
 
     #region 숨겨진 프로퍼티
-    [ObservableProperty]
-    private Type _widgetType;
-    [ObservableProperty]
-    private Guid _widgetId;
-    #endregion
+    public Type WidgetType;
+    public Guid WidgetId;
 
-    #region 확정된 프로퍼티 건드리지 말기
-    [ObservableProperty]
-    private WidgetState? _state;
-    [ObservableProperty]
-    private WidgetLayout? _layout;
+    public WidgetState? State { get; set; }
+    public WidgetLayout? Layout { get; set; }
     #endregion
 
     #region 확정된 프로퍼티
+    [ObservableProperty]
+    private string _defaultTitle;
     [ObservableProperty]
     private string _widgetTitle;
     [ObservableProperty]
     private bool? _visibleTitle;
     [ObservableProperty]
-    private int? _minColumns;
+    private string _widgetDescription;
     [ObservableProperty]
-    private int? _minRows;
+    private bool? _useDefaultBackgroundColor;
+    [ObservableProperty]
+    private string _backgroundColor;
     #endregion
 
     #region Only Used Properties in Context
@@ -56,9 +54,6 @@ public partial class WidgetContext : ObservableRecipient
 
     public WidgetContext()
     {
-        MinColumns = 2;
-        MinRows = 2;
-
         IsSelecting = false;
         IsDragging = false;
         IsResizing = false;
@@ -68,16 +63,17 @@ public partial class WidgetContext : ObservableRecipient
     {
         _services = services;
 
-        State = state;
-        WidgetId = state.Id;
-        WidgetTitle = state.CoreSettings.Title;
-        VisibleTitle = state.CoreSettings.VisibleTitle;
+        Update(state);
     }
 
     public virtual void Update(WidgetState state)
     {
-        var appStateService = _services.GetService<IAppStateService>();
-        appStateService.UpdateWidget(State);
+        State = state;
+        WidgetId = state.Id;
+        WidgetTitle = state.CoreSettings.Title;
+        VisibleTitle = state.CoreSettings.VisibleTitle;
+        UseDefaultBackgroundColor = state.CoreSettings.UseDefaultBackgroundColor;
+        BackgroundColor = state.CoreSettings.BackgroundColor;
     }
 
     public virtual void OnDestroy()

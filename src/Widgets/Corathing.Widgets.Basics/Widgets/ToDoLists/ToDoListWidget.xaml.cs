@@ -32,7 +32,6 @@ namespace Corathing.Widgets.Basics.Widgets.ToDoLists;
 [EntryCoraWidget(
     viewType: typeof(ToDoListWidget),
     contextType: typeof(ToDoListViewModel),
-    dataTemplateSource: "Widgets/ToDoLists/DataTemplates.xaml",
     name: "Create To Do List",
     description: "Provides a one by one square widget.",
     menuPath: "Default/To Do List",

@@ -4,8 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using Corathing.Contracts.Helpers;
-
 namespace Corathing.Contracts.Bases.Interfaces;
 
 public interface IProjectSettings

@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 
 using Corathing.Contracts.Bases.Interfaces;
-using Corathing.Contracts.Helpers;
 
 namespace Corathing.Contracts.Bases;
 
@@ -28,11 +27,6 @@ public class ProjectState : IProjectState
             WorkflowIds = new List<Guid>(),
             SelectedWorkflowId = null
         };
-    }
-
-    public static string GenerateProjectName(List<string> usedNames)
-    {
-        return NameHelper.GenerateUniqueName("Project", usedNames);
     }
 
     public static ProjectState UpdateProjectSettings(ProjectState project, ProjectSettings settings)

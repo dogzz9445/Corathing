@@ -24,4 +24,5 @@ public interface IWidgetLayout : IEntity
 {
     Guid WidgetStateId { get; }
     IWidgetLayoutRect Rect { get; }
+    IWidgetLayoutWH MinWH { get; }
 }

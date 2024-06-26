@@ -74,7 +74,7 @@ public partial class App : Application
         Services = ConfigureServices(e.Args);
 
         var appStateService = Services.GetService<IAppStateService>();
-        appStateService.InitializeAsync().Wait();
+        await appStateService.InitializeAsync();
 
         var appSettings = appStateService.GetAppSettings();
         var appPreferences = appStateService.GetAppPreferenceState();

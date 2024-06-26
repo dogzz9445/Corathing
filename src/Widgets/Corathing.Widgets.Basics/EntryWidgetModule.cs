@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using Corathing.Contracts.Entries;
 using Corathing.Widgets.Basics.Resources;
 
+[assembly: AssemblyCoraPackageDataTemplate("DataTemplates.xaml")]
+
 namespace Corathing.Widgets.Basics;
 
 [EntryCoraPackage(typeof(EntryWidgetModule))]

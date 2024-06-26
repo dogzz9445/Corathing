@@ -45,13 +45,11 @@ public class WidgetLayout : IWidgetLayout, IWidgetLayoutRect
     public Guid Id { get; set; }
     public Guid WidgetStateId { get; set; }
 
-    // FIXME:
-    // RectBeforeDrag는 Context 쪽으로 옮기는게 정의상 맞음
-    // 임시적인 데이터로 저장되지 않아야함
     public IWidgetLayoutRect RectBeforeDrag { get; set; }
     public IWidgetLayoutRect Rect { get; set; }
     public IWidgetLayoutXY XY => Rect;
     public IWidgetLayoutWH WH => Rect;
+    public IWidgetLayoutWH MinWH { get; set; }
     public int X => Rect.X;
     public int Y => Rect.Y;
     public int W => Rect.W;

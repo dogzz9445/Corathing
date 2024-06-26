@@ -25,7 +25,6 @@ namespace Corathing.Widgets.Basics.Widgets.WebQueries;
 [EntryCoraWidget(
     viewType: typeof(WebQueryWidget),
     contextType: typeof(WebQueryViewModel),
-    dataTemplateSource: "Widgets/WebQueries/DataTemplates.xaml",
     name: "Create Web Query",
     description: "Provides a one by one square widget.",
     menuPath: "Default/Web Query",
