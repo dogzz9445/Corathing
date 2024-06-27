@@ -127,4 +127,13 @@
   <data name="Corathing.Widgets.Basics.WebQueryName" xml:space="preserve">
     <value></value>
   </data>
+  <data name="Corathing.Widgets.Basics.Files.OptionTypeFile" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="Corathing.Widgets.Basics.Files.OptionTypeFolder" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="Corathing.Widgets.Basics.Files.OptionTypeTitle" xml:space="preserve">
+    <value></value>
+  </data>
 </root>

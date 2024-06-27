@@ -22,6 +22,7 @@ using Corathing.Widgets.Basics.Widgets.LinkOpeners;
 using Corathing.Contracts.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Corathing.Contracts.Entries;
+using Corathing.Contracts.Attributes;
 
 namespace Corathing.Widgets.Basics.Widgets.Monacos;
 

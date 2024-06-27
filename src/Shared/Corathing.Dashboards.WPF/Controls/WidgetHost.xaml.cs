@@ -81,6 +81,29 @@ namespace Corathing.Dashboards.WPF.Controls
             set => SetValue(CornerRadiusProperty, value);
         }
 
+        public static readonly DependencyProperty ConfigureCommandProperty = DependencyProperty.Register(
+            nameof(ConfigureCommand),
+            typeof(ICommand),
+            typeof(WidgetHost),
+            new PropertyMetadata(default(ICommand)));
+
+        public ICommand ConfigureCommand
+        {
+            get => (ICommand)GetValue(ConfigureCommandProperty);
+            set => SetValue(ConfigureCommandProperty, value);
+        }
+
+        public static readonly DependencyProperty RemoveCommandProperty = DependencyProperty.Register(
+            nameof(RemoveCommand),
+            typeof(ICommand),
+            typeof(WidgetHost),
+            new PropertyMetadata(default(ICommand)));
+
+        public ICommand RemoveCommand
+        {
+            get => (ICommand)GetValue(RemoveCommandProperty);
+            set => SetValue(RemoveCommandProperty, value);
+        }
 
         #endregion
 

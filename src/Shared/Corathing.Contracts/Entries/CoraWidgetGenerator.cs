@@ -23,7 +23,8 @@ public class CoraWidgetGenerator
 
     public Type ViewType { get; }
     public Type ContextType { get; }
-    public Type OptionType { get; }
+    public Type CustomSettingsType { get; }
+    public Type CustomSettingsContextType { get; }
 
     #endregion Public Properties
 
@@ -38,12 +39,14 @@ public class CoraWidgetGenerator
     public CoraWidgetGenerator(
         Type viewType,
         Type contextType,
-        Type optionType
+        Type customSettingsType,
+        Type customSettingsContextType
         )
     {
         ViewType = viewType;
         ContextType = contextType;
-        OptionType = optionType;
+        CustomSettingsType = customSettingsType;
+        CustomSettingsContextType = customSettingsContextType;
     }
 
     #endregion Public Constructors
@@ -102,11 +105,25 @@ public class CoraWidgetGenerator
             BackgroundColor = "#00FF00",
 
         };
-        if (OptionType != null)
+        if (CustomSettingsType != null)
         {
-            state.CustomSettings = Activator.CreateInstance(OptionType);
+            state.CustomSettings = Activator.CreateInstance(CustomSettingsType);
         }
         return state;
+    }
+
+    public IWidgetCustomSettingsContext? CreateCustomSettingsContext()
+    {
+        // FIXME:
+        // 현재는 세팅에 대해 수동 생성 방식이지만
+        // 추후 자동으로 UI를 변경하는 방식이라면
+        // null 체크에 따라 작동 방식이 달라질 수 있다.
+        if (CustomSettingsType == null)
+            return null;
+        if (CustomSettingsContextType == null)
+            return null;
+        var customSettings = Activator.CreateInstance(CustomSettingsType);
+        return (IWidgetCustomSettingsContext)Activator.CreateInstance(CustomSettingsContextType, customSettings);
     }
 
     #endregion Public Methods

@@ -11,6 +11,7 @@
       xmlns:controls="clr-namespace:Corathing.Dashboards.WPF.Controls;assembly=Corathing.Dashboards.WPF"
       xmlns:converters="clr-namespace:Corathing.Dashboards.WPF.Converters;assembly=Corathing.Dashboards.WPF"
       xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+      xmlns:colorpicker="clr-namespace:ColorPicker;assembly=ColorPicker"
       mc:Ignorable="d"
       d:DesignHeight="800"
       d:DesignWidth="800"
@@ -20,12 +21,13 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/Corathing.Organizer;component/Styles/CustomStyles.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/Corathing.UI.WPF;component/Controls/ColorPickers/CorathingColorPicker.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
+            <converters:BoolToVisibilityConverter x:Key="BoolToVis" />
             <converters:ColorNameStringToBrushConverter x:Key="ColorNameStringToBrushConverter" />
 
-            <Style TargetType="{x:Type controls:WidgetHost}"
-                   x:Key="WidgetSettingsHostStyle">
+            <Style TargetType="{x:Type controls:WidgetHost}">
                 <Setter Property="FocusVisualStyle"
                         Value="{DynamicResource DefaultControlFocusVisualStyle}" />
                 <Setter Property="Background"
@@ -223,6 +225,7 @@
                             <ui:TextBlock Grid.Row="0"
                                           Grid.Column="0"
                                           FontTypography="Body"
+                                          Foreground="{DynamicResource ControlForeground}"
                                           Text="색상" />
                             <ui:TextBlock Grid.Row="1"
                                           Grid.Column="0">
@@ -235,6 +238,11 @@
                                                          Value="True">
                                                 <Setter Property="Text"
                                                         Value="기본 색상 사용 (투명)" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding TempWidgetContext.UseDefaultBackgroundColor}"
+                                                         Value="False">
+                                                <Setter Property="Text"
+                                                        Value="{Binding TempWidgetContext.BackgroundColor}" />
                                             </DataTrigger>
                                         </Style.Triggers>
                                     </Style>
@@ -270,6 +278,7 @@
                                 <ui:TextBlock Grid.Row="0"
                                               Grid.Column="0"
                                               FontTypography="Body"
+                                              Foreground="{DynamicResource ControlForeground}"
                                               Text="기본 색상 사용 여부" />
                                 <ui:TextBlock Grid.Row="1"
                                               Grid.Column="0"
@@ -302,9 +311,11 @@
                                               Grid.Column="0"
                                               FontTypography="Body"
                                               Text="eee" />
-                                <materialDesign:ColorPicker Grid.Row="1"
-                                                            Grid.Column="0"
-                                                            Color="{Binding TempWidgetContext.BackgroundColor, Delay=10}"/>
+                                <colorpicker:PortableColorPicker  Style="{StaticResource CorathingColorPicker}"
+                                                                  UseHintColor="True"
+                                                                  HintColor="Transparent"
+                                                                  ShowFractionalPart="False"
+                                                                  SelectedColor="{Binding TempWidgetContext.BackgroundColor, Mode=TwoWay, Delay=10}"/>
 
                             </Grid>
                         </ui:Anchor>
@@ -344,8 +355,9 @@
                 </ui:CardExpander>
 
 
+                <ContentPresenter Content="{Binding TempCustomSettingsContext}"
+                                  DataContext="{Binding TempCustomSettingsContext}"/>
 
-                
             </StackPanel>
         </ScrollViewer>
     </DockPanel>

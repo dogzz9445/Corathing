@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+using System.Reflection;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,6 +12,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
 using Corathing.Contracts.Bases;
+using Corathing.Contracts.Entries;
 using Corathing.Contracts.Services;
 using Corathing.Contracts.Utils.Exetensions;
 using Corathing.Dashboards.WPF.Controls;
@@ -29,6 +32,9 @@ public partial class WidgetSettingsViewModel : ObservableObject
     [ObservableProperty]
     private WidgetContext _tempWidgetContext;
 
+    [ObservableProperty]
+    private IWidgetCustomSettingsContext? _tempCustomSettingsContext;
+
     public WidgetSettingsViewModel(IServiceProvider services)
     {
         _services = services;
@@ -44,25 +50,20 @@ public partial class WidgetSettingsViewModel : ObservableObject
         var packageService = _services.GetService<IPackageService>();
         packageService.TryGetWidgetGenerator(_originalContext.GetType().FullName, out var generator);
 
-        // TODO:
-        // 24-06-16:
-        // 1. Create a new instance of the widget context
-        // 2. Copy the properties of the original widget context to the new widget context
-        // 3. Set the new widget context as the data context of the widget host
-        // 4. Set the new widget context as the temporary widget context
-        // 5. Set the original widget context as the original widget context
-
-
         TempWidgetContext = generator.CreateWidget();
+        TempCustomSettingsContext = generator.CreateCustomSettingsContext();
+        if (TempCustomSettingsContext is INotifyPropertyChanged notifier)
+        {
+            notifier.PropertyChanged += OnCustomSettingsChanged;
+        }
         _settingsWidgetHost.DataContext = TempWidgetContext;
-
-        _originalContext.CopyTo(TempWidgetContext);
-
-        // TODO:
-        //TempWidgetContext.State.CustomSettings =
-        //    JsonHelper.DeepCopy(_originalContext.State.CustomSettings, generator.OptionType);
-        //TempWidgetContext.State = JsonHelper.DeepCopy<WidgetState>(_tempWidgetContext.State);
-        //TempWidgetContext.State = _originalContext.State.CustomSettings;
+        _originalContext.CopyTo(TempWidgetContext, generator.CustomSettingsType);
+        WidgetStateExtension.CopyProperties(
+            _originalContext.State.CustomSettings,
+            TempCustomSettingsContext.CustomSettings,
+            generator.CustomSettingsType
+            );
+        TempCustomSettingsContext.UpdateSettings();
 
         return generator.ContextType;
     }
@@ -70,7 +71,13 @@ public partial class WidgetSettingsViewModel : ObservableObject
     [RelayCommand]
     public void Apply()
     {
-        TempWidgetContext.CopyToWithoutLayout(_originalContext);
+        if (_originalContext == null)
+            return;
+
+        var packageService = _services.GetService<IPackageService>();
+        packageService.TryGetWidgetGenerator(_originalContext.GetType().FullName, out var generator);
+
+        TempWidgetContext.CopyToWithoutLayout(_originalContext, generator.CustomSettingsType);
         _originalContext.UpdateTo(_originalContext.State);
 
         var appStateService = _services.GetService<IAppStateService>();
@@ -81,5 +88,19 @@ public partial class WidgetSettingsViewModel : ObservableObject
     public void GoBack(Window window)
     {
         window.Close();
+    }
+
+    public void OnCustomSettingsChanged(object sender, PropertyChangedEventArgs e)
+    {
+        if (_originalContext == null)
+            return;
+
+        var packageService = _services.GetService<IPackageService>();
+        packageService.TryGetWidgetGenerator(_originalContext.GetType().FullName, out var generator);
+
+        WidgetStateExtension.CopyProperties(
+            TempCustomSettingsContext.CustomSettings,
+            TempWidgetContext.State.CustomSettings,
+            generator.CustomSettingsType);
     }
 }

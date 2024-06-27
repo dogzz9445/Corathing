@@ -147,4 +147,13 @@
   <data name="Corathing.Widgets.Basics.WebQueryName" xml:space="preserve">
     <value>웹 쿼리</value>
   </data>
+  <data name="Corathing.Widgets.Basics.Files.OptionTypeFile" xml:space="preserve">
+    <value>파일(들) 열기</value>
+  </data>
+  <data name="Corathing.Widgets.Basics.Files.OptionTypeFolder" xml:space="preserve">
+    <value>폴더(들) 열기</value>
+  </data>
+  <data name="Corathing.Widgets.Basics.Files.OptionTypeTitle" xml:space="preserve">
+    <value>기능</value>
+  </data>
 </root>

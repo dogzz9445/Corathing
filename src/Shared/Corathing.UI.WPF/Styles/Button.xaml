@@ -1,5 +1,6 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml">
 
     <!-- 컬러 참조는 Styles/Dark.xaml 혹은 Styles/Light.xaml -->
     
@@ -10,6 +11,7 @@
     <!--   - Button No Style with MouseOver and Press Style               -->
     <!-- 3. Alert Light Brushes                                           -->
     <!-- 4. Alert Dark Brushes                                            -->
+    <!-- 5. IconButton24                                                  -->
     <!-- ================================================================ -->
 
     <!-- 1. Button No Style -->
@@ -52,6 +54,27 @@
                         Value="{DynamicResource ControlBackgroundPressed}" />
             </Trigger>
         </Style.Triggers>
+    </Style>
+
+    <!-- 5. IconButton -->
+    <Style TargetType="{x:Type ui:Button}"
+           x:Key="IconButton24">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ui:Button}">
+                    <ui:Button Grid.Column="1"
+                               Padding="0"
+                               FocusVisualStyle="{x:Null}"
+                               Icon="{TemplateBinding Icon}"
+                               Command="{TemplateBinding Command}"
+                               CommandParameter="{TemplateBinding CommandParameter}"
+                               ToolTip="{TemplateBinding ToolTip}"
+                               FontSize="24"
+                               Height="40"
+                               Width="40" />
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
     </Style>
 
 </ResourceDictionary>

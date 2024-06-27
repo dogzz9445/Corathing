@@ -20,7 +20,7 @@
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="pack://application:,,,/Corathing.Organizer;component/Styles/CustomStyles.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/Corathing.UI.WPF;component/Styles/Button.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <BooleanToVisibilityConverter x:Key="BoolToVis" />
             <converters:InvertBoolToVisibilityConverter x:Key="InvertBoolToVis" />
@@ -103,6 +103,8 @@
                                     <dashboardControl:DashboardHost Grid.Column="0"
                                                                     Margin="5"
                                                                     LayoutChangedCommand="{Binding LayoutChangedCommand}"
+                                                                    ConfigureWidgetCommand="{Binding ConfigureWidgetCommand}"
+                                                                    RemoveWidgetCommand="{Binding RemoveWidgetCommand}"
                                                                     EditMode="{Binding EditMode}"
                                                                     ItemsSource="{Binding Widgets}" />
                                 </Setter.Value>

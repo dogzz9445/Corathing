@@ -12,12 +12,15 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using Corathing.Contracts.Bases;
-using Corathing.Widgets.Basics.Widgets.ToDoLists;
+
 using CommunityToolkit.Mvvm.ComponentModel;
-using Corathing.Contracts.Services;
 using Microsoft.Web.WebView2.Wpf;
 using Microsoft.Extensions.DependencyInjection;
+
+using Corathing.Contracts.Attributes;
+using Corathing.Contracts.Bases;
+using Corathing.Widgets.Basics.Widgets.ToDoLists;
+using Corathing.Contracts.Services;
 using Corathing.Contracts.Entries;
 
 namespace Corathing.Widgets.Basics.Widgets.WebPages;

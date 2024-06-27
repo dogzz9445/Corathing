@@ -18,14 +18,14 @@ using System.Windows.Shapes;
 
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Microsoft.Extensions.DependencyInjection;
 
+using Corathing.Contracts.Attributes;
 using Corathing.Contracts.Bases;
 using Corathing.Contracts.Entries;
 using Corathing.Contracts.Services;
 using Corathing.Widgets.Basics.Widgets.Timers;
 using Corathing.Widgets.Basics.Widgets.ToDoLists.Models;
-
-using Microsoft.Extensions.DependencyInjection;
 
 namespace Corathing.Widgets.Basics.Widgets.ToDoLists;
 

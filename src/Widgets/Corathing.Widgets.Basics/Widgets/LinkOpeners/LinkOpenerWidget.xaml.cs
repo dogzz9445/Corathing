@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
+using Corathing.Contracts.Attributes;
 using Corathing.Contracts.Bases;
 using Corathing.Contracts.Entries;
 using Corathing.Contracts.Services;

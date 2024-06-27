@@ -10,24 +10,26 @@ namespace Corathing.Contracts.Utils.Exetensions;
 
 public static class WidgetContextExtension
 {
-    public static void CopyTo(this WidgetContext sourceContext, WidgetContext targetContext)
+    public static void CopyTo(this WidgetContext sourceContext, WidgetContext? targetContext, Type? customSettingsType = null)
     {
-        targetContext.State = sourceContext.State;
+        if (targetContext == null)
+            return;
+
+        sourceContext.State?.CopyTo(targetContext.State, customSettingsType);
         targetContext.WidgetId = sourceContext.WidgetId;
         targetContext.WidgetTitle = sourceContext.WidgetTitle;
         targetContext.VisibleTitle = sourceContext.VisibleTitle;
         targetContext.UseDefaultBackgroundColor = sourceContext.UseDefaultBackgroundColor;
         targetContext.BackgroundColor = sourceContext.BackgroundColor;
-
-        if (targetContext.Layout != null)
-        {
-            targetContext.Layout = sourceContext.Layout;
-        }
+        sourceContext.Layout?.CopyTo(targetContext.Layout);
     }
 
-    public static void CopyToWithoutLayout(this WidgetContext sourceContext, WidgetContext targetContext)
+    public static void CopyToWithoutLayout(this WidgetContext sourceContext, WidgetContext targetContext, Type? customSettingsType = null)
     {
-        targetContext.State = sourceContext.State;
+        if (targetContext == null)
+            return;
+
+        sourceContext.State?.CopyTo(targetContext.State, customSettingsType);
         targetContext.WidgetId = sourceContext.WidgetId;
         targetContext.WidgetTitle = sourceContext.WidgetTitle;
         targetContext.VisibleTitle = sourceContext.VisibleTitle;

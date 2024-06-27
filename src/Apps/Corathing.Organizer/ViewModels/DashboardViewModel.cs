@@ -163,6 +163,18 @@ public partial class DashboardViewModel : ObservableObject
     }
 
     [RelayCommand]
+    public void ConfigureWidget(WidgetHost widget)
+    {
+        SelectedProject?.SelectedWorkflow?.ConfigureWidget(widget);
+    }
+
+    [RelayCommand]
+    public void RemoveWidget(WidgetHost widget)
+    {
+        SelectedProject?.SelectedWorkflow?.RemoveWidget(widget);
+    }
+
+    [RelayCommand]
     public void RemoveWorkflow()
     {
 

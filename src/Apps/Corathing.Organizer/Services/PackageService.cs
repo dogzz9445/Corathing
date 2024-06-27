@@ -21,6 +21,7 @@ using Microsoft.Extensions.DependencyInjection;
 using System.Resources;
 using Microsoft.Extensions.Localization;
 using Corathing.Dashboards.WPF.Services;
+using Corathing.Contracts.Attributes;
 
 namespace Corathing.Organizer.Services;
 

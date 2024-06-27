@@ -41,6 +41,30 @@ namespace Corathing.Dashboards.WPF.Controls
     {
         #region Public Fields
 
+        public static readonly DependencyProperty ConfigureCommandProperty = DependencyProperty.Register(
+            nameof(ConfigureWidgetCommand),
+            typeof(ICommand),
+            typeof(DashboardHost),
+            new PropertyMetadata(default(ICommand)));
+
+        public ICommand ConfigureWidgetCommand
+        {
+            get => (ICommand)GetValue(ConfigureCommandProperty);
+            set => SetValue(ConfigureCommandProperty, value);
+        }
+
+        public static readonly DependencyProperty RemoveCommandProperty = DependencyProperty.Register(
+            nameof(RemoveWidgetCommand),
+            typeof(ICommand),
+            typeof(DashboardHost),
+            new PropertyMetadata(default(ICommand)));
+
+        public ICommand RemoveWidgetCommand
+        {
+            get => (ICommand)GetValue(RemoveCommandProperty);
+            set => SetValue(RemoveCommandProperty, value);
+        }
+
         public static readonly DependencyProperty LayoutChangedCommandProperty = DependencyProperty.Register(
             nameof(LayoutChangedCommand),
             typeof(ICommand),
@@ -294,6 +318,9 @@ namespace Corathing.Dashboards.WPF.Controls
 
             if (!(element is WidgetHost widgetHost) || WidgetsCanvasHost == null)
                 return;
+
+            widgetHost.ConfigureCommand = ConfigureWidgetCommand;
+            widgetHost.RemoveCommand = RemoveWidgetCommand;
 
             var widgetContext = widgetHost.DataContext as WidgetContext;
             widgetContext.EditMode = EditMode;

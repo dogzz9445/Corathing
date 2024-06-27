@@ -5,8 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 
 using Corathing.Contracts.Bases;
+using Corathing.Contracts.Entries;
 
-namespace Corathing.Contracts.Entries;
+namespace Corathing.Contracts.Attributes;
 
 /// <summary>
 /// Cora 위젯에 대한 설정
@@ -23,7 +24,8 @@ public class EntryCoraWidgetAttribute : Attribute
     public EntryCoraWidgetAttribute(
         Type viewType,
         Type contextType,
-        Type? optionType = null,
+        Type? customSettingsType = null,
+        Type? customSettingsContextType = null,
         // Information
         string? name = null,
         string? description = null,
@@ -45,7 +47,8 @@ public class EntryCoraWidgetAttribute : Attribute
         Generator = new CoraWidgetGenerator(
             viewType: viewType,
             contextType: contextType,
-            optionType: optionType
+            customSettingsType: customSettingsType,
+            customSettingsContextType: customSettingsContextType
             )
         {
             Info = new CoraWidgetInfo()

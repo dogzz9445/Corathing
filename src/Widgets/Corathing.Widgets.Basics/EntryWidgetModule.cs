@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using Corathing.Contracts.Attributes;
 using Corathing.Contracts.Entries;
 using Corathing.Widgets.Basics.Resources;
 

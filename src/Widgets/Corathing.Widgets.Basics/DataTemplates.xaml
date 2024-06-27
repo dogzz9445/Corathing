@@ -12,6 +12,10 @@
                     xmlns:webqueries="clr-namespace:Corathing.Widgets.Basics.Widgets.WebQueries"
                     >
 
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="pack://application:,,,/Corathing.Widgets.Basics;component/Widgets/FileOpeners/FileOpenerDataTemplate.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+
     <DataTemplate DataType="{x:Type calendars:CalendarWidgetViewModel}">
         <calendars:CalendarWidget />
     </DataTemplate>
@@ -20,10 +24,6 @@
         <commanders:CommanderWidget />
     </DataTemplate>
 
-    <DataTemplate DataType="{x:Type fileopeners:FileOpenerWidgetViewModel}">
-        <fileopeners:FileOpenerWidget />
-    </DataTemplate>
-    
     <DataTemplate DataType="{x:Type linkopeners:LinkOpenerWidgetViewModel}">
         <linkopeners:LinkOpenerWidget />
     </DataTemplate>

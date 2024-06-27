@@ -13,12 +13,13 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
+using Microsoft.Extensions.DependencyInjection;
+
+using Corathing.Contracts.Attributes;
 using Corathing.Contracts.Bases;
 using Corathing.Contracts.Entries;
 using Corathing.Contracts.Services;
 using Corathing.Widgets.Basics.Widgets.WebPages;
-
-using Microsoft.Extensions.DependencyInjection;
 
 namespace Corathing.Widgets.Basics.Widgets.WebQueries;
 

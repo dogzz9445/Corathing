@@ -31,12 +31,11 @@ namespace Corathing.Organizer.Views
         public WidgetSettingsView(WidgetHost widgetHost)
         {
             DataContext = ViewModel = App.Current.Services.GetService<WidgetSettingsViewModel>();
-            WidgetHost tempWidgetHost = new WidgetHost();
-            Type contextType = ViewModel.RegisterWidget(tempWidgetHost, widgetHost);
 
             InitializeComponent();
 
-            tempWidgetHost.Style = (Style)FindResource("WidgetSettingsHostStyle");
+            WidgetHost tempWidgetHost = new WidgetHost();
+            Type contextType = ViewModel.RegisterWidget(tempWidgetHost, widgetHost);
             WidgetHostContentPresenter.Content = tempWidgetHost;
             var dataTemplateKey = new DataTemplateKey(contextType);
             var dataTemplate = FindResource(dataTemplateKey) as DataTemplate;

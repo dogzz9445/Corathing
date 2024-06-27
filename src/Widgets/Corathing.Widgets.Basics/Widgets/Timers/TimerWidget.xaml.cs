@@ -17,6 +17,7 @@ using System.Windows.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
+using Corathing.Contracts.Attributes;
 using Corathing.Contracts.Bases;
 using Corathing.Contracts.Entries;
 using Corathing.Contracts.Services;
