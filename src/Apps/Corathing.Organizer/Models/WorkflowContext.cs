@@ -91,7 +91,7 @@ public partial class WorkflowContext : ObservableObject
         var packageService = _services.GetService<IPackageService>();
         var appStateService = _services.GetService<IAppStateService>();
 
-        Name = workflowState.Settings.Name;
+        Name = workflowState.CoreSettings.Name;
         WorkflowId = workflowState.Id;
         foreach (var widgetStateId in workflowState.WidgetIds)
         {

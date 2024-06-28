@@ -57,8 +57,20 @@
     </Style>
 
     <!-- 5. IconButton -->
+    <!-- Usage:
+        <ui:Button Style="{StaticResource IconButton24}"
+                   Icon="{ui:SymbolIcon Guest24}" />
+    -->
     <Style TargetType="{x:Type ui:Button}"
            x:Key="IconButton24">
+        <Setter Property="Height"
+                Value="40" />
+        <Setter Property="Width"
+                Value="40" />
+        <Setter Property="Padding"
+                Value="0" />
+        <Setter Property="FontSize"
+                Value="24" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ui:Button}">
@@ -69,12 +81,19 @@
                                Command="{TemplateBinding Command}"
                                CommandParameter="{TemplateBinding CommandParameter}"
                                ToolTip="{TemplateBinding ToolTip}"
-                               FontSize="24"
-                               Height="40"
-                               Width="40" />
+                               FontSize="{TemplateBinding FontSize}"
+                               Height="{TemplateBinding Height}"
+                               Width="{TemplateBinding Width}" />
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
+    </Style>
+
+    <!-- https://pictogrammers.com/library/mdi/ -->
+    <!-- 6. IconButton -->
+    <Style TargetType="{x:Type Button}"
+           x:Key="IconButton">
+        
     </Style>
 
 </ResourceDictionary>

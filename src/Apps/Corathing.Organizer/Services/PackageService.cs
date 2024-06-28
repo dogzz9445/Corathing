@@ -61,15 +61,14 @@ public class PackageService : IPackageService
     }
 
 
-    public void RegisterWidgets(List<CoraWidgetGenerator> widgets)
-    {
-        widgets.ForEach(widget =>
-        {
-            _widgetGenerators.Add(widget.ContextType.FullName, widget);
-        });
-    }
+    // ------------------------------------------------------------------------------------------------------
+    //
+    // 2. Nuget Package Download and Load
+    //
+    // ------------------------------------------------------------------------------------------------------
 
-    public List<CoraWidgetGenerator> GetAvailableWidgets()
+
+    public List<CoraWidgetGenerator> GetWidgetGenerators()
     {
         return _widgetGenerators.Values.ToList();
     }
@@ -79,8 +78,82 @@ public class PackageService : IPackageService
         return _widgetGenerators.TryGetValue(contextTypeFullName, out generator);
     }
 
-    public void LoadAssembly(Assembly assembly)
+    public void UnloadAssembly(PackageState packageState)
     {
+
+    }
+
+    public void LoadWidgetsFromDLL(string pathDLL)
+    {
+        Assembly assembly = Assembly.LoadFrom(pathDLL);
+        LoadAssembly(assembly);
+    }
+
+    public void LoadWidgetsFromNuget(string id, string version, string? nugetFeedUrl = null)
+    {
+        //bool cacheHasFinded = false;
+        //var assembly = FindLocalPackagesResource();
+        //if (cacheHasFinded)
+        //{
+        //}
+        var assembly = LoadAssemblyFromNugetWebAsymc(id, version, nugetFeedUrl).Result;
+        //var assembly = LoadAssemblyFromNugetFile(id, version, nugetFeedUrl).Result;
+        LoadAssembly(assembly);
+    }
+
+
+    // ------------------------------------------------------------------------------------------------------
+    //
+    // 2. Load and Unload Assembly Internal
+    //
+    // ------------------------------------------------------------------------------------------------------
+
+    private void LoadAssembly(Assembly assembly)
+    {
+        // Load Assembly DataTemplates
+        assembly.GetCustomAttributes<AssemblyCoraPackageDataTemplateAttribute>()
+            .ToList()
+            .ForEach(attribute =>
+                App.Current.Resources.MergedDictionaries.Add(GetDataTemplateFromCoraAttribute(assembly, attribute)
+                ));
+
+        // Load Assembly Localization
+        assembly.GetCustomAttributes<AssemblyCoraPackageResourceManagerAttribute>()
+            .ToList()
+            .ForEach(attribute =>
+            {
+                if (attribute == null ||
+                    attribute.ResourceManagerParentType == null ||
+                    string.IsNullOrEmpty(attribute.NameofResourceManager))
+                    return;
+
+                var property = attribute.ResourceManagerParentType
+                    .GetProperty(attribute.NameofResourceManager);
+                if (property == null)
+                    return;
+
+                var propertyValue = property.GetValue(null, null);
+                if (propertyValue is ResourceManager resourceManager)
+                {
+                    LocalizationService.Instance
+                        .RegisterStringResourceManager(
+                            assembly.GetType().Name,
+                            resourceManager
+                        );
+                }
+            });
+
+        PackageState packageState = new PackageState()
+        {
+            Id = Guid.NewGuid(),
+        };
+
+        PackageReferenceState packageReferenceState = new PackageReferenceState()
+        {
+            AssemblyName = assembly.GetName().Name,
+            AssemblyVersion = assembly.GetName().Version.ToString()
+        };
+
         var types = assembly.GetTypes().Where(t => typeof(WidgetContext).IsAssignableFrom(t));
         // TODO:
         // 도메인 프록시 문제 해결 필요
@@ -89,23 +162,12 @@ public class PackageService : IPackageService
         //    ApplicationBase = AppDomain.CurrentDomain.BaseDirectory,
         //    PrivateBinPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)
         //};
-        
-        // Load DataTemplates
-        assembly.GetCustomAttributes<AssemblyCoraPackageDataTemplateAttribute>()
-            .ToList()
-            .ForEach(attribute =>
-        {
-            App.Current.Resources.MergedDictionaries.Add(
-                new ResourceDictionary()
-                {
-                    Source = new Uri($"pack://application:,,,/{assembly.GetName().Name};component/{attribute.DataTemplateSource}", UriKind.Absolute)
-                }
-            );
-        });
 
         // Load Cora Widgets
         foreach (var type in types)
         {
+            // TODOTODOTODOTODO
+            // TODOTODO
             System.Reflection.MemberInfo info = type;
             var attributes = info.GetCustomAttributes(true);
 
@@ -119,42 +181,15 @@ public class PackageService : IPackageService
                 _widgetGenerators.Add(attribute.Generator.ContextType.FullName, attribute.Generator);
             }
         }
-
-        // Localization
-        // FIXME:
-        // Fix the assembly
-        var localizationService = _services.GetService<ILocalizationService>();
-        if (localizationService != null)
-        {
-            var moduleTypes = assembly.GetTypes().Where(t => typeof(CoraWidgetModuleBase).IsAssignableFrom(t));
-            foreach (var type in moduleTypes)
-            {
-                MemberInfo info = type;
-                var attributes = info.GetCustomAttributes(true);
-
-                for (int i = 0; i < attributes.Length; i++)
-                {
-                    if (!(attributes[i] is EntryCoraPackageAttribute))
-                        continue;
-
-                    var attribute = ((EntryCoraPackageAttribute)attributes[i]);
-                    var module = (CoraWidgetModuleBase)Activator.CreateInstance(attribute.EntryPackageType);
-                    module.StringResources.ForEach(resourceManager =>
-                        LocalizationService.Instance.RegisterStringResourceManager(
-                            resourceManager.GetType().FullName,
-                            //resource.Assembly.GetName().Name,
-                            resourceManager)
-                    );
-                }
-            }
-        }
     }
 
-    public void LoadWidgetsFromDLL(string pathDLL)
-    {
-        Assembly assembly = Assembly.LoadFrom(pathDLL);
-        LoadAssembly(assembly);
-    }
+
+    // ------------------------------------------------------------------------------------------------------
+    //
+    // 3. Nuget Package Download and Load
+    //
+    // ------------------------------------------------------------------------------------------------------
+
 
     public async Task<Assembly> LoadAssemblyFromNugetWebAsymc(string id, string version, string? nugetFeedUrl = null, CancellationToken cancellationToken = default)
     {
@@ -192,7 +227,7 @@ public class PackageService : IPackageService
         return assemblyLoadContext.LoadFromStream(decompressed);
     }
 
-    public Assembly LoadAssemblyFromNugetFile(string filename)
+    private Assembly LoadAssemblyFromNugetFile(string filename)
     {
         using var nugetStream = File.OpenRead(filename);
         using var archiveReader = new PackageArchiveReader(nugetStream);
@@ -208,4 +243,30 @@ public class PackageService : IPackageService
         decompressed.Position = 0;
         return assemblyLoadContext.LoadFromStream(decompressed);
     }
+
+    // ------------------------------------------------------------------------------------------------------
+    //
+    // 4. Read Custom Attributes from Assembly
+    //
+    // ------------------------------------------------------------------------------------------------------
+
+
+    private ResourceDictionary GetDataTemplateFromCoraAttribute(Assembly assembly, AssemblyCoraPackageDataTemplateAttribute dataTemplateSource)
+    {
+        if (string.IsNullOrEmpty(dataTemplateSource.DataTemplateSource))
+        {
+            // TODO:
+            // Change Exception Type
+            throw new Exception("DataTemplateSource is empty");
+        }
+        return new ResourceDictionary()
+        {
+            Source = new Uri(
+                dataTemplateSource.IsAbsolute ?
+                    dataTemplateSource.DataTemplateSource :
+                    $"pack://application:,,,/{assembly.GetName().Name};component/{dataTemplateSource.DataTemplateSource}",
+                UriKind.Absolute)
+        };
+    }
+
 }

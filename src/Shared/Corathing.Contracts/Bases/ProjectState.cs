@@ -4,15 +4,30 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using Corathing.Contracts.Bases.Interfaces;
-
 namespace Corathing.Contracts.Bases;
+
+public interface IProjectCoreState
+{
+    string Name { get; }
+}
+
+public class ProjectCoreState : IProjectCoreState
+{
+    public string Name { get; set; }
+}
+
+public interface IProjectState : IEntity
+{
+    Guid? SelectedWorkflowId { get; }
+    ProjectCoreState CoreSettings { get; }
+    List<Guid> WorkflowIds { get; }
+}
 
 public class ProjectState : IProjectState
 {
     public Guid Id { get; set; }
     public Guid? SelectedWorkflowId { get; set; }
-    public ProjectSettings Settings { get; set; }
+    public ProjectCoreState CoreSettings { get; set; }
     public List<Guid> WorkflowIds { get; set; } = new List<Guid>();
 
     public static ProjectState Create()
@@ -20,7 +35,7 @@ public class ProjectState : IProjectState
         return new ProjectState
         {
             Id = Guid.NewGuid(),
-            Settings = new ProjectSettings
+            CoreSettings = new ProjectCoreState
             {
                 Name = "My Project"
             },
@@ -29,12 +44,12 @@ public class ProjectState : IProjectState
         };
     }
 
-    public static ProjectState UpdateProjectSettings(ProjectState project, ProjectSettings settings)
+    public static ProjectState UpdateProjectSettings(ProjectState project, ProjectCoreState settings)
     {
         return new ProjectState
         {
             Id = project.Id,
-            Settings = settings,
+            CoreSettings = settings,
             WorkflowIds = project.WorkflowIds,
             SelectedWorkflowId = project.SelectedWorkflowId
         };
@@ -45,7 +60,7 @@ public class ProjectState : IProjectState
         return new ProjectState
         {
             Id = project.Id,
-            Settings = project.Settings,
+            CoreSettings = project.CoreSettings,
             WorkflowIds = workflowIds,
             SelectedWorkflowId = project.SelectedWorkflowId
         };

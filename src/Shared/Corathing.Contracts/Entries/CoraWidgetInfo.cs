@@ -30,13 +30,18 @@ public interface ICoraWidgetInfo
 
 public class CoraWidgetInfo : ICoraWidgetInfo
 {
+    // Information
     public string Name { get; set; }
     public string Description { get; set; }
     public string Title { get; set; }
     public bool VisibleTitle { get; set; }
+
+    // Menu
     public string MenuPath { get; set; }
     public int MenuOrder { get; set; }
     public string MenuTooltip { get; set; }
+
+    // Layouts
     public int MinimunColumnSpan { get; set; }
     public int MinimumRowSpan { get; set; }
     public int MaximumColumnSpan { get; set; }

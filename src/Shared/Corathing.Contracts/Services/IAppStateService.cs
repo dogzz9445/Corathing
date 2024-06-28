@@ -24,10 +24,10 @@ public interface IAppStateService
     ProjectState CreateAddProject();
     WorkflowState CreateAddWorkflow();
 
-    ProjectState CopyProject(Guid originalProjectId);
-    ProjectState CopyProject(ProjectState originalProject);
-    WorkflowState CopyWorkflow(Guid originalWorkflowId);
-    WorkflowState CopyWorkflow(WorkflowState originalWorkflow);
+    ProjectState CloneProject(Guid originalProjectId);
+    ProjectState CloneProject(ProjectState originalProject);
+    WorkflowState CloneWorkflow(Guid originalWorkflowId);
+    WorkflowState CloneWorkflow(WorkflowState originalWorkflow);
 
     void RemoveProject(ProjectState project);
     void RemoveProject(Guid projectId);

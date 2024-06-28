@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using Corathing.Contracts.Bases.Interfaces;
 using Corathing.Contracts.Bases;
 
 namespace Corathing.Contracts.Utils.Factories;
@@ -16,7 +15,7 @@ public static partial class WorkflowFactory
         return new WorkflowState
         {
             Id = id,
-            Settings = new WorkflowSettings
+            CoreSettings = new WorkflowCoreState
             {
                 Name = name
             }
@@ -27,7 +26,7 @@ public static partial class WorkflowFactory
         => new WorkflowState
         {
             Id = Guid.NewGuid(),
-            Settings = new WorkflowSettings
+            CoreSettings = new WorkflowCoreState
             {
                 Name = "My Workflow"
             }

@@ -11,13 +11,26 @@ using System.Windows;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
-using Corathing.Contracts.Entries;
+using Corathing.Contracts.DataContexts;
+using Corathing.UI.WPF.Structures;
 
 using Microsoft.Win32;
 
 using OpenFileDialog = Microsoft.Win32.OpenFileDialog;
 
 namespace Corathing.Widgets.Basics.Widgets.FileOpeners;
+
+public partial class FileInfo : ObservableObject
+{
+    [ObservableProperty]
+    private string _fileName;
+}
+
+public partial class FolderInfo : ObservableObject
+{
+    [ObservableProperty]
+    private string _folderName;
+}
 
 public partial class FileOpenerOptionViewModel : ObservableObject, IWidgetCustomSettingsContext
 {
@@ -72,20 +85,39 @@ public partial class FileOpenerOptionViewModel : ObservableObject, IWidgetCustom
     }
 
     [RelayCommand]
-    public void RemoveFile(object file)
+    public void RemoveFile(object? file)
     {
-        Files.Remove(file is FileInfo fileInfo ? SelectedFile : null);
+        if (file is not FileInfo fileInfo)
+        {
+            // TODO:
+            // Change Exception Type
+            throw new Exception();
+        }
+        Files.Remove(fileInfo);
     }
 
     [RelayCommand]
-    public void RemoveFolder(FolderInfo folder)
+    public void RemoveFolder(object? folder)
     {
-        Folders.Remove(folder ?? SelectedFolder);
+        if (folder is not FolderInfo folderInfo)
+        {
+            // TODO:
+            // Change Exception Type
+            throw new Exception();
+        }
+        Folders.Remove(folderInfo);
     }
 
     [RelayCommand]
-    public void OpenFile(FileInfo file)
+    public void OpenFile(object? file)
     {
+        if (file is not FileInfo fileInfo)
+        {
+            // TODO:
+            // Change Exception Type
+            throw new Exception();
+        }
+
         //OpenedFilePathVisibility = Visibility.Collapsed;
 
         OpenFileDialog openFileDialog =
@@ -105,13 +137,20 @@ public partial class FileOpenerOptionViewModel : ObservableObject, IWidgetCustom
             return;
         }
 
-        file.FileName = openFileDialog.FileName;
+        fileInfo.FileName = openFileDialog.FileName;
+        OnPropertyChanged(new PropertyChangedEventArgs(nameof(fileInfo.FileName)));
         //OpenedFilePathVisibility = Visibility.Visible;
     }
 
     [RelayCommand]
-    public void OpenFolder(FolderInfo folder)
+    public void OpenFolder(object? folder)
     {
+        if (folder is not FolderInfo folderInfo)
+        {
+            // TODO:
+            // Change Exception Type
+            throw new Exception();
+        }
         //OpenedFolderPathVisibility = Visibility.Collapsed;
 
         OpenFolderDialog openFolderDialog =
@@ -131,7 +170,8 @@ public partial class FileOpenerOptionViewModel : ObservableObject, IWidgetCustom
             return;
         }
 
-        folder.FolderName = string.Join("\n", openFolderDialog.FolderNames);
+        folderInfo.FolderName = string.Join("\n", openFolderDialog.FolderNames);
+        OnPropertyChanged(new PropertyChangedEventArgs(nameof(folderInfo.FolderName)));
         //OpenedFolderPathVisibility = Visibility.Visible;
     }
 

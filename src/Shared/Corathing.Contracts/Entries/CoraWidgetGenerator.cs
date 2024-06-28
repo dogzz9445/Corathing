@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using Corathing.Contracts.Bases;
+using Corathing.Contracts.DataContexts;
 
 namespace Corathing.Contracts.Entries;
 
@@ -87,10 +88,14 @@ public class CoraWidgetGenerator
     {
         WidgetState state = new WidgetState();
         state.Id = Guid.NewGuid();
+        // TODO:
+        state.PackageReference = new PackageReferenceState()
+        {
+            AssemblyName = ContextType.Assembly.GetType().Name,
+        };
         state.CoreSettings = new WidgetCoreState()
         {
             TypeName = ContextType.FullName,
-            AssemblyName = ContextType.Assembly.FullName,
 
             RowIndex = 0,
             ColumnIndex = 0,

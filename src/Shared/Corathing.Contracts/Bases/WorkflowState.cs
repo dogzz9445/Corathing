@@ -4,15 +4,31 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using Corathing.Contracts.Bases.Interfaces;
-
 namespace Corathing.Contracts.Bases;
+
+public interface IWorkflowCoreState
+{
+    string Name { get; }
+}
+
+public class WorkflowCoreState : IWorkflowCoreState
+{
+    public string Name { get; set; }
+}
+
+public interface IWorkflowState : IEntity
+{
+    public List<Guid> WidgetIds { get; set; }
+    WorkflowCoreState CoreSettings { get; }
+    int MaxColumns { get; }
+    int VisibleRows { get; }
+}
 
 public class WorkflowState : IWorkflowState
 {
     public Guid Id { get; set; }
     public List<Guid> WidgetIds { get; set; } = new List<Guid>();
-    public WorkflowSettings Settings { get; set; }
+    public WorkflowCoreState CoreSettings { get; set; }
     public int MaxColumns { get; set; } = 16;
     public int VisibleRows { get; set; } = 8;
 
@@ -21,7 +37,7 @@ public class WorkflowState : IWorkflowState
         return new WorkflowState
         {
             Id = id,
-            Settings = new WorkflowSettings
+            CoreSettings = new WorkflowCoreState
             {
                 Name = name
             }
@@ -32,18 +48,18 @@ public class WorkflowState : IWorkflowState
         => new WorkflowState
         {
             Id = Guid.NewGuid(),
-            Settings = new WorkflowSettings
+            CoreSettings = new WorkflowCoreState
             {
                 Name = "My Workflow"
             }
         };
 
-    public static WorkflowState UpdateWorkflowSettings(WorkflowState workflow, WorkflowSettings settings)
+    public static WorkflowState UpdateWorkflowSettings(WorkflowState workflow, WorkflowCoreState settings)
     {
         return new WorkflowState
         {
             Id = workflow.Id,
-            Settings = settings
+            CoreSettings = settings
         };
     }
 
@@ -52,7 +68,7 @@ public class WorkflowState : IWorkflowState
         return new WorkflowState
         {
             Id = workflow.Id,
-            Settings = workflow.Settings
+            CoreSettings = workflow.CoreSettings
         };
     }
 }

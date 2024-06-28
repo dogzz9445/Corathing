@@ -138,7 +138,7 @@ public class AppStateService : IAppStateService
         if (_cachedAppDashboardState == null)
             ReadOrCreateAppStateByAppSettings().Wait();
 
-        return _cachedAppDashboardState.HashedProjects.TryGetValue(id, out project);
+        return _cachedAppDashboardState.CashedProjects.TryGetValue(id, out project);
     }
 
     public bool TryGetWorkflow(Guid id, out WorkflowState workflow)
@@ -146,7 +146,7 @@ public class AppStateService : IAppStateService
         if (_cachedAppDashboardState == null)
             ReadOrCreateAppStateByAppSettings().Wait();
 
-        return _cachedAppDashboardState.HashedWorkflows.TryGetValue(id, out workflow);
+        return _cachedAppDashboardState.CashedWorkflows.TryGetValue(id, out workflow);
     }
 
     public bool TryGetWidget(Guid id, out WidgetState widget)
@@ -154,14 +154,8 @@ public class AppStateService : IAppStateService
         if (_cachedAppDashboardState == null)
             ReadOrCreateAppStateByAppSettings().Wait();
 
-        return _cachedAppDashboardState.HashedWidgets.TryGetValue(id, out widget);
+        return _cachedAppDashboardState.CashedWidgets.TryGetValue(id, out widget);
     }
-
-    public ProjectState GetOrAddProject(Guid? id = null)
-    {
-        return default;
-    }
-
 
     public async void UpdateProject(ProjectState project)
     {
@@ -214,18 +208,18 @@ public class AppStateService : IAppStateService
     public ProjectState CreateAddProject()
     {
         var project = ProjectState.Create();
-        _cachedAppDashboardState.AddProject(project);
+        _cachedAppDashboardState.UpdateProject(project);
         return project;
     }
 
     public WorkflowState CreateAddWorkflow()
     {
         var workflow = WorkflowState.Create();
-        _cachedAppDashboardState.AddWorkflow(workflow);
+        _cachedAppDashboardState.UpdateWorkflow(workflow);
         return workflow;
     }
 
-    public ProjectState CopyProject(Guid originalProjectId)
+    public ProjectState CloneProject(Guid originalProjectId)
     {
         if (!TryGetProject(originalProjectId, out var originalProject))
         {
@@ -233,21 +227,21 @@ public class AppStateService : IAppStateService
             // Change Exception Type;
             throw new Exception();
         }
-        return CopyProject(originalProject);
+        return CloneProject(originalProject);
     }
 
-    public ProjectState CopyProject(ProjectState originalProject)
+    public ProjectState CloneProject(ProjectState originalProject)
     {
         var cloneProject = ProjectState.Create();
         foreach (var originalWorkflowId in originalProject.WorkflowIds)
         {
-            var workflowState = CopyWorkflow(originalWorkflowId);
+            var workflowState = CloneWorkflow(originalWorkflowId);
             cloneProject.WorkflowIds.Add(workflowState.Id);
         }
         return cloneProject;
     }
 
-    public WorkflowState CopyWorkflow(Guid originalWorkflowId)
+    public WorkflowState CloneWorkflow(Guid originalWorkflowId)
     {
         if (!TryGetWorkflow(originalWorkflowId, out var originalWorkflow))
         {
@@ -255,15 +249,14 @@ public class AppStateService : IAppStateService
             // Change Exception Type
             throw new Exception();
         }
-        return CopyWorkflow(originalWorkflow);
+        return CloneWorkflow(originalWorkflow);
     }
 
-    public WorkflowState CopyWorkflow(WorkflowState workflowState)
+    public WorkflowState CloneWorkflow(WorkflowState workflowState)
     {
         var cloneWorkflow = WorkflowState.Create();
 
-
-        _cachedAppDashboardState.AddWorkflow(cloneWorkflow);
+        _cachedAppDashboardState.UpdateWorkflow(cloneWorkflow);
         return cloneWorkflow;
     }
 

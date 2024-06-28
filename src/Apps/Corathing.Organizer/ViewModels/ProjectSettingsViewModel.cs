@@ -38,7 +38,7 @@ public partial class ProjectSettingsViewModel : ObservableObject
         foreach (var projectState in dashboards.Projects)
         {
             var projectSettingsContext = _services.GetService<ProjectSettingsContext>();
-            projectSettingsContext.Name = projectState.Settings.Name;
+            projectSettingsContext.Name = projectState.CoreSettings.Name;
             projectSettingsContext.ProjectId = projectState.Id;
             projectSettingsContext.ProjectState = projectState;
             ProjectSettingsContexts.Add(projectSettingsContext);
@@ -84,20 +84,20 @@ public partial class ProjectSettingsViewModel : ObservableObject
             else if (projectSettingsContext.IsAdded)
             {
                 var projectState = ProjectState.Create();
-                projectState.Settings.Name = projectSettingsContext.Name;
+                projectState.CoreSettings.Name = projectSettingsContext.Name;
                 appStateService.UpdateProject(projectState);
             }
             else if (projectSettingsContext.IsDuplicated)
             {
                 var projectState = CopyProject(projectSettingsContext.OriginalProjectId);
-                projectState.Settings.Name = projectSettingsContext.Name;
+                projectState.CoreSettings.Name = projectSettingsContext.Name;
                 appStateService.UpdateProject(projectState);
             }
             else
             {
-                if (projectSettingsContext.ProjectState.Settings.Name != projectSettingsContext.Name)
+                if (projectSettingsContext.ProjectState.CoreSettings.Name != projectSettingsContext.Name)
                 {
-                    projectSettingsContext.ProjectState.Settings.Name = projectSettingsContext.Name;
+                    projectSettingsContext.ProjectState.CoreSettings.Name = projectSettingsContext.Name;
                     appStateService.UpdateProject(projectSettingsContext.ProjectState);
                 }
             }
@@ -124,7 +124,7 @@ public partial class ProjectSettingsViewModel : ObservableObject
             return CopyProject(originalProjectSettingsContext.OriginalProjectId);
         }
         var appStateService = _services.GetService<IAppStateService>();
-        return appStateService.CopyProject(originalProjectSettingsContext.ProjectId);
+        return appStateService.CloneProject(originalProjectSettingsContext.ProjectId);
     }
 
     [RelayCommand]

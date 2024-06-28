@@ -205,6 +205,11 @@ public class LocalizationService : ILocalizationService, INotifyPropertyChanged
         };
 
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="namespaceName"></param>
+    /// <param name="resourceManager"></param>
     public void RegisterStringResourceManager(string namespaceName, ResourceManager resourceManager)
     {
         _stringResourceManagers.Add(namespaceName, resourceManager);

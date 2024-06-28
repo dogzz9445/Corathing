@@ -6,17 +6,16 @@ using System.Threading.Tasks;
 
 using Corathing.Contracts.Attributes;
 using Corathing.Contracts.Entries;
+using Corathing.Contracts.Services;
 using Corathing.Widgets.Basics.Resources;
 
+[assembly: AssemblyCoraPackageName(ApplicationLanguage.en_US, "Basic Widgets")]
+[assembly: AssemblyCoraPackageName(ApplicationLanguage.ko_KR, "기본 위젯")]
+[assembly: AssemblyCoraPackageDescription(ApplicationLanguage.en_US, "Provides basic widgets for Corathing.")]
+[assembly: AssemblyCoraPackageDescription(ApplicationLanguage.ko_KR, "Corathing을 위한 기본 위젯을 제공합니다.")]
+
+
 [assembly: AssemblyCoraPackageDataTemplate("DataTemplates.xaml")]
-
-namespace Corathing.Widgets.Basics;
-
-[EntryCoraPackage(typeof(EntryWidgetModule))]
-public class EntryWidgetModule : CoraWidgetModuleBase
-{
-    public EntryWidgetModule()
-    {
-        StringResources.Add(BasicWidgetStringResources.ResourceManager);
-    }
-}
+[assembly: AssemblyCoraPackageResourceManager(
+    resourceType: typeof(BasicWidgetStringResources),
+    nameofResourceManager: nameof(BasicWidgetStringResources.ResourceManager))]

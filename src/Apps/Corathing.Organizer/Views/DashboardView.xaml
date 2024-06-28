@@ -81,7 +81,8 @@
                     <TextBlock Text="Add New Project or Workflow" FontSize="36" />
                 </Grid>
             </DataTemplate>
-            
+
+            <!-- TabControl Template -->
             <DataTemplate x:Key="newTabButtonHeaderTemplate">
                 <ui:Button Icon="{ui:SymbolIcon Add12}"
                            FontSize="12"

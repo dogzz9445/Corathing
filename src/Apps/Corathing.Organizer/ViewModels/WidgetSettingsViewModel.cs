@@ -12,7 +12,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
 using Corathing.Contracts.Bases;
-using Corathing.Contracts.Entries;
+using Corathing.Contracts.DataContexts;
 using Corathing.Contracts.Services;
 using Corathing.Contracts.Utils.Exetensions;
 using Corathing.Dashboards.WPF.Controls;

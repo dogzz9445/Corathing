@@ -1,17 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 using CommunityToolkit.Mvvm.ComponentModel;
 
-using Corathing.Contracts.Attributes;
-
 namespace Corathing.Widgets.Basics.DataSources.ExecutableApps;
 
-[EntryCoraDataSource(typeof(ExecutableAppDataSource))]
-public class ExecutableAppDataSource : ObservableRecipient
+public partial class ExecutableAppDataSourceSettingsViewModel : ObservableObject
 {
-    public string Name { get; set; }
 }

@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 namespace Corathing.Contracts.Attributes;
 
 [AttributeUsage(AttributeTargets.Property)]
-public class CoraDataSourceAttribute : Attribute
+public class ReferenceCoraDataSourcePropertyAttribute : Attribute
 {
     public Type DataSourceType { get; }
 
-    public CoraDataSourceAttribute(Type dataSourceType)
+    public ReferenceCoraDataSourcePropertyAttribute(Type dataSourceType)
     {
         DataSourceType = dataSourceType;
     }

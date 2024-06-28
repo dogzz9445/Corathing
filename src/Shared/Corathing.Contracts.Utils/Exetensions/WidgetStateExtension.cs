@@ -27,8 +27,9 @@ public static class WidgetStateExtension
         if (targetState.CoreSettings == null)
             targetState.CoreSettings = new WidgetCoreState();
 
+        targetState.PackageReference = sourceState.PackageReference;
+
         targetState.CoreSettings.TypeName = sourceState.CoreSettings.TypeName;
-        targetState.CoreSettings.AssemblyName = sourceState.CoreSettings.AssemblyName;
         targetState.CoreSettings.RowIndex = sourceState.CoreSettings.RowIndex;
         targetState.CoreSettings.ColumnIndex = sourceState.CoreSettings.ColumnIndex;
         targetState.CoreSettings.RowSpan = sourceState.CoreSettings.RowSpan;
@@ -38,7 +39,6 @@ public static class WidgetStateExtension
         targetState.CoreSettings.VisibleTitle = sourceState.CoreSettings.VisibleTitle;
         targetState.CoreSettings.UseDefaultBackgroundColor = sourceState.CoreSettings.UseDefaultBackgroundColor;
         targetState.CoreSettings.BackgroundColor = sourceState.CoreSettings.BackgroundColor;
-
 
         if (sourceState.CustomSettings != null && customSettingsType != null)
         {

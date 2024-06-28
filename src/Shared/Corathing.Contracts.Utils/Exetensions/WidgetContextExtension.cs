@@ -37,27 +37,13 @@ public static class WidgetContextExtension
         targetContext.BackgroundColor = sourceContext.BackgroundColor;
     }
 
-    public static void UpdateFrom(this WidgetContext targetContext, WidgetState sourceState)
-    {
-        targetContext.State = sourceState;
-        targetContext.WidgetId = sourceState.Id;
-        targetContext.WidgetTitle = sourceState.CoreSettings.Title;
-        targetContext.VisibleTitle = sourceState.CoreSettings.VisibleTitle;
-        targetContext.UseDefaultBackgroundColor = sourceState.CoreSettings.UseDefaultBackgroundColor;
-        targetContext.BackgroundColor = sourceState.CoreSettings.BackgroundColor;
-
-        if (targetContext.Layout != null)
-        {
-            targetContext.Layout.UpdateFrom(sourceState);
-        }
-    }
-
     public static void UpdateTo(this WidgetContext sourceContext, WidgetState targetState)
     {
+        targetState.PackageReference = sourceContext.State.PackageReference;
+
         targetState.CoreSettings = new WidgetCoreState()
         {
             TypeName = sourceContext.State.CoreSettings.TypeName,
-            AssemblyName = sourceContext.State.CoreSettings.AssemblyName,
             RowIndex = sourceContext.Layout.XY.Y,
             ColumnIndex = sourceContext.Layout.XY.X,
             RowSpan = sourceContext.Layout.WH.H,

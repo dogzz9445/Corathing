@@ -5,6 +5,9 @@ using System.Resources;
 
 namespace Corathing.Contracts.Services;
 
+/// <summary>
+/// Unknow can be fallbacked
+/// </summary>
 public enum ApplicationLanguage
 {
     Unknown,

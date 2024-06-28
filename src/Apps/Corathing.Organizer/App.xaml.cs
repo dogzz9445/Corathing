@@ -190,7 +190,6 @@ public partial class App : Application
         serviceCollection.AddSingleton<ISecretService, ModelVersionSecretService>();
         serviceCollection.AddSingleton<IStorageService, StorageService>();
         serviceCollection.AddSingleton<IThemeService, ThemeService>();
-        serviceCollection.AddSingleton<IWidgetService, WidgetService>();
 
         // --------------------------------------------------------------------------
         // Navigation Service

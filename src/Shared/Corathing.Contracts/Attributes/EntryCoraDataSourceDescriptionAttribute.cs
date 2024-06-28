@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using Corathing.Contracts.Services;
-
-namespace Corathing.Organizer.Services;
-
-public class WidgetService : IWidgetService
+namespace Corathing.Contracts.Attributes
 {
+    internal class EntryCoraDataSourceDescriptionAttribute
+    {
+    }
 }

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using Corathing.Contracts.Bases.Interfaces;
+using Corathing.Contracts.Bases;
 
 namespace Corathing.Contracts.Utils.Messages;
 

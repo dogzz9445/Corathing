@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,22 +18,12 @@ public enum FileOpenType
     Folders,
 }
 
-public class FileInfo : ObservableObject
-{
-    public string FileName { get; set; }
-}
-
-public class FolderInfo : ObservableObject
-{
-    public string FolderName { get; set; }
-}
-
 public class FileOpenerOption
 {
     public FileOpenType OpenType { get; set; }
     public List<string> Files { get; set; }
     public List<string> Folders { get; set; }
 
-    [CoraDataSource(typeof(ExecutableAppDataSource))]
+    [ReferenceCoraDataSourceProperty(typeof(ExecutableAppDataSource))]
     public Guid? ExecutableAppDataSourceId { get; set; }
 }

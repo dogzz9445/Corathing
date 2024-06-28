@@ -12,7 +12,7 @@
       {
         "Id": "926c252b-a158-4e05-8593-7cb55c10bf24",
         "SelectedWorkflowId": null,
-        "Settings": {
+        "CoreSettings": {
           "Name": "Welcome!"
         },
         "WorkflowIds": []
@@ -20,8 +20,8 @@
       {
         "Id": "22778c82-674a-41a7-9fe9-c61d76329690",
         "SelectedWorkflowId": null,
-        "Settings": {
-          "Name": "Test"
+        "CoreSettings": {
+          "Name": "Colors"
         },
         "WorkflowIds": []
       }

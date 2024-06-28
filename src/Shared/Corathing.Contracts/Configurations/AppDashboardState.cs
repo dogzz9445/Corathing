@@ -12,7 +12,7 @@ namespace Corathing.Contracts.Configurations;
 
 public record StateRecord(string key, string value);
 
-public class AppDashboardState
+public class AppDashboardState : IEntity
 {
     #region Serialized Properties
     public Guid Id { get; set; }
@@ -22,15 +22,18 @@ public class AppDashboardState
     public List<ProjectState> Projects { get; set; }
     public List<WorkflowState> Workflows { get; set; }
     public List<WidgetState> Widgets { get; set; }
+    public List<DataSourceState> DataSourceStates { get; set; }
     #endregion
 
     #region Ignored Serialization Properties    
     [JsonIgnore]
-    public Dictionary<Guid, ProjectState> HashedProjects { get; set; }
+    public Dictionary<Guid, ProjectState> CashedProjects { get; set; }
     [JsonIgnore]
-    public Dictionary<Guid, WorkflowState> HashedWorkflows { get; set; }
+    public Dictionary<Guid, WorkflowState> CashedWorkflows { get; set; }
     [JsonIgnore]
-    public Dictionary<Guid, WidgetState> HashedWidgets { get; set; }
+    public Dictionary<Guid, WidgetState> CashedWidgets { get; set; }
+    [JsonIgnore]
+    public Dictionary<Guid, DataSourceState> CashedDataSources { get; set; }
     #endregion
 
     public AppDashboardState()
@@ -39,101 +42,104 @@ public class AppDashboardState
         Projects = new List<ProjectState>();
         Workflows = new List<WorkflowState>();
         Widgets = new List<WidgetState>();
+        DataSourceStates = new List<DataSourceState>();
 
-        HashedProjects = new Dictionary<Guid, ProjectState>();
-        HashedWorkflows = new Dictionary<Guid, WorkflowState>();
-        HashedWidgets = new Dictionary<Guid, WidgetState>();
-    }
-
-    public ProjectState AddProject(ProjectState project)
-    {
-        HashedProjects[project.Id] = project;
-        Projects.Add(project);
-        return project;
-    }
-
-    public WorkflowState AddWorkflow(WorkflowState workflow)
-    {
-        HashedWorkflows[workflow.Id] = workflow;
-        Workflows.Add(workflow);
-        return workflow;
-    }
-
-    public WidgetState AddWidget(WidgetState widget)
-    {
-        HashedWidgets[widget.Id] = widget;
-        Widgets.Add(widget);
-        return widget;
+        CashedProjects = new Dictionary<Guid, ProjectState>();
+        CashedWorkflows = new Dictionary<Guid, WorkflowState>();
+        CashedWidgets = new Dictionary<Guid, WidgetState>();
+        CashedDataSources = new Dictionary<Guid, DataSourceState>();
     }
 
     public void RemoveProject(ProjectState project)
     {
-        HashedProjects.Remove(project.Id);
+        CashedProjects.Remove(project.Id);
         Projects.Remove(project);
     }
 
     public void RemoveWorkflow(WorkflowState workflow)
     {
-        HashedWorkflows.Remove(workflow.Id);
+        CashedWorkflows.Remove(workflow.Id);
         Workflows.Remove(workflow);
     }
 
     public void RemoveWidget(WidgetState widget)
     {
-        HashedWidgets.Remove(widget.Id);
+        CashedWidgets.Remove(widget.Id);
         Widgets.Remove(widget);
+    }
+
+    public void RemoveDataSource(DataSourceState dataSource)
+    {
+        CashedDataSources.Remove(dataSource.Id);
+        DataSourceStates.Remove(dataSource);
     }
 
     public void UpdateProject(ProjectState project)
     {
-        if (HashedProjects.ContainsKey(project.Id))
+        if (CashedProjects.ContainsKey(project.Id))
         {
-            var oldProject = HashedProjects[project.Id];
+            var oldProject = CashedProjects[project.Id];
             Projects.RemoveAll(item => item.Id == oldProject.Id);
         }
-        HashedProjects[project.Id] = project;
+        CashedProjects[project.Id] = project;
         Projects.Add(project);
     }
 
     public void UpdateWorkflow(WorkflowState workflow)
     {
-        if (HashedWorkflows.ContainsKey(workflow.Id))
+        if (CashedWorkflows.ContainsKey(workflow.Id))
         {
-            var oldWorkflow = HashedWorkflows[workflow.Id];
+            var oldWorkflow = CashedWorkflows[workflow.Id];
             Workflows.RemoveAll(item => item.Id == oldWorkflow.Id);
         }
-        HashedWorkflows[workflow.Id] = workflow;
+        CashedWorkflows[workflow.Id] = workflow;
         Workflows.Add(workflow);
     }
 
     public void UpdateWidget(WidgetState widget)
     {
-        if (HashedWidgets.ContainsKey(widget.Id))
+        if (CashedWidgets.ContainsKey(widget.Id))
         {
-            var oldWidget = HashedWidgets[widget.Id];
+            var oldWidget = CashedWidgets[widget.Id];
             Widgets.Remove(oldWidget);
         }
-        HashedWidgets[widget.Id] = widget;
+        CashedWidgets[widget.Id] = widget;
         Widgets.Add(widget);
+    }
+
+    public void UpdateDataSource(DataSourceState dataSource)
+    {
+        if (CashedDataSources.ContainsKey(dataSource.Id))
+        {
+            var oldDataSource = CashedDataSources[dataSource.Id];
+            DataSourceStates.Remove(oldDataSource);
+        }
+        CashedDataSources[dataSource.Id] = dataSource;
+        DataSourceStates.Add(dataSource);
     }
 
     public void RefreshCache()
     {
-        HashedProjects.Clear();
-        HashedWorkflows.Clear();
-        HashedWidgets.Clear();
+        CashedProjects.Clear();
+        CashedWorkflows.Clear();
+        CashedWidgets.Clear();
+        CashedDataSources.Clear();
 
         foreach (var project in Projects)
         {
-            HashedProjects[project.Id] = project;
+            CashedProjects[project.Id] = project;
         }
         foreach (var workflow in Workflows)
         {
-            HashedWorkflows[workflow.Id] = workflow;
+            CashedWorkflows[workflow.Id] = workflow;
         }
         foreach (var widget in Widgets)
         {
-            HashedWidgets[widget.Id] = widget;
+            CashedWidgets[widget.Id] = widget;
+        }
+        foreach (var dataSource in DataSourceStates)
+        {
+            CashedDataSources[dataSource.Id] = dataSource;
         }
     }
 }

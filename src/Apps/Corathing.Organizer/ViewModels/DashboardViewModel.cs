@@ -16,7 +16,6 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
 using Corathing.Contracts.Bases;
-using Corathing.Contracts.Bases.Interfaces;
 using Corathing.Contracts.Entries;
 using Corathing.Contracts.Services;
 using Corathing.Dashboards.WPF.Controls;
@@ -233,7 +232,7 @@ public partial class DashboardViewModel : ObservableObject
         foreach (var projectState in dashboardState.Projects)
         {
             var projectContext = _services.GetService<ProjectContext>();
-            projectContext.Name = projectState.Settings.Name;
+            projectContext.Name = projectState.CoreSettings.Name;
             projectContext.EditMode = EditMode;
             projectContext.UpdateProject(projectState);
 
@@ -259,7 +258,7 @@ public partial class DashboardViewModel : ObservableObject
         });
 
         IPackageService packageService = _services.GetService<IPackageService>();
-        foreach (var widget in packageService.GetAvailableWidgets())
+        foreach (var widget in packageService.GetWidgetGenerators())
         {
             var fullMenuHeader = widget.Info.MenuPath;
             if (string.IsNullOrEmpty(fullMenuHeader))

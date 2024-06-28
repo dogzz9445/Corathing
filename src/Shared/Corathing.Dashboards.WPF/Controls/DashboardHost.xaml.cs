@@ -25,7 +25,6 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using Microsoft.Extensions.DependencyInjection;
 using System.ComponentModel;
 using Corathing.Dashboards.WPF.Bindings;
-using Corathing.Contracts.Bases.Interfaces;
 using System.Windows.Media.Animation;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.Specialized;

@@ -11,7 +11,6 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
 using Corathing.Contracts.Bases;
-using Corathing.Contracts.Bases.Interfaces;
 using Corathing.Contracts.Services;
 using Corathing.Organizer.Services;
 
@@ -100,7 +99,7 @@ public partial class ProjectContext : ObservableObject
             state = appStateService.CreateAddProject();
         }
         var context = App.Current.Services.GetService<ProjectContext>();
-        context.Name = state.Settings.Name;
+        context.Name = state.CoreSettings.Name;
 
         return context;
     }
@@ -110,7 +109,7 @@ public partial class ProjectContext : ObservableObject
         var appStateService = _services.GetService<IAppStateService>();
 
         ProjectId = projectState.Id;
-        Name = projectState.Settings.Name;
+        Name = projectState.CoreSettings.Name;
 
         foreach (var workflowStateId in projectState.WorkflowIds)
         {

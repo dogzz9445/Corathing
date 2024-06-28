@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Corathing.Contracts.Bases.Interfaces;
+namespace Corathing.Contracts.Bases;
 
 public interface IEntity
 {
