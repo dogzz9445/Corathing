@@ -36,7 +36,7 @@
         <ControlTemplate>
             <ScrollViewer x:Name="DashboardHostScrollViewer"
                           FocusVisualStyle="{TemplateBinding FocusVisualStyle}"
-                          HorizontalScrollBarVisibility="Auto"
+                          HorizontalScrollBarVisibility="Disabled"
                           VerticalScrollBarVisibility="Auto">
                 <AdornerDecorator FocusVisualStyle="{DynamicResource EmptyControlFocusVisualStyle}">
                     <Grid>

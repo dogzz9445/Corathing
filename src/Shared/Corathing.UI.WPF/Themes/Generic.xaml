@@ -30,7 +30,7 @@
     <Color x:Key="DarkTheme_PrimaryHueLightForegroundColor">#FFFFFF</Color>
     <Color x:Key="DarkTheme_PrimaryHueMidColor">#212121</Color>
     <Color x:Key="DarkTheme_PrimaryHueMidForegroundColor">#FFFFFF</Color>
-    <Color x:Key="DarkTheme_PrimaryHueDarkColor">#E4000000</Color>
+    <Color x:Key="DarkTheme_PrimaryHueDarkColor">#000000</Color>
     <Color x:Key="DarkTheme_PrimaryHueDarkForegroundColor">#FFFFFF</Color>
 
     <!-- 4. Dark Theme Secondary Colors -->
@@ -91,11 +91,23 @@
 
     <!-- ================================================================ -->
     <!-- Alert Colors and Brushes from Bootstrap                          -->
-    <!-- 1. Alert Light Colors                                            -->
-    <!-- 2. Alert Dark Colors                                             -->
-    <!-- 3. Alert Light Brushes                                           -->
-    <!-- 4. Alert Dark Brushes                                            -->
+    <!-- 1. BootStrap 8 Colors                                            -->
+    <!-- 2. BootStrap 8 Color Bushes                                      -->
+    <!-- 3. Alert Light Colors                                            -->
+    <!-- 4. Alert Dark Colors                                             -->
+    <!-- 5. Alert Light Brushes                                           -->
+    <!-- 6. Alert Dark Brushes                                            -->
     <!-- ================================================================ -->
+
+    <!-- 1. BootStrap 8 Colors -->
+    <Color x:Key="BSPrimaryColor">#cfe2ff</Color>
+    <Color x:Key="BSSecondaryBrush">#e2e3e5</Color>
+    <Color x:Key="BSSuccessBrush">#d1e7dd</Color>
+    <Color x:Key="BSDangerBrush">#f8d7da</Color>
+    <Color x:Key="BSWarningBrush">#fff3cd</Color>
+    <Color x:Key="BSInfoBrush">#cff4fc</Color>
+    <Color x:Key="BSLightBrush">#fcfcfd</Color>
+    <Color x:Key="BSDarkBrush">#ced4da</Color>
 
     <!-- 1. Alert Light Colors -->
     <Color x:Key="PrimaryAlertLightColor">#cfe2ff</Color>
