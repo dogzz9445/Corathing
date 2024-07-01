@@ -1,0 +1,70 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="pack://application:,,,/Corathing.UI.WPF;component/Themes/Bootstrap.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+
+    <!-- ================================================================ -->
+    <!-- Colors are referenced from Bootstrap                             -->
+    <!-- This file is maded by github.com/dogzz9445/Corathing (MIT)       -->
+    <!-- ================================================================ -->
+    <!-- 01. Alert Brushes                                                -->
+    <!-- 02. Alert Foreground Brushes                                     -->
+    <!-- 03. Alert Foreground Highlight Brushes                           -->
+    <!-- ================================================================ -->
+    
+    <!-- 01. Alert Brushes -->
+    <SolidColorBrush x:Key="PrimaryAlertBrush"
+                     Color="{DynamicResource PrimaryAlertDarkColor}" />
+    <SolidColorBrush x:Key="SecondaryAlertBrush"
+                     Color="{DynamicResource SecondaryAlertDarkColor}" />
+    <SolidColorBrush x:Key="SuccessAlertBrush"
+                     Color="{DynamicResource SuccessAlertDarkColor}" />
+    <SolidColorBrush x:Key="DangerAlertBrush"
+                     Color="{DynamicResource DangerAlertDarkColor}" />
+    <SolidColorBrush x:Key="WarningAlertBrush"
+                     Color="{DynamicResource WarningAlertDarkColor}" />
+    <SolidColorBrush x:Key="InfoAlertBrush"
+                     Color="{DynamicResource InfoAlertDarkColor}" />
+    <SolidColorBrush x:Key="LightAlertBrush"
+                     Color="{DynamicResource LightAlertDarkColor}" />
+    <SolidColorBrush x:Key="DarkAlertBrush"
+                     Color="{DynamicResource DarkAlertDarkColor}" />
+
+    <!-- 02. Alert Foregrund Brushes -->
+    <SolidColorBrush x:Key="PrimaryAlertForegroundBrush"
+                     Color="{DynamicResource PrimaryAlertDarkForegroundColor}" />
+    <SolidColorBrush x:Key="SecondaryAlertForegroundBrush"
+                     Color="{DynamicResource SecondaryAlertDarkForegroundColor}" />
+    <SolidColorBrush x:Key="SuccessAlertForegroundBrush"
+                     Color="{DynamicResource SuccessAlertDarkForegroundColor}" />
+    <SolidColorBrush x:Key="DangerAlertForegroundBrush"
+                     Color="{DynamicResource DangerAlertDarkForegroundColor}" />
+    <SolidColorBrush x:Key="WarningAlertForegroundBrush"
+                     Color="{DynamicResource WarningAlertDarkForegroundColor}" />
+    <SolidColorBrush x:Key="InfoAlertForegroundBrush"
+                     Color="{DynamicResource InfoAlertDarkForegroundColor}" />
+    <SolidColorBrush x:Key="LightAlertForegroundBrush"
+                     Color="{DynamicResource LightAlertDarkForegroundColor}" />
+    <SolidColorBrush x:Key="DarkAlertForegroundBrush"
+                     Color="{DynamicResource DarkAlertDarkForegroundColor}" />
+
+    <!-- 03. Alert Foreground Highlight Brushes -->
+    <SolidColorBrush x:Key="PrimaryAlertForegroundHighlightBrush"
+                     Color="{DynamicResource PrimaryAlertDarkForegroundColor}" />
+    <SolidColorBrush x:Key="SecondaryAlertForegroundHighlightBrush"
+                     Color="{DynamicResource SecondaryAlertDarkForegroundColor}" />
+    <SolidColorBrush x:Key="SuccessAlertForegroundHighlightBrush"
+                     Color="{DynamicResource SuccessAlertDarkForegroundColor}" />
+    <SolidColorBrush x:Key="DangerAlertForegroundHighlightBrush"
+                     Color="{DynamicResource DangerAlertDarkForegroundColor}" />
+    <SolidColorBrush x:Key="WarningAlertForegroundHighlightBrush"
+                     Color="{DynamicResource WarningAlertDarkForegroundColor}" />
+    <SolidColorBrush x:Key="InfoAlertForegroundHighlightBrush"
+                     Color="{DynamicResource InfoAlertDarkForegroundColor}" />
+    <SolidColorBrush x:Key="LightAlertForegroundHighlightBrush"
+                     Color="{DynamicResource LightAlertDarkForegroundColor}" />
+    <SolidColorBrush x:Key="DarkAlertForegroundHighlightBrush"
+                     Color="{DynamicResource DarkAlertDarkForegroundColor}" />
+
+</ResourceDictionary>

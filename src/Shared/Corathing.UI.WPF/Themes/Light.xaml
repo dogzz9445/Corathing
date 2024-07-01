@@ -2,8 +2,10 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="pack://application:,,,/Corathing.UI.WPF;component/Themes/Generic.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Corathing.UI.WPF;component/Themes/BootstrapLight.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
+    <!-- Primary Color -->
     <SolidColorBrush x:Key="PrimaryHueLightBrush"
                      Color="{DynamicResource LightTheme_PrimaryHueLightColor}" />
     <SolidColorBrush x:Key="PrimaryHueLightForegroundBrush"
@@ -17,6 +19,7 @@
     <SolidColorBrush x:Key="PrimaryHueDarkForegroundBrush"
                      Color="{DynamicResource LightTheme_PrimaryHueDarkForegroundColor}" />
 
+    <!-- Secondary Color -->
     <SolidColorBrush x:Key="SecondaryHueLightBrush"
                      Color="{DynamicResource LightTheme_SecondaryHueLightColor}" />
     <SolidColorBrush x:Key="SecondaryHueLightForegroundBrush"
@@ -30,23 +33,7 @@
     <SolidColorBrush x:Key="SecondaryHueDarkForegroundBrush"
                      Color="{DynamicResource LightTheme_SecondaryHueDarkForegroundColor}" />
 
-    <SolidColorBrush x:Key="PrimaryAlertBrush"
-                     Color="{DynamicResource PrimaryAlertLightColor}" />
-    <SolidColorBrush x:Key="SecondaryAlertBrush"
-                     Color="{DynamicResource SecondaryAlertLightColor}" />
-    <SolidColorBrush x:Key="SuccessAlertBrush"
-                     Color="{DynamicResource SuccessAlertLightColor}" />
-    <SolidColorBrush x:Key="DangerAlertBrush"
-                     Color="{DynamicResource DangerAlertLightColor}" />
-    <SolidColorBrush x:Key="WarningAlertBrush"
-                     Color="{DynamicResource WarningAlertLightColor}" />
-    <SolidColorBrush x:Key="InfoAlertBrush"
-                     Color="{DynamicResource InfoAlertLightColor}" />
-    <SolidColorBrush x:Key="LightAlertBrush"
-                     Color="{DynamicResource LightAlertLightColor}" />
-    <SolidColorBrush x:Key="DarkAlertBrush"
-                     Color="{DynamicResource DarkAlertLightColor}" />
-
+    <!-- Text Fill -->
     <SolidColorBrush x:Key="TextFillColorPrimaryBrush"
                      Color="{StaticResource TextFillColorLightThemePrimary}" />
     <SolidColorBrush x:Key="TextFillColorSecondaryBrush"
@@ -60,6 +47,7 @@
     <SolidColorBrush x:Key="TextFillColorInverseBrush"
                      Color="{StaticResource TextFillColorLightThemeInverse}" />
 
+    <!-- Text Fill Accent -->
     <SolidColorBrush x:Key="TextFillAccentColorPrimaryBrush"
                      Color="{StaticResource LightTheme_SecondaryHueDarkColor}" />
     <SolidColorBrush x:Key="TextFillAccentColorSecondaryBrush"
@@ -71,6 +59,7 @@
     <SolidColorBrush x:Key="TextFillAccentPlaceholderColorBrush"
                      Color="{StaticResource TextFillColorLightThemePlaceholder}" />
 
+    <!-- Control Background -->
     <SolidColorBrush x:Key="ControlBackground"
                      Color="{StaticResource ControlFillColorLightThemeDefault}" />
     <SolidColorBrush x:Key="ControlBackgroundHover"
@@ -80,6 +69,7 @@
     <SolidColorBrush x:Key="ControlBackgroundDisabled"
                      Color="{StaticResource ControlFillColorLightThemeDisabled}" />
 
+    <!-- Control Accent Background -->
     <SolidColorBrush x:Key="ControlAccentBackground"
                      Color="{StaticResource ControlFillAccentColorLightThemeDefault}" />
     <SolidColorBrush x:Key="ControlAccentBackgroundHover"
@@ -89,6 +79,7 @@
     <SolidColorBrush x:Key="ControlAccentBackgroundDisabled"
                      Color="{StaticResource ControlFillColorLightThemeDisabled}" />
 
+    <!-- Control Foreground -->
     <SolidColorBrush x:Key="ControlForeground"
                      Color="{StaticResource TextFillColorLightThemePrimary}" />
     <SolidColorBrush x:Key="ControlForegroundHover"
@@ -98,12 +89,13 @@
     <SolidColorBrush x:Key="ControlForegroundDisabled"
                      Color="{StaticResource TextFillColorLightThemeDisabled}" />
 
+    <!-- Control Accent Foreground -->
     <SolidColorBrush x:Key="ControlAccentForeground"
-                     Color="{StaticResource TextFillColorLightThemeInverse}" />
+                     Color="{StaticResource TextFillColorLightThemeAccent}" />
     <SolidColorBrush x:Key="ControlAccentForegroundHover"
-                     Color="{StaticResource TextFillColorLightThemeInverse}" />
+                     Color="{StaticResource TextFillColorLightThemeAccent}" />
     <SolidColorBrush x:Key="ControlAccentForegroundPressed"
-                     Color="{StaticResource TextFillColorLightThemeInverse}" />
+                     Color="{StaticResource TextFillColorLightThemeAccent}" />
     <SolidColorBrush x:Key="ControlAccentForegroundDisabled"
                      Color="{StaticResource TextFillColorLightThemeDisabled}" />
 

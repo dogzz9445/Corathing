@@ -48,6 +48,7 @@
     <Color x:Key="TextFillColorLightThemeDisabled">#5C000000</Color>
     <Color x:Key="TextFillColorLightThemePlaceholder">#9E000000</Color>
     <Color x:Key="TextFillColorLightThemeInverse">#FFFFFF</Color>
+    <Color x:Key="TextFillColorLightThemeAccent">#FFFFFF</Color>
 
     <!-- 6. Dark Theme Text Colors -->
     <Color x:Key="TextFillColorDarkThemePrimary">#FFFFFF</Color>
@@ -56,6 +57,7 @@
     <Color x:Key="TextFillColorDarkThemeDisabled">#5DFFFFFF</Color>
     <Color x:Key="TextFillColorDarkThemePlaceholder">#87FFFFFF</Color>
     <Color x:Key="TextFillColorDarkThemeInverse">#E4000000</Color>
+    <Color x:Key="TextFillColorDarkThemeAccent">#FFFFFF</Color>
 
     <!-- ================================================================ -->
     <!-- Colors for Event                                                 -->
@@ -88,139 +90,5 @@
     <Color x:Key="ControlFillAccentColorDarkThemeDefault">#5ea6ff</Color>
     <Color x:Key="ControlFillAccentColorDarkThemeSecondary">#0078d4</Color>
     <Color x:Key="ControlFillAccentColorDarkThemeTeritary">#004da2</Color>
-
-    <!-- ================================================================ -->
-    <!-- Alert Colors and Brushes from Bootstrap                          -->
-    <!-- 01. Bootstrap 8 Colors                                           -->
-    <!-- 02. Bootstrap 8 Color Brushes                                    -->
-    <!-- 03. Alert Light Colors                                           -->
-    <!-- 04. Alert Light Foreground Colors                                -->
-    <!-- 05. Alert Light Foreground Highlight Colors                      -->
-    <!-- 06. Alert Dark Colors                                            -->
-    <!-- 07. Alert Dark Foreground Colors                                 -->
-    <!-- XX. (Not Implemented) Alert Dark Foreground Highlight Colors     -->
-    <!--     XX. This is duplicated colors from foreground color          -->
-    <!-- 08. Alert Light Brushes                                          -->
-    <!-- 09. Alert Light Foreground Brushes                               -->
-    <!-- 10. Alert Light Foreground Hightlight Brushes                    -->
-    <!-- 11. Alert Dark Brushes                                           -->
-    <!-- 12. Alert Dark Foreground Brushes                                -->
-    <!-- 13. Alert Dark Foreground Hightlight Brushes                     -->
-    <!-- ================================================================ -->
-
-    <!-- 1. Bootstrap 8 Colors -->
-    <Color x:Key="BSPrimaryColor">#3B71CA</Color>
-    <Color x:Key="BSSecondaryColor">#9FA6B2</Color>
-    <Color x:Key="BSSuccessColor">#14A44D</Color>
-    <Color x:Key="BSDangerColor">#DC4C64</Color>
-    <Color x:Key="BSWarningColor">#E4A11B</Color>
-    <Color x:Key="BSInfoColor">#54B4D3</Color>
-    <Color x:Key="BSLightColor">#FBFBFB</Color>
-    <Color x:Key="BSDarkColor">#332D2D</Color>
-
-    <!-- 2. Bootstrap 8 Color Brushes -->
-    <SolidColorBrush x:Key="BSPrimaryBrush"
-                     Color="{StaticResource BSPrimaryColor}"/>
-    <SolidColorBrush x:Key="BSSecondaryBrush"
-                     Color="{StaticResource BSSecondaryColor}" />
-    <SolidColorBrush x:Key="BSSuccessBrush"
-                     Color="{StaticResource BSSuccessColor}" />
-    <SolidColorBrush x:Key="BSDangerBrush"
-                     Color="{StaticResource BSDangerColor}" />
-    <SolidColorBrush x:Key="BSWarningBrush"
-                     Color="{StaticResource BSWarningColor}" />
-    <SolidColorBrush x:Key="BSInfoBrush"
-                     Color="{StaticResource BSInfoColor}" />
-    <SolidColorBrush x:Key="BSLightBrush"
-                     Color="{StaticResource BSLightColor}" />
-    <SolidColorBrush x:Key="BSDarkBrush"
-                     Color="{StaticResource BSDarkColor}" />
-
-    <!-- 3. Alert Light Colors -->
-    <Color x:Key="PrimaryAlertLightColor">#cfe2ff</Color>
-    <Color x:Key="SecondaryAlertLightColor">#e2e3e5</Color>
-    <Color x:Key="SuccessAlertLightColor">#d1e7dd</Color>
-    <Color x:Key="DangerAlertLightColor">#f8d7da</Color>
-    <Color x:Key="WarningAlertLightColor">#fff3cd</Color>
-    <Color x:Key="InfoAlertLightColor">#cff4fc</Color>
-    <Color x:Key="LightAlertLightColor">#fcfcfd</Color>
-    <Color x:Key="DarkAlertLightColor">#ced4da</Color>
-
-    <!-- 4. Alert Light Foreground Colors -->
-    <Color x:Key="PrimaryAlertLightForegroundColor">#004085</Color>
-    <Color x:Key="SecondaryAlertLightForegroundColor">#383d41</Color>
-    <Color x:Key="SuccessAlertLightForegroundColor">#155724</Color>
-    <Color x:Key="DangerAlertLightForegroundColor">#721c24	</Color>
-    <Color x:Key="WarningAlertLightForegroundColor">#856404</Color>
-    <Color x:Key="InfoAlertLightForegroundColor">#0c5460</Color>
-    <Color x:Key="LightAlertLightForegroundColor">#818182</Color>
-    <Color x:Key="DarkAlertLightForegroundColor">#1b1e21</Color>
-
-    <!-- 5. Alert Light Foreground Hightlight Colors -->
-    <Color x:Key="PrimaryAlertLightForegroundHightlightColor">#002752</Color>
-    <Color x:Key="SecondaryAlertLightForegroundHightlightColor">#202326</Color>
-    <Color x:Key="SuccessAlertLightForegroundHightlightColor">#0b2e13</Color>
-    <Color x:Key="DangerAlertLightForegroundHightlightColor">#491217</Color>
-    <Color x:Key="WarningAlertLightForegroundHightlightColor">#533f03</Color>
-    <Color x:Key="InfoAlertLightForegroundHightlightColor">#062c33</Color>
-    <Color x:Key="LightAlertLightForegroundHightlightColor">#686868</Color>
-    <Color x:Key="DarkAlertLightForegroundHightlightColor">#040505</Color>
-
-    <!-- 4. Alert Dark Colors -->
-    <Color x:Key="PrimaryAlertDarkColor">#031633</Color>
-    <Color x:Key="SecondaryAlertDarkColor">#161719</Color>
-    <Color x:Key="SuccessAlertDarkColor">#051b11</Color>
-    <Color x:Key="DangerAlertDarkColor">#2c0b0e</Color>
-    <Color x:Key="WarningAlertDarkColor">#332701</Color>
-    <Color x:Key="InfoAlertDarkColor">#032830</Color>
-    <Color x:Key="LightAlertDarkColor">#343a40</Color>
-    <Color x:Key="DarkAlertDarkColor">#1a1d20</Color>
-
-    <!-- 5. Alert Dark Foreground Colors -->
-    <!-- X. Alert Dark Foreground Highlight Colors -->
-    <Color x:Key="PrimaryAlertDarForegroundkColor">#6ea8fe</Color>
-    <Color x:Key="SecondaryAlertDarkForegroundColor">#a7acb1</Color>
-    <Color x:Key="SuccessAlertDarkForegroundColor">#75b798</Color>
-    <Color x:Key="DangerAlertDarkForegroundColor">#ea868f</Color>
-    <Color x:Key="WarningAlertDarkForegroundColor">#ffda6a</Color>
-    <Color x:Key="InfoAlertDarkForegroundColor">#6edff6</Color>
-    <Color x:Key="LightAlertDarkForegroundColor">#f8f9fa</Color>
-    <Color x:Key="DarkAlertDarkForegroundColor">#dee2e6</Color>
-
-    <!-- 5. Alert Light Brushes -->
-    <SolidColorBrush x:Key="PrimaryAlertLightBrush"
-                     Color="{DynamicResource PrimaryAlertLightColor}" />
-    <SolidColorBrush x:Key="SecondaryAlertLightBrush"
-                     Color="{DynamicResource SecondaryAlertLightColor}" />
-    <SolidColorBrush x:Key="SuccessAlertLightBrush"
-                     Color="{DynamicResource SuccessAlertLightColor}" />
-    <SolidColorBrush x:Key="DangerAlertLightBrush"
-                     Color="{DynamicResource DangerAlertLightColor}" />
-    <SolidColorBrush x:Key="WarningAlertLightBrush"
-                     Color="{DynamicResource WarningAlertLightColor}" />
-    <SolidColorBrush x:Key="InfoAlertLightBrush"
-                     Color="{DynamicResource InfoAlertLightColor}" />
-    <SolidColorBrush x:Key="LightAlertLightBrush"
-                     Color="{DynamicResource LightAlertLightColor}" />
-    <SolidColorBrush x:Key="DarkAlertLightBrush"
-                     Color="{DynamicResource DarkAlertLightColor}" />
-
-    <!-- 6. Alert Dark Brushes -->
-    <SolidColorBrush x:Key="PrimaryAlertDarkBrush"
-                     Color="{DynamicResource PrimaryAlertDarkColor}" />
-    <SolidColorBrush x:Key="SecondaryAlertDarkBrush"
-                     Color="{DynamicResource SecondaryAlertDarkColor}" />
-    <SolidColorBrush x:Key="SuccessAlertDarkBrush"
-                     Color="{DynamicResource SuccessAlertDarkColor}" />
-    <SolidColorBrush x:Key="DangerAlertDarkBrush"
-                     Color="{DynamicResource DangerAlertDarkColor}" />
-    <SolidColorBrush x:Key="WarningAlertDarkBrush"
-                     Color="{DynamicResource WarningAlertDarkColor}" />
-    <SolidColorBrush x:Key="InfoAlertDarkBrush"
-                     Color="{DynamicResource InfoAlertDarkColor}" />
-    <SolidColorBrush x:Key="LightAlertDarkBrush"
-                     Color="{DynamicResource LightAlertDarkColor}" />
-    <SolidColorBrush x:Key="DarkAlertDarkBrush"
-                     Color="{DynamicResource DarkAlertDarkColor}" />
 
 </ResourceDictionary>
