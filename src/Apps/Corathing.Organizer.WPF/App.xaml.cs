@@ -7,6 +7,7 @@ using System.Windows;
 
 using Corathing.Contracts.Services;
 using Corathing.Dashboards.WPF.Services;
+using Corathing.Organizer.Services;
 using Corathing.Organizer.WPF.Controls;
 using Corathing.Organizer.WPF.Models;
 using Corathing.Organizer.WPF.Resources;

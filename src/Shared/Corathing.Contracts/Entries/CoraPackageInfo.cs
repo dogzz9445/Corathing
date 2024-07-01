@@ -6,7 +6,12 @@ using System.Threading.Tasks;
 
 namespace Corathing.Contracts.Entries;
 
-public class CoraDataSourceInfo
+public interface ICoraPackageInfo
+{
+    List<string> Tags { get; }
+}
+
+public class CoraPackageInfo
 {
     public List<string> Tags { get; set; }
 }

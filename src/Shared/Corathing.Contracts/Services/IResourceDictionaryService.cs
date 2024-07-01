@@ -8,4 +8,5 @@ namespace Corathing.Contracts.Services;
 
 public interface IResourceDictionaryService
 {
+    void RegisterResourceDictionary(Uri uri);
 }

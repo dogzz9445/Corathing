@@ -42,6 +42,7 @@
     <ProjectReference Include="..\..\Shared\Corathing.Contracts\Corathing.Contracts.csproj" />
     <ProjectReference Include="..\..\Shared\Corathing.Dashboards.WPF\Corathing.Dashboards.WPF.csproj" />
     <ProjectReference Include="..\..\Widgets\Corathing.Widgets.Basics\Corathing.Widgets.Basics.csproj" />
+    <ProjectReference Include="..\Corathing.Organizer\Corathing.Organizer.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -4,9 +4,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Corathing.Contracts.Attributes
+using Corathing.Contracts.Services;
+
+namespace Corathing.Contracts.Attributes;
+
+[AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
+public class EntryCoraWidgetDescriptionAttribute : Attribute
 {
-    internal class EntryCoraWidgetDescriptionAttribute
+    public ApplicationLanguage Language { get; }
+    public string Description { get; }
+
+    public EntryCoraWidgetDescriptionAttribute(ApplicationLanguage language, string description)
     {
+        Language = language;
+        Description = description;
     }
 }

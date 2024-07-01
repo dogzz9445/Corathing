@@ -4,9 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Corathing.Contracts.Entries
+namespace Corathing.Contracts.Utils.Generators;
+
+public class CoraDataSourceGenerator(IServiceProvider services)
 {
-    internal class CoraDataSourceGenerator
-    {
-    }
 }

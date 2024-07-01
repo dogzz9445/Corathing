@@ -10,6 +10,9 @@ namespace Corathing.Contracts.Attributes;
 public class EntryCoraDataSourceAttribute : Attribute
 {
     public Type DataSourceType { get; }
+    public Type? CustomSettingsType { get; }
+    public Type? CustomSettingsContextType { get; }
+
     public EntryCoraDataSourceAttribute(Type dataSourceType)
     {
         DataSourceType = dataSourceType;

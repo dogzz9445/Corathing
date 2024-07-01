@@ -104,13 +104,13 @@ public partial class DashboardViewModel : ObservableObject
     }
 
     [RelayCommand]
-    public void AddWidget(CoraWidgetGenerator generator)
+    public void AddWidget(ICoraWidgetInfo info)
     {
         if (SelectedProject == null)
             return;
         if (SelectedProject.SelectedWorkflow == null)
             return;
-        SelectedProject.SelectedWorkflow.AddWidget(generator);
+        SelectedProject.SelectedWorkflow.AddWidget(info);
     }
 
     [RelayCommand]
@@ -258,9 +258,9 @@ public partial class DashboardViewModel : ObservableObject
         });
 
         IPackageService packageService = _services.GetService<IPackageService>();
-        foreach (var widget in packageService.GetWidgetGenerators())
+        foreach (var info in packageService.GetAvailableWidgets())
         {
-            var fullMenuHeader = widget.Info.MenuPath;
+            var fullMenuHeader = info.MenuPath;
             if (string.IsNullOrEmpty(fullMenuHeader))
                 continue;
 
@@ -277,7 +277,7 @@ public partial class DashboardViewModel : ObservableObject
                     parentMenuCollection.Add(new MenuItemViewModel()
                     {
                         Header = splitedMenuHeaders[i],
-                        Command = new RelayCommand(() => AddWidget(widget), () => true),
+                        Command = new RelayCommand(() => AddWidget(info), () => true),
                     });
                 }
                 else

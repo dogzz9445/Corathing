@@ -1392,6 +1392,12 @@ namespace Corathing.Dashboards.WPF.Controls
             _draggingHost.Cursor = Cursors.Arrow;
             Cursor = Cursors.Arrow;
             Mouse.SetCursor(Cursors.Arrow);
+            if (_draggingHost.DataContext is WidgetContext context)
+            {
+                // FIXME:
+                // Layout 정보를 넘기도록 처리 변경
+                context.OnResized(null);
+            }
 
             _draggingWidgetLayout = null;
             _draggingHost = null;

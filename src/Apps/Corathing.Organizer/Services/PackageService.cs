@@ -1,52 +1,38 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO.Compression;
-using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Resources;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows;
 
-using Corathing.Contracts.Bases;
-using Corathing.Contracts.Entries;
-
-using Corathing.Contracts.Services;
-using NuGet.Protocol.Core.Types;
-using NuGet.Protocol;
-using NuGet.Versioning;
-using NuGet.Packaging.Core;
-using NuGet.Packaging;
-using Microsoft.Extensions.DependencyInjection;
-using System.Resources;
-using Microsoft.Extensions.Localization;
-using Corathing.Dashboards.WPF.Services;
 using Corathing.Contracts.Attributes;
+using Corathing.Contracts.Bases;
+using Corathing.Contracts.DataContexts;
+using Corathing.Contracts.Entries;
+using Corathing.Contracts.Services;
+using Corathing.Contracts.Utils.Generators;
 
-namespace Corathing.Organizer.WPF.Services;
+using Microsoft.Extensions.DependencyInjection;
 
+using NuGet.Packaging;
+using NuGet.Packaging.Core;
+using NuGet.Protocol;
+using NuGet.Protocol.Core.Types;
+using NuGet.Versioning;
 
-public class ProxyDomain : MarshalByRefObject
-{
-    public Assembly? GetAssembly(string assemblyPath)
-    {
-        try
-        {
-            return Assembly.Load(assemblyPath);
-        }
-        catch (Exception)
-        {
-            return null;
-        }
-    }
-}
+namespace Corathing.Organizer.Services;
+
 public class PackageService : IPackageService
 {
     /// <summary>
     /// Gets or sets the available widgets.
     /// </summary>
     /// <value>The available widgets.</value>
-    private readonly Dictionary<string, CoraWidgetGenerator> _widgetGenerators = new Dictionary<string, CoraWidgetGenerator>();
+    private readonly Dictionary<string, CoraWidgetGenerator> _widgetGenerators;
+    private readonly Dictionary<string, CoraPackageGenerator> _packageGenerators;
+    private readonly Dictionary<string, CoraDataSourceGenerator> _dataSourceGenerator;
 
     private readonly IServiceProvider _services;
 
@@ -58,6 +44,9 @@ public class PackageService : IPackageService
 
         // FIXME:
         _nugetLogger = new NuGet.Common.NullLogger();
+        _widgetGenerators = new Dictionary<string, CoraWidgetGenerator>();
+        _packageGenerators = new Dictionary<string, CoraPackageGenerator>();
+        _dataSourceGenerator = new Dictionary<string, CoraDataSourceGenerator>();
     }
 
 
@@ -73,9 +62,30 @@ public class PackageService : IPackageService
         return _widgetGenerators.Values.ToList();
     }
 
-    public bool TryGetWidgetGenerator(string contextTypeFullName, out CoraWidgetGenerator generator)
+    public WidgetContext CreateWidgetContext(string contextTypeFullName)
     {
-        return _widgetGenerators.TryGetValue(contextTypeFullName, out generator);
+        if (!_widgetGenerators.TryGetValue(contextTypeFullName, out var widgetContext))
+            return null;
+        return widgetContext.CreateWidget();
+    }
+
+    public Type? GetCustomSettingsType(string contextTypeFullName)
+    {
+        if (!_widgetGenerators.TryGetValue(contextTypeFullName, out var widgetContext))
+            return null;
+        return widgetContext.Info.WidgetCustomSettingsType;
+    }
+
+    public IWidgetCustomSettingsContext? CreateWidgetSettingsContext(string contextTypeFullName)
+    {
+        if (!_widgetGenerators.TryGetValue(contextTypeFullName, out var widgetContext))
+            return null;
+        return widgetContext.CreateCustomSettingsContext();
+    }
+
+    public List<ICoraWidgetInfo> GetAvailableWidgets()
+    {
+        return _widgetGenerators.Values.Select(generator => generator.Info).ToList();
     }
 
     public void UnloadAssembly(PackageState packageState)
@@ -110,11 +120,31 @@ public class PackageService : IPackageService
 
     private void LoadAssembly(Assembly assembly)
     {
+        IResourceDictionaryService resourceDictionaryService = _services.GetRequiredService<IResourceDictionaryService>();
+        ILocalizationService localizationService = _services.GetRequiredService<ILocalizationService>();
+
+        var coraPackageInfo = new CoraPackageInfo();
+        var coraPackageGenerator = new CoraPackageGenerator(_services);
+
+
+        var coraPackageAttribute = assembly.GetCustomAttribute<AssemblyCoraPackageNameAttribute>();
+
+        var packageState = new PackageState()
+        {
+            Id = Guid.NewGuid(),
+        };
+
+        var packageReferenceState = new PackageReferenceState()
+        {
+            AssemblyName = assembly.GetName().Name,
+            AssemblyVersion = assembly.GetName().Version.ToString()
+        };
+
         // Load Assembly DataTemplates
         assembly.GetCustomAttributes<AssemblyCoraPackageDataTemplateAttribute>()
             .ToList()
             .ForEach(attribute =>
-                App.Current.Resources.MergedDictionaries.Add(GetDataTemplateFromCoraAttribute(assembly, attribute)
+                resourceDictionaryService.RegisterResourceDictionary(GetDataTemplateFromCoraAttribute(assembly, attribute)
                 ));
 
         // Load Assembly Localization
@@ -135,24 +165,13 @@ public class PackageService : IPackageService
                 var propertyValue = property.GetValue(null, null);
                 if (propertyValue is ResourceManager resourceManager)
                 {
-                    LocalizationService.Instance
+                    localizationService
                         .RegisterStringResourceManager(
                             assembly.GetType().Name,
                             resourceManager
                         );
                 }
             });
-
-        PackageState packageState = new PackageState()
-        {
-            Id = Guid.NewGuid(),
-        };
-
-        PackageReferenceState packageReferenceState = new PackageReferenceState()
-        {
-            AssemblyName = assembly.GetName().Name,
-            AssemblyVersion = assembly.GetName().Version.ToString()
-        };
 
         var types = assembly.GetTypes().Where(t => typeof(WidgetContext).IsAssignableFrom(t));
         // TODO:
@@ -166,20 +185,9 @@ public class PackageService : IPackageService
         // Load Cora Widgets
         foreach (var type in types)
         {
-            // TODOTODOTODOTODO
-            // TODOTODO
-            System.Reflection.MemberInfo info = type;
-            var attributes = info.GetCustomAttributes(true);
-
-            for (int i = 0; i < attributes.Length; i++)
-            {
-                if (!(attributes[i] is EntryCoraWidgetAttribute))
-                    continue;
-
-                var attribute = ((EntryCoraWidgetAttribute)attributes[i]);
-                attribute.Configure(_services);
-                _widgetGenerators.Add(attribute.Generator.ContextType.FullName, attribute.Generator);
-            }
+            var generator = LoadCoraWidgetGenerator(assembly, type);
+            if (generator != null)
+                _widgetGenerators.Add(generator.Info.WidgetContextType.FullName, generator);
         }
     }
 
@@ -250,23 +258,68 @@ public class PackageService : IPackageService
     //
     // ------------------------------------------------------------------------------------------------------
 
-
-    private ResourceDictionary GetDataTemplateFromCoraAttribute(Assembly assembly, AssemblyCoraPackageDataTemplateAttribute dataTemplateSource)
+    private CoraWidgetGenerator LoadCoraWidgetGenerator(Assembly? assembly, Type? type)
     {
-        if (string.IsNullOrEmpty(dataTemplateSource.DataTemplateSource))
+        if (assembly == null || type == null)
+        {
+            // TODO:
+            // Change Exception Type
+            throw new Exception();
+        }
+        System.Reflection.MemberInfo info = type;
+        var attributes = info.GetCustomAttributes(true);
+
+        CoraWidgetInfo coraWidgetInfo = new CoraWidgetInfo();
+        CoraWidgetGenerator generator = new CoraWidgetGenerator(_services);
+        for (int i = 0; i < attributes.Length; i++)
+        {
+            if (attributes[i] is EntryCoraWidgetAttribute entryCoraWidgetAttribute)
+            {
+                coraWidgetInfo.WidgetViewType = entryCoraWidgetAttribute.ViewType;
+                coraWidgetInfo.WidgetContextType = entryCoraWidgetAttribute.ContextType;
+                coraWidgetInfo.WidgetCustomSettingsType = entryCoraWidgetAttribute.CustomSettingsType;
+                coraWidgetInfo.WidgetCustomSettingsContextType = entryCoraWidgetAttribute.CustomSettingsContextType;
+                coraWidgetInfo.Name = entryCoraWidgetAttribute.Name;
+                coraWidgetInfo.Description = entryCoraWidgetAttribute.Description;
+                coraWidgetInfo.DefaultTitle = entryCoraWidgetAttribute.Title;
+                coraWidgetInfo.DefaultVisibleTitle = entryCoraWidgetAttribute.VisibleTitle;
+                coraWidgetInfo.MenuPath = entryCoraWidgetAttribute.MenuPath;
+                coraWidgetInfo.MenuOrder = entryCoraWidgetAttribute.MenuOrder;
+                coraWidgetInfo.MenuTooltip = entryCoraWidgetAttribute.MenuTooltip;
+                coraWidgetInfo.MaximumColumnSpan = entryCoraWidgetAttribute.MaximumColumnSpan;
+                coraWidgetInfo.MaximumRowSpan = entryCoraWidgetAttribute.MaximumRowSpan;
+                coraWidgetInfo.DefaultColumnSpan = entryCoraWidgetAttribute.DefaultColumnSpan;
+                coraWidgetInfo.DefaultRowSpan = entryCoraWidgetAttribute.DefaultRowSpan;
+                coraWidgetInfo.MinimumColumnSpan = entryCoraWidgetAttribute.MinimumColumnSpan;
+                coraWidgetInfo.MinimumRowSpan = entryCoraWidgetAttribute.MinimumRowSpan;
+                generator.Info = coraWidgetInfo;
+            }
+            if (attributes[i] is EntryCoraWidgetDefaultTitleAttribute entryCoraWidgetTitleAttribute)
+            {
+                if (coraWidgetInfo.LocalizedTitles == null)
+                    coraWidgetInfo.LocalizedTitles = new Dictionary<ApplicationLanguage, string>();
+                coraWidgetInfo.LocalizedTitles[entryCoraWidgetTitleAttribute.Language] = entryCoraWidgetTitleAttribute.DefaultTitle;
+            }
+
+        }
+        return generator;
+    }
+
+    private Uri GetDataTemplateFromCoraAttribute(Assembly? assembly, AssemblyCoraPackageDataTemplateAttribute? dataTemplateSource)
+    {
+        if (assembly == null ||
+            dataTemplateSource == null ||
+            string.IsNullOrEmpty(dataTemplateSource.DataTemplateSource)
+            )
         {
             // TODO:
             // Change Exception Type
             throw new Exception("DataTemplateSource is empty");
         }
-        return new ResourceDictionary()
-        {
-            Source = new Uri(
+        return new Uri(
                 dataTemplateSource.IsAbsolute ?
                     dataTemplateSource.DataTemplateSource :
                     $"pack://application:,,,/{assembly.GetName().Name};component/{dataTemplateSource.DataTemplateSource}",
-                UriKind.Absolute)
-        };
+                UriKind.Absolute);
     }
-
 }

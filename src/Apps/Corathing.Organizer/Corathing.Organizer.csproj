@@ -6,4 +6,15 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="NuGet.Packaging" Version="6.10.0" />
+    <PackageReference Include="NuGet.Protocol" Version="6.10.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Shared\Corathing.Contracts.Utils\Corathing.Contracts.Utils.csproj" />
+    <ProjectReference Include="..\..\Shared\Corathing.Contracts\Corathing.Contracts.csproj" />
+    <ProjectReference Include="..\..\Shared\Corathing.Dashboards\Corathing.Dashboards.csproj" />
+  </ItemGroup>
+
 </Project>

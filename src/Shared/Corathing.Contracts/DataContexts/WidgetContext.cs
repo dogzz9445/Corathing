@@ -79,4 +79,16 @@ public partial class WidgetContext : ObservableRecipient
     public virtual void OnDestroy()
     {
     }
+
+    // TODO:
+    // 이벤트 처리
+
+    /// <summary>
+    /// Resize 시 발생되는 이벤트
+    /// </summary>
+    /// <param name="layout"></param>
+    public virtual void OnResized(WidgetLayout? layout)
+    {
+
+    }
 }

@@ -102,19 +102,17 @@ public partial class WorkflowContext : ObservableObject
                 throw new Exception();
             }
 
-            if (!packageService.TryGetWidgetGenerator(widgetState.CoreSettings.TypeName, out var generator))
-                continue;
-
-            var widgetContext = generator.CreateWidget(widgetState);
+            var widgetContext = packageService.CreateWidgetContext(widgetState.CoreSettings.TypeName);
             widgetContext.EditMode = EditMode;
             AddWidget(widgetContext);
         }
     }
 
     [RelayCommand]
-    public void AddWidget(CoraWidgetGenerator generator)
+    public void AddWidget(ICoraWidgetInfo widgetInfo)
     {
-        var context = generator.CreateWidget();
+        var packageService = _services.GetService<IPackageService>();
+        var context = packageService.CreateWidgetContext(widgetInfo.WidgetContextType.FullName);
         AddWidget(context);
     }
 

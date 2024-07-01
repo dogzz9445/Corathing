@@ -8,15 +8,19 @@ using Corathing.Contracts.Services;
 
 namespace Corathing.Contracts.Attributes;
 
+/// <summary>
+/// 메뉴에 나타날 때의 툴팁을 정의합니다.
+/// Menu tooltip definition.
+/// </summary>
 [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
-public class EntryCoraWidgetNameAttribute : Attribute
+public class EntryCoraWidgetMenuTooltipAttribute : Attribute
 {
     public ApplicationLanguage Language { get; }
-    public string Name { get; }
+    public string MenuTooltip { get; }
 
-    public EntryCoraWidgetNameAttribute(ApplicationLanguage language, string name)
+    public EntryCoraWidgetMenuTooltipAttribute(ApplicationLanguage language, string menuTooltip)
     {
         Language = language;
-        Name = name;
+        MenuTooltip = menuTooltip;
     }
 }

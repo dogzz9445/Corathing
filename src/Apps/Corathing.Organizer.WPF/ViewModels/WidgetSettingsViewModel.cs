@@ -32,6 +32,8 @@ public partial class WidgetSettingsViewModel : ObservableObject
     [ObservableProperty]
     private WidgetContext _tempWidgetContext;
 
+    private Type _tempCustomSettingsStateType;
+
     [ObservableProperty]
     private IWidgetCustomSettingsContext? _tempCustomSettingsContext;
 
@@ -48,24 +50,24 @@ public partial class WidgetSettingsViewModel : ObservableObject
         _originalContext = _originalWidget.DataContext as WidgetContext;
 
         var packageService = _services.GetService<IPackageService>();
-        packageService.TryGetWidgetGenerator(_originalContext.GetType().FullName, out var generator);
 
-        TempWidgetContext = generator.CreateWidget();
-        TempCustomSettingsContext = generator.CreateCustomSettingsContext();
+        _tempCustomSettingsStateType = packageService.GetCustomSettingsType(_originalContext.GetType().FullName);
+        TempWidgetContext = packageService.CreateWidgetContext(_originalContext.GetType().FullName);
+        TempCustomSettingsContext = packageService.CreateWidgetSettingsContext(_originalContext.GetType().FullName);
         if (TempCustomSettingsContext is INotifyPropertyChanged notifier)
         {
             notifier.PropertyChanged += OnCustomSettingsChanged;
         }
         _settingsWidgetHost.DataContext = TempWidgetContext;
-        _originalContext.CopyTo(TempWidgetContext, generator.CustomSettingsType);
+        _originalContext.CopyTo(TempWidgetContext, _tempCustomSettingsStateType);
         WidgetStateExtension.CopyProperties(
             _originalContext.State.CustomSettings,
             TempCustomSettingsContext.CustomSettings,
-            generator.CustomSettingsType
+            _tempCustomSettingsStateType
             );
         TempCustomSettingsContext.UpdateSettings();
 
-        return generator.ContextType;
+        return _originalContext.GetType();
     }
 
     [RelayCommand]
@@ -74,10 +76,7 @@ public partial class WidgetSettingsViewModel : ObservableObject
         if (_originalContext == null)
             return;
 
-        var packageService = _services.GetService<IPackageService>();
-        packageService.TryGetWidgetGenerator(_originalContext.GetType().FullName, out var generator);
-
-        TempWidgetContext.CopyToWithoutLayout(_originalContext, generator.CustomSettingsType);
+        TempWidgetContext.CopyToWithoutLayout(_originalContext, _tempCustomSettingsStateType);
         _originalContext.UpdateTo(_originalContext.State);
 
         var appStateService = _services.GetService<IAppStateService>();
@@ -95,12 +94,9 @@ public partial class WidgetSettingsViewModel : ObservableObject
         if (_originalContext == null)
             return;
 
-        var packageService = _services.GetService<IPackageService>();
-        packageService.TryGetWidgetGenerator(_originalContext.GetType().FullName, out var generator);
-
         WidgetStateExtension.CopyProperties(
             TempCustomSettingsContext.CustomSettings,
             TempWidgetContext.State.CustomSettings,
-            generator.CustomSettingsType);
+            _tempCustomSettingsStateType);
     }
 }

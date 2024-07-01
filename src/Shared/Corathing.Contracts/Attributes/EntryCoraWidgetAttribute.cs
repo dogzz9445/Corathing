@@ -17,9 +17,29 @@ namespace Corathing.Contracts.Attributes;
 [AttributeUsage(AttributeTargets.Class)]
 public class EntryCoraWidgetAttribute : Attribute
 {
-    public IServiceProvider Services { get; set; }
+    public Type ViewType { get; }
+    public Type ContextType { get; }
+    public Type? CustomSettingsType { get; }
+    public Type? CustomSettingsContextType { get; }
 
-    public CoraWidgetGenerator Generator { get; private set; }
+    // Information
+    public string? Name { get; }
+    public string? Description { get; }
+    public bool VisibleTitle { get; }
+    public string? Title { get; }
+
+    // MenuInfo
+    public string? MenuPath { get; }
+    public int MenuOrder { get; }
+    public string? MenuTooltip { get; }
+
+    // LayoutInfo
+    public int MaximumColumnSpan { get; }
+    public int MaximumRowSpan { get; }
+    public int DefaultColumnSpan { get; }
+    public int DefaultRowSpan { get; }
+    public int MinimumColumnSpan { get; }
+    public int MinimumRowSpan { get; }
 
     public EntryCoraWidgetAttribute(
         Type viewType,
@@ -34,46 +54,35 @@ public class EntryCoraWidgetAttribute : Attribute
         // MenuInfo
         string? menuPath = null,
         int menuOrder = 0,
+        string menuTooltip = "",
         // LayoutInfo
-        int maximumColumnSpan = 10,
-        int maximumRowSpan = 10,
+        int maximumColumnSpan = 16,
+        int maximumRowSpan = 16,
         int defaultColumnSpan = 2,
         int defaultRowSpan = 2,
         int minimumColumnSpan = 1,
         int minimumRowSpan = 1
         )
     {
+        ViewType = viewType;
+        ContextType = contextType;
+        CustomSettingsType = customSettingsType;
+        CustomSettingsContextType = customSettingsContextType;
 
-        Generator = new CoraWidgetGenerator(
-            viewType: viewType,
-            contextType: contextType,
-            customSettingsType: customSettingsType,
-            customSettingsContextType: customSettingsContextType
-            )
-        {
-            Info = new CoraWidgetInfo()
-            {
-                Name = name,
-                Description = description,
-                Title = title,
-                VisibleTitle = visibleTitle,
+        Name = name;
+        Description = description;
+        Title = title;
+        VisibleTitle = visibleTitle;
 
-                MenuPath = menuPath,
-                MenuOrder = menuOrder,
-                MenuTooltip = description,
+        MenuPath = menuPath;
+        MenuOrder = menuOrder;
+        MenuTooltip = menuTooltip;
 
-                MaximumColumnSpan = maximumColumnSpan,
-                MaximumRowSpan = maximumRowSpan,
-                DefaultColumnSpan = defaultColumnSpan,
-                DefaultRowSpan = defaultRowSpan,
-                MinimunColumnSpan = minimumColumnSpan,
-                MinimumRowSpan = minimumRowSpan,
-            }
-        };
-    }
-
-    public void Configure(IServiceProvider services)
-    {
-        Generator.Services = services;
+        MaximumColumnSpan = maximumColumnSpan;
+        MaximumRowSpan = maximumRowSpan;
+        DefaultColumnSpan = defaultColumnSpan;
+        DefaultRowSpan = defaultRowSpan;
+        MinimumColumnSpan = minimumColumnSpan;
+        MinimumRowSpan = minimumRowSpan;
     }
 }

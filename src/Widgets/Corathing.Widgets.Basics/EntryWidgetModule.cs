@@ -14,7 +14,6 @@ using Corathing.Widgets.Basics.Resources;
 [assembly: AssemblyCoraPackageDescription(ApplicationLanguage.en_US, "Provides basic widgets for Corathing.")]
 [assembly: AssemblyCoraPackageDescription(ApplicationLanguage.ko_KR, "Corathing을 위한 기본 위젯을 제공합니다.")]
 
-
 [assembly: AssemblyCoraPackageDataTemplate("DataTemplates.xaml")]
 [assembly: AssemblyCoraPackageResourceManager(
     resourceType: typeof(BasicWidgetStringResources),
