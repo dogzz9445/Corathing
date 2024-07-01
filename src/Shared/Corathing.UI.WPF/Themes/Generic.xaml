@@ -64,13 +64,16 @@
     <!-- 1. Light Theme Primary Colors                                    -->
     <!-- 2. Dark Theme Primary Colors                                     -->
     <!-- ================================================================ -->
+    
+    <!-- 1. Light Theme Primary Colors -->
     <Color x:Key="ControlFillColorLightThemeDefault">#B3E8E8E8</Color>
     <Color x:Key="ControlFillColorLightThemeSecondary">#60E8E8E8</Color>
     <Color x:Key="ControlFillColorLightThemeTertiary">#4DE0E0E0</Color>
     <Color x:Key="ControlFillColorLightThemeDisabled">#4DE0E0E0</Color>
     <Color x:Key="ControlFillColorLightThemeTransparent">#00FFFFFF</Color>
     <Color x:Key="ControlFillColorLightThemeInputActive">#FFFFFF</Color>
-    
+
+    <!-- 2. Dark Theme Primary Colors -->
     <Color x:Key="ControlFillColorDarkThemeDefault">#0FFFFFFF</Color>
     <Color x:Key="ControlFillColorDarkThemeSecondary">#15FFFFFF</Color>
     <Color x:Key="ControlFillColorDarkThemeTertiary">#08FFFFFF</Color>
@@ -80,13 +83,16 @@
     
     <!-- ================================================================ -->
     <!-- Accent Colors for Event                                          -->
-    <!-- 1. Light Theme Primary Colors                                    -->
-    <!-- 2. Dark Theme Primary Colors                                     -->
+    <!-- 1. Light Theme Accent Colors                                     -->
+    <!-- 2. Dark Theme Accent Colors                                      -->
     <!-- ================================================================ -->
+
+    <!-- 1. Light Theme Accent Colors -->
     <Color x:Key="ControlFillAccentColorLightThemeDefault">#5ea6ff</Color>
     <Color x:Key="ControlFillAccentColorLightThemeSecondary">#0078d4</Color>
     <Color x:Key="ControlFillAccentColorLightThemeTeritary">#004da2</Color>
-    
+
+    <!-- 2. Dark Theme Accent Colors -->
     <Color x:Key="ControlFillAccentColorDarkThemeDefault">#5ea6ff</Color>
     <Color x:Key="ControlFillAccentColorDarkThemeSecondary">#0078d4</Color>
     <Color x:Key="ControlFillAccentColorDarkThemeTeritary">#004da2</Color>

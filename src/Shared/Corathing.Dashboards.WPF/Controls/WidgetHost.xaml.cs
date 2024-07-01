@@ -15,6 +15,8 @@ using System.Windows.Shapes;
 
 using CommunityToolkit.Mvvm.Input;
 
+using Corathing.Dashboards.Controls;
+
 namespace Corathing.Dashboards.WPF.Controls
 {
     /// <summary>
@@ -32,7 +34,7 @@ namespace Corathing.Dashboards.WPF.Controls
     /// <summary>
     /// Interaction logic for WidgetHost.xaml
     /// </summary>
-    public partial class WidgetHost : ContentControl
+    public partial class WidgetHost : ContentControl, IWidgetHost
     {
         #region Public Fields
 

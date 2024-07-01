@@ -7,12 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Folder Include="Extensions\" />
     <Folder Include="Services\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Corathing.Contracts.Utils\Corathing.Contracts.Utils.csproj" />
-    <ProjectReference Include="..\Corathing.Contracts\Corathing.Contracts.csproj" />
   </ItemGroup>
 
 </Project>

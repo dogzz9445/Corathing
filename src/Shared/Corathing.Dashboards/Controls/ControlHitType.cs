@@ -1,4 +1,4 @@
-﻿namespace Corathing.Dashboards.WPF.Controls;
+﻿namespace Corathing.Dashboards.Controls;
 
 [Flags]
 public enum ControlHitType

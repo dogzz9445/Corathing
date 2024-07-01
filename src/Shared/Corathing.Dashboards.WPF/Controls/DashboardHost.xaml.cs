@@ -2,23 +2,15 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
-using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 using Corathing.Contracts.Bases;
-using Corathing.Contracts.Services;
 using Corathing.Dashboards.WPF.Extensions;
 
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -30,13 +22,14 @@ using CommunityToolkit.Mvvm.Input;
 using System.Collections.Specialized;
 using Corathing.Contracts.Utils.Helpers;
 using System.Xml.Linq;
+using Corathing.Dashboards.Controls;
 
 namespace Corathing.Dashboards.WPF.Controls
 {
     /// <summary>
     /// Interaction logic for DashboardHost.xaml
     /// </summary>
-    public partial class DashboardHost : ItemsControl
+    public partial class DashboardHost : ItemsControl, IDashboardHost
     {
         #region Public Fields
 
