@@ -5,7 +5,7 @@ Corathing is Customizable Widget Organizer. It is a WPF application that allows 
 
 |  Wiki |Readme | Readme |
 | --- | --- | --- |
-| [Wiki](/wiki/Home) | [English](README.md) | [한국어](README_KR.md) | 
+| [Wiki](https://github.com/dogzz9445/Corathing/wiki/Home) | [English](README.md) | [한국어](README_KR.md) | 
 
 ![sample](docs/images/version0.0.9.gif)
 
