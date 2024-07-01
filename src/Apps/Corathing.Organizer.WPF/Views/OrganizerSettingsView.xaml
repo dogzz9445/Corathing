@@ -1,0 +1,739 @@
+﻿<Page x:Class="Corathing.Organizer.WPF.Views.OrganizerSettingsView"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:local="clr-namespace:Corathing.Organizer.WPF.Views"
+      xmlns:viewmodels="clr-namespace:Corathing.Organizer.WPF.ViewModels"
+      xmlns:converters="clr-namespace:Corathing.Organizer.WPF.Converters"
+      xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+      xmlns:localizations="clr-namespace:Corathing.Dashboards.WPF.Bindings;assembly=Corathing.Dashboards.WPF"
+      xmlns:converters2="clr-namespace:Corathing.Dashboards.WPF.Converters;assembly=Corathing.Dashboards.WPF"
+      mc:Ignorable="d"
+      Background="{DynamicResource ApplicationBackgroundBrush}"
+      Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+      d:DataContext="{d:DesignInstance viewmodels:OrganizerSettingsViewModel,
+                        IsDesignTimeCreatable=False}"
+      Margin="16"
+      Title="OrganizerSettingsView">
+    <Page.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/Corathing.Organizer.WPF;component/Styles/CustomStyles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <converters:ThemeToIndexConverter x:Key="ThemeToIndexConverter" />
+            <converters:ApplicationLanguageToIndexConverter x:Key="ApplicationLanguageToIndexConverter" />
+            <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+            <converters2:InvertBoolToVisibilityConverter x:Key="InvertBoolToVisibilityConverter" />
+        </ResourceDictionary>
+    </Page.Resources>
+
+    <DockPanel LastChildFill="True">
+        <StackPanel DockPanel.Dock="Top"
+                    Margin="0, 10, 0, 0"
+                    Orientation="Horizontal"
+                    VerticalAlignment="Top"
+                    Height="48">
+            <ui:Button VerticalAlignment="Top"
+                       Command="{Binding CloseCommand}"
+                       CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, 
+                                        AncestorType={x:Type Window}}}"
+                       Height="40"
+                       Width="40">
+                <ui:SymbolIcon Symbol="ArrowLeft12" />
+            </ui:Button>
+            <ui:TextBlock Margin="16,0,0,0"
+                          VerticalAlignment="Top"
+                          FontTypography="Title"
+                          Text="{localizations:Localization Corathing.Organizer.WPF.Settings}" />
+        </StackPanel> 
+        <Separator DockPanel.Dock="Top"/>
+
+        <ScrollViewer FocusVisualStyle="{x:Null}">
+
+            <StackPanel Margin="0,8,16,8"
+                        FocusVisualStyle="{x:Null}">
+                <ui:TextBlock Margin="0,16,0,8"
+                              FontTypography="BodyStrong"
+                              Text="사용자 환경 설정" />
+                
+                <!-- 설정 파일 -->
+                <!-- 1. 글로벌 사용 -->
+                <!-- 2. 로컬 사용 -->
+                <!-- 3. 커스텀 사용 -->
+                <ui:CardExpander Margin="0,0,0,8"
+                                 Icon="{ui:SymbolIcon Folder24}"
+                                 ContentPadding="0">
+                    <ui:CardExpander.Header>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <ui:TextBlock Grid.Row="0"
+                                          Grid.Column="0"
+                                          FontTypography="Body"
+                                          Text="{localizations:Localization Corathing.Organizer.WPF.CurrentConfigureFile}" />
+                            <ui:TextBlock Grid.Row="1"
+                                          Grid.Column="0"
+                                          Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
+                                          Text="{localizations:Localization Corathing.Organizer.WPF.CurrentConfigureFileDescription}" />
+                            <TextBlock Grid.Row="0"
+                                       Grid.RowSpan="2"
+                                       Grid.Column="1"
+                                       Margin="0,0,16,0"
+                                       VerticalAlignment="Center"
+                                       Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
+                                       Text="{Binding AppVersion, Mode=OneWay}" />
+                        </Grid>
+                    </ui:CardExpander.Header>
+                    <StackPanel>
+
+                        <ui:Anchor Margin="0"
+                                   Padding="16"
+                                   HorizontalAlignment="Stretch"
+                                   HorizontalContentAlignment="Stretch"
+                                   Background="Transparent"
+                                   BorderThickness="0,1,0,0"
+                                   CornerRadius="0">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <ui:TextBlock Grid.Row="0"
+                                              Grid.Column="0"
+                                              FontTypography="Body"
+                                              Text="{localizations:Localization Corathing.Organizer.WPF.UseGlobalConfigurationFolder}" />
+                                <ui:TextBlock Grid.Row="1"
+                                              Grid.Column="0"
+                                              Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
+                                              Text="{localizations:Localization Corathing.Organizer.WPF.UseGlobalConfigurationFolderDescription}" />
+                                <CheckBox Grid.Row="0"
+                                          Grid.RowSpan="2"
+                                          Grid.Column="1"
+                                          IsChecked="{Binding UseGlobalConfiguration}" />
+                            </Grid>
+                        </ui:Anchor>
+
+                        <ui:Anchor Margin="0"
+                                   Padding="16"
+                                   HorizontalAlignment="Stretch"
+                                   HorizontalContentAlignment="Stretch"
+                                   Background="Transparent"
+                                   BorderThickness="0,1,0,0"
+                                   CornerRadius="0">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <ui:TextBlock Grid.Row="0"
+                                              Grid.Column="0"
+                                              FontTypography="Body"
+                                              Text="{localizations:Localization Corathing.Organizer.WPF.UseApplicationFolder}" />
+                                <ui:TextBlock Grid.Row="1"
+                                              Grid.Column="0"
+                                              Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
+                                              Text="{localizations:Localization Corathing.Organizer.WPF.UseApplicationFolderDescription}" />
+                                <CheckBox Grid.Row="0"
+                                          Grid.RowSpan="2"
+                                          Grid.Column="1"
+                                          IsChecked="{Binding UseAppPathConfiguration}" />
+                            </Grid>
+                        </ui:Anchor>
+
+                        <ui:Anchor Margin="0"
+                                   Padding="16"
+                                   HorizontalAlignment="Stretch"
+                                   HorizontalContentAlignment="Stretch"
+                                   Background="Transparent"
+                                   BorderThickness="0,1,0,0"
+                                   CornerRadius="0">
+                            <Grid >
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <ui:TextBlock Grid.Row="0"
+                                              Grid.Column="0"
+                                              FontTypography="Body"
+                                              Text="{localizations:Localization Corathing.Organizer.WPF.CurrentConfigureFile}" />
+                                <ui:TextBlock Grid.Row="1"
+                                              Grid.Column="0"
+                                              Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
+                                              Text="{localizations:Localization Corathing.Organizer.WPF.CurrentConfigureFileDescription}" />
+                                <ui:Button Grid.Row="0"
+                                           Grid.RowSpan="2"
+                                           Grid.Column="1"
+                                           Style="{StaticResource IconButton24}"
+                                           Icon="{ui:SymbolIcon FolderOpen24}"/>
+                            </Grid>
+                        </ui:Anchor>
+                    </StackPanel>
+                </ui:CardExpander>
+
+                <!-- Guest Mode -->
+                <!-- 1. 활성화 버튼 -->
+                <!-- 2. 설정 버튼 숨기기 -->
+                <!-- 3. 유저 인증 변경 -->
+                <ui:CardExpander Margin="0,0,0,8"
+                                 Icon="{ui:SymbolIcon Guest24}"
+                                 ContentPadding="0">
+                    <ui:CardExpander.Header>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <ui:TextBlock Grid.Row="0"
+                                          Grid.Column="0"
+                                          FontTypography="Body"
+                                          Text="게스트 모드 (게스트 모드, 푸는 방법)" />
+                            <ui:TextBlock Grid.Row="1"
+                                          Grid.Column="0"
+                                          Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
+                                          Text="{localizations:Localization Corathing.Organizer.WPF.CurrentConfigureFileDescription}" />
+                            <ui:TextBlock Grid.Row="0"
+                                       Grid.RowSpan="2"
+                                       Grid.Column="1"
+                                       Margin="0,0,16,0"
+                                       VerticalAlignment="Center"
+                                          Visibility="{Binding UseGuestMode, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                       Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
+                                          Text="활성화" />
+                            <ui:TextBlock Grid.Row="0"
+                                          Grid.RowSpan="2"
+                                          Grid.Column="1"
+                                          Margin="0,0,16,0"
+                                          VerticalAlignment="Center"
+                                          Visibility="{Binding UseGuestMode, Converter={StaticResource InvertBoolToVisibilityConverter}}"
+                                          Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
+                                          Text="비활성화" />
+                        </Grid>
+                    </ui:CardExpander.Header>
+                    <StackPanel>
+
+                        <ui:Anchor Margin="0"
+                                   Padding="16"
+                                   HorizontalAlignment="Stretch"
+                                   HorizontalContentAlignment="Stretch"
+                                   Background="Transparent"
+                                   BorderThickness="0,1,0,0"
+                                   CornerRadius="0">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <ui:TextBlock Grid.Row="0"
+                                              Grid.Column="0"
+                                              FontTypography="Body"
+                                              Text="게스트 모드 사용" />
+                                <ui:TextBlock Grid.Row="1"
+                                              Grid.Column="0"
+                                              Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
+                                              Text="{localizations:Localization Corathing.Organizer.WPF.UseGlobalConfigurationFolderDescription}" />
+                                <ui:Button Grid.Row="0"
+                                           Grid.RowSpan="2"
+                                           Grid.Column="1"
+                                           FontSize="24"
+                                           Visibility="{Binding UseGuestMode, Converter={StaticResource InvertBoolToVisibilityConverter}}"
+                                           Icon="{ui:SymbolIcon Guest24}"
+                                           Content="활성화" />
+                                <ui:Button Grid.Row="0"
+                                           Grid.RowSpan="2"
+                                           Grid.Column="1"
+                                           FontSize="24"
+                                           Visibility="{Binding UseGuestMode, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                           Icon="{ui:SymbolIcon Guest24}"
+                                           Content="비활성화" />
+                            </Grid>
+                        </ui:Anchor>
+
+                        <ui:Anchor Margin="0"
+                                   Padding="16"
+                                   HorizontalAlignment="Stretch"
+                                   HorizontalContentAlignment="Stretch"
+                                   Background="Transparent"
+                                   BorderThickness="0,1,0,0"
+                                   CornerRadius="0">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <ui:TextBlock Grid.Row="0"
+                                              Grid.Column="0"
+                                              FontTypography="Body"
+                                              Text="유저 인증 변경" />
+                                <ui:TextBlock Grid.Row="1"
+                                              Grid.Column="0"
+                                              Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
+                                              Text="{localizations:Localization Corathing.Organizer.WPF.CurrentConfigureFileDescription}" />
+                                <ui:Button Grid.Row="0"
+                                           Grid.RowSpan="2"
+                                           Grid.Column="1"
+                                           Style="{StaticResource IconButton24}"
+                                           Icon="{ui:SymbolIcon PersonAccounts24}" />
+                            </Grid>
+                        </ui:Anchor>
+
+                        <ui:Anchor Margin="0"
+                                   Padding="16"
+                                   HorizontalAlignment="Stretch"
+                                   HorizontalContentAlignment="Stretch"
+                                   Background="Transparent"
+                                   BorderThickness="0,1,0,0"
+                                   CornerRadius="0">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <ui:TextBlock Grid.Row="0"
+                                              Grid.Column="0"
+                                              FontTypography="Body"
+                                              Text="설정 버튼 숨기기" />
+                                <ui:TextBlock Grid.Row="1"
+                                              Grid.Column="0"
+                                              Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
+                                              Text="{localizations:Localization Corathing.Organizer.WPF.UseApplicationFolderDescription}" />
+                                <CheckBox Grid.Row="0"
+                                          Grid.RowSpan="2"
+                                          Grid.Column="1"
+                                          IsChecked="{Binding ShowSettingsButtonOnDashboard}" />
+                            </Grid>
+                        </ui:Anchor>
+
+                    </StackPanel>
+                </ui:CardExpander>
+
+                <!-- Tray Icon -->
+                <!-- 1. Tray 사용 여부 -->
+                <!-- 2. Tray Icon 을 앱 아이콘을 사용할 것인지 -->
+                <!-- 3. Tray Icon 을 사용자 커스텀 -->
+                <ui:CardExpander Margin="0,0,0,8"
+                                 Icon="{ui:SymbolIcon TrayItemAdd24}"
+                                 ContentPadding="0">
+                    <ui:CardExpander.Header>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <ui:TextBlock Grid.Row="0"
+                                          Grid.Column="0"
+                                          FontTypography="Body"
+                                          Text="트레이 아이콘" />
+                            <ui:TextBlock Grid.Row="1"
+                                          Grid.Column="0"
+                                          Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
+                                          Text="{localizations:Localization Corathing.Organizer.WPF.CurrentConfigureFileDescription}" />
+                            <ui:TextBlock Grid.Row="0"
+                                          Grid.RowSpan="2"
+                                          Grid.Column="1"
+                                          Margin="0,0,16,0"
+                                          VerticalAlignment="Center"
+                                          Visibility="{Binding UseGuestMode, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                          Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
+                                          Text="활성화" />
+                            <ui:TextBlock Grid.Row="0"
+                                          Grid.RowSpan="2"
+                                          Grid.Column="1"
+                                          Margin="0,0,16,0"
+                                          VerticalAlignment="Center"
+                                          Visibility="{Binding UseGuestMode, Converter={StaticResource InvertBoolToVisibilityConverter}}"
+                                          Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
+                                          Text="비활성화" />
+                        </Grid>
+                    </ui:CardExpander.Header>
+                    <StackPanel>
+
+                        <ui:Anchor Margin="0"
+                                   Padding="16"
+                                   HorizontalAlignment="Stretch"
+                                   HorizontalContentAlignment="Stretch"
+                                   Background="Transparent"
+                                   BorderThickness="0,1,0,0"
+                                   CornerRadius="0">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <ui:TextBlock Grid.Row="0"
+                                              Grid.Column="0"
+                                              FontTypography="Body"
+                                              Text="트레이 아이콘 사용" />
+                                <ui:TextBlock Grid.Row="1"
+                                              Grid.Column="0"
+                                              Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
+                                              Text="{localizations:Localization Corathing.Organizer.WPF.UseGlobalConfigurationFolderDescription}" />
+                                <ui:Button Grid.Row="0"
+                                           Grid.RowSpan="2"
+                                           Grid.Column="1"
+                                           FontSize="24"
+                                           Visibility="{Binding UseGuestMode, Converter={StaticResource InvertBoolToVisibilityConverter}}"
+                                           Icon="{ui:SymbolIcon Guest24}"
+                                           Content="활성화" />
+                            </Grid>
+                        </ui:Anchor>
+
+                        <ui:Anchor Margin="0"
+                                   Padding="16"
+                                   HorizontalAlignment="Stretch"
+                                   HorizontalContentAlignment="Stretch"
+                                   Background="Transparent"
+                                   BorderThickness="0,1,0,0"
+                                   CornerRadius="0">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <ui:TextBlock Grid.Row="0"
+                                              Grid.Column="0"
+                                              FontTypography="Body"
+                                              Text="아이콘 변경" />
+                                <ui:TextBlock Grid.Row="1"
+                                              Grid.Column="0"
+                                              Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
+                                              Text="{localizations:Localization Corathing.Organizer.WPF.CurrentConfigureFileDescription}" />
+                                <ui:Button Grid.Row="0"
+                                           Grid.RowSpan="2"
+                                           Grid.Column="1"
+                                           Style="{StaticResource IconButton24}"
+                                           Icon="{ui:SymbolIcon PersonAccounts24}" />
+                            </Grid>
+                        </ui:Anchor>
+
+                        <ui:Anchor Margin="0"
+                                   Padding="16"
+                                   HorizontalAlignment="Stretch"
+                                   HorizontalContentAlignment="Stretch"
+                                   Background="Transparent"
+                                   BorderThickness="0,1,0,0"
+                                   CornerRadius="0">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <ui:TextBlock Grid.Row="0"
+                                              Grid.Column="0"
+                                              FontTypography="Body"
+                                              Text="커스텀 아이콘 사용" />
+                                <ui:TextBlock Grid.Row="1"
+                                              Grid.Column="0"
+                                              Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
+                                              Text="{localizations:Localization Corathing.Organizer.WPF.UseApplicationFolderDescription}" />
+                                <CheckBox Grid.Row="0"
+                                          Grid.RowSpan="2"
+                                          Grid.Column="1"
+                                          IsChecked="{Binding ShowSettingsButtonOnDashboard}" />
+                            </Grid>
+                        </ui:Anchor>
+
+                    </StackPanel>
+                </ui:CardExpander>
+
+                <!-- Hotkey Control -->
+                <!-- 1. Modifier 설정 -->
+                <ui:CardControl Margin="0,0,0,8"
+                                Icon="{ui:SymbolIcon KeyboardLayoutResize24}">
+                    <ui:CardControl.Header>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <ui:TextBlock Grid.Row="0"
+                                          FontTypography="Body"
+                                          Text="핫키 제어" />
+                            <ui:TextBlock Grid.Row="1"
+                                          Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
+                                          Text="{localizations:Localization Corathing.Organizer.WPF.AppThemeDescription}" />
+                        </Grid>
+                    </ui:CardControl.Header>
+                    <ComboBox Grid.Column="1"
+                              MinWidth="200"
+                              SelectedIndex="{Binding CurrentApplicationTheme, Converter={StaticResource ThemeToIndexConverter}, Mode=TwoWay}">
+                        <ComboBoxItem Content="Ctrl + Alt + F" />
+                        <ComboBoxItem Content="Ctrl + Alt + D" />
+                    </ComboBox>
+                </ui:CardControl>
+
+                <!-- Search Bar -->
+                <!-- 1. Modifier 설정 -->
+                <ui:CardControl Margin="0,0,0,8"
+                                Icon="{ui:SymbolIcon KeyboardLayoutResize24}">
+                    <ui:CardControl.Header>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <ui:TextBlock Grid.Row="0"
+                                          FontTypography="Body"
+                                          Text="사용자 검색" />
+                            <ui:TextBlock Grid.Row="1"
+                                          Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
+                                          Text="{localizations:Localization Corathing.Organizer.WPF.AppThemeDescription}" />
+                        </Grid>
+                    </ui:CardControl.Header>
+                    <ComboBox Grid.Column="1"
+                              MinWidth="200"
+                              SelectedIndex="{Binding CurrentApplicationTheme, Converter={StaticResource ThemeToIndexConverter}, Mode=TwoWay}">
+                        <ComboBoxItem Content="Ctrl + Alt + F" />
+                        <ComboBoxItem Content="Ctrl + Alt + D" />
+                    </ComboBox>
+                </ui:CardControl>
+
+
+                <ui:TextBlock Margin="0,16,0,8"
+                              FontTypography="BodyStrong"
+                              Text="Appearance &amp; behavior" />
+                <!-- App Theme -->
+                <ui:CardControl Margin="0,0,0,8"
+                                Icon="{ui:SymbolIcon Color24}">
+                    <ui:CardControl.Header>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <ui:TextBlock Grid.Row="0"
+                                          FontTypography="Body"
+                                          Text="{localizations:Localization Corathing.Organizer.WPF.AppTheme}" />
+                            <ui:TextBlock Grid.Row="1"
+                                          Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
+                                          Text="{localizations:Localization Corathing.Organizer.WPF.AppThemeDescription}" />
+                        </Grid>
+                    </ui:CardControl.Header>
+                    <ComboBox Grid.Column="1"
+                              MinWidth="200"
+                              SelectedIndex="{Binding CurrentApplicationTheme, Converter={StaticResource ThemeToIndexConverter}, Mode=TwoWay}">
+                        <ComboBoxItem Content="{localizations:Localization Corathing.Organizer.WPF.Light}" />
+                        <ComboBoxItem Content="{localizations:Localization Corathing.Organizer.WPF.Dark}" />
+                    </ComboBox>
+                </ui:CardControl>
+
+                <!-- Languages -->
+                <ui:CardControl Margin="0,0,0,8"
+                                Icon="{ui:SymbolIcon LocalLanguage24}">
+                    <ui:CardControl.Header>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <ui:TextBlock Grid.Row="0"
+                                          FontTypography="Body"
+                                          Text="{localizations:Localization Corathing.Organizer.WPF.AppLanguage}" />
+                            <ui:TextBlock Grid.Row="1"
+                                          Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
+                                          Text="{localizations:Localization Corathing.Organizer.WPF.AppLanguageDescription}" />
+                        </Grid>
+                    </ui:CardControl.Header>
+                    <ComboBox Grid.Column="1"
+                              MinWidth="200"
+                              SelectedIndex="{Binding CurrentApplicationLanguage, Converter={StaticResource ApplicationLanguageToIndexConverter}, Mode=TwoWay}">
+                        <ComboBoxItem Content="English" />
+                        <ComboBoxItem Content="한국어" />
+                    </ComboBox>
+                </ui:CardControl>
+
+                <!-- 앱 아이콘 -->
+                <!-- 1. 앱 아이콘 숨기기 (대쉬보드 최상단좌측에서) -->
+                <!-- 2. 앱 아이콘 변경 -->
+                <ui:CardControl Margin="0,0,0,8"
+                                Icon="{ui:SymbolIcon AppGeneric24}">
+                    <ui:CardControl.Header>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <ui:TextBlock Grid.Row="0"
+                                          FontTypography="Body"
+                                          Text="앱 아이콘" />
+                            <ui:TextBlock Grid.Row="1"
+                                          Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
+                                          Text="Select which app theme to display" />
+                        </Grid>
+                    </ui:CardControl.Header>
+                    <ComboBox Grid.Column="1"
+                              MinWidth="200"
+                              SelectedIndex="{Binding CurrentApplicationTheme, Converter={StaticResource ThemeToIndexConverter}, Mode=TwoWay}">
+                        <ComboBoxItem Content="Light" />
+                        <ComboBoxItem Content="Dark" />
+                    </ComboBox>
+                </ui:CardControl>
+
+                <!-- 최소화 및 닫기 버튼 -->
+                <!-- 1. 최소화 및 닫기 버튼을 삭제할 것인지 -->
+                <!-- 2. 더블 클릭을 하면 드러내기? -->
+                <ui:CardControl Margin="0,0,0,8"
+                                Icon="{ui:SymbolIcon ArrowMinimize24}">
+                    <ui:CardControl.Header>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <ui:TextBlock Grid.Row="0"
+                                          FontTypography="Body"
+                                          Text="최소화 및 닫기 버튼" />
+                            <ui:TextBlock Grid.Row="1"
+                                          Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
+                                          Text="Select which app theme to display" />
+                        </Grid>
+                    </ui:CardControl.Header>
+                    <ComboBox Grid.Column="1"
+                              MinWidth="200"
+                              SelectedIndex="{Binding CurrentApplicationTheme, Converter={StaticResource ThemeToIndexConverter}, Mode=TwoWay}">
+                        <ComboBoxItem Content="Light" />
+                        <ComboBoxItem Content="Dark" />
+                    </ComboBox>
+                </ui:CardControl>
+
+                <!-- About -->
+                <ui:TextBlock Margin="0,16,0,8"
+                              FontTypography="BodyStrong"
+                              Text="About" />
+                <ui:CardExpander ContentPadding="0">
+                    <ui:CardExpander.Header>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <ui:TextBlock Grid.Row="0"
+                                          Grid.Column="0"
+                                          FontTypography="Body"
+                                          Text="Corathing" />
+                            <ui:TextBlock Grid.Row="1"
+                                          Grid.Column="0"
+                                          Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
+                                          Text="© 2024 corathing.com | Dongmin Jang &amp; Corathing Contributors" />
+                            <TextBlock Grid.Row="0"
+                                       Grid.RowSpan="2"
+                                       Grid.Column="1"
+                                       Margin="0,0,16,0"
+                                       VerticalAlignment="Center"
+                                       Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
+                                       Text="{Binding AppVersion, Mode=OneWay}" />
+                        </Grid>
+                    </ui:CardExpander.Header>
+                    <StackPanel>
+                        <Grid Margin="16">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0"
+                                       Text="To clone this repository" />
+                            <TextBlock Grid.Column="1"
+                                       Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
+                                       Text="git clone https://github.com/dogzz9445/Corathing.git" />
+                        </Grid>
+                        <ui:Anchor Margin="0"
+                                   Padding="16"
+                                   HorizontalAlignment="Stretch"
+                                   HorizontalContentAlignment="Stretch"
+                                   Background="Transparent"
+                                   BorderThickness="0,1,0,0"
+                                   CornerRadius="0"
+                                   NavigateUri="https://github.com/dogzz9445/Corathing/issues/new/choose">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0"
+                                           Text="File a bug or request a new sample" />
+                                <ui:SymbolIcon Grid.Column="1"
+                                               Symbol="Link24" />
+                            </Grid>
+                        </ui:Anchor>
+                        <ui:Anchor Margin="0"
+                                   Padding="16"
+                                   HorizontalAlignment="Stretch"
+                                   HorizontalContentAlignment="Stretch"
+                                   Background="Transparent"
+                                   BorderThickness="0,1,0,1"
+                                   CornerRadius="0"
+                                   NavigateUri="https://corathing.com">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0"
+                                           Text="Check out the docs" />
+                                <ui:SymbolIcon Grid.Column="1"
+                                               Symbol="Link24" />
+                            </Grid>
+                        </ui:Anchor>
+                        <TextBlock Margin="16"
+                                   Text="{Binding AppVersion, Mode=OneWay}" />
+                    </StackPanel>
+                </ui:CardExpander>
+            </StackPanel>
+        </ScrollViewer>
+    </DockPanel>
+</Page>
+                                                                              

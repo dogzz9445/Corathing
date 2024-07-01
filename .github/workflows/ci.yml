@@ -29,8 +29,8 @@ jobs:
       App_Packages_Directory: AppPackages
       SigningCertificate: GitHubActionsPackageCorathing.pfx
       Solution_Path: Corathing.sln
-      Test_Project_Path: src\Apps\Corathing.Organizer.UnitTests\Corathing.Organizer.UnitTests.csproj
-      Wpf_Project_Path: src\Apps\Corathing.Organizer\Corathing.Organizer.csproj
+      Test_Project_Path: src\Apps\Corathing.Organizer.WPF.UnitTests\Corathing.Organizer.WPF.UnitTests.csproj
+      Wpf_Project_Path: src\Apps\Corathing.Organizer.WPF\Corathing.Organizer.WPF.csproj
       Wap_Project_Directory: src\Apps\Corathing.Package
       Wap_Project_Name: Corathing.Package.wapproj
       Actions_Allow_Unsecure_Commands: true # Allows AddPAth and SetEnv commands

@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Corathing.Contracts.Utils\Corathing.Contracts.Utils.csproj" />
+    <ProjectReference Include="..\Corathing.Dashboards\Corathing.Dashboards.csproj" />
     <ProjectReference Include="..\Corathing.UI.WPF\Corathing.UI.WPF.csproj" />
   </ItemGroup>
 

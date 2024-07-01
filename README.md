@@ -27,7 +27,7 @@ Corathing is Customizable Widget Organizer. It is a WPF application that allows 
 -
 | Name| Folder |Framework | Description | Version
 | --- | --- | --- | --- | --- |
-| Corathing.Organizer | src/Apps | WPF | 메인 앱, 데스크톱용 오거나이저 프로그램 | ```구현중```
+| Corathing.Organizer.WPF | src/Apps | WPF | 메인 앱, 데스크톱용 오거나이저 프로그램 | ```구현중```
 | Corathing.Dashboards.Sample | src/Apps | WPF | 대시보드 화면 샘플 프로그램 | ```구현중```
 | Corathing.Contracts | src/Shared | C# | Organizer와 Widget 구현물 간 정의 | ```구현중```
 | Corathing.Dashboards | src/Shared | C# | 백그라운드 원격 제어 서버 프로그램 | ```구현중```
@@ -35,7 +35,7 @@ Corathing is Customizable Widget Organizer. It is a WPF application that allows 
 
 ```mermaid
 graph
-    A[Main App - Corathing.Organizer] --> B[Corathing.Contracts]
+    A[Main App - Corathing.Organizer.WPF] --> B[Corathing.Contracts]
     A --> C2[Corathing.Dashboards.WPF]
     A --> C1[Corathing.Dashboards]
     C2 --> C1
