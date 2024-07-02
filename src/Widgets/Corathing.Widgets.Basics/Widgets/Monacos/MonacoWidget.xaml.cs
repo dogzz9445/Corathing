@@ -27,7 +27,6 @@ using Corathing.Contracts.Attributes;
 namespace Corathing.Widgets.Basics.Widgets.Monacos;
 
 [EntryCoraWidget(
-    viewType: typeof(MonacoWidget),
     contextType: typeof(MonacoWidgetViewModel),
     name: "Create Monaco",
     description: "Provides a one by one square widget.",

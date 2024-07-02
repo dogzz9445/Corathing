@@ -25,7 +25,6 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Corathing.Widgets.Basics.Widgets.Notes;
 
 [EntryCoraWidget(
-    viewType: typeof(NoteWidget),
     contextType: typeof(NoteWidgetViewModel),
     name: "Create Note",
     description: "Provides a one by one square widget.",

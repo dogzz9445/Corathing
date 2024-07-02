@@ -35,7 +35,6 @@ public static class WidgetStateExtension
         targetState.CoreSettings.RowSpan = sourceState.CoreSettings.RowSpan;
         targetState.CoreSettings.ColumnSpan = sourceState.CoreSettings.ColumnSpan;
         targetState.CoreSettings.Title = sourceState.CoreSettings.Title;
-        targetState.CoreSettings.Description = sourceState.CoreSettings.Description;
         targetState.CoreSettings.VisibleTitle = sourceState.CoreSettings.VisibleTitle;
         targetState.CoreSettings.UseDefaultBackgroundColor = sourceState.CoreSettings.UseDefaultBackgroundColor;
         targetState.CoreSettings.BackgroundColor = sourceState.CoreSettings.BackgroundColor;

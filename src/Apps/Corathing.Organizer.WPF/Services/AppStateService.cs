@@ -491,5 +491,11 @@ public class AppStateService : IAppStateService
     }
 
     #endregion
+
+    #region Manage Contexts
+
+    //TODO:
+
+    #endregion
 }
 #pragma warning restore CS8601 // Possible null reference assignment.

@@ -2,8 +2,10 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:local="clr-namespace:Corathing.Widgets.Basics.Widgets.FileOpeners"
                     xmlns:system="clr-namespace:System;assembly=mscorlib"
-                    xmlns:localizations="clr-namespace:Corathing.Widgets.Basics.Behaviors"
-                    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml">
+                    xmlns:behaviors="clr-namespace:Corathing.UI.WPF.Behaviors;assembly=Corathing.UI.WPF"
+                    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+                    xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+                    xmlns:localizations="clr-namespace:Corathing.Widgets.Basics.Behaviors">
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="pack://application:,,,/Corathing.UI.WPF;component/Styles/Button.xaml" />
     </ResourceDictionary.MergedDictionaries>
@@ -11,8 +13,18 @@
     <local:FileOpenTypeToIndexConverter x:Key="FileOpenTypeToIndexConverter" />
 
     <!-- File Opener Widget -->
-    <DataTemplate DataType="{x:Type local:FileOpenerWidgetViewModel}">
-        <local:FileOpenerWidget />
+    <DataTemplate DataType="{x:Type local:FileOpenerWidgetContext}">
+        <Button Style="{StaticResource CoraWidgetEditModeButtonWithEvent}"
+                Command="{Binding ExecuteCommand}">
+            <Grid HorizontalAlignment="Stretch"
+                  VerticalAlignment="Stretch">
+                <ui:SymbolIcon Symbol="DocumentArrowUp16">
+                    <i:Interaction.Behaviors>
+                        <behaviors:SymbolIconScaleFontBehavior />
+                    </i:Interaction.Behaviors>
+                </ui:SymbolIcon>
+            </Grid>
+        </Button>
     </DataTemplate>
 
     <!-- File Opener Settings View -->

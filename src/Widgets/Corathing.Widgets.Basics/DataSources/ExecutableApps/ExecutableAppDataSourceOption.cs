@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using CommunityToolkit.Mvvm.ComponentModel;
-
 namespace Corathing.Widgets.Basics.DataSources.ExecutableApps;
 
-public partial class ExecutableAppDataSourceSettingsViewModel : ObservableObject
+public class ExecutableAppDataSourceOption
 {
+    public string Title { get; set; }
+    public List<string> ExecutableFiles { get; set; }
+    public string CommandLineArguments { get; set; }
 }

@@ -15,7 +15,7 @@ namespace Corathing.Contracts.Bases;
 
 public partial class WidgetContext : ObservableRecipient
 {
-    protected readonly IServiceProvider _services;
+    protected IServiceProvider _services;
 
     #region 숨겨진 프로퍼티
     public Type WidgetType;
@@ -63,10 +63,10 @@ public partial class WidgetContext : ObservableRecipient
     {
         _services = services;
 
-        Update(state);
+        ApplyState(state);
     }
 
-    public virtual void Update(WidgetState state)
+    public void ApplyState(WidgetState state)
     {
         State = state;
         WidgetId = state.Id;
@@ -74,14 +74,29 @@ public partial class WidgetContext : ObservableRecipient
         VisibleTitle = state.CoreSettings.VisibleTitle;
         UseDefaultBackgroundColor = state.CoreSettings.UseDefaultBackgroundColor;
         BackgroundColor = state.CoreSettings.BackgroundColor;
-    }
 
-    public virtual void OnDestroy()
-    {
+        OnStateChanged(State);
     }
 
     // TODO:
     // 이벤트 처리
+
+    public virtual void OnCreate(IServiceProvider services, WidgetState state)
+    {
+        _services = services;
+        ApplyState(state);
+    }
+
+    public virtual void OnStateChanged(WidgetState state)
+    {
+    }
+
+    public virtual void OnMessage()
+    {
+    }
+    public virtual void OnDestroy()
+    {
+    }
 
     /// <summary>
     /// Resize 시 발생되는 이벤트
@@ -89,6 +104,5 @@ public partial class WidgetContext : ObservableRecipient
     /// <param name="layout"></param>
     public virtual void OnResized(WidgetLayout? layout)
     {
-
     }
 }

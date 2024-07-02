@@ -25,8 +25,7 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Corathing.Widgets.Basics.Widgets.Commanders
 {
     [EntryCoraWidget(
-    viewType: typeof(CommanderWidget),
-    contextType: typeof(CommanderWidgetViewModel),
+        contextType: typeof(CommanderWidgetViewModel),
         name: "Create Commander",
         description: "Provides a one by one square widget.",
         menuPath: "Default/Commander",

@@ -28,7 +28,6 @@ using Wpf.Ui.Controls;
 namespace Corathing.Widgets.Basics.Widgets.Calendars;
 
 [EntryCoraWidget(
-    viewType: typeof(CalendarWidget),
     contextType: typeof(CalendarWidgetViewModel),
     description: "Provides a calendar widget.",
     name: "Create Calendar",

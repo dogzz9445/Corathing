@@ -17,7 +17,6 @@ namespace Corathing.Contracts.Attributes;
 [AttributeUsage(AttributeTargets.Class)]
 public class EntryCoraWidgetAttribute : Attribute
 {
-    public Type ViewType { get; }
     public Type ContextType { get; }
     public Type? CustomSettingsType { get; }
     public Type? CustomSettingsContextType { get; }
@@ -42,7 +41,6 @@ public class EntryCoraWidgetAttribute : Attribute
     public int MinimumRowSpan { get; }
 
     public EntryCoraWidgetAttribute(
-        Type viewType,
         Type contextType,
         Type? customSettingsType = null,
         Type? customSettingsContextType = null,
@@ -64,7 +62,6 @@ public class EntryCoraWidgetAttribute : Attribute
         int minimumRowSpan = 1
         )
     {
-        ViewType = viewType;
         ContextType = contextType;
         CustomSettingsType = customSettingsType;
         CustomSettingsContextType = customSettingsContextType;

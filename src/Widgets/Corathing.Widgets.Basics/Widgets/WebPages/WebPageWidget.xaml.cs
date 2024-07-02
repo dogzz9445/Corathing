@@ -64,7 +64,6 @@ public partial class WebPageOption : ObservableObject
 }
 
 [EntryCoraWidget(
-    viewType: typeof(WebPageWidget),
     contextType: typeof(WebPageViewModel),
     name: "Create Web Page",
     description: "Provides a one by one square widget.",

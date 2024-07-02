@@ -49,7 +49,6 @@ public static class WidgetContextExtension
             RowSpan = sourceContext.Layout.WH.H,
             ColumnSpan = sourceContext.Layout.WH.W,
             Title = sourceContext.WidgetTitle,
-            Description = sourceContext.WidgetDescription,
             VisibleTitle = sourceContext.VisibleTitle ?? true,
             UseDefaultBackgroundColor = sourceContext.UseDefaultBackgroundColor ?? true,
             BackgroundColor = sourceContext.BackgroundColor,

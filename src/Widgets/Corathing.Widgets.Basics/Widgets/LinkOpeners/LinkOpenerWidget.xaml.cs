@@ -25,7 +25,6 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Corathing.Widgets.Basics.Widgets.LinkOpeners;
 
 [EntryCoraWidget(
-    viewType: typeof(LinkOpenerWidget),
     contextType: typeof(LinkOpenerWidgetViewModel),
     name: "Create Linke Opener",
     description: "Provides a one by one square widget.",

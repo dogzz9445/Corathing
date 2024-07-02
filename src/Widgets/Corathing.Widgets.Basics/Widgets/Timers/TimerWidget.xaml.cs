@@ -28,7 +28,6 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Corathing.Widgets.Basics.Widgets.Timers;
 
 [EntryCoraWidget(
-    viewType: typeof(TimerWidget),
     contextType: typeof(TimerWidgetViewModel),
     name: "Create Timer",
     description: "Provides a one by one square widget.",

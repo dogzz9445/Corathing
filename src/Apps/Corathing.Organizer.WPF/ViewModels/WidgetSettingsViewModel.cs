@@ -23,24 +23,25 @@ namespace Corathing.Organizer.WPF.ViewModels;
 
 public partial class WidgetSettingsViewModel : ObservableObject
 {
-    private IServiceProvider _services;
-
-    private WidgetHost _originalWidget;
-    private WidgetHost _settingsWidgetHost;
-    private WidgetContext _originalContext;
-
-    [ObservableProperty]
-    private WidgetContext _tempWidgetContext;
-
-    private Type _tempCustomSettingsStateType;
-
-    [ObservableProperty]
-    private IWidgetCustomSettingsContext? _tempCustomSettingsContext;
+    #region Constructor with IServiceProvider
+    private readonly IServiceProvider _services;
 
     public WidgetSettingsViewModel(IServiceProvider services)
     {
         _services = services;
     }
+    #endregion
+
+    // Original properties
+    private WidgetHost _originalWidget;
+    private WidgetContext _originalContext;
+
+    private WidgetHost _settingsWidgetHost;
+    [ObservableProperty]
+    private WidgetContext _tempWidgetContext;
+    private Type _tempCustomSettingsStateType;
+    [ObservableProperty]
+    private IWidgetCustomSettingsContext? _tempCustomSettingsContext;
 
     public Type RegisterWidget(WidgetHost settingsWidgetHost, WidgetHost originalWidgetHost)
     {
@@ -51,22 +52,28 @@ public partial class WidgetSettingsViewModel : ObservableObject
 
         var packageService = _services.GetService<IPackageService>();
 
-        _tempCustomSettingsStateType = packageService.GetCustomSettingsType(_originalContext.GetType().FullName);
         TempWidgetContext = packageService.CreateWidgetContext(_originalContext.GetType().FullName);
-        TempCustomSettingsContext = packageService.CreateWidgetSettingsContext(_originalContext.GetType().FullName);
-        if (TempCustomSettingsContext is INotifyPropertyChanged notifier)
-        {
-            notifier.PropertyChanged += OnCustomSettingsChanged;
-        }
-        _settingsWidgetHost.DataContext = TempWidgetContext;
-        _originalContext.CopyTo(TempWidgetContext, _tempCustomSettingsStateType);
-        WidgetStateExtension.CopyProperties(
-            _originalContext.State.CustomSettings,
-            TempCustomSettingsContext.CustomSettings,
-            _tempCustomSettingsStateType
-            );
-        TempCustomSettingsContext.UpdateSettings();
+        _tempCustomSettingsStateType = packageService.GetCustomSettingsType(_originalContext.GetType().FullName);
 
+        // If Custom Settings exists
+        // Custom Settings 가 존재할 경우
+        if (_tempCustomSettingsStateType != null)
+        {
+            TempCustomSettingsContext = packageService.CreateWidgetSettingsContext(_originalContext.GetType().FullName);
+            if (TempCustomSettingsContext is INotifyPropertyChanged notifier)
+            {
+                notifier.PropertyChanged += OnCustomSettingsChanged;
+            }
+            _originalContext.CopyTo(TempWidgetContext, _tempCustomSettingsStateType);
+            WidgetStateExtension.CopyProperties(
+                _originalContext.State.CustomSettings,
+                TempCustomSettingsContext.CustomSettings,
+                _tempCustomSettingsStateType
+                );
+            TempCustomSettingsContext.UpdateSettings();
+        }
+
+        _settingsWidgetHost.DataContext = TempWidgetContext;
         return _originalContext.GetType();
     }
 

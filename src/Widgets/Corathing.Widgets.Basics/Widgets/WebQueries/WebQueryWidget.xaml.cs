@@ -24,7 +24,6 @@ using Corathing.Widgets.Basics.Widgets.WebPages;
 namespace Corathing.Widgets.Basics.Widgets.WebQueries;
 
 [EntryCoraWidget(
-    viewType: typeof(WebQueryWidget),
     contextType: typeof(WebQueryViewModel),
     name: "Create Web Query",
     description: "Provides a one by one square widget.",

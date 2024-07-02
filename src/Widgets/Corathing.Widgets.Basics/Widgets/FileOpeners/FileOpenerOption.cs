@@ -24,6 +24,6 @@ public class FileOpenerOption
     public List<string> Files { get; set; }
     public List<string> Folders { get; set; }
 
-    [ReferenceCoraDataSourceProperty(typeof(ExecutableAppDataSource))]
+    [ReferenceCoraDataSourceProperty(typeof(ExecutableAppDataSourceContext))]
     public Guid? ExecutableAppDataSourceId { get; set; }
 }

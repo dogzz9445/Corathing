@@ -13,6 +13,7 @@
                     >
 
     <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="pack://application:,,,/Corathing.Widgets.Basics;component/Widgets/Emptys/EmptyWidgetView.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Corathing.Widgets.Basics;component/Widgets/FileOpeners/FileOpenerDataTemplate.xaml" />
     </ResourceDictionary.MergedDictionaries>
 

@@ -16,6 +16,8 @@
                    IsWindowDraggable="True"
                    WindowStartupLocation="CenterScreen"
                    Icon="/Assets/logo_256.png"
+                   MinWidth="800"
+                   MinHeight="800"
                    Height="1000"
                    Width="1600">
 

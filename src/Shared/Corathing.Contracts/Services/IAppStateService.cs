@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 using Corathing.Contracts.Bases;
 using Corathing.Contracts.Configurations;
+using Corathing.Contracts.DataContexts;
 
 namespace Corathing.Contracts.Services;
 
@@ -21,6 +22,7 @@ public interface IAppStateService
     AppPackageState GetAppPackageState();
     AppDashboardState GetAppDashboardState();
 
+    // Dashboards (Projects, Workflows, Widgets)
     ProjectState CreateAddProject();
     WorkflowState CreateAddWorkflow();
 

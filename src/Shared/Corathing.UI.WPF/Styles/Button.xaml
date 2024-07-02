@@ -12,6 +12,8 @@
     <!-- 3. Alert Light Brushes                                           -->
     <!-- 4. Alert Dark Brushes                                            -->
     <!-- 5. IconButton24                                                  -->
+    <!-- 6. CoraWidgetEditModeButtonWithEvent                             -->
+    <!--   - Button with MouseOver and Press Style                        -->
     <!-- ================================================================ -->
 
     <!-- 1. Button No Style -->
@@ -89,11 +91,35 @@
         </Setter>
     </Style>
 
-    <!-- https://pictogrammers.com/library/mdi/ -->
-    <!-- 6. IconButton -->
-    <Style TargetType="{x:Type Button}"
-           x:Key="IconButton">
-        
+    <!-- 6. CoraWidgetEditModeButtonWithEvent -->
+    <Style x:Key="CoraWidgetEditModeButtonWithEvent"
+           BasedOn="{StaticResource ButtonNoStyle}"
+           TargetType="{x:Type Button}">
+        <Setter Property="Background"
+                Value="Transparent" />
+        <Style.Triggers>
+            <MultiDataTrigger>
+                <MultiDataTrigger.Conditions>
+                    <Condition Property="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType={x:Type Button}}}"
+                               Value="True" />
+                    <Condition Property="{Binding EditMode}"
+                               Value="False" />
+                </MultiDataTrigger.Conditions>
+                <Setter Property="Background"
+                        Value="{DynamicResource ControlBackgroundHover}" />
+            </MultiDataTrigger>
+            <MultiDataTrigger>
+                <MultiDataTrigger.Conditions>
+                    <Condition Property="{Binding IsPressed, RelativeSource={RelativeSource AncestorType={x:Type Button}}}"
+                               Value="True" />
+                    <Condition Property="{Binding EditMode}"
+                               Value="False" />
+                </MultiDataTrigger.Conditions>
+                <Setter Property="Background"
+                        Value="{DynamicResource ControlBackgroundPressed}" />
+            </MultiDataTrigger>
+        </Style.Triggers>
     </Style>
+
 
 </ResourceDictionary>

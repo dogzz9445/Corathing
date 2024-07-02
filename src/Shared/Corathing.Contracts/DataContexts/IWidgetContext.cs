@@ -6,6 +6,6 @@ using System.Threading.Tasks;
 
 namespace Corathing.Contracts.DataContexts;
 
-public interface ICoraDataSource
+public interface IWidgetContext
 {
 }

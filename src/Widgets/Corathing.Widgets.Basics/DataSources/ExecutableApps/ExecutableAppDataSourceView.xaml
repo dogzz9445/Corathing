@@ -1,0 +1,16 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:Corathing.Widgets.Basics.DataSources.ExecutableApps">
+    
+    <!-- 참조되는 뷰에서 보이는 컨텍스트 -->
+    <DataTemplate DataType="{x:Type local:ExecutableAppDataSourceContext}">
+        
+    </DataTemplate>
+
+    <!-- Settings View -->
+    <!-- Settings View 에 대한 ViewModel을 데이터 타입으로함 -->
+    <DataTemplate DataType="{x:Type local:ExecutableAppDataSourceOptionViewModel}">
+        <!--<local:ExecutableAppDataSourceView />-->
+    </DataTemplate>
+
+</ResourceDictionary>

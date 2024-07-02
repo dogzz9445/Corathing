@@ -8,10 +8,12 @@ using Corathing.Contracts.Services;
 
 namespace Corathing.Contracts.Entries;
 
+/// <summary>
+/// 어셈블리를 로드하면서 정의되는 위젯 정보
+/// </summary>
 public interface ICoraWidgetInfo
 {
     // Types
-    public Type WidgetViewType { get; }
     public Type WidgetContextType { get; }
     public Type WidgetCustomSettingsType { get; }
     public Type WidgetCustomSettingsContextType { get; }
@@ -25,7 +27,8 @@ public interface ICoraWidgetInfo
     string MenuTooltip { get; }
     Dictionary<ApplicationLanguage, string> LocalizedNames { get; }
     Dictionary<ApplicationLanguage, string> LocalizedDescriptions { get; }
-    Dictionary<ApplicationLanguage, string> LocalizedTitles { get; }
+    Dictionary<ApplicationLanguage, string> LocalizedDefaultTitles { get; }
+    Dictionary<ApplicationLanguage, string> LocalizedMenuPaths { get; }
     Dictionary<ApplicationLanguage, string> LocalizedMenuTooltips { get; }
     List<string> Tags { get; }
 
@@ -42,10 +45,12 @@ public interface ICoraWidgetInfo
     int DefaultRowSpan { get; }
 }
 
+/// <summary>
+/// <inheritdoc/>
+/// </summary>
 public class CoraWidgetInfo : ICoraWidgetInfo
 {
     // Types
-    public Type WidgetViewType { get; set; }
     public Type WidgetContextType { get; set; }
     public Type WidgetCustomSettingsType { get; set; }
     public Type WidgetCustomSettingsContextType { get; set; }
@@ -59,7 +64,8 @@ public class CoraWidgetInfo : ICoraWidgetInfo
     public string MenuTooltip { get; set; }
     public Dictionary<ApplicationLanguage, string> LocalizedNames { get; set; }
     public Dictionary<ApplicationLanguage, string> LocalizedDescriptions { get; set; }
-    public Dictionary<ApplicationLanguage, string> LocalizedTitles { get; set; }
+    public Dictionary<ApplicationLanguage, string> LocalizedDefaultTitles { get; set; }
+    public Dictionary<ApplicationLanguage, string> LocalizedMenuPaths { get; set; }
     public Dictionary<ApplicationLanguage, string> LocalizedMenuTooltips { get; set; }
     public List<string> Tags { get; set; }
 

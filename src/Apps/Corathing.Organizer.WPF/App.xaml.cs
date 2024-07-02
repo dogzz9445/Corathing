@@ -208,6 +208,7 @@ public partial class App : Application
         serviceCollection.AddScoped<WidgetSettingsViewModel>();
         serviceCollection.AddScoped<ProjectSettingsViewModel>();
         serviceCollection.AddScoped<WorkflowSettingsViewModel>();
+        serviceCollection.AddScoped<DataSourceContextSettingsViewModel>();
         serviceCollection.AddTransient<ProjectContext>();
         serviceCollection.AddTransient<ProjectSettingsContext>();
         serviceCollection.AddTransient<WorkflowContext>();

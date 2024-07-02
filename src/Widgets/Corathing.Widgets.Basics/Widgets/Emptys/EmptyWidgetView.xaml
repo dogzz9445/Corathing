@@ -1,7 +1,9 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:local="clr-namespace:Corathing.Widgets.Basics.DataSources.ExecutableApps">
-    <DataTemplate DataType="{x:Type local:ExecutableAppDataSource}">
-        
+                    xmlns:local="clr-namespace:Corathing.Widgets.Basics.Widgets.Emptys">
+    <DataTemplate DataType="{x:Type local:EmptyWidgetContext}">
+        <Grid>
+            
+        </Grid>
     </DataTemplate>
 </ResourceDictionary>

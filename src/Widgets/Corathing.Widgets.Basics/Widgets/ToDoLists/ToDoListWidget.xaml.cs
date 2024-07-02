@@ -30,7 +30,6 @@ using Corathing.Widgets.Basics.Widgets.ToDoLists.Models;
 namespace Corathing.Widgets.Basics.Widgets.ToDoLists;
 
 [EntryCoraWidget(
-    viewType: typeof(ToDoListWidget),
     contextType: typeof(ToDoListViewModel),
     name: "Create To Do List",
     description: "Provides a one by one square widget.",
