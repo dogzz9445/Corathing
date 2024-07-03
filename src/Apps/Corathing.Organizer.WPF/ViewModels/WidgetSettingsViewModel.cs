@@ -10,11 +10,13 @@ using System.Windows;
 
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 
 using Corathing.Contracts.Bases;
 using Corathing.Contracts.DataContexts;
 using Corathing.Contracts.Services;
 using Corathing.Contracts.Utils.Exetensions;
+using Corathing.Contracts.Utils.Helpers;
 using Corathing.Dashboards.WPF.Controls;
 
 using Microsoft.Extensions.DependencyInjection;
@@ -25,10 +27,17 @@ public partial class WidgetSettingsViewModel : ObservableObject
 {
     #region Constructor with IServiceProvider
     private readonly IServiceProvider _services;
+    private Guid _id;
 
     public WidgetSettingsViewModel(IServiceProvider services)
     {
         _services = services;
+        _id = Guid.NewGuid();
+        WeakReferenceMessenger.Default.Register<CustomSettingsChangedMessage, Guid>(
+            this,
+            _id,
+            OnCustomSettingsChanged
+        );
     }
     #endregion
 
@@ -39,9 +48,9 @@ public partial class WidgetSettingsViewModel : ObservableObject
     private WidgetHost _settingsWidgetHost;
     [ObservableProperty]
     private WidgetContext _tempWidgetContext;
-    private Type _tempCustomSettingsStateType;
+    private Type _optionType;
     [ObservableProperty]
-    private IWidgetCustomSettingsContext? _tempCustomSettingsContext;
+    private CustomSettingsContext? _tempCustomSettingsContext;
 
     public Type RegisterWidget(WidgetHost settingsWidgetHost, WidgetHost originalWidgetHost)
     {
@@ -53,27 +62,21 @@ public partial class WidgetSettingsViewModel : ObservableObject
         var packageService = _services.GetService<IPackageService>();
 
         TempWidgetContext = packageService.CreateWidgetContext(_originalContext.GetType().FullName);
-        _tempCustomSettingsStateType = packageService.GetCustomSettingsType(_originalContext.GetType().FullName);
+        _optionType = packageService.GetWidgetCustomSettingsType(_originalContext.GetType().FullName);
+        _originalContext.CopyTo(TempWidgetContext, _optionType);
+        _settingsWidgetHost.DataContext = TempWidgetContext;
 
         // If Custom Settings exists
         // Custom Settings 가 존재할 경우
-        if (_tempCustomSettingsStateType != null)
+        if (_optionType != null)
         {
             TempCustomSettingsContext = packageService.CreateWidgetSettingsContext(_originalContext.GetType().FullName);
-            if (TempCustomSettingsContext is INotifyPropertyChanged notifier)
-            {
-                notifier.PropertyChanged += OnCustomSettingsChanged;
-            }
-            _originalContext.CopyTo(TempWidgetContext, _tempCustomSettingsStateType);
-            WidgetStateExtension.CopyProperties(
-                _originalContext.State.CustomSettings,
-                TempCustomSettingsContext.CustomSettings,
-                _tempCustomSettingsStateType
-                );
-            TempCustomSettingsContext.UpdateSettings();
+            TempCustomSettingsContext.RegisterCustomSettings(
+                _id,
+                JsonHelper.DeepCopy(_originalContext.State.CustomSettings, _optionType)
+            );
         }
 
-        _settingsWidgetHost.DataContext = TempWidgetContext;
         return _originalContext.GetType();
     }
 
@@ -83,7 +86,9 @@ public partial class WidgetSettingsViewModel : ObservableObject
         if (_originalContext == null)
             return;
 
-        TempWidgetContext.CopyToWithoutLayout(_originalContext, _tempCustomSettingsStateType);
+        // FIXME:
+        // 무언가 우아한 방법
+        TempWidgetContext.CopyToWithoutLayout(_originalContext, _optionType);
         _originalContext.UpdateTo(_originalContext.State);
 
         var appStateService = _services.GetService<IAppStateService>();
@@ -96,14 +101,8 @@ public partial class WidgetSettingsViewModel : ObservableObject
         window.Close();
     }
 
-    public void OnCustomSettingsChanged(object sender, PropertyChangedEventArgs e)
+    public void OnCustomSettingsChanged(object? sender, CustomSettingsChangedMessage? message)
     {
-        if (_originalContext == null)
-            return;
-
-        WidgetStateExtension.CopyProperties(
-            TempCustomSettingsContext.CustomSettings,
-            TempWidgetContext.State.CustomSettings,
-            _tempCustomSettingsStateType);
+        TempWidgetContext.State.CustomSettings = JsonHelper.DeepCopy(message.Value, _optionType);
     }
 }

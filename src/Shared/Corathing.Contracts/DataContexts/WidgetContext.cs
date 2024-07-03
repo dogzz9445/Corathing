@@ -18,7 +18,6 @@ public partial class WidgetContext : ObservableRecipient
     protected IServiceProvider _services;
 
     #region 숨겨진 프로퍼티
-    public Type WidgetType;
     public Guid WidgetId;
 
     public WidgetState? State { get; set; }
@@ -43,33 +42,39 @@ public partial class WidgetContext : ObservableRecipient
     #region Only Used Properties in Context
     [ObservableProperty]
     private bool? _editMode;
-
-    [ObservableProperty]
-    private bool? _isSelecting;
-    [ObservableProperty]
-    private bool? _isDragging;
-    [ObservableProperty]
-    private bool? _isResizing;
     #endregion
 
-    public WidgetContext()
-    {
-        IsSelecting = false;
-        IsDragging = false;
-        IsResizing = false;
-    }
-
-    public WidgetContext(IServiceProvider services, WidgetState state) : this()
+    public void Initialize(IServiceProvider services, WidgetState state)
     {
         _services = services;
 
+        State = state;
+        WidgetId = state.Id;
+        WidgetTitle = state.CoreSettings.Title;
+        VisibleTitle = state.CoreSettings.VisibleTitle;
+        UseDefaultBackgroundColor = state.CoreSettings.UseDefaultBackgroundColor;
+        BackgroundColor = state.CoreSettings.BackgroundColor;
+
+        Layout = new WidgetLayout()
+        {
+            Id = Guid.NewGuid(),
+            WidgetStateId = WidgetId,
+            Rect = new WidgetLayoutRect()
+            {
+                X = 0,
+                Y = 0,
+                W = state.CoreSettings.ColumnSpan,
+                H = state.CoreSettings.RowSpan,
+            }
+        };
+
+        OnCreate(state);
         ApplyState(state);
     }
 
     public void ApplyState(WidgetState state)
     {
         State = state;
-        WidgetId = state.Id;
         WidgetTitle = state.CoreSettings.Title;
         VisibleTitle = state.CoreSettings.VisibleTitle;
         UseDefaultBackgroundColor = state.CoreSettings.UseDefaultBackgroundColor;
@@ -78,13 +83,8 @@ public partial class WidgetContext : ObservableRecipient
         OnStateChanged(State);
     }
 
-    // TODO:
-    // 이벤트 처리
-
-    public virtual void OnCreate(IServiceProvider services, WidgetState state)
+    public virtual void OnCreate(WidgetState state)
     {
-        _services = services;
-        ApplyState(state);
     }
 
     public virtual void OnStateChanged(WidgetState state)

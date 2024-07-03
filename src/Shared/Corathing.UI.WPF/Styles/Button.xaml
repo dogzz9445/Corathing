@@ -98,7 +98,7 @@
         <Setter Property="Background"
                 Value="Transparent" />
         <Style.Triggers>
-            <MultiDataTrigger>
+            <!--<MultiDataTrigger>
                 <MultiDataTrigger.Conditions>
                     <Condition Property="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType={x:Type Button}}}"
                                Value="True" />
@@ -117,7 +117,7 @@
                 </MultiDataTrigger.Conditions>
                 <Setter Property="Background"
                         Value="{DynamicResource ControlBackgroundPressed}" />
-            </MultiDataTrigger>
+            </MultiDataTrigger>-->
         </Style.Triggers>
     </Style>
 

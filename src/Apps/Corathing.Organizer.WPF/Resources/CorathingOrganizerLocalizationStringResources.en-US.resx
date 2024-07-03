@@ -165,4 +165,43 @@
   <data name="Corathing.Organizer.WPF.UseUserCustomFolderDescription" xml:space="preserve">
     <value>Use a file where individual users can store their personalized settings.</value>
   </data>
+  <data name="Corathing.Organizer.PackageManagementTitle" xml:space="preserve">
+    <value>Package Management</value>
+  </data>
+  <data name="Corathing.Organizer.WidgetSettingsTitle" xml:space="preserve">
+    <value>Widget Settings</value>
+  </data>
+  <data name="Corathing.Organizer.WorkflowSettingsTitle" xml:space="preserve">
+    <value>Workflow Settings</value>
+  </data>
+  <data name="Corathing.Organizer.ProjectSettingsTitle" xml:space="preserve">
+    <value>Project Settings</value>
+  </data>
+  <data name="Corathing.Organizer.DataSourceSettingsTitle" xml:space="preserve">
+    <value>DataSource Settings</value>
+  </data>
+  <data name="Corathing.Organizer.Apply" xml:space="preserve">
+    <value>Apply</value>
+  </data>
+  <data name="Corathing.Organizer.Name" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="Corathing.Organizer.Title" xml:space="preserve">
+    <value>Title</value>
+  </data>
+  <data name="Corathing.Organizer.ShowWidgetName" xml:space="preserve">
+    <value>Show Widget Name</value>
+  </data>
+  <data name="Corathing.Organizer.AddProject" xml:space="preserve">
+    <value>Add Project</value>
+  </data>
+  <data name="Corathing.Organizer.AddDataSource" xml:space="preserve">
+    <value>Add DataSource</value>
+  </data>
+  <data name="Corathing.Organizer.AddFile" xml:space="preserve">
+    <value>Add File</value>
+  </data>
+  <data name="Corathing.Organizer.AddFolder" xml:space="preserve">
+    <value>Add Folder</value>
+  </data>
 </root>

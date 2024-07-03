@@ -16,7 +16,7 @@ namespace Corathing.Contracts.Utils.Generators;
 
 public class CoraWidgetGenerator(IServiceProvider services)
 {
-    public ICoraWidgetInfo Info { get; set; }
+    public ICoraWidgetInfo? Info { get; set; }
 
     /// <summary>
     /// Creates the widget.
@@ -24,25 +24,15 @@ public class CoraWidgetGenerator(IServiceProvider services)
     /// <returns>WidgetBase</returns>
     public WidgetContext CreateWidget(WidgetState? state = null)
     {
+        ArgumentNullException.ThrowIfNull(Info);
         ArgumentNullException.ThrowIfNull(Info.WidgetContextType);
 
-        if (state == null)
-        {
-            state = CreateState();
-        }
-        var context = (WidgetContext)Activator.CreateInstance(Info.WidgetContextType, services, state);
-        context.Layout = new WidgetLayout()
-        {
-            Id = Guid.NewGuid(),
-            WidgetStateId = context.WidgetId,
-            Rect = new WidgetLayoutRect()
-            {
-                X = 0,
-                Y = 0,
-                W = state.CoreSettings.ColumnSpan,
-                H = state.CoreSettings.RowSpan,
-            }
-        };
+        var context = Activator.CreateInstance(Info.WidgetContextType) as WidgetContext;
+
+        ArgumentNullException.ThrowIfNull(context);
+
+        context.Initialize(services, state ?? CreateState());
+
         return context;
     }
 
@@ -52,6 +42,7 @@ public class CoraWidgetGenerator(IServiceProvider services)
     /// <returns>WidgetState</returns>
     public WidgetState CreateState()
     {
+        ArgumentNullException.ThrowIfNull(Info);
         ArgumentNullException.ThrowIfNull(Info.WidgetContextType);
 
         WidgetState state = new WidgetState();
@@ -84,19 +75,25 @@ public class CoraWidgetGenerator(IServiceProvider services)
 
     public object? CreateCustomOption()
     {
+        ArgumentNullException.ThrowIfNull(Info);
+
         if (Info.WidgetCustomSettingsType == null)
             return null;
         return Activator.CreateInstance(Info.WidgetCustomSettingsType);
     }
 
-    public IWidgetCustomSettingsContext? CreateSettingsContext()
+    public CustomSettingsContext? CreateSettingsContext()
     {
+        ArgumentNullException.ThrowIfNull(Info);
+
         if (Info.WidgetCustomSettingsType == null)
             return null;
         if (Info.WidgetCustomSettingsContextType == null)
             return null;
-        var customSettings = CreateCustomOption();
-        return Activator.CreateInstance(Info.WidgetCustomSettingsContextType, customSettings) as IWidgetCustomSettingsContext;
+        var option = CreateCustomOption();
+        var settingsContext = Activator.CreateInstance(Info.WidgetCustomSettingsContextType) as CustomSettingsContext;
+        settingsContext?.Initialize(services, option);
+        return settingsContext;
     }
 
     /// <summary>
@@ -108,6 +105,7 @@ public class CoraWidgetGenerator(IServiceProvider services)
     /// <returns><see cref="string"/>Widget Context Full Name</returns>
     public string? GetWidgetFullName()
     {
+        ArgumentNullException.ThrowIfNull(Info);
         ArgumentNullException.ThrowIfNull(Info.WidgetContextType);
 
         return Info.WidgetContextType.FullName;
@@ -121,6 +119,7 @@ public class CoraWidgetGenerator(IServiceProvider services)
     /// <returns><see cref="string"/>Widget context assembly name</returns>
     public string? GetAssemblyName()
     {
+        ArgumentNullException.ThrowIfNull(Info);
         ArgumentNullException.ThrowIfNull(Info.WidgetContextType);
 
         return Info.WidgetContextType.Assembly.GetName().Name;
@@ -138,6 +137,8 @@ public class CoraWidgetGenerator(IServiceProvider services)
     /// <returns><see cref="string"/>Default Title "File Opener"</returns>
     private string GenerateDefaultTitle()
     {
+        ArgumentNullException.ThrowIfNull(Info);
+
         string? defaultTitle = null;
         if (Info.LocalizedDefaultTitles != null)
         {
@@ -167,6 +168,8 @@ public class CoraWidgetGenerator(IServiceProvider services)
     /// <returns><see cref="string"/>Name "File Widget"</returns>
     public string GetDisplayName()
     {
+        ArgumentNullException.ThrowIfNull(Info);
+
         string? name = null;
         if (Info.LocalizedNames != null)
         {
@@ -196,6 +199,8 @@ public class CoraWidgetGenerator(IServiceProvider services)
     /// <returns><see cref="string"/>Description "Widget that can open files and folders"</returns>
     public string GetDisplayDescription()
     {
+        ArgumentNullException.ThrowIfNull(Info);
+
         string? description = null;
         if (Info.LocalizedDescriptions != null)
         {
@@ -225,6 +230,8 @@ public class CoraWidgetGenerator(IServiceProvider services)
     /// <returns><see cref="string"/>Meun Path "Default/File Widget"</returns>
     public string GetDisplayMenuPath()
     {
+        ArgumentNullException.ThrowIfNull(Info);
+
         string? meunPath = null;
         if (Info.LocalizedMenuPaths != null)
         {
@@ -254,6 +261,8 @@ public class CoraWidgetGenerator(IServiceProvider services)
     /// <returns><see cref="string"/>Menu Tooltip "Generate File Widget on Dashboard"</returns>
     public string GetDisplayMenuTooltip()
     {
+        ArgumentNullException.ThrowIfNull(Info);
+
         string? menuTooltip = null;
         if (Info.LocalizedMenuTooltips != null)
         {

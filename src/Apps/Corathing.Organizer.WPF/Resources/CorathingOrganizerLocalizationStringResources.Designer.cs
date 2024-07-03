@@ -63,6 +63,123 @@ namespace Corathing.Organizer.WPF.Resources {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string Corathing_Organizer_AddDataSource {
+            get {
+                return ResourceManager.GetString("Corathing.Organizer.AddDataSource", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string Corathing_Organizer_AddFile {
+            get {
+                return ResourceManager.GetString("Corathing.Organizer.AddFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string Corathing_Organizer_AddFolder {
+            get {
+                return ResourceManager.GetString("Corathing.Organizer.AddFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string Corathing_Organizer_AddProject {
+            get {
+                return ResourceManager.GetString("Corathing.Organizer.AddProject", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string Corathing_Organizer_Apply {
+            get {
+                return ResourceManager.GetString("Corathing.Organizer.Apply", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string Corathing_Organizer_DataSourceSettingsTitle {
+            get {
+                return ResourceManager.GetString("Corathing.Organizer.DataSourceSettingsTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string Corathing_Organizer_Name {
+            get {
+                return ResourceManager.GetString("Corathing.Organizer.Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string Corathing_Organizer_PackageManagementTitle {
+            get {
+                return ResourceManager.GetString("Corathing.Organizer.PackageManagementTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string Corathing_Organizer_ProjectSettingsTitle {
+            get {
+                return ResourceManager.GetString("Corathing.Organizer.ProjectSettingsTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string Corathing_Organizer_ShowWidgetName {
+            get {
+                return ResourceManager.GetString("Corathing.Organizer.ShowWidgetName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string Corathing_Organizer_Title {
+            get {
+                return ResourceManager.GetString("Corathing.Organizer.Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string Corathing_Organizer_WidgetSettingsTitle {
+            get {
+                return ResourceManager.GetString("Corathing.Organizer.WidgetSettingsTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string Corathing_Organizer_WorkflowSettingsTitle {
+            get {
+                return ResourceManager.GetString("Corathing.Organizer.WorkflowSettingsTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string Corathing_Organizer_WPF_AppLanguage {
             get {
                 return ResourceManager.GetString("Corathing.Organizer.WPF.AppLanguage", resourceCulture);

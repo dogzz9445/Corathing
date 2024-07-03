@@ -25,6 +25,7 @@ public class PackageReferenceState : IPackageReferenceState
 public class PackageState : IEntity
 {
     public Guid Id { get; set; }
+    public Guid AssemblyGuid { get; set; }
     public string AssemblyName { get; set; }
     public string AssemblyVersion { get; set; }
     public string Title { get; set; }

@@ -8,7 +8,6 @@ namespace Corathing.Widgets.Basics.DataSources.ExecutableApps;
 
 public class ExecutableAppDataSourceOption
 {
-    public string Title { get; set; }
-    public List<string> ExecutableFiles { get; set; }
+    public string ExecutableAppPath { get; set; }
     public string CommandLineArguments { get; set; }
 }

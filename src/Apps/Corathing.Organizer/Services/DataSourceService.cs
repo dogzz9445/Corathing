@@ -28,7 +28,7 @@ public class DataSourceService(IServiceProvider services) : IDataSourceService
     public void RemoveAllDataSourceContexts<T>()
     {
         var removedList = new List<Guid>();
-        removedList.AddRange(DataSourceContexts.Where(x => x.Value is T).ToList().Select(pair => pair.Key));
+        removedList.AddRange(DataSourceContexts.Where(x => x.Value is T).Select(pair => pair.Key));
         foreach (var removed in removedList)
         {
             DataSourceContexts.Remove(removed);
@@ -37,13 +37,17 @@ public class DataSourceService(IServiceProvider services) : IDataSourceService
 
     public void RemoveDataSourceContext<T>(T dataSourceContext) where T : DataSourceContext
     {
-        //DataSourceContexts.Values.OfType<T>().ToList().ForEach(x => x.RefreshCacheOfType());
+        DataSourceContexts.Remove(dataSourceContext.DataSourceId);
     }
 
-    //public void RefreshCachesDataSourceContextType<T>() where T : DataSourceContext
-    //{
-    //    DataSourceContexts.Values.OfType<T>().ToList().ForEach(x => x.RefreshCacheOfType());
-    //}
+    public IEnumerable<DataSourceContext> GetAllDataSourceContexts(Type? dataSourceContext)
+    {
+        if (dataSourceContext == null)
+        {
+            return DataSourceContexts.Values;
+        }
+        return DataSourceContexts.Values.Where(x => x.GetType() == dataSourceContext);
+    }
 
     public IEnumerable<T> GetDataSourceContexts<T>()
     {

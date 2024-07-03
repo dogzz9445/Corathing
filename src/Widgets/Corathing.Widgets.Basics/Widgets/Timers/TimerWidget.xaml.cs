@@ -51,12 +51,9 @@ public partial class TimerWidgetViewModel : WidgetContext
 
     #endregion
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="OneByOneViewModel"/> class.
-    /// </summary>
-    public TimerWidgetViewModel(IServiceProvider services, WidgetState state) : base(services, state)
+    public override void OnCreate(WidgetState state)
     {
-        ILocalizationService localizationService = services.GetService<ILocalizationService>();
+        ILocalizationService localizationService = _services.GetService<ILocalizationService>();
         localizationService.Provide(
             "Corathing.Widgets.Basics.TimerName",
             value => WidgetTitle = value,
@@ -85,7 +82,7 @@ public partial class TimerWidgetViewModel : WidgetContext
     private void OnTimerTick(object sender, EventArgs e)
     {
         RemainingTime -= TimeSpan.FromSeconds(1);
-        if (RemainingTime.TotalSeconds == 0)
+        if (RemainingTime.TotalSeconds <= 0)
             Stop();
     }
 

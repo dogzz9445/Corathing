@@ -78,18 +78,16 @@ public partial class WebPageViewModel : WidgetContext
     [ObservableProperty]
     private WebView2 _webView;
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="OneByOneViewModel"/> class.
-    /// </summary>
-    public WebPageViewModel(IServiceProvider services, WidgetState state) : base(services, state)
+    public override void OnCreate(WidgetState state)
     {
-        ILocalizationService localizationService = services.GetService<ILocalizationService>();
+        ILocalizationService localizationService = _services.GetService<ILocalizationService>();
         localizationService.Provide("Corathing.Widgets.Basics.WebPageName", value => WidgetTitle = value);
 
-        var appStateService = services.GetService<IAppStateService>();
+        var appStateService = _services.GetService<IAppStateService>();
         //if (!widgetSystemService.TryGetWidgetOption<WebPageOption>(Uid, out var option))
         //WidgetTitle = option.Name;
     }
+
 }
 
 /// <summary>

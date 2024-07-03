@@ -32,23 +32,50 @@ public partial class FolderInfo : ObservableObject
     private string _folderName;
 }
 
-public partial class FileOpenerOptionViewModel : ObservableObject, IWidgetCustomSettingsContext
+public partial class FileOpenerOptionViewModel :
+    CustomSettingsContext
 {
-    private FileOpenerOption _customSettings;
-    public object? CustomSettings
+    public override void OnCreate(object? option)
     {
-        get => GetCustomSettings();
-        set
+        if (option is not FileOpenerOption fileOpenerOption)
         {
-            if (value is not FileOpenerOption customSettings)
-            {
-                // TODO:
-                // Change Type
-                throw new Exception();
-            }
-            _customSettings = customSettings;
-            UpdateSettings();
+            throw new ArgumentException($"Not a valid type for CustomSettings {nameof(FileOpenerOption)}");
         }
+        Files = new ObservableCollection<FileInfo>();
+        Folders = new ObservableCollection<FolderInfo>();
+        CustomSettings = fileOpenerOption;
+    }
+
+    public override void OnSettingsChanged(object? option)
+    {
+        if (option is not FileOpenerOption fileOpenerOption)
+        {
+            throw new ArgumentException($"Not a valid type for CustomSettings {nameof(FileOpenerOption)}");
+        }
+        Files.Clear();
+        Folders.Clear();
+
+        OpenType = fileOpenerOption.OpenType;
+        fileOpenerOption.Files?.ForEach(file => Files.Add(new FileInfo()
+        {
+            FileName = file,
+        }));
+        fileOpenerOption.Folders?.ForEach(folder => Folders.Add(new FolderInfo()
+        {
+            FolderName = folder,
+        }));
+    }
+
+    public override void OnContextChanged()
+    {
+        if (_customSettings is not FileOpenerOption fileOpenerOption)
+        {
+            throw new ArgumentException($"Not a valid type for CustomSettings {nameof(FileOpenerOption)}");
+        }
+        fileOpenerOption.OpenType = OpenType;
+        fileOpenerOption.Files = Files.Select(file => file.FileName).ToList();
+        fileOpenerOption.Folders = Folders.Select(folder => folder.FolderName).ToList();
+        CustomSettings = fileOpenerOption;
     }
 
     [ObservableProperty]
@@ -61,16 +88,6 @@ public partial class FileOpenerOptionViewModel : ObservableObject, IWidgetCustom
     private FileInfo _selectedFile;
     [ObservableProperty]
     private FolderInfo _selectedFolder;
-
-    public FileOpenerOptionViewModel(FileOpenerOption fileOpenerOption)
-    {
-        _customSettings = fileOpenerOption;
-
-        Files = new ObservableCollection<FileInfo>();
-        Folders = new ObservableCollection<FolderInfo>();
-
-        UpdateSettings();
-    }
 
     [RelayCommand]
     public void AddFile()
@@ -175,25 +192,4 @@ public partial class FileOpenerOptionViewModel : ObservableObject, IWidgetCustom
         //OpenedFolderPathVisibility = Visibility.Visible;
     }
 
-    public FileOpenerOption GetCustomSettings()
-    {
-        _customSettings.OpenType = OpenType;
-        _customSettings.Folders = Folders.Select(item => item.FolderName).ToList();
-        _customSettings.Files = Files.Select(item => item.FileName).ToList();
-
-        return _customSettings;
-    }
-
-    public void UpdateSettings()
-    {
-        OpenType = _customSettings.OpenType;
-        _customSettings.Files?.ForEach(file => Files.Add(new FileInfo()
-        {
-            FileName = file,
-        }));
-        _customSettings.Folders?.ForEach(folder => Folders.Add(new FolderInfo()
-        {
-            FolderName = folder,
-        }));
-    }
 }

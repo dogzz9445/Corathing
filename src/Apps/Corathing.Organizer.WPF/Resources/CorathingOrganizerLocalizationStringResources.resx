@@ -145,4 +145,43 @@
   <data name="Corathing.Organizer.WPF.UseUserCustomFolderDescription" xml:space="preserve">
     <value></value>
   </data>
+  <data name="Corathing.Organizer.PackageManagementTitle" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="Corathing.Organizer.WidgetSettingsTitle" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="Corathing.Organizer.WorkflowSettingsTitle" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="Corathing.Organizer.ProjectSettingsTitle" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="Corathing.Organizer.DataSourceSettingsTitle" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="Corathing.Organizer.Apply" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="Corathing.Organizer.Name" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="Corathing.Organizer.Title" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="Corathing.Organizer.ShowWidgetName" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="Corathing.Organizer.AddProject" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="Corathing.Organizer.AddDataSource" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="Corathing.Organizer.AddFile" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="Corathing.Organizer.AddFolder" xml:space="preserve">
+    <value></value>
+  </data>
 </root>

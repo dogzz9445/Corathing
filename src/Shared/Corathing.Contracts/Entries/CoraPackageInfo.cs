@@ -2,14 +2,14 @@
 using System.Reflection;
 using System.Resources;
 
+using Corathing.Contracts.Services;
+
 namespace Corathing.Contracts.Entries;
 
 public interface ICoraPackageInfo
 {
+    Guid? AssemblyGuid { get; }
     Assembly PacakageAssembly { get; }
-    // Packages
-    List<ICoraWidgetInfo> CoraWidgetInfos { get; }
-    List<ICoraDataSourceInfo> CoraDataSourceInfos { get; }
 
     // Infos
     string Name { get; }
@@ -29,6 +29,9 @@ public interface ICoraPackageInfo
     string[] Conflicts { get; }
     List<string> Tags { get; }
 
+    Dictionary<ApplicationLanguage, string> LocalizedNames { get; }
+    Dictionary<ApplicationLanguage, string> LocalizedDescriptions { get; }
+
     List<Uri> DataTemplates { get; }
     List<ResourceManager> ResourceManagers { get; }
 
@@ -36,10 +39,8 @@ public interface ICoraPackageInfo
 
 public class CoraPackageInfo : ICoraPackageInfo
 {
+    public Guid? AssemblyGuid { get; set; }
     public Assembly PacakageAssembly { get; set; }
-    // Packages
-    public List<ICoraWidgetInfo> CoraWidgetInfos { get; set; }
-    public List<ICoraDataSourceInfo> CoraDataSourceInfos { get; set; }
 
     // Infos
     public string Name { get; set; }
@@ -59,15 +60,18 @@ public class CoraPackageInfo : ICoraPackageInfo
     public string[] Conflicts { get; set; }
     public List<string> Tags { get; set; }
 
+    public Dictionary<ApplicationLanguage, string> LocalizedNames { get; set; }
+    public Dictionary<ApplicationLanguage, string> LocalizedDescriptions { get; set; }
+
     public List<Uri> DataTemplates { get; set; }
     public List<ResourceManager> ResourceManagers { get; set; }
 
     public CoraPackageInfo()
     {
-        CoraWidgetInfos = new List<ICoraWidgetInfo>();
-        CoraDataSourceInfos = new List<ICoraDataSourceInfo>();
-        Tags = new List<string>();
-        DataTemplates = new List<Uri>();
-        ResourceManagers = new List<ResourceManager>();
+        Tags = new();
+        LocalizedNames = new();
+        LocalizedDescriptions = new();
+        DataTemplates = new();
+        ResourceManagers = new();
     }
 }

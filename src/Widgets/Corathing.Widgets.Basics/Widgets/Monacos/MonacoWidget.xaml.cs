@@ -37,24 +37,27 @@ public partial class MonacoWidgetViewModel : WidgetContext
 {
     private MonacoController? _monacoController;
 
-    private readonly IApplicationService _applicationService;
+    private IApplicationService _applicationService;
 
     [ObservableProperty]
     private WebView2 _webView;
 
-    public MonacoWidgetViewModel(IServiceProvider services, WidgetState state) : base(services, state)
+    public override void OnCreate(WidgetState state)
     {
-        ILocalizationService localizationService = services.GetService<ILocalizationService>();
-        localizationService.Provide("Corathing.Widgets.Basics.TextEditorName", value => WidgetTitle = value);
-        VisibleTitle = false;
-
-        _applicationService = services.GetService<IApplicationService>();
+        _applicationService = _services.GetService<IApplicationService>();
         WebView = new WebView2();
         WebView.Loaded += (s, e) =>
         {
             SetWebView(WebView);
         };
     }
+
+    //public MonacoWidgetViewModel(IServiceProvider services, WidgetState state) : base(services, state)
+    //{
+    //    ILocalizationService localizationService = services.GetService<ILocalizationService>();
+    //    localizationService.Provide("Corathing.Widgets.Basics.TextEditorName", value => WidgetTitle = value);
+    //    VisibleTitle = false;
+    //}
 
     public void SetWebView(WebView2 webView)
     {

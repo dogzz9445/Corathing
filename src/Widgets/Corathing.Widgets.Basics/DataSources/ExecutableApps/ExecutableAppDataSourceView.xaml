@@ -1,6 +1,9 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:local="clr-namespace:Corathing.Widgets.Basics.DataSources.ExecutableApps">
+                    xmlns:local="clr-namespace:Corathing.Widgets.Basics.DataSources.ExecutableApps"
+                    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+                    xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+                    xmlns:localizations="clr-namespace:Corathing.Widgets.Basics.Behaviors">
     
     <!-- 참조되는 뷰에서 보이는 컨텍스트 -->
     <DataTemplate DataType="{x:Type local:ExecutableAppDataSourceContext}">
@@ -10,7 +13,56 @@
     <!-- Settings View -->
     <!-- Settings View 에 대한 ViewModel을 데이터 타입으로함 -->
     <DataTemplate DataType="{x:Type local:ExecutableAppDataSourceOptionViewModel}">
-        <!--<local:ExecutableAppDataSourceView />-->
+
+
+        <StackPanel>
+
+            <!-- Open Executable File -->
+            <ui:CardControl Margin="0,0,0,8"
+                            Icon="{ui:SymbolIcon Color24}">
+                <ui:CardControl.Header>
+                    <Grid>
+                        <ui:TextBlock FontTypography="Body"
+                                      Text="Executable App" />
+                    </Grid>
+                </ui:CardControl.Header>
+                <Grid HorizontalAlignment="Stretch">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <TextBox Grid.Column="0"
+                             Margin="2,0"
+                             Text="{Binding Path=ExecutableAppPath}" />
+                    <ui:Button Grid.Column="1"
+                               Margin="4,0,4,0"
+                               Style="{StaticResource IconButton24}"
+                               Icon="{ui:SymbolIcon OpenFolder24}"
+                               Command="{Binding OpenFileCommand}"
+                               ToolTip="Select Executable App" />
+                </Grid>
+            </ui:CardControl>
+
+            <!-- Command Line Arguments -->
+            <ui:CardControl Margin="0,0,0,8"
+                            Icon="{ui:SymbolIcon Color24}">
+                <ui:CardControl.Header>
+                    <Grid>
+                        <ui:TextBlock FontTypography="Body"
+                                      Text="Executable App" />
+                    </Grid>
+                </ui:CardControl.Header>
+                <Grid HorizontalAlignment="Stretch">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <TextBox Grid.Column="0"
+                             Margin="2,0"
+                             Text="{Binding Path=CommandLineArguments}" />
+                </Grid>
+            </ui:CardControl>
+        </StackPanel>
+
     </DataTemplate>
 
 </ResourceDictionary>

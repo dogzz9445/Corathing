@@ -12,11 +12,11 @@ namespace Corathing.Contracts.Attributes;
 public class AssemblyCoraPackageDescriptionAttribute : Attribute
 {
     public ApplicationLanguage Language { get; }
-    public string Title { get; }
+    public string Description { get; }
 
-    public AssemblyCoraPackageDescriptionAttribute(ApplicationLanguage language, string title)
+    public AssemblyCoraPackageDescriptionAttribute(ApplicationLanguage language, string description)
     {
         Language = language;
-        Title = title;
+        Description = description;
     }
 }

@@ -25,20 +25,25 @@ namespace Corathing.Contracts.Utils.Generators;
 /// <param name="services"></param>
 public class CoraDataSourceGenerator(IServiceProvider services)
 {
-    public ICoraDataSourceInfo Info { get; set; }
+    public ICoraDataSourceInfo? Info { get; set; }
 
-    public DataSourceContext? CreateDataSource(DataSourceState? dataSourceState = null)
+    public DataSourceContext CreateDataSource(DataSourceState? dataSourceState = null)
     {
+        ArgumentNullException.ThrowIfNull(Info);
         ArgumentNullException.ThrowIfNull(Info.DataSourceType);
 
         var context = Activator.CreateInstance(Info.DataSourceType) as DataSourceContext;
-        context?.OnCreate(services, dataSourceState ?? CreateState());
+
+        ArgumentNullException.ThrowIfNull(context);
+
+        context.Initialize(services, dataSourceState ?? CreateState());
 
         return context;
     }
 
     private DataSourceState CreateState()
     {
+        ArgumentNullException.ThrowIfNull(Info);
         ArgumentNullException.ThrowIfNull(Info.DataSourceType);
 
         DataSourceState state = new DataSourceState();
@@ -61,6 +66,8 @@ public class CoraDataSourceGenerator(IServiceProvider services)
 
     public object? CreateCustomOption()
     {
+        ArgumentNullException.ThrowIfNull(Info);
+
         if (Info.OptionType == null)
         {
             return null;
@@ -68,13 +75,18 @@ public class CoraDataSourceGenerator(IServiceProvider services)
         return Activator.CreateInstance(Info.OptionType);
     }
 
-    public IDataSourceCustomSettingsContext? CreateCustomSettings()
+    public CustomSettingsContext? CreateSettingsContext()
     {
-        if (Info.OptionType == null)
+        ArgumentNullException.ThrowIfNull(Info);
+
+        if (Info.OptionType == null || Info.SettingsContextType == null)
         {
             return null;
         }
-        return Activator.CreateInstance(Info.OptionType) as IDataSourceCustomSettingsContext;
+        var option = CreateCustomOption();
+        var settingsContext = Activator.CreateInstance(Info.SettingsContextType) as CustomSettingsContext;
+        settingsContext?.Initialize(services, option);
+        return settingsContext;
     }
 
     /// <summary>
@@ -86,6 +98,7 @@ public class CoraDataSourceGenerator(IServiceProvider services)
     /// <returns><see cref="string"/>DataSource Context Full Name</returns>
     public string? GetDataSourceFullName()
     {
+        ArgumentNullException.ThrowIfNull(Info);
         ArgumentNullException.ThrowIfNull(Info.DataSourceType);
 
         return Info.DataSourceType.FullName;
@@ -99,6 +112,7 @@ public class CoraDataSourceGenerator(IServiceProvider services)
     /// <returns><see cref="string"/>DataSource context assembly name</returns>
     public string? GetAssemblyName()
     {
+        ArgumentNullException.ThrowIfNull(Info);
         ArgumentNullException.ThrowIfNull(Info.DataSourceType);
 
         return Info.DataSourceType.Assembly.GetName().Name;
@@ -116,6 +130,8 @@ public class CoraDataSourceGenerator(IServiceProvider services)
     /// <returns><see cref="string"/>Default Title "Executable App"</returns>
     private string GenerateDefaultTitle()
     {
+        ArgumentNullException.ThrowIfNull(Info);
+
         string? defaultTitle = null;
         if (Info.LocalizedDefaultTitles != null)
         {
@@ -145,6 +161,8 @@ public class CoraDataSourceGenerator(IServiceProvider services)
     /// <returns><see cref="string"/>Name "Executable App DataSource"</returns>
     public string GetDisplayName()
     {
+        ArgumentNullException.ThrowIfNull(Info);
+
         string? name = null;
         if (Info.LocalizedNames != null)
         {
@@ -174,6 +192,8 @@ public class CoraDataSourceGenerator(IServiceProvider services)
     /// <returns><see cref="string"/>Description "DataSource for specifying executable apps."</returns>
     public string GetDisplayDescription()
     {
+        ArgumentNullException.ThrowIfNull(Info);
+
         string? description = null;
         if (Info.LocalizedDescriptions != null)
         {

@@ -13,6 +13,7 @@ namespace Corathing.Contracts.Entries;
 /// </summary>
 public interface ICoraWidgetInfo
 {
+    ICoraPackageInfo CoraPackageInfo { get; }
     // Types
     public Type WidgetContextType { get; }
     public Type WidgetCustomSettingsType { get; }
@@ -50,6 +51,7 @@ public interface ICoraWidgetInfo
 /// </summary>
 public class CoraWidgetInfo : ICoraWidgetInfo
 {
+    public ICoraPackageInfo CoraPackageInfo { get; set; }
     // Types
     public Type WidgetContextType { get; set; }
     public Type WidgetCustomSettingsType { get; set; }

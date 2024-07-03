@@ -8,14 +8,14 @@ namespace Corathing.Contracts.Bases;
 
 public interface IDataSourceCoreState
 {
-    string TypeName { get; }
-    string Title { get; }
+    string? TypeName { get; }
+    string? Title { get; }
 }
 
 public class DataSourceCoreState
 {
-    public string TypeName { get; set; }
-    public string Title { get; set; }
+    public string? TypeName { get; set; }
+    public string? Title { get; set; }
 }
 
 public interface IDataSourceState : IEntity

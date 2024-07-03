@@ -32,7 +32,8 @@ namespace Corathing.Widgets.Basics.Widgets.Calendars;
     description: "Provides a calendar widget.",
     name: "Create Calendar",
     menuPath: "Default/Calendar",
-    menuOrder: 0
+    menuOrder: 0,
+    visibleTitle: false
     )]
 public partial class CalendarWidgetViewModel : WidgetContext
 {
@@ -42,17 +43,8 @@ public partial class CalendarWidgetViewModel : WidgetContext
     [ObservableProperty]
     private string? _fileType;
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="OneByOneViewModel"/> class.
-    /// </summary>
-    public CalendarWidgetViewModel(
-        IServiceProvider services, WidgetState state)
-        : base(services, state)
+    public override void OnStateChanged(WidgetState state)
     {
-        ILocalizationService localizationService = services.GetService<ILocalizationService>();
-        localizationService.Provide("Corathing.Widgets.Basics.CalendarName", value => WidgetTitle = value);
-        VisibleTitle = false;
-
         var x = new DataTemplate()
         {
             DataType = typeof(CalendarWidgetViewModel),

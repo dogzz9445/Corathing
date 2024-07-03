@@ -8,6 +8,8 @@
 - [ ] (WidgetSystem) DataSourceContext 에서 OnMessage 구현하기
 - [ ] (WidgetSystem) WidgetContext 에서 OnMessage 구현하기 
 - [ ] (Organizer) Navigation 서비스 구현
+- [ ] (Contracts) AssemblyCoraPackageIconAttribute 추가
+- [ ] (Contracts) ArgumentCastNullException 추가
 
 ## Doing
 - [ ] (WidgetSystem) DataSourceService 구현

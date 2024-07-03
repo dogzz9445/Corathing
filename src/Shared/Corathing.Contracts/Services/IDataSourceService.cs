@@ -16,6 +16,8 @@ public interface IDataSourceService
     void RemoveAllDataSourceContexts<T>();
     void RemoveDataSourceContext<T>(T dataSourceContext) where T : DataSourceContext;
 
+    IEnumerable<DataSourceContext> GetAllDataSourceContexts(Type? dataSourceContext);
+
     // Data Sources
     T? GetDataSourceContext<T>(Guid? dataSourceStateId) where T : DataSourceContext;
 }

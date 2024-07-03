@@ -26,7 +26,7 @@ public class WebSessionDataSourceContext : DataSourceContext, IDataSourceContext
         throw new NotImplementedException();
     }
 
-    public void Update(DataSourceState state)
+    public void Apply(DataSourceState state)
     {
         throw new NotImplementedException();
     }

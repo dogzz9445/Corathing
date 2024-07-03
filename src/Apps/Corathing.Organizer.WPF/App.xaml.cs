@@ -114,7 +114,7 @@ public partial class App : Application
         // Available Widgets
         // --------------------------------------------------------------------------
         IPackageService packageService = Services.GetService<IPackageService>();
-        packageService.LoadWidgetsFromDLL("Corathing.Widgets.Basics.dll");
+        packageService.LoadDLL("Corathing.Widgets.Basics.dll");
         //widgetService.LoadWidgetsFromDLL("DDT.Core.WidgetSystems.DefaultWidgets.dll");
         //widgetService.RegisterWidgets(new List<WidgetGenerator> { new WidgetGenerator() });
 
@@ -180,6 +180,7 @@ public partial class App : Application
         serviceCollection.AddSingleton<IApplicationService, ApplicationService>();
         serviceCollection.AddSingleton<IAppStateService, AppStateService>();
         serviceCollection.AddSingleton<IAuthService, AuthService>();
+        serviceCollection.AddSingleton<IDataSourceService, DataSourceService>();
         serviceCollection.AddSingleton<IDialogService, DialogService>();
         serviceCollection.AddSingleton<ILocalizationService>(LocalizationService.Instance);
         serviceCollection.AddSingleton<INavigationService, NavigationService>();
@@ -203,12 +204,13 @@ public partial class App : Application
         // --------------------------------------------------------------------------
         // Register views and viewmodels
         // --------------------------------------------------------------------------
+        serviceCollection.AddScoped<PackageManagementViewModel>();
         serviceCollection.AddScoped<OrganizerSettingsView>();
         serviceCollection.AddScoped<OrganizerSettingsViewModel>();
         serviceCollection.AddScoped<WidgetSettingsViewModel>();
         serviceCollection.AddScoped<ProjectSettingsViewModel>();
         serviceCollection.AddScoped<WorkflowSettingsViewModel>();
-        serviceCollection.AddScoped<DataSourceContextSettingsViewModel>();
+        serviceCollection.AddScoped<DataSourceSettingsViewModel>();
         serviceCollection.AddTransient<ProjectContext>();
         serviceCollection.AddTransient<ProjectSettingsContext>();
         serviceCollection.AddTransient<WorkflowContext>();

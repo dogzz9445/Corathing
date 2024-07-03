@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -34,22 +35,23 @@ namespace Corathing.Widgets.Basics.Widgets.FileOpeners;
 public partial class FileOpenerWidgetContext : WidgetContext
 {
     [ObservableProperty]
+    private FileOpenType _openType = FileOpenType.Files;
+
+    [ObservableProperty]
     private ObservableCollection<string>? _filePaths;
 
     [ObservableProperty]
-    private ObservableCollection<string>? _fileType;
+    private ObservableCollection<string>? _folderPaths;
 
     [ObservableProperty]
     private ExecutableAppDataSourceContext _executableAppDataSourceContext;
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="OneByOneViewModel"/> class.
-    /// </summary>
-    public FileOpenerWidgetContext(
-        IServiceProvider services, WidgetState state)
-        : base(services, state)
+    public override void OnCreate(WidgetState state)
     {
-        ILocalizationService localizationService = services.GetService<ILocalizationService>();
+        FilePaths = new ObservableCollection<string>();
+        FolderPaths = new ObservableCollection<string>();
+
+        ILocalizationService localizationService = _services.GetService<ILocalizationService>();
         localizationService.Provide("Corathing.Widgets.Basics.FileOpenerName", value =>
         {
             DefaultTitle = value;
@@ -62,23 +64,61 @@ public partial class FileOpenerWidgetContext : WidgetContext
 
     public override void OnStateChanged(WidgetState state)
     {
-        if (state.CustomSettings is not FileOpenerOption customSettings)
+        if (state.CustomSettings is not FileOpenerOption option)
         {
             return;
         }
-        //FilePath = customSettings.Files;
-        //FileType = customSettings.FileType;
-        if (customSettings.ExecutableAppDataSourceId != Guid.Empty)
+        OpenType = option.OpenType;
+
+        FilePaths.Clear();
+        if (option.Files != null)
+        {
+            foreach (var file in option.Files)
+            {
+                FilePaths.Add(file);
+            }
+        }
+
+        if (option.ExecutableAppDataSourceId != null && option.ExecutableAppDataSourceId != Guid.Empty)
         {
             var dataSourceService = _services.GetRequiredService<IDataSourceService>();
-            ExecutableAppDataSourceContext = dataSourceService.GetDataSourceContext<ExecutableAppDataSourceContext>(customSettings.ExecutableAppDataSourceId);
+            ExecutableAppDataSourceContext = dataSourceService.GetDataSourceContext<ExecutableAppDataSourceContext>(option.ExecutableAppDataSourceId);
         }
+    }
+
+    public override void OnDestroy()
+    {
+        // TODO:
+        // Remove localization services
+        //ILocalizationService localizationService = _services.GetService<ILocalizationService>();
+        //localizationService.Provide("Corathing.Widgets.Basics.FileOpenerName", value =>
+        //);
     }
 
     [RelayCommand]
     public void Execute()
     {
-
+        if (ExecutableAppDataSourceContext != null)
+        {
+            ExecutableAppDataSourceContext.Execute(FilePaths.ToList());
+        }
+        else
+        {
+            if (OpenType == FileOpenType.Files)
+            {
+                foreach (var file in FilePaths)
+                {
+                    Process.Start(file);
+                }
+            }
+            else if (OpenType == FileOpenType.Folders)
+            {
+                foreach (var folder in FolderPaths)
+                {
+                    Process.Start("explorer.exe", folder);
+                }
+            }
+        }
     }
 
     [RelayCommand]

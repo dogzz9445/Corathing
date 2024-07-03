@@ -15,6 +15,8 @@
       mc:Ignorable="d"
       d:DesignHeight="800"
       d:DesignWidth="800"
+      d:DataContext="{d:DesignInstance viewmodels:WidgetSettingsViewModel,
+        IsDesignTimeCreatable=False}"
       Margin="16"
       Title="WidgetSettingsView">
     <Page.Resources>
@@ -136,13 +138,13 @@
             <ui:TextBlock Margin="16,0,0,0"
                           VerticalAlignment="Top"
                           FontTypography="Title"
-                          Text="Manage Widget" />
+                          Text="{localizations:Localization Corathing.Organizer.WidgetSettingsTitle}" />
 
             <ui:Button HorizontalAlignment="Right"
                        Margin="0,0,16,0"
                        Appearance="Primary"
                        Command="{Binding ApplyCommand}"
-                       Content="Apply"
+                       Content="{localizations:Localization Corathing.Organizer.Apply}"
                        Icon="Checkmark24"
                        Height="40" />
 
@@ -167,7 +169,7 @@
                         FocusVisualStyle="{x:Null}">
                 <ui:TextBlock Margin="0,16,0,8"
                               FontTypography="BodyStrong"
-                              Text="위젯 설정" />
+                              Text="{localizations:Localization Corathing.Organizer.WidgetSettingsTitle}" />
 
                 <!-- 이름 설정 -->
                 <ui:CardControl Margin="0,8,0,8"
@@ -180,7 +182,7 @@
                             </Grid.RowDefinitions>
                             <ui:TextBlock Grid.Row="0"
                                           FontTypography="Body"
-                                          Text="위젯 이름" />
+                                          Text="{localizations:Localization Corathing.Organizer.Name}" />
                             <ui:TextBox Grid.Row="1"
                                         Text="{Binding TempWidgetContext.WidgetTitle, UpdateSourceTrigger=PropertyChanged}" />
                         </Grid>
@@ -201,7 +203,7 @@
                             </Grid.ColumnDefinitions>
                             <ui:TextBlock Grid.Column="0"
                                           FontTypography="Body"
-                                          Text="위젯 이름 표시" />
+                                          Text="{localizations:Localization Corathing.Organizer.ShowWidgetName}" />
                             <CheckBox Grid.Column="1"
                                       IsChecked="{Binding TempWidgetContext.VisibleTitle}"/>
                         </Grid>

@@ -24,20 +24,28 @@ public class CoraPackageGenerator
         Widgets = new List<CoraWidgetGenerator>();
     }
 
-
     /// <summary>
     /// TODO:
     /// PackageState 가 이미 설정 파일에 정의 되어있을 경우에
     /// 대한 처리가 필요함
     /// </summary>
-    /// <param name=""></param>
+    /// <param name="state"></param>
     /// <returns></returns>
-    public PackageState GetOrCreateState(PackageState? state = null)
+    public PackageState GetOrCreateState()
     {
         if (_cachedPackageState != null)
             return _cachedPackageState;
 
-        return new PackageState();
+        _cachedPackageState = new PackageState()
+        {
+            Id = Guid.NewGuid(),
+            AssemblyName = GetAssemblyName(),
+            AssemblyVersion = GetAssemblyVersion(),
+            Title = PackageInfo.Name,
+            Description = PackageInfo.Description,
+        };
+
+        return _cachedPackageState;
     }
 
     public PackageReferenceState GetOrCreateReferenceState()

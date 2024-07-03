@@ -1,36 +1,28 @@
-﻿<Page x:Class="Corathing.Organizer.WPF.Views.ProjectSettingsView"
+﻿<Page x:Class="Corathing.Organizer.WPF.Views.DataSourceSettingsView"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:local="clr-namespace:Corathing.Organizer.WPF.Views"
-      xmlns:models="clr-namespace:Corathing.Organizer.WPF.Models"
       xmlns:viewmodels="clr-namespace:Corathing.Organizer.WPF.ViewModels"
       xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+      xmlns:controls="clr-namespace:Corathing.Dashboards.WPF.Controls;assembly=Corathing.Dashboards.WPF"
+      xmlns:converters="clr-namespace:Corathing.Dashboards.WPF.Converters;assembly=Corathing.Dashboards.WPF"
+      xmlns:datacontexts="clr-namespace:Corathing.Contracts.DataContexts;assembly=Corathing.Contracts"
       xmlns:localizations="clr-namespace:Corathing.Dashboards.WPF.Bindings;assembly=Corathing.Dashboards.WPF"
       mc:Ignorable="d"
-      Margin="16"
-      d:Height="800"
-      d:Width="800"
-      Background="{DynamicResource ApplicationBackgroundBrush}"
-      Foreground="{DynamicResource TextFillColorPrimaryBrush}"
-      d:DataContext="{d:DesignInstance viewmodels:ProjectSettingsViewModel,
+      d:DesignHeight="800"
+      d:DesignWidth="800"
+      d:DataContext="{d:DesignInstance viewmodels:DataSourceSettingsViewModel,
                         IsDesignTimeCreatable=False}"
-      Title="ProjectSettingsView">
-    <Page.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="pack://application:,,,/Corathing.Organizer.WPF;component/Styles/CustomStyles.xaml" />
-            </ResourceDictionary.MergedDictionaries>
-            <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
-        </ResourceDictionary>
-    </Page.Resources>
+      Margin="16"
+      Title="DataContextSettingsView">
 
     <DockPanel LastChildFill="True">
         <DockPanel DockPanel.Dock="Top"
-                    Margin="0, 10, 0, 0"
-                    VerticalAlignment="Top"
-                    Height="48">
+                   Margin="0, 10, 0, 0"
+                   VerticalAlignment="Top"
+                   Height="48">
             <ui:Button VerticalAlignment="Top"
                        Command="{Binding GoBackCommand}"
                        CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, 
@@ -42,7 +34,7 @@
             <ui:TextBlock Margin="16,0,0,0"
                           VerticalAlignment="Top"
                           FontTypography="Title"
-                          Text="{localizations:Localization Corathing.Organizer.ProjectSettingsTitle}" />
+                          Text="{localizations:Localization Corathing.Organizer.DataSourceSettingsTitle}" />
 
             <ui:Button HorizontalAlignment="Right"
                        Margin="0,0,16,0"
@@ -63,17 +55,17 @@
                         HorizontalAlignment="Right">
                 <ui:Button HorizontalAlignment="Right"
                            Appearance="Primary"
-                           Command="{Binding AddProjectCommand}"
-                           Content="{localizations:Localization Corathing.Organizer.AddProject}"
+                           Command="{Binding AddDataSourceCommand}"
+                           Content="{localizations:Localization Corathing.Organizer.AddDataSource}"
                            Icon="Add24"
                            Height="40" />
             </StackPanel>
             <ScrollViewer FocusVisualStyle="{x:Null}">
                 <ListBox Background="{DynamicResource ControlBackground}"
-                         ItemsSource="{Binding ProjectSettingsContexts}"
-                         SelectedItem="{Binding SelectedProjectContext}">
+                         ItemsSource="{Binding DataSourceContexts}"
+                         SelectedItem="{Binding SelectedContext}">
                     <ListBox.ItemTemplate>
-                        <DataTemplate DataType="{x:Type models:ProjectSettingsContext}">
+                        <DataTemplate DataType="{x:Type datacontexts:DataSourceContext}">
                             <StackPanel>
                                 <TextBlock Text="{Binding Name}" />
                             </StackPanel>
@@ -82,15 +74,22 @@
                 </ListBox>
             </ScrollViewer>
         </DockPanel>
-
-        <Separator DockPanel.Dock="Left" />
+        <DockPanel DockPanel.Dock="Left"
+                   Width="375"
+                   Margin="16,16,8,8">
+            <ListView ItemsSource="{Binding}"
+                      SelectedItem="{Binding SelectedContext}">
+                
+            </ListView>
+        </DockPanel>
 
         <ScrollViewer FocusVisualStyle="{x:Null}">
+
             <StackPanel Margin="8,8,16,8"
                         FocusVisualStyle="{x:Null}">
                 <ui:TextBlock Margin="0,16,0,8"
                               FontTypography="BodyStrong"
-                              Text="{localizations:Localization Corathing.Organizer.ProjectSettingsTitle}" />
+                              Text="{localizations:Localization Corathing.Organizer.DataSourceSettingsTitle}" />
 
                 <!-- 이름 설정 -->
                 <ui:CardControl Margin="0,8,0,8"
@@ -105,11 +104,14 @@
                                           FontTypography="Body"
                                           Text="{localizations:Localization Corathing.Organizer.Name}" />
                             <ui:TextBox Grid.Row="1"
-                                        Text="{Binding SelectedProjectContext.Name, UpdateSourceTrigger=PropertyChanged}" />
+                                        Text="{Binding TempWidgetContext.WidgetTitle, UpdateSourceTrigger=PropertyChanged}" />
                         </Grid>
                     </ui:CardControl.Header>
                 </ui:CardControl>
-                
+
+                <ContentPresenter Content="{Binding TempCustomSettingsContext}"
+                                  DataContext="{Binding TempCustomSettingsContext}" />
+
             </StackPanel>
         </ScrollViewer>
     </DockPanel>

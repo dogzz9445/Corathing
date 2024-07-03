@@ -35,14 +35,11 @@ namespace Corathing.Widgets.Basics.Widgets.Commanders
     {
         private string? _filePath;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="OneByOneViewModel"/> class.
-        /// </summary>
-        public CommanderWidgetViewModel(IServiceProvider services, WidgetState state) : base(services, state)
-        {
-            ILocalizationService localizationService = services.GetService<ILocalizationService>();
-            localizationService.Provide("Corathing.Widgets.Basics.CommanderName", value => WidgetTitle = value);
-        }
+        //public CommanderWidgetViewModel(IServiceProvider services, WidgetState state) : base(services, state)
+        //{
+        //    ILocalizationService localizationService = services.GetService<ILocalizationService>();
+        //    localizationService.Provide("Corathing.Widgets.Basics.CommanderName", value => WidgetTitle = value);
+        //}
     }
 
     /// <summary>

@@ -87,6 +87,9 @@ public class AppStateService : IAppStateService
             return _cachedAppSettings;
 
         ReadOrCreateAppSettingsFromAppPath().Wait();
+
+        ArgumentNullException.ThrowIfNull(_cachedAppSettings);
+
         return _cachedAppSettings;
     }
 
@@ -108,6 +111,8 @@ public class AppStateService : IAppStateService
         if (_cachedAppPreferenceState != null)
             return _cachedAppPreferenceState;
 
+        ArgumentNullException.ThrowIfNull(_cachedAppPreferenceState);
+
         // FIXME:
         // 없을 경우 Read 하도록
         return _cachedAppPreferenceState;
@@ -117,6 +122,8 @@ public class AppStateService : IAppStateService
     {
         if (_cachedAppPackageState != null)
             return _cachedAppPackageState;
+
+        ArgumentNullException.ThrowIfNull(_cachedAppPackageState);
 
         // FIXME:
         // 없을 경우 Read 하도록
@@ -128,9 +135,30 @@ public class AppStateService : IAppStateService
         if (_cachedAppDashboardState != null)
             return _cachedAppDashboardState;
 
+        ArgumentNullException.ThrowIfNull(_cachedAppDashboardState);
         // FIXME:
         // 없을 경우 Read 하도록
         return _cachedAppDashboardState;
+    }
+
+    public bool TryGetPackage(Guid id, out PackageState package)
+    {
+        if (_cachedAppPackageState == null)
+            ReadOrCreateAppStateByAppSettings().Wait();
+
+        ArgumentNullException.ThrowIfNull(_cachedAppDashboardState);
+
+        return _cachedAppPackageState.CachedPackages.TryGetValue(id, out package);
+    }
+
+    public bool TryGetDataSource(Guid id, out DataSourceState dataSource)
+    {
+        if (_cachedAppPackageState == null)
+            ReadOrCreateAppStateByAppSettings().Wait();
+
+        ArgumentNullException.ThrowIfNull(_cachedAppDashboardState);
+
+        return _cachedAppDashboardState.CachedDataSources.TryGetValue(id, out dataSource);
     }
 
     public bool TryGetProject(Guid id, out ProjectState project)
@@ -138,7 +166,9 @@ public class AppStateService : IAppStateService
         if (_cachedAppDashboardState == null)
             ReadOrCreateAppStateByAppSettings().Wait();
 
-        return _cachedAppDashboardState.CashedProjects.TryGetValue(id, out project);
+        ArgumentNullException.ThrowIfNull(_cachedAppDashboardState);
+
+        return _cachedAppDashboardState.CachedProjects.TryGetValue(id, out project);
     }
 
     public bool TryGetWorkflow(Guid id, out WorkflowState workflow)
@@ -146,7 +176,9 @@ public class AppStateService : IAppStateService
         if (_cachedAppDashboardState == null)
             ReadOrCreateAppStateByAppSettings().Wait();
 
-        return _cachedAppDashboardState.CashedWorkflows.TryGetValue(id, out workflow);
+        ArgumentNullException.ThrowIfNull(_cachedAppDashboardState);
+
+        return _cachedAppDashboardState.CachedWorkflows.TryGetValue(id, out workflow);
     }
 
     public bool TryGetWidget(Guid id, out WidgetState widget)
@@ -154,53 +186,63 @@ public class AppStateService : IAppStateService
         if (_cachedAppDashboardState == null)
             ReadOrCreateAppStateByAppSettings().Wait();
 
-        return _cachedAppDashboardState.CashedWidgets.TryGetValue(id, out widget);
+        ArgumentNullException.ThrowIfNull(_cachedAppDashboardState);
+
+        return _cachedAppDashboardState.CachedWidgets.TryGetValue(id, out widget);
+    }
+
+    public async void UpdatePackage(PackageState package)
+    {
+        if (_cachedAppPackageState == null)
+            await ReadOrCreateAppStateByAppSettings();
+
+        _cachedAppPackageState?.UpdatePackage(package);
+
+        await PendingWriteAppState();
+    }
+
+    public async void UpdateDataSource(DataSourceState dataSource)
+    {
+        if (_cachedAppPackageState == null)
+            await ReadOrCreateAppStateByAppSettings();
+
+        _cachedAppDashboardState?.UpdateDataSource(dataSource);
+
+        await PendingWriteAppState();
     }
 
     public async void UpdateProject(ProjectState project)
     {
+        ArgumentNullException.ThrowIfNull(project);
+
         if (_cachedAppDashboardState == null)
             await ReadOrCreateAppStateByAppSettings();
 
-        if (project == null)
-        {
-            MessageBox.Show("Project is null");
-            return;
-        }
-
-        _cachedAppDashboardState.UpdateProject(project);
+        _cachedAppDashboardState?.UpdateProject(project);
 
         await PendingWriteAppState();
     }
 
     public async void UpdateWorkflow(WorkflowState workflow)
     {
+        ArgumentNullException.ThrowIfNull(workflow);
+
         if (_cachedAppDashboardState == null)
             await ReadOrCreateAppStateByAppSettings();
 
-        if (workflow == null)
-        {
-            MessageBox.Show("Workflow is null");
-            return;
-        }
-
-        _cachedAppDashboardState.UpdateWorkflow(workflow);
+        _cachedAppDashboardState?.UpdateWorkflow(workflow);
 
         await PendingWriteAppState();
     }
 
     public async void UpdateWidget(WidgetState widget)
     {
+        ArgumentNullException.ThrowIfNull(widget);
+
         if (_cachedAppDashboardState == null)
             await ReadOrCreateAppStateByAppSettings();
 
-        if (widget == null)
-        {
-            MessageBox.Show("Widget is null");
-            return;
-        }
-
-        _cachedAppDashboardState.UpdateWidget(widget);
+        _cachedAppDashboardState?.UpdateWidget(widget);
 
         await PendingWriteAppState();
     }
@@ -208,14 +250,14 @@ public class AppStateService : IAppStateService
     public ProjectState CreateAddProject()
     {
         var project = ProjectState.Create();
-        _cachedAppDashboardState.UpdateProject(project);
+        _cachedAppDashboardState?.UpdateProject(project);
         return project;
     }
 
     public WorkflowState CreateAddWorkflow()
     {
         var workflow = WorkflowState.Create();
-        _cachedAppDashboardState.UpdateWorkflow(workflow);
+        _cachedAppDashboardState?.UpdateWorkflow(workflow);
         return workflow;
     }
 
@@ -256,13 +298,57 @@ public class AppStateService : IAppStateService
     {
         var cloneWorkflow = WorkflowState.Create();
 
-        _cachedAppDashboardState.UpdateWorkflow(cloneWorkflow);
+        _cachedAppDashboardState?.UpdateWorkflow(cloneWorkflow);
         return cloneWorkflow;
     }
 
-    public void RemoveProject(Guid projectid)
+    public void RemovePackage(Guid packageId, bool removeReferencedWidgets = false)
     {
-        if (!TryGetProject(projectid, out var project))
+        if (!TryGetPackage(packageId, out var package))
+        {
+            // TODO:
+            // Change Exception Type
+            throw new Exception();
+        }
+        RemovePackage(package, removeReferencedWidgets);
+    }
+
+    public async void RemovePackage(PackageState package, bool removeReferencedWidgets = false)
+    {
+        if (removeReferencedWidgets)
+        {
+            GetAppDashboardState()
+                .Widgets
+                .Where(w => w.PackageReference.PackageId == package.Id)
+                .ToList()
+                .ForEach(RemoveWidget);
+        }
+        _cachedAppPackageState?.RemovePackage(package);
+
+        await PendingWriteAppState();
+    }
+
+    public void RemoveDataSource(Guid dataSourceId)
+    {
+        if (!TryGetDataSource(dataSourceId, out var dataSource))
+        {
+            // TODO:
+            // Change Exception Types
+            throw new Exception();
+        }
+        RemoveDataSource(dataSource);
+    }
+
+    public async void RemoveDataSource(DataSourceState dataSource)
+    {
+        _cachedAppDashboardState?.RemoveDataSource(dataSource);
+
+        await PendingWriteAppState();
+    }
+
+    public void RemoveProject(Guid projectId)
+    {
+        if (!TryGetProject(projectId, out var project))
         {
             // TODO:
             // Change Exception Type;
@@ -277,7 +363,7 @@ public class AppStateService : IAppStateService
         {
             RemoveWorkflow(workflowId);
         }
-        _cachedAppDashboardState.RemoveProject(project);
+        _cachedAppDashboardState?.RemoveProject(project);
 
         await PendingWriteAppState();
     }
@@ -299,7 +385,7 @@ public class AppStateService : IAppStateService
         {
             RemoveWidget(widgetId);
         }
-        _cachedAppDashboardState.RemoveWorkflow(workflow);
+        _cachedAppDashboardState?.RemoveWorkflow(workflow);
 
         await PendingWriteAppState();
     }
@@ -317,7 +403,7 @@ public class AppStateService : IAppStateService
 
     public async void RemoveWidget(WidgetState widget)
     {
-        _cachedAppDashboardState.RemoveWidget(widget);
+        _cachedAppDashboardState?.RemoveWidget(widget);
 
         await PendingWriteAppState();
     }
@@ -342,7 +428,7 @@ public class AppStateService : IAppStateService
     }
 
 
-    private async Task<AppSettings> ReadOrCreateAppSettingsFromAppPath()
+    private async Task<AppSettings?> ReadOrCreateAppSettingsFromAppPath()
     {
         if (!File.Exists(AppSettingsFilename))
         {
@@ -402,9 +488,9 @@ public class AppStateService : IAppStateService
             _cachedAppDashboardState = AppDashboardStateFactory.Create();
 
             JsonNode rootNode = JsonNode.Parse(AppStateJsonDomBase);
-            rootNode["Preferences"].ReplaceWith(_cachedAppPreferenceState);
-            rootNode["Packages"].ReplaceWith(_cachedAppPackageState);
-            rootNode["Dashboards"].ReplaceWith(_cachedAppDashboardState);
+            rootNode["Preferences"]?.ReplaceWith(_cachedAppPreferenceState);
+            rootNode["Packages"]?.ReplaceWith(_cachedAppPackageState);
+            rootNode["Dashboards"]?.ReplaceWith(_cachedAppDashboardState);
 
             await File.WriteAllTextAsync(path, rootNode.ToJsonString(_serializerOptions));
         }
@@ -430,7 +516,8 @@ public class AppStateService : IAppStateService
                 .GetProperty("Dashboards")
                 .Deserialize<AppDashboardState>();
 
-            _cachedAppDashboardState.RefreshCache();
+            _cachedAppPackageState?.RefreshCache();
+            _cachedAppDashboardState?.RefreshCache();
         }
         _isReading = false;
     }

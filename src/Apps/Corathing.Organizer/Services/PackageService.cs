@@ -4,6 +4,7 @@ using System.IO.Compression;
 using System.Linq;
 using System.Reflection;
 using System.Resources;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -26,17 +27,19 @@ namespace Corathing.Organizer.Services;
 
 public class PackageService : IPackageService
 {
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Minor Code Smell", "S1075:URIs should not be hardcoded", Justification = "<Pending>")]
+    private const string DefaultNugetFeedUrl = "https://api.nuget.org/v3/index.json";
     /// <summary>
     /// Gets or sets the available widgets.
     /// </summary>
     /// <value>The available widgets.</value>
-    private readonly Dictionary<string, CoraPackageInfo> _packageInfos;
+
+    // Keys are Assembly Name
+    private readonly Dictionary<string, ICoraPackageInfo> _packageInfos;
     private readonly Dictionary<string, CoraPackageGenerator> _packageGenerators;
-
-    private readonly Dictionary<string, CoraWidgetInfo> _widgetInfos;
+    private readonly Dictionary<string, ICoraWidgetInfo> _widgetInfos;
     private readonly Dictionary<string, CoraWidgetGenerator> _widgetGenerators;
-
-    private readonly Dictionary<string, CoraDataSourceInfo> _dataSourceInfos;
+    private readonly Dictionary<string, ICoraDataSourceInfo> _dataSourceInfos;
     private readonly Dictionary<string, CoraDataSourceGenerator> _dataSourceGenerator;
 
     private readonly IServiceProvider _services;
@@ -48,12 +51,13 @@ public class PackageService : IPackageService
         _services = services;
 
         // FIXME:
+        // NullLogger 인데 커스텀 로거를 사용해야함
         _nugetLogger = new NuGet.Common.NullLogger();
-        _packageInfos = new Dictionary<string, CoraPackageInfo>();
+        _packageInfos = new Dictionary<string, ICoraPackageInfo>();
         _packageGenerators = new Dictionary<string, CoraPackageGenerator>();
-        _widgetInfos = new Dictionary<string, CoraWidgetInfo>();
+        _widgetInfos = new Dictionary<string, ICoraWidgetInfo>();
         _widgetGenerators = new Dictionary<string, CoraWidgetGenerator>();
-        _dataSourceInfos = new Dictionary<string, CoraDataSourceInfo>();
+        _dataSourceInfos = new Dictionary<string, ICoraDataSourceInfo>();
         _dataSourceGenerator = new Dictionary<string, CoraDataSourceGenerator>();
     }
 
@@ -66,8 +70,10 @@ public class PackageService : IPackageService
     /// <summary>
     /// <inheritdoc/>
     /// </summary>
-    public void LoadWidgetsFromDLL(string pathDLL)
+    public void LoadDLL(string pathDLL)
     {
+        // FIXME:
+        // Exception 처리 필요
         Assembly assembly = Assembly.LoadFrom(pathDLL);
         LoadAssembly(assembly);
     }
@@ -75,14 +81,25 @@ public class PackageService : IPackageService
     /// <summary>
     /// <inheritdoc/>
     /// </summary>
-    public void LoadWidgetsFromNuget(string id, string version, string? nugetFeedUrl = null)
+    public void LoadNugetFromFile(string pathNugetFile)
     {
+        var assembly = LoadAssemblyFromNugetFile(pathNugetFile);
+        LoadAssembly(assembly);
+    }
+
+    /// <summary>
+    /// <inheritdoc/>
+    /// </summary>
+    public async Task LoadNugetFromWebAsync(string id, string version, string? nugetFeedUrl = null)
+    {
+        if (nugetFeedUrl == null)
+            nugetFeedUrl = DefaultNugetFeedUrl;
         //bool cacheHasFinded = false;
         //var assembly = FindLocalPackagesResource();
         //if (cacheHasFinded)
         //{
         //}
-        var assembly = LoadAssemblyFromNugetWebAsymc(id, version, nugetFeedUrl).Result;
+        var assembly = await LoadAssemblyFromNugetWebAsync(id, version, nugetFeedUrl);
         //var assembly = LoadAssemblyFromNugetFile(id, version, nugetFeedUrl).Result;
         LoadAssembly(assembly);
     }
@@ -90,55 +107,11 @@ public class PackageService : IPackageService
     /// <summary>
     /// <inheritdoc/>
     /// </summary>
-    public void UnloadAssembly(PackageState packageState)
+    public void UnloadAssembly(Guid packageId)
     {
+        //_packageInfos.Remove(packageId.ToString());
+        //_packageGenerators.Remove(packageId.ToString());
 
-    }
-
-    /// <summary>
-    /// <inheritdoc/>
-    /// </summary>
-    public List<ICoraWidgetInfo> GetAvailableWidgets()
-    {
-        return _widgetGenerators.Values.Select(generator => generator.Info).ToList();
-    }
-
-    /// <summary>
-    /// <inheritdoc/>
-    /// </summary>
-    public List<CoraWidgetGenerator> GetWidgetGenerators()
-    {
-        return _widgetGenerators.Values.ToList();
-    }
-
-    /// <summary>
-    /// <inheritdoc/>
-    /// </summary>
-    public WidgetContext CreateWidgetContext(string contextTypeFullName)
-    {
-        if (!_widgetGenerators.TryGetValue(contextTypeFullName, out var widgetContext))
-            return null;
-        return widgetContext.CreateWidget();
-    }
-
-    /// <summary>
-    /// <inheritdoc/>
-    /// </summary>
-    public Type? GetCustomSettingsType(string contextTypeFullName)
-    {
-        if (!_widgetGenerators.TryGetValue(contextTypeFullName, out var widgetContext))
-            return null;
-        return widgetContext.Info.WidgetCustomSettingsType;
-    }
-
-    /// <summary>
-    /// <inheritdoc/>
-    /// </summary>
-    public IWidgetCustomSettingsContext? CreateWidgetSettingsContext(string contextTypeFullName)
-    {
-        if (!_widgetGenerators.TryGetValue(contextTypeFullName, out var widgetContext))
-            return null;
-        return widgetContext.CreateSettingsContext();
     }
 
     /// <summary>
@@ -162,6 +135,97 @@ public class PackageService : IPackageService
         return generator.GetOrCreateReferenceState();
     }
 
+    /// <summary>
+    /// <inheritdoc/>
+    /// </summary>
+    public List<ICoraDataSourceInfo> GetAvailableDataSources()
+    {
+        return _dataSourceInfos.Values.Select(item => item).ToList();
+    }
+
+    /// <summary>
+    /// <inheritdoc/>
+    /// </summary>
+    public DataSourceContext? CreateDataSourceContext(string contextTypeFullName)
+    {
+        if (!_dataSourceGenerator.TryGetValue(contextTypeFullName, out var dataSourceGenerator))
+            return null;
+        return dataSourceGenerator.CreateDataSource();
+    }
+
+    /// <summary>
+    /// <inheritdoc/>
+    /// </summary>
+    public Type? GetDataSourceCustomSettingsType(string contextTypeFullName)
+    {
+        if (!_dataSourceGenerator.TryGetValue(contextTypeFullName, out var dataSourceGenerator))
+            return null;
+        return dataSourceGenerator.Info.SettingsContextType;
+    }
+
+    /// <summary>
+    /// <inheritdoc/>
+    /// </summary>
+    public CustomSettingsContext? CreateDataSourceSettingsContext(string contextTypeFullName)
+    {
+        if (!_dataSourceGenerator.TryGetValue(contextTypeFullName, out var dataSourceGenerator))
+            return null;
+        return dataSourceGenerator.CreateSettingsContext();
+    }
+
+    /// <summary>
+    /// <inheritdoc/>
+    /// </summary>
+    public List<ICoraWidgetInfo> GetAvailableWidgets()
+    {
+        return _widgetGenerators.Values.Select(generator => generator.Info).ToList();
+    }
+
+    /// <summary>
+    /// <inheritdoc/>
+    /// </summary>
+    public List<CoraWidgetGenerator> GetWidgetGenerators()
+    {
+        return _widgetGenerators.Values.ToList();
+    }
+
+    /// <summary>
+    /// <inheritdoc/>
+    /// </summary>
+    public WidgetContext? CreateWidgetContext(string contextTypeFullName)
+    {
+        if (!_widgetGenerators.TryGetValue(contextTypeFullName, out var widgetContext))
+            return null;
+        return widgetContext.CreateWidget();
+    }
+
+    /// <summary>
+    /// <inheritdoc/>
+    /// </summary>
+    public Type? GetWidgetCustomSettingsType(string contextTypeFullName)
+    {
+        if (!_widgetGenerators.TryGetValue(contextTypeFullName, out var widgetContext))
+            return null;
+        return widgetContext.Info.WidgetCustomSettingsType;
+    }
+
+    /// <summary>
+    /// <inheritdoc/>
+    /// </summary>
+    public CustomSettingsContext? CreateWidgetSettingsContext(string contextTypeFullName)
+    {
+        if (!_widgetGenerators.TryGetValue(contextTypeFullName, out var widgetContext))
+            return null;
+        return widgetContext.CreateSettingsContext();
+    }
+
+    public Type? GetDataSourceSettingsContextType(string? contextTypeFullName)
+    {
+        if (!_dataSourceGenerator.TryGetValue(contextTypeFullName, out var dataSourceGenerator))
+            return null;
+        return dataSourceGenerator.Info.SettingsContextType;
+    }
+
 
     // ------------------------------------------------------------------------------------------------------
     //
@@ -169,7 +233,7 @@ public class PackageService : IPackageService
     //
     // ------------------------------------------------------------------------------------------------------
 
-    private void LoadAssembly(Assembly assembly)
+    private void LoadAssembly(Assembly? assembly)
     {
         ArgumentNullException.ThrowIfNull(assembly);
 
@@ -186,16 +250,32 @@ public class PackageService : IPackageService
 
         // 어셈블리의 정보로 PackageGenerator를 불러옴
         // Load Assembly PackageGenerator
-        var packageGenerator = LoadCoraPackageGenerator(assembly);
+        var packageInfo = LoadCoraPackageInfo(assembly);
+        var packageGenerator = LoadCoraPackageGenerator(assembly, packageInfo);
+        var assemblyName = packageGenerator.GetAssemblyName();
+        ArgumentException.ThrowIfNullOrEmpty(assemblyName);
+        _packageInfos.Add(assemblyName, packageInfo);
+        _packageGenerators.Add(assemblyName, packageGenerator);
 
+        // IAppStateService 에 이미 해당 패키지 정보가 등록되어있는지 확인
+        var appStateService = _services.GetRequiredService<IAppStateService>();
+        var packageState = packageGenerator.GetOrCreateState();
+        appStateService.UpdatePackage(packageState);
+
+        // 패키지의 리소스 매니저를 불러옴
         packageGenerator.GetResourceManagers().ForEach(resourceManager => localizationService
             .RegisterStringResourceManager(
                 packageGenerator.GetAssemblyName(),
                 resourceManager
             ));
 
+        // 패키지의 데이터 템플릿을 불러옴
         packageGenerator.GetDataTemplates().ForEach(uri =>
             resourceDictionaryService.RegisterResourceDictionary(uri));
+
+        // TODO:
+        // 20240702
+        var packageReferenceState = packageGenerator.GetOrCreateReferenceState();
 
         // 어셈블리의 DataSource 들을 불러옴
         // Load Assembly DataSources
@@ -204,12 +284,16 @@ public class PackageService : IPackageService
         // Load Cora DataSources
         foreach (var dataSourceType in dataSourceTypes)
         {
-            var generator = LoadCoraDataSourceGenerator(assembly, dataSourceType);
+            var info = LoadCoraDataSourceInfo(assembly, dataSourceType, packageInfo);
+            var generator = LoadCoraDataSourceGenerator(assembly, info);
             ArgumentNullException.ThrowIfNull(generator);
 
             string? dataSourceFullName = generator.GetDataSourceFullName();
             if (!string.IsNullOrEmpty(dataSourceFullName))
+            {
+                _dataSourceInfos.Add(dataSourceFullName, info);
                 _dataSourceGenerator.Add(dataSourceFullName, generator);
+            }
         }
 
         // 어셈블리의 Widget 들을 불러옴
@@ -219,12 +303,16 @@ public class PackageService : IPackageService
         // Load Cora Widgets
         foreach (var widgetType in widgetTypes)
         {
-            var generator = LoadCoraWidgetGenerator(assembly, widgetType);
+            var info = LoadCoraWidgetInfo(assembly, widgetType, packageInfo);
+            var generator = LoadCoraWidgetGenerator(assembly, info);
             ArgumentNullException.ThrowIfNull(generator);
 
             string? widgetFullName = generator.GetWidgetFullName();
             if (!string.IsNullOrEmpty(widgetFullName))
+            {
+                _widgetInfos.Add(widgetFullName, info);
                 _widgetGenerators.Add(widgetFullName, generator);
+            }
         }
     }
 
@@ -235,7 +323,7 @@ public class PackageService : IPackageService
     // ------------------------------------------------------------------------------------------------------
 
 
-    public async Task<Assembly> LoadAssemblyFromNugetWebAsymc(string id, string version, string? nugetFeedUrl = null, CancellationToken cancellationToken = default)
+    public async Task<Assembly> LoadAssemblyFromNugetWebAsync(string id, string version, string? nugetFeedUrl = null, CancellationToken cancellationToken = default)
     {
         var repository = Repository.Factory.GetCoreV3(nugetFeedUrl ?? "https://api.nuget.org/v3/index.json");
         var downloadResource = await repository.GetResourceAsync<DownloadResource>();
@@ -294,36 +382,45 @@ public class PackageService : IPackageService
     //
     // ------------------------------------------------------------------------------------------------------
 
-    private CoraPackageGenerator LoadCoraPackageGenerator(Assembly? assembly)
+    private ICoraPackageInfo LoadCoraPackageInfo(Assembly? assembly)
     {
         ArgumentNullException.ThrowIfNull(assembly);
 
-        var coraPackageInfo = new CoraPackageInfo();
-        var coraPackageGenerator = new CoraPackageGenerator(_services);
-        coraPackageGenerator.PackageInfo = coraPackageInfo;
+        var packageInfo = new CoraPackageInfo();
+        packageInfo.PacakageAssembly = assembly;
 
-        var coraPackageAttributes = assembly.GetCustomAttributes<AssemblyCoraPackageNameAttribute>();
+        var guidString = assembly.GetCustomAttribute<GuidAttribute>()?.Value;
+        packageInfo.AssemblyGuid = Guid.TryParse(guidString, out var guid) ? guid : Guid.Empty;
 
-        var packageState = new PackageState()
-        {
-            Id = Guid.NewGuid(),
-        };
+        // 패키지의 이름을 불러옴
+        // Load Package Names
+        assembly.GetCustomAttributes<AssemblyCoraPackageNameAttribute>().ToList()
+            .ForEach(attribute =>
+            {
+                if (packageInfo.LocalizedNames == null)
+                    packageInfo.LocalizedNames = new();
+                packageInfo.LocalizedNames[attribute.Language] = attribute.Name;
+            });
 
-        // TODO:
-        // 20240702
-        var packageReferenceState = coraPackageGenerator.GetOrCreateReferenceState();
+        // 패키지의 설명을 불러옴
+        // Load Package Descriptions
+        assembly.GetCustomAttributes<AssemblyCoraPackageDescriptionAttribute>().ToList()
+            .ForEach(attribute =>
+            {
+                if (packageInfo.LocalizedDescriptions == null)
+                    packageInfo.LocalizedDescriptions = new();
+                packageInfo.LocalizedDescriptions[attribute.Language] = attribute.Description;
+            });
 
         // 어셈블리의 DataTeamplate 을 불러옴
         // Load Assembly DataTemplates
-        assembly.GetCustomAttributes<AssemblyCoraPackageDataTemplateAttribute>()
-            .ToList()
+        assembly.GetCustomAttributes<AssemblyCoraPackageDataTemplateAttribute>().ToList()
             .ForEach(attribute =>
-            coraPackageInfo.DataTemplates.Add(GetDataTemplateFromCoraAttribute(assembly, attribute)));
+            packageInfo.DataTemplates.Add(GetDataTemplateFromCoraAttribute(assembly, attribute)));
 
         // 어셈블리의 Localization 을 불러옴
         // Load Assembly Localization
-        assembly.GetCustomAttributes<AssemblyCoraPackageResourceManagerAttribute>()
-            .ToList()
+        assembly.GetCustomAttributes<AssemblyCoraPackageResourceManagerAttribute>().ToList()
             .ForEach(attribute =>
             {
                 if (attribute == null ||
@@ -340,14 +437,26 @@ public class PackageService : IPackageService
                 var propertyValue = property.GetValue(null, null);
                 if (propertyValue is ResourceManager resourceManager)
                 {
-                    coraPackageInfo.ResourceManagers.Add(resourceManager);
+                    packageInfo.ResourceManagers.Add(resourceManager);
                 }
             });
+
+        return packageInfo;
+    }
+
+    private CoraPackageGenerator LoadCoraPackageGenerator(Assembly? assembly, ICoraPackageInfo? packageInfo)
+    {
+        ArgumentNullException.ThrowIfNull(_services);
+        ArgumentNullException.ThrowIfNull(assembly);
+        ArgumentNullException.ThrowIfNull(packageInfo);
+
+        var coraPackageGenerator = new CoraPackageGenerator(_services);
+        coraPackageGenerator.PackageInfo = packageInfo;
 
         return coraPackageGenerator;
     }
 
-    private CoraDataSourceGenerator LoadCoraDataSourceGenerator(Assembly assembly, Type dataSourceType)
+    private ICoraDataSourceInfo LoadCoraDataSourceInfo(Assembly? assembly, Type? dataSourceType, ICoraPackageInfo packageInfo)
     {
         ArgumentNullException.ThrowIfNull(assembly);
         ArgumentNullException.ThrowIfNull(dataSourceType);
@@ -355,8 +464,10 @@ public class PackageService : IPackageService
         System.Reflection.MemberInfo info = dataSourceType;
         var attributes = info.GetCustomAttributes(true);
 
-        CoraDataSourceInfo coraDataSourceInfo = new CoraDataSourceInfo();
-        CoraDataSourceGenerator generator = new CoraDataSourceGenerator(_services);
+        CoraDataSourceInfo coraDataSourceInfo = new CoraDataSourceInfo()
+        {
+            CoraPackageInfo = packageInfo,
+        };
         for (int i = 0; i < attributes.Length; i++)
         {
             if (attributes[i] is EntryCoraDataSourceAttribute dataSourceAttribute)
@@ -388,11 +499,21 @@ public class PackageService : IPackageService
             }
         }
 
+        return coraDataSourceInfo;
+    }
+
+    private CoraDataSourceGenerator LoadCoraDataSourceGenerator(Assembly? assembly, ICoraDataSourceInfo? coraDataSourceInfo)
+    {
+        ArgumentNullException.ThrowIfNull(_services);
+        ArgumentNullException.ThrowIfNull(assembly);
+        ArgumentNullException.ThrowIfNull(coraDataSourceInfo);
+
+        CoraDataSourceGenerator generator = new CoraDataSourceGenerator(_services);
         generator.Info = coraDataSourceInfo;
         return generator;
     }
 
-    private CoraWidgetGenerator LoadCoraWidgetGenerator(Assembly? assembly, Type? widgetType)
+    private ICoraWidgetInfo LoadCoraWidgetInfo(Assembly? assembly, Type? widgetType, ICoraPackageInfo packageInfo)
     {
         ArgumentNullException.ThrowIfNull(assembly);
         ArgumentNullException.ThrowIfNull(widgetType);
@@ -400,8 +521,10 @@ public class PackageService : IPackageService
         System.Reflection.MemberInfo info = widgetType;
         var attributes = info.GetCustomAttributes(true);
 
-        CoraWidgetInfo coraWidgetInfo = new CoraWidgetInfo();
-        CoraWidgetGenerator generator = new CoraWidgetGenerator(_services);
+        CoraWidgetInfo coraWidgetInfo = new CoraWidgetInfo()
+        {
+            CoraPackageInfo = packageInfo,
+        };
         for (int i = 0; i < attributes.Length; i++)
         {
             if (attributes[i] is EntryCoraWidgetAttribute entryCoraWidgetAttribute)
@@ -454,21 +577,27 @@ public class PackageService : IPackageService
                 coraWidgetInfo.LocalizedMenuTooltips[menuTooltipAttribute.Language] = menuTooltipAttribute.MenuTooltip;
             }
         }
-        generator.Info = coraWidgetInfo;
+        return coraWidgetInfo;
+    }
+
+    private CoraWidgetGenerator LoadCoraWidgetGenerator(Assembly? assembly, ICoraWidgetInfo? widgetInfo)
+    {
+        ArgumentNullException.ThrowIfNull(_services);
+        ArgumentNullException.ThrowIfNull(assembly);
+        ArgumentNullException.ThrowIfNull(widgetInfo);
+
+        CoraWidgetGenerator generator = new CoraWidgetGenerator(_services);
+        generator.Info = widgetInfo;
+
         return generator;
     }
 
     private Uri GetDataTemplateFromCoraAttribute(Assembly? assembly, AssemblyCoraPackageDataTemplateAttribute? dataTemplateSource)
     {
-        if (assembly == null ||
-            dataTemplateSource == null ||
-            string.IsNullOrEmpty(dataTemplateSource.DataTemplateSource)
-            )
-        {
-            // TODO:
-            // Change Exception Type
-            throw new Exception("DataTemplateSource is empty");
-        }
+        ArgumentNullException.ThrowIfNull(assembly);
+        ArgumentNullException.ThrowIfNull(dataTemplateSource);
+        ArgumentNullException.ThrowIfNullOrEmpty(dataTemplateSource.DataTemplateSource);
+
         return new Uri(
                 dataTemplateSource.IsAbsolute ?
                     dataTemplateSource.DataTemplateSource :

@@ -13,36 +13,29 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
+using Corathing.Contracts.DataContexts;
 using Corathing.Dashboards.WPF.Controls;
 using Corathing.Organizer.WPF.Extensions;
 using Corathing.Organizer.WPF.ViewModels;
-
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Corathing.Organizer.WPF.Views;
 
 /// <summary>
-/// WidgetSettingsView.xaml에 대한 상호 작용 논리
+/// Interaction logic for DataSourceContextSettingsView.xaml
 /// </summary>
-public partial class WidgetSettingsView : Page
+public partial class DataSourceSettingsView : Page
 {
-    public WidgetSettingsViewModel ViewModel { get; set; }
+    public DataSourceSettingsViewModel ViewModel;
 
-    public WidgetSettingsView(WidgetHost widgetHost)
+    public DataSourceSettingsView(DataSourceContext originalContext)
     {
-        DataContext = ViewModel = App.Current.Services.GetService<WidgetSettingsViewModel>();
+        DataContext = ViewModel = App.Current.Services.GetRequiredService<DataSourceSettingsViewModel>();
 
         InitializeComponent();
 
-        WidgetHost tempWidgetHost = new WidgetHost();
-        Type contextType = ViewModel.RegisterWidget(tempWidgetHost, widgetHost);
-        WidgetHostContentPresenter.Content = tempWidgetHost;
-        var dataTemplateKey = new DataTemplateKey(contextType);
-        var dataTemplate = FindResource(dataTemplateKey) as DataTemplate;
-        if (dataTemplate != null)
-        {
-            tempWidgetHost.ContentTemplate = dataTemplate;
-        }
+        Type contextType = originalContext.GetType();
+        ViewModel.Initialize(contextType);
 
         Loaded += (s, e) =>
         {

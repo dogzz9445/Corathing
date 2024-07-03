@@ -11,6 +11,6 @@ namespace Corathing.Contracts.DataContexts;
 public interface IDataSourceContext
 {
     void OnCreate(IServiceProvider services, DataSourceState state);
-    void Update(DataSourceState state);
+    void Apply(DataSourceState state);
     void OnDestroy(DataSourceState state);
 }

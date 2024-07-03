@@ -20,9 +20,5 @@ namespace Corathing.Widgets.Basics.Widgets.Emptys;
     )]
 public partial class EmptyWidgetContext : WidgetContext
 {
-    public EmptyWidgetContext(IServiceProvider services, WidgetState state)
-        : base(services, state)
-    {
 
-    }
 }
