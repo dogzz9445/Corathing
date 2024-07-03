@@ -24,7 +24,7 @@
         <Setter Property="Radius"
                 Value="50" />
         <Setter Property="Duration"
-                Value="500" />
+                Value="1000" />
         <Setter Property="HorizontalAlignment"
                 Value="Stretch" />
         <Setter Property="VerticalAlignment"

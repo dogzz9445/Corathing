@@ -14,7 +14,7 @@
 
     <!-- File Opener Widget -->
     <DataTemplate DataType="{x:Type local:FileOpenerWidgetContext}">
-        <Button Style="{StaticResource CoraWidgetEditModeButtonWithEvent}"
+        <Button Style="{DynamicResource CoraWidgetEditModeButtonWithEvent}"
                 Command="{Binding ExecuteCommand}">
             <Grid HorizontalAlignment="Stretch"
                   VerticalAlignment="Stretch">
