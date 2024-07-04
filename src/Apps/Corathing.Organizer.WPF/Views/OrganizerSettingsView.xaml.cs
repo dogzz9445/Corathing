@@ -13,6 +13,9 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
+using CommunityToolkit.Mvvm.Input;
+
+using Corathing.Contracts.Services;
 using Corathing.Organizer.WPF.Extensions;
 using Corathing.Organizer.WPF.ViewModels;
 
@@ -23,7 +26,7 @@ namespace Corathing.Organizer.WPF.Views
     /// <summary>
     /// OrganizerSettingsView.xaml에 대한 상호 작용 논리
     /// </summary>
-    public partial class OrganizerSettingsView : Page
+    public partial class OrganizerSettingsView : Page, INavigationView
     {
         public OrganizerSettingsViewModel ViewModel;
 
@@ -32,14 +35,18 @@ namespace Corathing.Organizer.WPF.Views
             InitializeComponent();
 
             DataContext = ViewModel = App.Current.Services.GetService<OrganizerSettingsViewModel>();
+        }
 
-            Loaded += (s, e) =>
-            {
-                var window = Window.GetWindow(this);
-                window.Width = 800;
-                window.Height = 800;
-                window.CenterWindowToParent();
-            };
+        public void OnPreviewGoback(object? parameter = null)
+        {
+        }
+
+        public void OnBack(object? parameter = null)
+        {
+        }
+
+        public void OnForward(object? parameter = null)
+        {
         }
     }
 }

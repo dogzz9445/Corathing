@@ -20,23 +20,29 @@ namespace Corathing.Widgets.Basics.DataSources.ExecutableApps;
 public partial class ExecutableAppDataSourceOptionViewModel :
     CustomSettingsContext
 {
-    private ExecutableAppDataSourceOption _customSettings;
-
-    public override void OnContextChanged()
+    protected override void OnCreate(object? defaultOption)
     {
-        _customSettings.ExecutableAppPath = ExecutableAppPath;
-        _customSettings.CommandLineArguments = CommandLineArguments;
     }
 
-    public override void OnSettingsChanged(object? option)
+    protected override void OnContextChanged()
+    {
+        if (CustomSettings is not ExecutableAppDataSourceOption customSettings)
+        {
+            throw new ArgumentException($"Not a valid type for CustomSettings {nameof(ExecutableAppDataSourceOption)}");
+        }
+        customSettings.ExecutableAppPath = ExecutableAppPath;
+        customSettings.CommandLineArguments = CommandLineArguments;
+        CustomSettings = customSettings;
+    }
+
+    protected override void OnSettingsChanged(object? option)
     {
         if (option is not ExecutableAppDataSourceOption customSettings)
         {
             throw new ArgumentException($"Not a valid type for CustomSettings {nameof(ExecutableAppDataSourceOption)}");
         }
-        _customSettings = customSettings;
-        ExecutableAppPath = _customSettings.ExecutableAppPath;
-        CommandLineArguments = _customSettings.CommandLineArguments;
+        ExecutableAppPath = customSettings.ExecutableAppPath;
+        CommandLineArguments = customSettings.CommandLineArguments;
     }
 
     [ObservableProperty]

@@ -17,7 +17,6 @@
       d:DesignWidth="800"
       d:DataContext="{d:DesignInstance viewmodels:WidgetSettingsViewModel,
         IsDesignTimeCreatable=False}"
-      Margin="16"
       Title="WidgetSettingsView">
     <Page.Resources>
         <ResourceDictionary>
@@ -122,38 +121,9 @@
         </ResourceDictionary>
     </Page.Resources>
 
-    <DockPanel LastChildFill="True">
-        <DockPanel DockPanel.Dock="Top"
-                   Margin="0, 10, 0, 0"
-                   VerticalAlignment="Top"
-                   Height="48">
-            <ui:Button VerticalAlignment="Top"
-                       Command="{Binding GoBackCommand}"
-                       CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, 
-                                        AncestorType={x:Type Window}}}"
-                       Height="40"
-                       Width="40">
-                <ui:SymbolIcon Symbol="ArrowLeft12" />
-            </ui:Button>
-            <ui:TextBlock Margin="16,0,0,0"
-                          VerticalAlignment="Top"
-                          FontTypography="Title"
-                          Text="{localizations:Localization Corathing.Organizer.WidgetSettingsTitle}" />
-
-            <ui:Button HorizontalAlignment="Right"
-                       Margin="0,0,16,0"
-                       Appearance="Primary"
-                       Command="{Binding ApplyCommand}"
-                       Content="{localizations:Localization Corathing.Organizer.Apply}"
-                       Icon="Checkmark24"
-                       Height="40" />
-
-        </DockPanel>
-        <Separator DockPanel.Dock="Top" />
-
+    <DockPanel LastChildFill="True" Margin="0 16 0 0">
         <DockPanel DockPanel.Dock="Left"
-                   Width="375"
-                   Margin="16,16,8,8">
+                   Width="375">
             <Border BorderThickness="1"
                     Background="#24242424"
                     BorderBrush="Black">
@@ -162,14 +132,24 @@
                                   Height="256"/>
             </Border>
         </DockPanel>
+        <Separator DockPanel.Dock="Left"
+                   Margin="8 0 8 0"/>
 
         <ScrollViewer FocusVisualStyle="{x:Null}">
 
-            <StackPanel Margin="8,8,16,8"
-                        FocusVisualStyle="{x:Null}">
-                <ui:TextBlock Margin="0,16,0,8"
-                              FontTypography="BodyStrong"
-                              Text="{localizations:Localization Corathing.Organizer.WidgetSettingsTitle}" />
+            <StackPanel FocusVisualStyle="{x:Null}">
+                <DockPanel LastChildFill="False">
+                    <ui:TextBlock VerticalAlignment="Center"
+                                  FontTypography="BodyStrong"
+                                  Text="{localizations:Localization Corathing.Organizer.WidgetSettingsTitle}" />
+
+                    <ui:Button DockPanel.Dock="Right"
+                               Appearance="Primary"
+                               Command="{Binding ApplyCommand}"
+                               Content="{localizations:Localization Corathing.Organizer.Apply}"
+                               Icon="Checkmark24"
+                               Height="40" />
+                </DockPanel>
 
                 <!-- 이름 설정 -->
                 <ui:CardControl Margin="0,8,0,8"

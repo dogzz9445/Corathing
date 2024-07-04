@@ -9,14 +9,14 @@
       xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
       xmlns:localizations="clr-namespace:Corathing.Dashboards.WPF.Bindings;assembly=Corathing.Dashboards.WPF"
       mc:Ignorable="d"
-      Margin="16"
       d:Height="800"
       d:Width="800"
       Background="{DynamicResource ApplicationBackgroundBrush}"
       Foreground="{DynamicResource TextFillColorPrimaryBrush}"
       d:DataContext="{d:DesignInstance viewmodels:ProjectSettingsViewModel,
                         IsDesignTimeCreatable=False}"
-      Title="ProjectSettingsView">
+      Title="{localizations:Localization Corathing.Organizer.AddProject}"
+      Tag="">
     <Page.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -26,38 +26,10 @@
         </ResourceDictionary>
     </Page.Resources>
 
-    <DockPanel LastChildFill="True">
-        <DockPanel DockPanel.Dock="Top"
-                    Margin="0, 10, 0, 0"
-                    VerticalAlignment="Top"
-                    Height="48">
-            <ui:Button VerticalAlignment="Top"
-                       Command="{Binding GoBackCommand}"
-                       CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, 
-                                        AncestorType={x:Type Window}}}"
-                       Height="40"
-                       Width="40">
-                <ui:SymbolIcon Symbol="ArrowLeft12" />
-            </ui:Button>
-            <ui:TextBlock Margin="16,0,0,0"
-                          VerticalAlignment="Top"
-                          FontTypography="Title"
-                          Text="{localizations:Localization Corathing.Organizer.ProjectSettingsTitle}" />
-
-            <ui:Button HorizontalAlignment="Right"
-                       Margin="0,0,16,0"
-                       Appearance="Primary"
-                       Command="{Binding ApplyCommand}"
-                       Content="{localizations:Localization Corathing.Organizer.Apply}"
-                       Icon="Checkmark24"
-                       Height="40" />
-
-        </DockPanel>
-        <Separator DockPanel.Dock="Top" />
-
+    <DockPanel LastChildFill="True"
+               Margin="0 16 0 0">
         <DockPanel DockPanel.Dock="Left"
-                   Width="375"
-                   Margin="16,16,8,8">
+                   Width="375">
             <StackPanel DockPanel.Dock="Top"
                         Orientation="Horizontal"
                         HorizontalAlignment="Right">
@@ -68,7 +40,7 @@
                            Icon="Add24"
                            Height="40" />
             </StackPanel>
-            <ScrollViewer FocusVisualStyle="{x:Null}">
+            <ScrollViewer Margin="0 8 0 0" FocusVisualStyle="{x:Null}">
                 <ListBox Background="{DynamicResource ControlBackground}"
                          ItemsSource="{Binding ProjectSettingsContexts}"
                          SelectedItem="{Binding SelectedProjectContext}">
@@ -83,14 +55,23 @@
             </ScrollViewer>
         </DockPanel>
 
-        <Separator DockPanel.Dock="Left" />
+        <Separator DockPanel.Dock="Left"
+                   Margin="8 0 8 0"/>
 
         <ScrollViewer FocusVisualStyle="{x:Null}">
-            <StackPanel Margin="8,8,16,8"
-                        FocusVisualStyle="{x:Null}">
-                <ui:TextBlock Margin="0,16,0,8"
-                              FontTypography="BodyStrong"
-                              Text="{localizations:Localization Corathing.Organizer.ProjectSettingsTitle}" />
+            <StackPanel FocusVisualStyle="{x:Null}">
+                <DockPanel LastChildFill="False">
+                    <ui:TextBlock VerticalAlignment="Center"
+                                  FontTypography="BodyStrong"
+                                  Text="{localizations:Localization Corathing.Organizer.ProjectSettingsTitle}" />
+
+                    <ui:Button DockPanel.Dock="Right"
+                               Appearance="Primary"
+                               Command="{Binding ApplyCommand}"
+                               Content="{localizations:Localization Corathing.Organizer.Apply}"
+                               Icon="Checkmark24"
+                               Height="40" />
+                </DockPanel>
 
                 <!-- 이름 설정 -->
                 <ui:CardControl Margin="0,8,0,8"

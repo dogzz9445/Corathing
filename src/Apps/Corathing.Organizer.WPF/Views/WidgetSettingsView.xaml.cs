@@ -13,6 +13,9 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
+using Corathing.Contracts.Bases;
+using Corathing.Contracts.Services;
+using Corathing.Dashboards.Controls;
 using Corathing.Dashboards.WPF.Controls;
 using Corathing.Organizer.WPF.Extensions;
 using Corathing.Organizer.WPF.ViewModels;
@@ -24,32 +27,65 @@ namespace Corathing.Organizer.WPF.Views;
 /// <summary>
 /// WidgetSettingsView.xaml에 대한 상호 작용 논리
 /// </summary>
-public partial class WidgetSettingsView : Page
+public partial class WidgetSettingsView : Page, INavigationView
 {
     public WidgetSettingsViewModel ViewModel { get; set; }
 
-    public WidgetSettingsView(WidgetHost widgetHost)
-    {
-        DataContext = ViewModel = App.Current.Services.GetService<WidgetSettingsViewModel>();
+    // Dependency Object 를 사용하게 변경핡서
+    // DataContext에 대해서
 
+    public WidgetSettingsView()
+    {
         InitializeComponent();
 
-        WidgetHost tempWidgetHost = new WidgetHost();
-        Type contextType = ViewModel.RegisterWidget(tempWidgetHost, widgetHost);
-        WidgetHostContentPresenter.Content = tempWidgetHost;
-        var dataTemplateKey = new DataTemplateKey(contextType);
-        var dataTemplate = FindResource(dataTemplateKey) as DataTemplate;
-        if (dataTemplate != null)
-        {
-            tempWidgetHost.ContentTemplate = dataTemplate;
-        }
+        DataContext = ViewModel = App.Current.Services.GetRequiredService<WidgetSettingsViewModel>();
 
-        Loaded += (s, e) =>
+    }
+    public void OnPreviewGoback(object? parameter = null)
+    {
+    }
+
+    public void OnBack(object? parameter = null)
+    {
+    }
+
+    public void OnForward(object? parameter = null)
+    {
+        if (parameter is not WidgetHost widgetHost)
         {
-            var window = Window.GetWindow(this);
-            window.Width = 800;
-            window.Height = 800;
-            window.CenterWindowToParent();
-        };
+            App.Current.Services.GetService<IDialogService>()
+                .ShowAlertDanger("Failed to load widget settings.");
+            return;
+        }
+        // FIXME:
+        // This is a temporary solution to get the context type of the widget.
+        // This will be replaced with a more elegant solution in the future.
+        WidgetHost tempWidgetHost = new WidgetHost();
+        WidgetHostContentPresenter.Content = tempWidgetHost;
+
+        if (widgetHost.DataContext is WidgetContext widgetContext)
+        {
+            Type contextType = widgetContext.GetType();
+            if (contextType != null)
+            {
+                ViewModel?.Initialize(widgetContext, tempWidgetHost);
+                var dataTemplateKey = new DataTemplateKey(contextType);
+                var dataTemplate = FindResource(dataTemplateKey) as DataTemplate;
+                if (dataTemplate != null)
+                {
+                    tempWidgetHost.ContentTemplate = dataTemplate;
+                }
+            }
+            else
+            {
+                App.Current.Services.GetService<IDialogService>()
+                    .ShowAlertDanger("Failed to load widget settings.");
+            }
+        }
+        else
+        {
+            App.Current.Services.GetService<IDialogService>()
+                .ShowAlertDanger("Failed to load widget settings.");
+        }
     }
 }

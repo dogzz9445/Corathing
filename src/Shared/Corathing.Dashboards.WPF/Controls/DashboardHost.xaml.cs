@@ -1260,10 +1260,7 @@ namespace Corathing.Dashboards.WPF.Controls
         /// <param name="widgetHost">The widget host.</param>
         private void WidgetHost_DragMoveStarted(WidgetHost widgetHost)
         {
-            if (!EditMode)
-                return;
-
-            if (DragInProgress)
+            if (!EditMode || DragInProgress)
                 return;
 
             try
@@ -1350,7 +1347,9 @@ namespace Corathing.Dashboards.WPF.Controls
 
             // Need to create the adorner that will be used to drag a control around the DashboardHost
             MouseMove += Dashboard_MouseMove;
-            MouseLeftButtonUp += Dashboard_MouseLeftButtonUp;
+            PreviewMouseLeftButtonUp += Dashboard_MouseLeftButtonUp;
+            _draggingHost.PreviewMouseMove += Dashboard_MouseMove;
+            _draggingHost.PreviewMouseLeftButtonUp += Dashboard_MouseLeftButtonUp;
             MouseLeave += Dashboard_MouseLeave;
 
             var cursor = _draggingHost.SetMouseCursor();
@@ -1387,8 +1386,10 @@ namespace Corathing.Dashboards.WPF.Controls
 
             // Need to cleanup after the DoDragDrop ends by setting back everything to its default state
             MouseLeave -= Dashboard_MouseLeave;
-            MouseLeftButtonUp -= Dashboard_MouseLeftButtonUp;
+            PreviewMouseLeftButtonUp -= Dashboard_MouseLeftButtonUp;
+            _draggingHost.PreviewMouseLeftButtonUp -= Dashboard_MouseLeftButtonUp;
             MouseMove -= Dashboard_MouseMove;
+            _draggingHost.PreviewMouseMove -= Dashboard_MouseMove;
             _draggingHost.Cursor = Cursors.Arrow;
             Cursor = Cursors.Arrow;
             Mouse.SetCursor(Cursors.Arrow);
@@ -1571,5 +1572,6 @@ namespace Corathing.Dashboards.WPF.Controls
                 //HandleFileOpen(files[0]);
             }
         }
+
     }
 }

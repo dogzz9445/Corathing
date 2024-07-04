@@ -205,14 +205,13 @@ public partial class App : Application
         // Register views and viewmodels
         // --------------------------------------------------------------------------
         serviceCollection.AddScoped<PackageManagementViewModel>();
-        serviceCollection.AddScoped<OrganizerSettingsView>();
         serviceCollection.AddScoped<OrganizerSettingsViewModel>();
-        serviceCollection.AddScoped<WidgetSettingsViewModel>();
         serviceCollection.AddScoped<ProjectSettingsViewModel>();
         serviceCollection.AddScoped<WorkflowSettingsViewModel>();
-        serviceCollection.AddScoped<DataSourceSettingsViewModel>();
-        serviceCollection.AddTransient<ProjectContext>();
+        serviceCollection.AddTransient<DataSourceSettingsViewModel>();
+        serviceCollection.AddTransient<WidgetSettingsViewModel>();
         serviceCollection.AddTransient<ProjectSettingsContext>();
+        serviceCollection.AddTransient<ProjectContext>();
         serviceCollection.AddTransient<WorkflowContext>();
 
 

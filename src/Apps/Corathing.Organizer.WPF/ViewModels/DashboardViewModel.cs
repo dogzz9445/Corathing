@@ -129,36 +129,24 @@ public partial class DashboardViewModel : ObservableObject
     }
 
     [RelayCommand]
-    public async void OpenOrganizerSettings()
+    public void OpenOrganizerSettings()
     {
-        var window = new BaseWindow();
-        window.Content = new OrganizerSettingsView();
-        window.Owner = Application.Current.MainWindow;
-        Application.Current.MainWindow.Effect = new BlurEffect();
-        window.ShowDialog();
-        Application.Current.MainWindow.Effect = null;
+        var navigationService = _services.GetRequiredService<INavigationDialogService>();
+        navigationService.Navigate<OrganizerSettingsView>();
     }
 
     [RelayCommand]
     public void OpenProjectSettings()
     {
-        var window = new BaseWindow();
-        window.Content = new ProjectSettingsView();
-        window.Owner = Application.Current.MainWindow;
-        Application.Current.MainWindow.Effect = new BlurEffect();
-        window.ShowDialog();
-        Application.Current.MainWindow.Effect = null;
+        var navigationService = _services.GetRequiredService<INavigationDialogService>();
+        navigationService.Navigate<ProjectSettingsView>();
     }
 
     [RelayCommand]
     public void OpenWorkflowSettings()
     {
-        var window = new BaseWindow();
-        window.Content = new WorkflowSettingsView();
-        window.Owner = Application.Current.MainWindow;
-        Application.Current.MainWindow.Effect = new BlurEffect();
-        window.ShowDialog();
-        Application.Current.MainWindow.Effect = null;
+        var navigationService = _services.GetRequiredService<INavigationDialogService>();
+        navigationService.Navigate<WorkflowSettingsView>();
     }
 
     [RelayCommand]

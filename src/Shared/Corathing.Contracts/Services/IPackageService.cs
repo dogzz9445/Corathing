@@ -37,7 +37,6 @@ public interface IPackageService
     // --------------------------------------------------------------------
     List<ICoraDataSourceInfo> GetAvailableDataSources();
     DataSourceContext? CreateDataSourceContext(string contextTypeFullName);
-    //DataSourceContext? GetDataSourceContext(Guid dataSourceId);
     Type? GetDataSourceCustomSettingsType(string contextTypeFullName);
     CustomSettingsContext? CreateDataSourceSettingsContext(string contextTypeFullName);
     Type? GetDataSourceSettingsContextType(string? contextTypeFullName);

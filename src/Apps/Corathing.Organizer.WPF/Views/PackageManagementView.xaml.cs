@@ -13,16 +13,29 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Corathing.Organizer.WPF.Views
+using Corathing.Contracts.Services;
+
+namespace Corathing.Organizer.WPF.Views;
+
+/// <summary>
+/// Interaction logic for PackageManagementView.xaml
+/// </summary>
+public partial class PackageManagementView : Page, INavigationView
 {
-    /// <summary>
-    /// Interaction logic for PackageManagementView.xaml
-    /// </summary>
-    public partial class PackageManagementView : Page
+    public PackageManagementView()
     {
-        public PackageManagementView()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
+    }
+
+    public void OnPreviewGoback(object? parameter = null)
+    {
+    }
+
+    public void OnBack(object? parameter = null)
+    {
+    }
+
+    public void OnForward(object? parameter = null)
+    {
     }
 }

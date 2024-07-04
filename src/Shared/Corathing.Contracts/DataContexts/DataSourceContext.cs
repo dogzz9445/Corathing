@@ -9,6 +9,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Messaging;
 
 using Corathing.Contracts.Bases;
+using Corathing.Contracts.Messages;
 
 namespace Corathing.Contracts.DataContexts;
 

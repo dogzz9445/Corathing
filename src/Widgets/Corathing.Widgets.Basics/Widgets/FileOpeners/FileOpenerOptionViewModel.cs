@@ -35,9 +35,9 @@ public partial class FolderInfo : ObservableObject
 public partial class FileOpenerOptionViewModel :
     CustomSettingsContext
 {
-    public override void OnCreate(object? option)
+    protected override void OnCreate(object? defaultOption)
     {
-        if (option is not FileOpenerOption fileOpenerOption)
+        if (defaultOption is not FileOpenerOption fileOpenerOption)
         {
             throw new ArgumentException($"Not a valid type for CustomSettings {nameof(FileOpenerOption)}");
         }
@@ -46,7 +46,19 @@ public partial class FileOpenerOptionViewModel :
         CustomSettings = fileOpenerOption;
     }
 
-    public override void OnSettingsChanged(object? option)
+    protected override void OnContextChanged()
+    {
+        if (CustomSettings is not FileOpenerOption fileOpenerOption)
+        {
+            throw new ArgumentException($"Not a valid type for CustomSettings {nameof(FileOpenerOption)}");
+        }
+        fileOpenerOption.OpenType = OpenType;
+        fileOpenerOption.Files = Files.Select(file => file.FileName).ToList();
+        fileOpenerOption.Folders = Folders.Select(folder => folder.FolderName).ToList();
+        CustomSettings = fileOpenerOption;
+    }
+
+    protected override void OnSettingsChanged(object? option)
     {
         if (option is not FileOpenerOption fileOpenerOption)
         {
@@ -64,18 +76,6 @@ public partial class FileOpenerOptionViewModel :
         {
             FolderName = folder,
         }));
-    }
-
-    public override void OnContextChanged()
-    {
-        if (_customSettings is not FileOpenerOption fileOpenerOption)
-        {
-            throw new ArgumentException($"Not a valid type for CustomSettings {nameof(FileOpenerOption)}");
-        }
-        fileOpenerOption.OpenType = OpenType;
-        fileOpenerOption.Files = Files.Select(file => file.FileName).ToList();
-        fileOpenerOption.Folders = Folders.Select(folder => folder.FolderName).ToList();
-        CustomSettings = fileOpenerOption;
     }
 
     [ObservableProperty]

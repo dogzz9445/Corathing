@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
+using Corathing.Contracts.Services;
 using Corathing.Contracts.DataContexts;
 using Corathing.Dashboards.WPF.Controls;
 using Corathing.Organizer.WPF.Extensions;
@@ -24,25 +25,31 @@ namespace Corathing.Organizer.WPF.Views;
 /// <summary>
 /// Interaction logic for DataSourceContextSettingsView.xaml
 /// </summary>
-public partial class DataSourceSettingsView : Page
+public partial class DataSourceSettingsView : Page, INavigationView
 {
     public DataSourceSettingsViewModel ViewModel;
 
-    public DataSourceSettingsView(DataSourceContext originalContext)
+    public DataSourceSettingsView()
     {
-        DataContext = ViewModel = App.Current.Services.GetRequiredService<DataSourceSettingsViewModel>();
-
         InitializeComponent();
 
-        Type contextType = originalContext.GetType();
-        ViewModel.Initialize(contextType);
+        DataContext = ViewModel = App.Current.Services.GetRequiredService<DataSourceSettingsViewModel>();
 
-        Loaded += (s, e) =>
+    }
+    public void OnPreviewGoback(object? parameter = null)
+    {
+    }
+
+    public void OnBack(object? parameter = null)
+    {
+    }
+
+    public void OnForward(object? parameter = null)
+    {
+        if (parameter is DataSourceContext originalContext)
         {
-            var window = Window.GetWindow(this);
-            window.Width = 800;
-            window.Height = 800;
-            window.CenterWindowToParent();
-        };
+            Type contextType = originalContext.GetType();
+            ViewModel.Initialize(contextType);
+        }
     }
 }

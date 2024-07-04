@@ -23,15 +23,5 @@ namespace Corathing.Organizer.WPF.Services
             var result = await App.Current.Dispatcher.InvokeAsync(callback);
             return result.Result;
         }
-
-        public IServiceProvider GetServiceProvider()
-        {
-            return App.Current.Services;
-        }
-
-        public TService GetService<TService>()
-        {
-            return App.Current.Services.GetService<TService>();
-        }
     }
 }

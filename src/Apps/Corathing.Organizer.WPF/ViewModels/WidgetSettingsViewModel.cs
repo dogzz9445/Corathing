@@ -14,6 +14,7 @@ using CommunityToolkit.Mvvm.Messaging;
 
 using Corathing.Contracts.Bases;
 using Corathing.Contracts.DataContexts;
+using Corathing.Contracts.Messages;
 using Corathing.Contracts.Services;
 using Corathing.Contracts.Utils.Exetensions;
 using Corathing.Contracts.Utils.Helpers;
@@ -27,7 +28,7 @@ public partial class WidgetSettingsViewModel : ObservableObject
 {
     #region Constructor with IServiceProvider
     private readonly IServiceProvider _services;
-    private Guid _id;
+    private readonly Guid _id;
 
     public WidgetSettingsViewModel(IServiceProvider services)
     {
@@ -42,22 +43,24 @@ public partial class WidgetSettingsViewModel : ObservableObject
     #endregion
 
     // Original properties
-    private WidgetHost _originalWidget;
     private WidgetContext _originalContext;
 
     private WidgetHost _settingsWidgetHost;
+    private Type _optionType;
     [ObservableProperty]
     private WidgetContext _tempWidgetContext;
-    private Type _optionType;
     [ObservableProperty]
     private CustomSettingsContext? _tempCustomSettingsContext;
 
-    public Type RegisterWidget(WidgetHost settingsWidgetHost, WidgetHost originalWidgetHost)
+    public void Initialize(WidgetContext originalContext, WidgetHost settingsWidgetHost)
     {
-        _originalWidget = originalWidgetHost;
-        _settingsWidgetHost = settingsWidgetHost;
+        if (originalContext == null)
+            return;
+        if (settingsWidgetHost == null)
+            return;
 
-        _originalContext = _originalWidget.DataContext as WidgetContext;
+        _originalContext = originalContext;
+        _settingsWidgetHost = settingsWidgetHost;
 
         var packageService = _services.GetService<IPackageService>();
 
@@ -71,13 +74,10 @@ public partial class WidgetSettingsViewModel : ObservableObject
         if (_optionType != null)
         {
             TempCustomSettingsContext = packageService.CreateWidgetSettingsContext(_originalContext.GetType().FullName);
-            TempCustomSettingsContext.RegisterCustomSettings(
-                _id,
-                JsonHelper.DeepCopy(_originalContext.State.CustomSettings, _optionType)
+            TempCustomSettingsContext.RegisterSettings(
+                _id, JsonHelper.DeepCopy(_originalContext.State.CustomSettings, _optionType)
             );
         }
-
-        return _originalContext.GetType();
     }
 
     [RelayCommand]

@@ -15,11 +15,14 @@ using Corathing.Contracts.Services;
 using Corathing.Dashboards.WPF.Services;
 using Corathing.Organizer.WPF.Services;
 
+using Microsoft.Extensions.DependencyInjection;
+
 namespace Corathing.Organizer.WPF.ViewModels;
 
 public partial class OrganizerSettingsViewModel : ObservableRecipient
 {
     #region Readonly Properties in Initializing
+    private readonly IServiceProvider _services;
     private readonly IThemeService _themeService;
     private readonly ILocalizationService _localizationService;
     private readonly IAppStateService _appStateService;
@@ -64,10 +67,12 @@ public partial class OrganizerSettingsViewModel : ObservableRecipient
     private ApplicationLanguage _currentApplicationLanguage = ApplicationLanguage.Unknown;
 
     public OrganizerSettingsViewModel(
+        IServiceProvider services,
         IThemeService themeService,
         ILocalizationService localizationService,
         IAppStateService appStateService)
     {
+        _services = services;
         _themeService = themeService;
         _localizationService = localizationService;
         _appStateService = appStateService;
@@ -140,9 +145,11 @@ public partial class OrganizerSettingsViewModel : ObservableRecipient
     }
 
     [RelayCommand]
-    public void Close(Window window)
+    public void Goback()
     {
-        window.Close();
+        INavigationDialogService navigationDialogService
+            = _services.GetRequiredService<INavigationDialogService>();
+        navigationDialogService.GoBack();
     }
 
     private static string GetAssemblyVersion()

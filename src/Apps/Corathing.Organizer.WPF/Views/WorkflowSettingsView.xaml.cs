@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
+using Corathing.Contracts.Services;
 using Corathing.Organizer.WPF.Extensions;
 using Corathing.Organizer.WPF.ViewModels;
 using Microsoft.Extensions.DependencyInjection;
@@ -22,7 +23,7 @@ namespace Corathing.Organizer.WPF.Views;
 /// <summary>
 /// Interaction logic for WorkflowSettingsView.xaml
 /// </summary>
-public partial class WorkflowSettingsView : Page
+public partial class WorkflowSettingsView : Page, INavigationView
 {
     public WorkflowSettingsViewModel ViewModel { get; }
 
@@ -31,13 +32,17 @@ public partial class WorkflowSettingsView : Page
         InitializeComponent();
 
         DataContext = ViewModel = App.Current.Services.GetService<WorkflowSettingsViewModel>();
+    }
 
-        Loaded += (s, e) =>
-        {
-            var window = Window.GetWindow(this);
-            window.Width = 800;
-            window.Height = 800;
-            window.CenterWindowToParent();
-        };
+    public void OnPreviewGoback(object? parameter = null)
+    {
+    }
+
+    public void OnBack(object? parameter = null)
+    {
+    }
+
+    public void OnForward(object? parameter = null)
+    {
     }
 }

@@ -9,27 +9,43 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Messaging.Messages;
 
+using Corathing.Contracts.Messages;
+
 using Microsoft.VisualBasic.FileIO;
 
 namespace Corathing.Contracts.DataContexts;
 
-public class CustomSettingsChangedMessage : ValueChangedMessage<object?>
-{
-    public CustomSettingsChangedMessage(object? customSettings) : base(customSettings)
-    {
-    }
-}
-
 public abstract partial class CustomSettingsContext : ObservableObject
 {
-    protected IServiceProvider Services;
-    public Guid Id { get; set; }
+    protected IServiceProvider? Services;
+    protected Guid Id { get; set; }
     public Guid ParentToken { get; set; }
 
     [ObservableProperty]
     protected object? _customSettings;
 
-    public void RegisterCustomSettings(Guid token, object? customSettings)
+    /// <summary>
+    /// This is called from generator.
+    /// Do not call this method directly.
+    /// </summary>
+    /// <param name="services"></param>
+    /// <param name="emtpyOption"></param>
+    public void Initialize(IServiceProvider services, object? emtpyOption)
+    {
+        Services = services;
+        CustomSettings = emtpyOption;
+        Id = Guid.NewGuid();
+        WeakReferenceMessenger.Default.Register<CustomSettingsChangedMessage, Guid>(
+            this,
+            Id,
+            OnChildCustomSettingsChanged
+        );
+
+        OnCreate(emtpyOption);
+        OnSettingsChanged(emtpyOption);
+    }
+
+    public void RegisterSettings(Guid token, object? customSettings)
     {
         ParentToken = token;
         OnSettingsChanged(customSettings);
@@ -42,21 +58,6 @@ public abstract partial class CustomSettingsContext : ObservableObject
         };
     }
 
-    public void Initialize(IServiceProvider services, object? option)
-    {
-        Id = Guid.NewGuid();
-        Services = services;
-        CustomSettings = option;
-
-        WeakReferenceMessenger.Default.Register<CustomSettingsChangedMessage, Guid>(this, Id, (r, m)=>
-        {
-
-        });
-
-        OnCreate(option);
-        OnSettingsChanged(option);
-    }
-
     public void ApplySettings(object? option)
     {
         CustomSettings = option;
@@ -66,24 +67,23 @@ public abstract partial class CustomSettingsContext : ObservableObject
     public void Destroy()
     {
         OnDestroy();
-
-        Services = null;
-        CustomSettings = null;
     }
 
-    public virtual void OnCreate(object? option)
+    protected abstract void OnCreate(object? defaultOption);
+
+    protected abstract void OnContextChanged();
+
+    protected abstract void OnSettingsChanged(object? option);
+
+    protected virtual void OnMessage(object? message)
     {
     }
 
-    public abstract void OnContextChanged();
-
-    public abstract void OnSettingsChanged(object? option);
-
-    public virtual void OnMessage(object? message)
+    protected virtual void OnDestroy()
     {
     }
 
-    public virtual void OnDestroy()
+    protected virtual void OnChildCustomSettingsChanged(object? sender, CustomSettingsChangedMessage? message)
     {
     }
 }

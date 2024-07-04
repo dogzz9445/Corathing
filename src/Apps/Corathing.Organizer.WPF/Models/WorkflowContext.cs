@@ -147,21 +147,8 @@ public partial class WorkflowContext : ObservableObject
     public void ConfigureWidget(WidgetHost widget)
     {
         var widgetHost = widget;
-        var parentWindow = Window.GetWindow(widgetHost);
-        var window = new BaseWindow();
-        if (parentWindow != null)
-        {
-            window.Owner = parentWindow;
-            parentWindow.Effect = new BlurEffect();
-            window.CenterWindowToParent();
-        }
-        var view = new WidgetSettingsView(widgetHost);
-        window.Content = view;
-        window.ShowDialog();
-        if (parentWindow != null)
-        {
-            parentWindow.Effect = null;
-        }
+        var navigationService = _services.GetRequiredService<INavigationDialogService>();
+        navigationService.Navigate<WidgetSettingsView>(widgetHost);
     }
 
     [RelayCommand]

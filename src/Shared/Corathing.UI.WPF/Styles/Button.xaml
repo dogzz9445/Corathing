@@ -34,7 +34,10 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Button}">
-                    <ContentPresenter />
+                    <Border Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}">
+                        <ContentPresenter />
+                    </Border>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
@@ -44,6 +47,8 @@
     <Style x:Key="ButtonNoStyleWithEvent"
            BasedOn="{StaticResource ButtonNoStyle}"
            TargetType="{x:Type Button}">
+        <Setter Property="Background"
+                Value="{DynamicResource ControlBackground}" />
         <Style.Triggers>
             <Trigger Property="IsMouseOver"
                      Value="True">
@@ -95,16 +100,16 @@
     <Style x:Key="CoraWidgetEditModeButtonWithEvent"
            BasedOn="{StaticResource ButtonNoStyle}"
            TargetType="{x:Type Button}">
-        <Setter Property="Background"
-                Value="White" />
         <Style.Triggers>
             <MultiDataTrigger>
                 <MultiDataTrigger.Conditions>
                     <Condition Binding="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}"
                                Value="True" />
+                    <Condition Binding="{Binding DataContext.EditMode, RelativeSource={RelativeSource Self}}"
+                               Value="False" />
                 </MultiDataTrigger.Conditions>
                 <Setter Property="Background"
-                        Value="Black" />
+                        Value="{DynamicResource ControlBackgroundHover}" />
             </MultiDataTrigger>
             <MultiDataTrigger>
                 <MultiDataTrigger.Conditions>

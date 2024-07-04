@@ -107,6 +107,33 @@
                     </ListView>
                 </ui:Anchor>
             </ui:CardExpander>
+
+            <!-- Open Type -->
+            <ui:CardControl Margin="0,0,0,8"
+                            Icon="{ui:SymbolIcon Color24}">
+                <ui:CardControl.Header>
+                    <Grid>
+                        <ui:TextBlock FontTypography="Body"
+                                      Text="{localizations:Localization Corathing.Widgets.Basics.Files.OptionTypeTitle}" />
+                    </Grid>
+                </ui:CardControl.Header>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <ComboBox Grid.Column="0"
+                              MinWidth="200"
+                              SelectedIndex="{Binding OpenType, Converter={StaticResource FileOpenTypeToIndexConverter}, Mode=TwoWay}">
+                        <ComboBoxItem Content="{localizations:Localization Corathing.Widgets.Basics.Files.OptionTypeFile}" />
+                        <ComboBoxItem Content="{localizations:Localization Corathing.Widgets.Basics.Files.OptionTypeFolder}" />
+                    </ComboBox>
+                    <ui:Button Grid.Column="1"
+                               Style="{StaticResource IconButton24}"
+                               Icon="{ui:SymbolIcon Dismiss24}"
+                               ToolTip="Remove File" />
+                </Grid>
+            </ui:CardControl>
         </StackPanel>
     </DataTemplate>
 </ResourceDictionary>
