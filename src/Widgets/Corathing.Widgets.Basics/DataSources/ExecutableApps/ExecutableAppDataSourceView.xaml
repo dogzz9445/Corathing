@@ -10,14 +10,15 @@
     <DataTemplate DataType="{x:Type local:ExecutableAppDataSourceSelector}">
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="132" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
             <ComboBox Grid.Column="0"
                       x:Name="OutlinedComboBox"
                       materialDesign:HintAssist.Hint="{Binding HintSelectionText}"
+                      materialDesign:TextFieldAssist.HasClearButton="True"
                       ItemsSource="{Binding DataSourceContexts}"
-                      Style="{StaticResource MaterialDesignOutlinedComboBox}" />
+                      Style="{StaticResource MaterialDesignComboBox}" />
             <ui:Button Grid.Column="1"
                        Style="{StaticResource IconButton24}"
                        Icon="{ui:SymbolIcon Dismiss24}"

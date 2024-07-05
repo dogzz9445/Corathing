@@ -109,19 +109,25 @@
             </ui:CardExpander>
 
             <!-- ExecutableAppDataSourceSelector -->
-            <ui:CardControl Margin="0,0,0,8"
-                            Icon="{ui:SymbolIcon Color24}">
-                <ui:CardControl.Header>
-                    <Grid>
-                        <ui:TextBlock FontTypography="Body"
-                                      Text="Executable App.." />
-                    </Grid>
-                </ui:CardControl.Header>
+            <ui:Anchor Margin="0,0,0,8"
+                       HorizontalAlignment="Stretch"
+                       HorizontalContentAlignment="Stretch"
+                       Icon="{ui:SymbolIcon Color24}">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
 
-                <ContentPresenter Content="{Binding ExecutableAppDataSourceSelector}"
-                                  DataContext="{Binding ExecutableAppDataSourceSelector}"/>
+                    <ui:TextBlock Grid.Row="0"
+                                  FontTypography="Body"
+                                  Text="Executable App.." />
+                    <ContentPresenter Grid.Row="1"
+                                      Content="{Binding ExecutableAppDataSourceSelector}"
+                                      DataContext="{Binding ExecutableAppDataSourceSelector}" />
+                </Grid>
 
-            </ui:CardControl>
+            </ui:Anchor>
         </StackPanel>
     </DataTemplate>
 </ResourceDictionary>
