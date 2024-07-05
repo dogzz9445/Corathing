@@ -84,6 +84,10 @@ public interface INavigationDialogService
 
     bool Navigate<T>(object? parameter = null) where T : INavigationView;
 
+    bool Navigate(Type? viewType, object? parameter = null);
+
+    bool NavigateDataSourceSettings(Type? dataSourceType, object? dataSourceContext = null);
+
     /// <summary>
     /// Navigates the NavigationView to the previous journal entry.
     /// </summary>

@@ -50,6 +50,11 @@ public partial class DataSourceSettingsView : Page, INavigationView
         {
             Type contextType = originalContext.GetType();
             ViewModel.Initialize(contextType);
+            ViewModel.Select(originalContext);
+        }
+        if (parameter is Type type)
+        {
+            ViewModel.Initialize(type);
         }
     }
 }

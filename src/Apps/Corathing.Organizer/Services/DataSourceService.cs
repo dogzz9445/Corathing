@@ -49,6 +49,12 @@ public class DataSourceService(IServiceProvider services) : IDataSourceService
         return DataSourceContexts.Values.Where(x => x.GetType() == dataSourceContext);
     }
 
+    public IEnumerable<T> GetAllDataSourceContexts<T>()
+    {
+        return DataSourceContexts.Values.OfType<T>();
+        //return DataSourceContexts.Values.Select(item => item as T).Where(x => x != null);
+    }
+
     public IEnumerable<T> GetDataSourceContexts<T>()
     {
         return DataSourceContexts.Values.OfType<T>();

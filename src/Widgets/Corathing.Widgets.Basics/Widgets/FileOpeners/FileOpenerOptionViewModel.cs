@@ -13,6 +13,7 @@ using CommunityToolkit.Mvvm.Input;
 
 using Corathing.Contracts.DataContexts;
 using Corathing.UI.WPF.Structures;
+using Corathing.Widgets.Basics.DataSources.ExecutableApps;
 
 using Microsoft.Win32;
 
@@ -44,6 +45,7 @@ public partial class FileOpenerOptionViewModel :
         Files = new ObservableCollection<FileInfo>();
         Folders = new ObservableCollection<FolderInfo>();
         CustomSettings = fileOpenerOption;
+        ExecutableAppDataSourceSelector = new ExecutableAppDataSourceSelector(Services);
     }
 
     protected override void OnContextChanged()
@@ -55,6 +57,7 @@ public partial class FileOpenerOptionViewModel :
         fileOpenerOption.OpenType = OpenType;
         fileOpenerOption.Files = Files.Select(file => file.FileName).ToList();
         fileOpenerOption.Folders = Folders.Select(folder => folder.FolderName).ToList();
+        ExecutableAppDataSourceSelector.Select(fileOpenerOption.ExecutableAppDataSourceId);
         CustomSettings = fileOpenerOption;
     }
 
@@ -88,6 +91,9 @@ public partial class FileOpenerOptionViewModel :
     private FileInfo _selectedFile;
     [ObservableProperty]
     private FolderInfo _selectedFolder;
+
+    [ObservableProperty]
+    private ExecutableAppDataSourceSelector _executableAppDataSourceSelector;
 
     [RelayCommand]
     public void AddFile()

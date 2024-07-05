@@ -3,11 +3,27 @@
                     xmlns:local="clr-namespace:Corathing.Widgets.Basics.DataSources.ExecutableApps"
                     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
                     xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
-                    xmlns:localizations="clr-namespace:Corathing.Widgets.Basics.Behaviors">
+                    xmlns:localizations="clr-namespace:Corathing.Widgets.Basics.Behaviors"
+                    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes">
     
     <!-- 참조되는 뷰에서 보이는 컨텍스트 -->
-    <DataTemplate DataType="{x:Type local:ExecutableAppDataSourceContext}">
-        
+    <DataTemplate DataType="{x:Type local:ExecutableAppDataSourceSelector}">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <ComboBox Grid.Column="0"
+                      x:Name="OutlinedComboBox"
+                      materialDesign:HintAssist.Hint="{Binding HintSelectionText}"
+                      ItemsSource="{Binding DataSourceContexts}"
+                      Style="{StaticResource MaterialDesignOutlinedComboBox}" />
+            <ui:Button Grid.Column="1"
+                       Style="{StaticResource IconButton24}"
+                       Icon="{ui:SymbolIcon Dismiss24}"
+                       Command="{Binding OpenDataSourceSettingsCommand}"
+                       ToolTip="Remove File" />
+        </Grid>
     </DataTemplate>
 
     <!-- Settings View -->

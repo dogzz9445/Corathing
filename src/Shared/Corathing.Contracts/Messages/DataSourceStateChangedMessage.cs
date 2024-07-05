@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Corathing.Contracts.Messages;
 
-public class DataSourceStateChangedMessage
+public class DataSourceStateChangedMessage<T> : EntityStateChangedMessage<T>
 {
+    public DataSourceStateChangedMessage(EntityStateChangedType changedtype, T value) : base(changedtype, value)
+    {
+    }
 }

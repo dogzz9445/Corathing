@@ -15,6 +15,7 @@
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="pack://application:,,,/Corathing.Widgets.Basics;component/Widgets/Emptys/EmptyWidgetView.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Corathing.Widgets.Basics;component/Widgets/FileOpeners/FileOpenerDataTemplate.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Corathing.Widgets.Basics;component/DataSources/ExecutableApps/ExecutableAppDataSourceView.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
     <DataTemplate DataType="{x:Type calendars:CalendarWidgetViewModel}">

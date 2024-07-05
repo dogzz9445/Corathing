@@ -42,6 +42,7 @@
 
 	<ItemGroup>
 		<Folder Include="Assets\Monaco\" />
+		<Folder Include="DataSources\Sockets\" />
 	</ItemGroup>
 
 	<ItemGroup>

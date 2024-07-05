@@ -11,6 +11,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Messaging.Messages;
 
+using Corathing.Contracts.DataContexts;
 using Corathing.Contracts.Messages;
 using Corathing.Contracts.Services;
 using Corathing.Dashboards.WPF.Bindings;
@@ -112,6 +113,41 @@ public class NavigationDialogService : INavigationDialogService
         _current.View.OnForward(parameter);
         WeakReferenceMessenger.Default.Send(new NavigationStackChangedMessage(_current));
         return true;
+    }
+
+    public bool Navigate(Type? viewType, object? parameter = null)
+    {
+        var view = Activator.CreateInstance(viewType);
+        _isNavigating = true;
+        if (_current != null)
+        {
+            _stackedUserControl.Push(_current);
+        }
+        _current = new NavigationItem
+        {
+            Header = (view as Page).Title,
+            Tag = (view as Page).Tag,
+            Index = _stackedUserControl.Count,
+            View = view as INavigationView
+        };
+        _navigationHost.Visibility = System.Windows.Visibility.Visible;
+        _navigationHost.Content = _current.View;
+        _current.View.OnForward(parameter);
+        WeakReferenceMessenger.Default.Send(new NavigationStackChangedMessage(_current));
+        return true;
+    }
+
+    public bool NavigateDataSourceSettings(Type? dataSourceType, object? dataSourceContext = null)
+    {
+        if (dataSourceContext != null)
+        {
+            if (dataSourceContext is not DataSourceContext)
+            {
+                throw new ArgumentException();
+            }
+            return Navigate(typeof(DataSourceSettingsView), dataSourceContext);
+        }
+        return Navigate(typeof(DataSourceSettingsView), dataSourceType);
     }
 
     //private INavigationService _uiNavigationService;
