@@ -160,7 +160,7 @@ public class PackageService : IPackageService
     {
         if (!_dataSourceGenerator.TryGetValue(contextTypeFullName, out var dataSourceGenerator))
             return null;
-        return dataSourceGenerator.Info.SettingsContextType;
+        return dataSourceGenerator.Info.OptionType;
     }
 
     /// <summary>
@@ -172,6 +172,14 @@ public class PackageService : IPackageService
             return null;
         return dataSourceGenerator.CreateSettingsContext();
     }
+
+    public Type? GetDataSourceSettingsContextType(string? contextTypeFullName)
+    {
+        if (!_dataSourceGenerator.TryGetValue(contextTypeFullName, out var dataSourceGenerator))
+            return null;
+        return dataSourceGenerator.Info.SettingsContextType;
+    }
+
 
     /// <summary>
     /// <inheritdoc/>
@@ -217,13 +225,6 @@ public class PackageService : IPackageService
         if (!_widgetGenerators.TryGetValue(contextTypeFullName, out var widgetContext))
             return null;
         return widgetContext.CreateSettingsContext();
-    }
-
-    public Type? GetDataSourceSettingsContextType(string? contextTypeFullName)
-    {
-        if (!_dataSourceGenerator.TryGetValue(contextTypeFullName, out var dataSourceGenerator))
-            return null;
-        return dataSourceGenerator.Info.SettingsContextType;
     }
 
 
