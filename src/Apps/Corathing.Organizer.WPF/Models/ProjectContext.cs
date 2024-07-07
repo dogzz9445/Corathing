@@ -83,6 +83,30 @@ public partial class ProjectContext : ObservableObject
         SelectedWorkflow = workflowContext;
     }
 
+    [RelayCommand]
+    public void RemoveWorkflow(WorkflowContext workflow)
+    {
+        if (workflow == SelectedWorkflow)
+        {
+            SelectedWorkflow = Workflows.FirstOrDefault();
+        }
+
+        Workflows.Remove(workflow);
+        workflow.Destroy();
+
+        var appState = _services.GetService<IAppStateService>();
+        if (!appState.TryGetProject(ProjectId, out var projectState))
+        {
+            // TODO:
+            // Change Exception Type
+            throw new Exception();
+        }
+
+        projectState.WorkflowIds.Remove(workflow.WorkflowId);
+        appState.UpdateProject(projectState);
+    }
+
+
     #endregion
 
     public ProjectContext(IServiceProvider services)
@@ -122,7 +146,20 @@ public partial class ProjectContext : ObservableObject
             var workflowContext = _services.GetService<WorkflowContext>();
             workflowContext.EditMode = EditMode;
             workflowContext.UpdateWorkflow(workflowState);
+            Workflows.Add(workflowContext);
         }
+    }
+
+    public void Destroy()
+    {
+        var appState = _services.GetService<IAppStateService>();
+
+        foreach (var workflow in Workflows)
+        {
+            workflow.Destroy();
+        }
+
+        appState.RemoveProject(ProjectId);
     }
 
     protected override void OnPropertyChanged(PropertyChangedEventArgs e)

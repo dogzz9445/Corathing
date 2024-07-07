@@ -55,7 +55,7 @@ public class WidgetCoreState : IWidgetCoreState
 
 public interface IWidgetState : IEntity
 {
-    IPackageReferenceState PackageReference { get; }
+    PackageReferenceState PackageReference { get; }
     WidgetCoreState CoreSettings { get; }
     object? CustomSettings { get; }
 }
@@ -63,7 +63,7 @@ public interface IWidgetState : IEntity
 public class WidgetState : IWidgetState
 {
     public Guid Id { get; set; }
-    public IPackageReferenceState PackageReference { get; set; }
+    public PackageReferenceState PackageReference { get; set; }
     public WidgetCoreState CoreSettings { get; set; }
     public object? CustomSettings { get; set; }
 }

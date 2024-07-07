@@ -372,9 +372,7 @@ public class AppStateService : IAppStateService
     {
         if (!TryGetWorkflow(workflowId, out var workflow))
         {
-            // TODO:
-            // Change Exception Type
-            throw new Exception();
+            return;
         }
         RemoveWorkflow(workflow);
     }
@@ -394,9 +392,7 @@ public class AppStateService : IAppStateService
     {
         if (!TryGetWidget(widgetId, out var widget))
         {
-            // TODO:
-            // Change Exception Type
-            throw new Exception();
+            return;
         }
         RemoveWidget(widget);
     }

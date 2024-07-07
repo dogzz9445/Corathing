@@ -31,6 +31,12 @@ namespace Corathing.Widgets.Basics.Widgets.LinkOpeners;
     menuPath: "Default/Link Opener",
     menuOrder: 0
     )]
+[EntryCoraWidgetName(ApplicationLanguage.en_US, "Link Opener")]
+[EntryCoraWidgetName(ApplicationLanguage.ko_KR, "링크 열기")]
+[EntryCoraWidgetDescription(ApplicationLanguage.en_US, "Provide link opening")]
+[EntryCoraWidgetDescription(ApplicationLanguage.ko_KR, "링크 열기 기능 제공")]
+[EntryCoraWidgetDefaultTitle(ApplicationLanguage.en_US, "Lnik Opener")]
+[EntryCoraWidgetDefaultTitle(ApplicationLanguage.ko_KR, "링크 열기")]
 public partial class LinkOpenerWidgetViewModel : WidgetContext
 {
     /// <summary>

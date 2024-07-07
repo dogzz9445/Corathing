@@ -103,6 +103,7 @@
                                 <Setter.Value>
                                     <dashboardControl:DashboardHost Grid.Column="0"
                                                                     Margin="5"
+                                                                    FocusVisualStyle="{x:Null}"
                                                                     LayoutChangedCommand="{Binding LayoutChangedCommand}"
                                                                     ConfigureWidgetCommand="{Binding ConfigureWidgetCommand}"
                                                                     RemoveWidgetCommand="{Binding RemoveWidgetCommand}"
@@ -159,8 +160,11 @@
 
                         <Button Cursor="Arrow"
                                 ToolTip="Configure Workflow"
-                                Style="{DynamicResource ButtonNoStyleWithEvent}">
-
+                                Command="{Binding DataContext.ConfigureWorkflowCommand, RelativeSource={RelativeSource AncestorType={x:Type local:DashboardView}, Mode=FindAncestor}}"
+                                CommandParameter="{Binding DataContext, RelativeSource={RelativeSource AncestorType={x:Type TabItem}}}"
+                                Style="{DynamicResource ButtonNoStyleWithEvent}"
+                                Background="Transparent"
+                                IsHitTestVisible="True">
                             <Path Width="11"
                                   Height="11"
                                   Margin="4.5,4,4.5,4"
@@ -173,7 +177,11 @@
 
                         <Button Cursor="Arrow"
                                 ToolTip="Remove Workflow"
-                                Style="{DynamicResource ButtonNoStyleWithEvent}">
+                                Command="{Binding DataContext.RemoveWorkflowCommand, RelativeSource={RelativeSource AncestorType={x:Type local:DashboardView}, Mode=FindAncestor}}"
+                                CommandParameter="{Binding DataContext, RelativeSource={RelativeSource AncestorType={x:Type TabItem}}}"
+                                Style="{DynamicResource ButtonNoStyleWithEvent}"
+                                Background="Transparent"
+                                IsHitTestVisible="True">
                             <Path Width="10"
                                   Height="10"
                                   Margin="5,5,4,4"
@@ -183,7 +191,7 @@
                         </Button>
                     </StackPanel>
 
-                    <TextBox Text="{Binding Name}">
+                    <TextBox Text="{Binding Name, UpdateSourceTrigger=LostFocus}">
                         <i:Interaction.Behaviors>
                             <behavior:DoubleClickTextBoxBehavior EditMode="{Binding EditMode}"
                                                                  TextBoxEditingStyle="{StaticResource DefaultTextBoxStyle}"

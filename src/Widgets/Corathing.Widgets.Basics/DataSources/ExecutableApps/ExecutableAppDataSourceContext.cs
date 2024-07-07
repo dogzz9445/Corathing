@@ -33,14 +33,6 @@ public class ExecutableAppDataSourceContext : DataSourceContext, IDataSourceCont
 
     }
 
-    public void Apply(DataSourceState state)
-    {
-    }
-
-    public void OnDestroy(DataSourceState state)
-    {
-    }
-
     public override void OnStateChanged(DataSourceState state)
     {
         if (state.CustomSettigns is not ExecutableAppDataSourceOption option)
@@ -50,6 +42,14 @@ public class ExecutableAppDataSourceContext : DataSourceContext, IDataSourceCont
 
         ExecutableAppPath = option.ExecutableAppPath;
         CommandLineArguments = option.CommandLineArguments;
+    }
+
+    public void Apply(DataSourceState state)
+    {
+    }
+
+    public void OnDestroy(DataSourceState state)
+    {
     }
 
     public void Execute(List<string> paths)

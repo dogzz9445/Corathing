@@ -419,7 +419,7 @@ namespace Corathing.Dashboards.WPF.Controls
         /// <param name="e">The <see cref="RoutedEventArgs"/> instance containing the event data.</param>
         private void DashboardHost_Loaded(object sender, RoutedEventArgs e)
         {
-            Loaded -= DashboardHost_Loaded;
+            //Loaded -= DashboardHost_Loaded;
 
             // We only check WidgetsCanvasHost to initialize just in case it wasn't initialized
             // with pre-existing widgets being generated before load
@@ -585,12 +585,11 @@ namespace Corathing.Dashboards.WPF.Controls
         /// <param name="e">The <see cref="RoutedEventArgs"/> instance containing the event data.</param>
         private void DashboardHost_Unloaded(object sender, RoutedEventArgs e)
         {
-            Unloaded -= DashboardHost_Unloaded;
             SizeChanged -= DashboardHost_SizeChanged;
             PreviewDragOver -= DashboardHost_PreviewDragOver;
 
-            if (_itemsSourceChangeNotifier != null)
-                _itemsSourceChangeNotifier.ValueChanged -= ItemsSource_Changed;
+            //if (_itemsSourceChangeNotifier != null)
+            //    _itemsSourceChangeNotifier.ValueChanged -= ItemsSource_Changed;
         }
 
         /// <summary>
@@ -1281,6 +1280,9 @@ namespace Corathing.Dashboards.WPF.Controls
                 SetElementXY(_widgetDestinationHighlight,
                     _draggingWidgetLayout.X * _widgetSize.Width,
                     _draggingWidgetLayout.Y * _widgetSize.Height);
+                SetElementWH(_widgetDestinationHighlight,
+                    _draggingWidgetLayout.W * _widgetSize.Width,
+                    _draggingWidgetLayout.H * _widgetSize.Height);
 
                 // Need to create the adorner that will be used to drag a control around the DashboardHost
                 _draggingAdorner = new DragAdorner(_draggingHost, Mouse.GetPosition(_draggingHost));
@@ -1344,6 +1346,9 @@ namespace Corathing.Dashboards.WPF.Controls
                 _draggingWidgetLayout.X,
                 _draggingWidgetLayout.Y
                 );
+            SetElementWH(_widgetDestinationHighlight,
+                _draggingWidgetLayout.W * _widgetSize.Width,
+                _draggingWidgetLayout.H * _widgetSize.Height);
 
             // Need to create the adorner that will be used to drag a control around the DashboardHost
             MouseMove += Dashboard_MouseMove;

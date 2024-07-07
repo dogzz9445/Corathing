@@ -23,7 +23,6 @@ public class WebSessionDataSourceContext : DataSourceContext, IDataSourceContext
 
     public void OnDestroy(DataSourceState state)
     {
-        throw new NotImplementedException();
     }
 
     public void Apply(DataSourceState state)

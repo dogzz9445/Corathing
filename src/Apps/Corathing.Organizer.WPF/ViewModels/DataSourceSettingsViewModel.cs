@@ -136,7 +136,10 @@ public partial class DataSourceSettingsViewModel : ObservableObject
         if (_optionType != null || _settingsContextType != null)
         {
             TempSettingsContext = packageService.CreateDataSourceSettingsContext(selectedContext.GetType().FullName);
-            TempSettingsContext.ApplySettings(JsonHelper.DeepCopy(selectedContext.State.CustomSettigns, _optionType));
+            TempSettingsContext.RegisterSettings(
+                _id, JsonHelper.DeepCopy(selectedContext.State.CustomSettigns, _optionType)
+            );
+            //TempSettingsContext.ApplySettings(JsonHelper.DeepCopy(selectedContext.State.CustomSettigns, _optionType));
         }
     }
 

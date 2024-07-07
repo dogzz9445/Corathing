@@ -102,9 +102,10 @@ public partial class WorkflowContext : ObservableObject
                 throw new Exception();
             }
 
-            var widgetContext = packageService.CreateWidgetContext(widgetState.CoreSettings.TypeName);
+            var widgetContext = packageService.CreateWidgetContext(widgetState.CoreSettings.TypeName, widgetState);
             widgetContext.EditMode = EditMode;
-            AddWidget(widgetContext);
+            appStateService.UpdateWidget(widgetContext.State);
+            Widgets.Add(widgetContext);
         }
     }
 
@@ -133,6 +134,18 @@ public partial class WorkflowContext : ObservableObject
         Widgets.Add(context);
     }
 
+    public void Destroy()
+    {
+        var appState = _services.GetService<IAppStateService>();
+
+        foreach (var widget in Widgets)
+        {
+            widget.Destroy();
+        }
+
+        appState.RemoveWorkflow(WorkflowId);
+    }
+
     /// <summary>
     /// Gets the command remove widget.
     /// </summary>
@@ -140,7 +153,24 @@ public partial class WorkflowContext : ObservableObject
     [RelayCommand]
     public void RemoveWidget(WidgetHost widget)
     {
-        Widgets.Remove(widget.DataContext as WidgetContext);
+        if (widget.DataContext is not WidgetContext widgetContext)
+        {
+            // TODO:
+            // Change Exception Type
+            throw new Exception();
+        }
+        Widgets.Remove(widgetContext);
+        widgetContext.Destroy();
+
+        var appState = _services.GetService<IAppStateService>();
+        if (!appState.TryGetWorkflow(WorkflowId, out var workflowState))
+        {
+            // TODO:
+            // Change Exception Type
+            throw new Exception();
+        }
+        workflowState.WidgetIds.Remove(widget.Id);
+        appState.UpdateWorkflow(workflowState);
     }
 
     [RelayCommand]
@@ -180,6 +210,15 @@ public partial class WorkflowContext : ObservableObject
             foreach (var widgetContext in Widgets)
             {
                 widgetContext.EditMode = EditMode;
+            }
+        }
+        else if (e.PropertyName == nameof(Name))
+        {
+            var appState = _services.GetService<IAppStateService>();
+            if (WorkflowId != null && appState.TryGetWorkflow(WorkflowId, out var workflowState))
+            {
+                workflowState.CoreSettings.Name = Name;
+                appState.UpdateWorkflow(workflowState);
             }
         }
     }

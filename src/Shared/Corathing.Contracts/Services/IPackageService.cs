@@ -45,7 +45,7 @@ public interface IPackageService
     // Widgets
     // --------------------------------------------------------------------
     List<ICoraWidgetInfo> GetAvailableWidgets();
-    WidgetContext? CreateWidgetContext(string contextTypeFullName);
+    WidgetContext? CreateWidgetContext(string contextTypeFullName, WidgetState? state = null);
     Type? GetWidgetCustomSettingsType(string contextTypeFullName);
     CustomSettingsContext? CreateWidgetSettingsContext(string contextTypeFullName);
 }

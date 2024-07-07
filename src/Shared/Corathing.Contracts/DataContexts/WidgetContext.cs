@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.NetworkInformation;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
@@ -61,8 +62,8 @@ public partial class WidgetContext : ObservableRecipient
             WidgetStateId = WidgetId,
             Rect = new WidgetLayoutRect()
             {
-                X = 0,
-                Y = 0,
+                X = state.CoreSettings.ColumnIndex,
+                Y = state.CoreSettings.RowIndex,
                 W = state.CoreSettings.ColumnSpan,
                 H = state.CoreSettings.RowSpan,
             }
@@ -81,6 +82,13 @@ public partial class WidgetContext : ObservableRecipient
         BackgroundColor = state.CoreSettings.BackgroundColor;
 
         OnStateChanged(State);
+    }
+
+    public void Destroy()
+    {
+        OnDestroy();
+        var appState = _services.GetService<IAppStateService>();
+        appState.RemoveWidget(WidgetId);
     }
 
     public virtual void OnCreate(WidgetState state)

@@ -162,9 +162,15 @@ public partial class DashboardViewModel : ObservableObject
     }
 
     [RelayCommand]
-    public void RemoveWorkflow()
+    public void ConfigureWorkflow(WorkflowContext context)
     {
+        //SelectedProject?.SelectedWorkflow?.ConfigureWorkflow();
+    }
 
+    [RelayCommand]
+    public void RemoveWorkflow(WorkflowContext context)
+    {
+        SelectedProject?.RemoveWorkflow(context);
     }
 
     #endregion Public Properties
@@ -211,6 +217,10 @@ public partial class DashboardViewModel : ObservableObject
 
     private void UpdateDashboard()
     {
+        foreach (var projectContext in Projects)
+        {
+            projectContext.Destroy();
+        }
         Projects.Clear();
 
         var packageService = _services.GetService<IPackageService>();

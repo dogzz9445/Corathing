@@ -200,11 +200,11 @@ public class PackageService : IPackageService
     /// <summary>
     /// <inheritdoc/>
     /// </summary>
-    public WidgetContext? CreateWidgetContext(string contextTypeFullName)
+    public WidgetContext? CreateWidgetContext(string contextTypeFullName, WidgetState? state = null)
     {
         if (!_widgetGenerators.TryGetValue(contextTypeFullName, out var widgetContext))
             return null;
-        return widgetContext.CreateWidget();
+        return widgetContext.CreateWidget(state);
     }
 
     /// <summary>

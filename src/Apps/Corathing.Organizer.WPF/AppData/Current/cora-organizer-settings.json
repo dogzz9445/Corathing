@@ -15,7 +15,10 @@
         "CoreSettings": {
           "Name": "Welcome!"
         },
-        "WorkflowIds": []
+        "WorkflowIds": [
+          "acbb4ec5-3b64-4790-84e1-500defee7018",
+          "62413ba9-7e1c-474c-90f9-4cc43d1032ba"
+        ]
       },
       {
         "Id": "22778c82-674a-41a7-9fe9-c61d76329690",
@@ -26,7 +29,84 @@
         "WorkflowIds": []
       }
     ],
-    "Workflows": [],
-    "Widgets": []
+    "Workflows": [
+      {
+        "Id": "acbb4ec5-3b64-4790-84e1-500defee7018",
+        "WidgetIds": [
+          "1d9d1613-9201-49e9-9f6c-4e8a80c143f6"
+        ],
+        "CoreSettings": {
+          "Name": "Dashboard"
+        },
+        "MaxColumns": 16,
+        "VisibleRows": 8
+      },
+      {
+        "Id": "62413ba9-7e1c-474c-90f9-4cc43d1032ba",
+        "WidgetIds": [
+          "a4664977-857c-439b-92dd-df99610ce8c1"
+        ],
+        "CoreSettings": {
+          "Name": "Hardware Monitor"
+        },
+        "MaxColumns": 16,
+        "VisibleRows": 8
+      }
+    ],
+    "Widgets": [
+      {
+        "Id": "1d9d1613-9201-49e9-9f6c-4e8a80c143f6",
+        "PackageReference": {
+          "PackageId": "34a60d6b-21aa-4aa3-8a50-85c01c39ebd3",
+          "PackageTitle": null,
+          "AssemblyName": "Corathing.Widgets.Basics",
+          "AssemblyVersion": "1.0.0.0"
+        },
+        "CoreSettings": {
+          "TypeName": "Corathing.Widgets.Basics.Widgets.FileOpeners.FileOpenerWidgetContext",
+          "RowIndex": 0,
+          "ColumnIndex": 0,
+          "RowSpan": 2,
+          "ColumnSpan": 2,
+          "Title": "File Opener",
+          "VisibleTitle": true,
+          "UseDefaultBackgroundColor": true,
+          "BackgroundColor": "#FFFFFF"
+        },
+        "CustomSettings": {
+          "OpenType": 0,
+          "Files": null,
+          "Folders": null,
+          "ExecutableAppDataSourceId": null
+        }
+      },
+      {
+        "Id": "a4664977-857c-439b-92dd-df99610ce8c1",
+        "PackageReference": {
+          "PackageId": "34a60d6b-21aa-4aa3-8a50-85c01c39ebd3",
+          "PackageTitle": null,
+          "AssemblyName": "Corathing.Widgets.Basics",
+          "AssemblyVersion": "1.0.0.0"
+        },
+        "CoreSettings": {
+          "TypeName": "Corathing.Widgets.Basics.Widgets.FileOpeners.FileOpenerWidgetContext",
+          "RowIndex": 2,
+          "ColumnIndex": 3,
+          "RowSpan": 2,
+          "ColumnSpan": 2,
+          "Title": "File Opener",
+          "VisibleTitle": true,
+          "UseDefaultBackgroundColor": true,
+          "BackgroundColor": "#FFFFFF"
+        },
+        "CustomSettings": {
+          "OpenType": 0,
+          "Files": null,
+          "Folders": null,
+          "ExecutableAppDataSourceId": null
+        }
+      }
+    ],
+    "DataSources": []
   }
 }

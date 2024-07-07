@@ -90,6 +90,7 @@ public partial class WidgetSettingsViewModel : ObservableObject
         // 무언가 우아한 방법
         TempWidgetContext.CopyToWithoutLayout(_originalContext, _optionType);
         _originalContext.UpdateTo(_originalContext.State);
+        _originalContext.OnStateChanged(_originalContext.State);
 
         var appStateService = _services.GetService<IAppStateService>();
         appStateService.UpdateWidget(_originalContext.State);

@@ -79,13 +79,13 @@
                                           FontTypography="Body"
                                           Text="{localizations:Localization Corathing.Organizer.Name}" />
                             <ui:TextBox Grid.Row="1"
-                                        Text="{Binding TempWidgetContext.WidgetTitle, UpdateSourceTrigger=PropertyChanged}" />
+                                        Text="{Binding TempName, UpdateSourceTrigger=PropertyChanged}" />
                         </Grid>
                     </ui:CardControl.Header>
                 </ui:CardControl>
 
-                <ContentPresenter Content="{Binding TempCustomSettingsContext}"
-                                  DataContext="{Binding TempCustomSettingsContext}" />
+                <ContentPresenter Content="{Binding TempSettingsContext}"
+                                  DataContext="{Binding TempSettingsContext}" />
 
             </StackPanel>
         </ScrollViewer>

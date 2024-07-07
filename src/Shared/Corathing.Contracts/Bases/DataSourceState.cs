@@ -20,7 +20,7 @@ public class DataSourceCoreState
 
 public interface IDataSourceState : IEntity
 {
-    IPackageReferenceState PackageReference { get; }
+    PackageReferenceState PackageReference { get; }
     DataSourceCoreState CoreSettings { get; }
     object? CustomSettigns { get; }
 }
@@ -28,7 +28,7 @@ public interface IDataSourceState : IEntity
 public class DataSourceState : IDataSourceState
 {
     public Guid Id { get; set; }
-    public IPackageReferenceState PackageReference { get; set; }
+    public PackageReferenceState PackageReference { get; set; }
     public DataSourceCoreState CoreSettings { get; set; }
     public object? CustomSettigns { get; set; }
 }

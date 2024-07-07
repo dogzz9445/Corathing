@@ -120,10 +120,4 @@ public partial class FileOpenerWidgetContext : WidgetContext
             }
         }
     }
-
-    [RelayCommand]
-    public void ExecuteDefaultApp()
-    {
-
-    }
 }
