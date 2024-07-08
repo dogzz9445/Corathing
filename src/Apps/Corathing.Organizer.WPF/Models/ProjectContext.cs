@@ -173,5 +173,18 @@ public partial class ProjectContext : ObservableObject
                 workflow.EditMode = EditMode;
             }
         }
+        else if (e.PropertyName == nameof(SelectedWorkflow))
+        {
+            var appState = _services.GetService<IAppStateService>();
+            if (!appState.TryGetProject(ProjectId, out var projectState))
+            {
+                // TODO:
+                // Change Exception Type
+                throw new Exception();
+            }
+
+            projectState.SelectedWorkflowId = SelectedWorkflow == null ? null : SelectedWorkflow.WorkflowId;
+            appState.UpdateProject(projectState);
+        }
     }
 }

@@ -7,11 +7,11 @@
   "Packages": {},
   "Dashboards": {
     "Id": "ba5b6e0a-51fa-4dc4-992e-3123cc287cb7",
-    "SelectedProjectId": null,
+    "SelectedProjectId": "926c252b-a158-4e05-8593-7cb55c10bf24",
     "Projects": [
       {
         "Id": "926c252b-a158-4e05-8593-7cb55c10bf24",
-        "SelectedWorkflowId": null,
+        "SelectedWorkflowId": "acbb4ec5-3b64-4790-84e1-500defee7018",
         "CoreSettings": {
           "Name": "Welcome!"
         },

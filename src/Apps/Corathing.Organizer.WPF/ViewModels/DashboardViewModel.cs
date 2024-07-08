@@ -244,6 +244,20 @@ public partial class DashboardViewModel : ObservableObject
         { 
             SelectedProject = Projects.FirstOrDefault();
         }
+
+        foreach (var projectContext in Projects)
+        {
+            if (!appStateService.TryGetProject(projectContext.ProjectId, out var projectState))
+            {
+                // TODO:
+                // Change Exception Type
+                throw new Exception();
+            }
+            if (projectState.SelectedWorkflowId != null)
+            {
+                projectContext.SelectedWorkflow = projectContext.Workflows.FirstOrDefault(context => context.WorkflowId == projectState.SelectedWorkflowId);
+            }
+        }
     }
 
     private void UpdateAvailableWidgets()

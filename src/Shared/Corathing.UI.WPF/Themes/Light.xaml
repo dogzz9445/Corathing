@@ -78,6 +78,8 @@
                      Color="{StaticResource ControlFillAccentColorLightThemeTeritary}" />
     <SolidColorBrush x:Key="ControlAccentBackgroundDisabled"
                      Color="{StaticResource ControlFillColorLightThemeDisabled}" />
+    <SolidColorBrush x:Key="ControlAccentBackgroundFocusHighlight"
+                     Color="{StaticResource ControlFillAccentColorLightThemeTransparent}" />
 
     <!-- Control Foreground -->
     <SolidColorBrush x:Key="ControlForeground"
