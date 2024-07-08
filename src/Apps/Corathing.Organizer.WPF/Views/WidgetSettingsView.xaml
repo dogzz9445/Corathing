@@ -12,6 +12,7 @@
       xmlns:converters="clr-namespace:Corathing.Dashboards.WPF.Converters;assembly=Corathing.Dashboards.WPF"
       xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
       xmlns:colorpicker="clr-namespace:ColorPicker;assembly=ColorPicker"
+      xmlns:settings="clr-namespace:Corathing.UI.WPF.Controls;assembly=Corathing.UI.WPF"
       mc:Ignorable="d"
       d:DesignHeight="800"
       d:DesignWidth="800"
@@ -134,65 +135,93 @@
             </Border>
         </DockPanel>
         <Separator DockPanel.Dock="Left"
-                   Margin="8 0 8 0"/>
+                   Margin="8 0 8 0" />
+        
+        <DockPanel LastChildFill="False"
+                   DockPanel.Dock="Top"
+                   Margin="0 0 16 8">
+            <ui:TextBlock VerticalAlignment="Center"
+                          FontTypography="BodyStrong"
+                          Foreground="{DynamicResource ControlForeground}"
+                          Text="{localizations:Localization Corathing.Organizer.WidgetSettingsTitle}" />
+
+            <ui:Button DockPanel.Dock="Right"
+                       Appearance="Primary"
+                       Command="{Binding ApplyCommand}"
+                       Content="{localizations:Localization Corathing.Organizer.Apply}"
+                       Icon="Checkmark24"
+                       Height="40" />
+        </DockPanel>
+
 
         <ScrollViewer FocusVisualStyle="{x:Null}">
 
             <StackPanel FocusVisualStyle="{x:Null}"
                         Margin="0 0 16 0">
-                <DockPanel LastChildFill="False">
-                    <ui:TextBlock VerticalAlignment="Center"
-                                  FontTypography="BodyStrong"
-                                  Text="{localizations:Localization Corathing.Organizer.WidgetSettingsTitle}" />
-
-                    <ui:Button DockPanel.Dock="Right"
-                               Appearance="Primary"
-                               Command="{Binding ApplyCommand}"
-                               Content="{localizations:Localization Corathing.Organizer.Apply}"
-                               Icon="Checkmark24"
-                               Height="40" />
-                </DockPanel>
-
+                
                 <!-- 이름 설정 -->
-                <ui:CardControl Margin="0,8,0,8"
-                                Icon="{ui:SymbolIcon KeyboardLayoutResize24}">
-                    <ui:CardControl.Header>
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                            </Grid.RowDefinitions>
-                            <ui:TextBlock Grid.Row="0"
-                                          FontTypography="Body"
-                                          Text="{localizations:Localization Corathing.Organizer.Name}" />
-                            <ui:TextBox Grid.Row="1"
-                                        Text="{Binding TempWidgetContext.WidgetTitle, UpdateSourceTrigger=PropertyChanged}" />
-                        </Grid>
-                    </ui:CardControl.Header>
-                </ui:CardControl>
+                <settings:SettingsBlock Header="{localizations:Localization Corathing.Organizer.Name}">
+                    <ui:TextBox Text="{Binding TempWidgetContext.WidgetTitle, UpdateSourceTrigger=PropertyChanged}" />
+                </settings:SettingsBlock>
 
                 <!-- 위젯 이름 표시 여부 -->
-                <ui:CardControl Margin="0,0,0,8"
-                                Icon="{ui:SymbolIcon KeyboardLayoutResize24}">
-                    <ui:CardControl.Header>
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto" />
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="Auto" />
-                            </Grid.ColumnDefinitions>
-                            <ui:TextBlock Grid.Column="0"
-                                          FontTypography="Body"
-                                          Text="{localizations:Localization Corathing.Organizer.ShowWidgetName}" />
-                            <CheckBox Grid.Column="1"
-                                      IsChecked="{Binding TempWidgetContext.VisibleTitle}"/>
-                        </Grid>
-                    </ui:CardControl.Header>
-                </ui:CardControl>
+                <settings:SettingsBlock IsDescriptionOnContentRight="True"
+                                        Header="{localizations:Localization Corathing.Organizer.ShowWidgetName}"
+                                        Description="안녕하세요">
+                    <CheckBox Grid.Column="1"
+                              VerticalAlignment="Center"
+                              VerticalContentAlignment="Center"
+                              IsChecked="{Binding TempWidgetContext.VisibleTitle}" />
+                </settings:SettingsBlock>
 
                 <!-- 위젯 색상 -->
+                <settings:SettingsBlock CategoryText="Colors:"
+                                        Header="색상">
+                    <ui:TextBlock >
+                        <ui:TextBlock.Style>
+                            <Style TargetType="{x:Type ui:TextBlock}">
+                                <Setter Property="Foreground"
+                                        Value="{ui:ThemeResource TextFillColorSecondaryBrush}" />
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding TempWidgetContext.UseDefaultBackgroundColor}"
+                                                 Value="True">
+                                        <Setter Property="Text"
+                                                Value="기본 색상 사용 (투명)" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding TempWidgetContext.UseDefaultBackgroundColor}"
+                                                 Value="False">
+                                        <Setter Property="Text"
+                                                Value="{Binding TempWidgetContext.BackgroundColor}" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </ui:TextBlock.Style>
+                    </ui:TextBlock>
+                </settings:SettingsBlock>
+                
+                <settings:SettingsBlock IsDescriptionOnContentRight="True"
+                                        CategoryText="Colors:"
+                                        Header="위젯 배경 기본 색상 사용 여부"
+                                        Description="위젯의 기본 색상을 사용할지에 대해서 설정하세요.">
+                    <CheckBox Grid.Column="1"
+                              VerticalAlignment="Center"
+                              VerticalContentAlignment="Center"
+                              IsChecked="{Binding TempWidgetContext.UseDefaultBackgroundColor}" />
+                </settings:SettingsBlock>
+
+                <settings:SettingsBlock IsDescriptionOnContentRight="True"
+                                        CategoryText="Colors:"
+                                        Header="사용자 정의 색상"
+                                        Description="사용자 정의 색상을 설정하세요.">
+                    <colorpicker:PortableColorPicker Width="24"
+                                                     Height="24"
+                                                      Style="{StaticResource CorathingColorPicker}"
+                                                      UseHintColor="True"
+                                                      HintColor="Transparent"
+                                                      ShowFractionalPart="False"
+                                                      SelectedColor="{Binding TempWidgetContext.BackgroundColor, Mode=TwoWay, Delay=10}" />
+                </settings:SettingsBlock>
+                
                 <ui:CardExpander Margin="0,0,0,8"
                                  Icon="{ui:SymbolIcon Folder24}"
                                  ContentPadding="0">

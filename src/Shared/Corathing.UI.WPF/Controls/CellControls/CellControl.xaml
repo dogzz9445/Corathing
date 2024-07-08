@@ -3,18 +3,45 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:controls="clr-namespace:Corathing.UI.WPF.Controls">
 
-    <Thickness x:Key="CellControlPadding">14,16,14,16</Thickness>
+    <Thickness x:Key="CellControlPadding">8,8,8,8</Thickness>
     <Thickness x:Key="CellControlBorderThemeThickness">1</Thickness>
-    <Thickness x:Key="CardControlIconMargin">0,0,14,0</Thickness>
-    <Thickness x:Key="CardControlContentMargin">14,0,0,0</Thickness>
+    <Thickness x:Key="CellControlIconMargin">0,0,0,0</Thickness>
+    <Thickness x:Key="CellControlContentMargin">0,0,0,0</Thickness>
     <!--<system:Double x:Key="CardControlIconSize">24.0</system:Double>-->
+
+    <Style x:Key="CorathingCellFocusVisualStyle">
+        <Setter Property="Control.Template">
+            <Setter.Value>
+                <ControlTemplate>
+                    <Rectangle RadiusX="4"
+                               RadiusY="4"
+                               SnapsToDevicePixels="True"
+                               Stroke="{DynamicResource ControlAccentBackgroundPressed}"
+                               StrokeThickness="1" />
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
+    <Style x:Key="CorathingCellFocusVisualStyle2">
+        <Setter Property="Control.Template">
+            <Setter.Value>
+                <ControlTemplate>
+                    <Border SnapsToDevicePixels="True"
+                            BorderBrush="{DynamicResource ControlAccentBackgroundPressed}"
+                            BorderThickness="1"
+                            IsHitTestVisible="False"
+                            Background="{DynamicResource ControlAccentBackgroundFocusHighlight}"/>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
 
     <Style x:Key="DefaultUiCellControlStyle"
            TargetType="{x:Type controls:CellControl}">
-        <!--  Universal WPF UI focus  -->
         <Setter Property="FocusVisualStyle"
-                Value="{DynamicResource DefaultCorathingFocusVisualStyle}" />
-        <!--  Universal WPF UI focus  -->
+                Value="{StaticResource CorathingCellFocusVisualStyle2}" />
         <Setter Property="Background"
                 Value="Transparent" />
         <Setter Property="Foreground"
@@ -22,9 +49,9 @@
         <Setter Property="BorderBrush"
                 Value="{DynamicResource CardBorderBrush}" />
         <Setter Property="BorderThickness"
-                Value="{StaticResource CardControlBorderThemeThickness}" />
+                Value="{StaticResource CellControlBorderThemeThickness}" />
         <Setter Property="Padding"
-                Value="{StaticResource CardControlPadding}" />
+                Value="{StaticResource CellControlPadding}" />
         <Setter Property="HorizontalAlignment"
                 Value="Stretch" />
         <Setter Property="VerticalAlignment"
@@ -38,7 +65,7 @@
         <Setter Property="FontWeight"
                 Value="Normal" />
         <Setter Property="CornerRadius"
-                Value="{DynamicResource ControlCornerRadius}" />
+                Value="0 0 0 0" />
         <Setter Property="SnapsToDevicePixels"
                 Value="True" />
         <Setter Property="OverridesDefaultStyle"
@@ -60,11 +87,11 @@
                             CornerRadius="{TemplateBinding CornerRadius}">
                         <Grid HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                               VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="Auto" />
-                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
                             <!--<ContentControl x:Name="ControlIcon"
                                             Grid.Column="0"
                                             Margin="{StaticResource CardControlIconMargin}"
@@ -75,19 +102,37 @@
                                             Foreground="{TemplateBinding Foreground}"
                                             KeyboardNavigation.IsTabStop="False" />-->
                             <ContentPresenter x:Name="HeaderContentPresenter"
-                                              Grid.Column="1"
+                                              Grid.Row="0"
                                               VerticalAlignment="Center"
+                                              Focusable="False"
                                               Content="{TemplateBinding Header}"
-                                              TextElement.Foreground="{TemplateBinding Foreground}" />
+                                              TextElement.Foreground="{TemplateBinding Foreground}"
+                                              KeyboardNavigation.IsTabStop="False" />
+                            <ContentPresenter x:Name="DescriptionContentPresenter"
+                                              Grid.Row="1"
+                                              VerticalAlignment="Center"
+                                              Focusable="False"
+                                              Content="{TemplateBinding Description}"
+                                              TextElement.Foreground="{TemplateBinding Foreground}"
+                                              KeyboardNavigation.IsTabStop="False" />
                             <ContentPresenter x:Name="ContentPresenter"
-                                              Grid.Column="2"
-                                              Margin="{StaticResource CardControlContentMargin}"
+                                              Grid.Row="2"
+                                              Margin="{StaticResource CellControlContentMargin}"
                                               VerticalAlignment="Center"
                                               Content="{TemplateBinding Content}"
                                               TextElement.Foreground="{TemplateBinding Foreground}" />
                         </Grid>
                     </Border>
                     <ControlTemplate.Triggers>
+                        <Trigger Property="IsKeyboardFocusWithin"
+                                 Value="True">
+                            <Setter TargetName="ContentBorder"
+                                    Property="BorderBrush"
+                                    Value="{DynamicResource ControlAccentBackgroundPressed}" />
+                            <Setter TargetName="ContentBorder"
+                                    Property="Background"
+                                    Value="{DynamicResource ControlAccentBackgroundFocusHighlight}" />
+                        </Trigger>
                         <Trigger Property="IsMouseOver"
                                  Value="True">
                             <Setter Property="Background"

@@ -3,6 +3,8 @@
 
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="pack://application:,,,/Corathing.UI.WPF;component/Controls/CircularProgressBars/AutoCircularProgressBar.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Corathing.UI.WPF;component/Controls/CellControls/CellControl.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Corathing.UI.WPF;component/Controls/SettingsBlocks/SettingsBlock.xaml" />
 
         <ResourceDictionary Source="pack://application:,,,/Corathing.UI.WPF;component/Styles/Button.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Corathing.UI.WPF;component/Styles/ToggleButton.xaml" />

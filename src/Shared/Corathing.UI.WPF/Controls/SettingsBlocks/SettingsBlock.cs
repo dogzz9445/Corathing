@@ -10,29 +10,46 @@ using Wpf.Ui.Controls;
 
 namespace Corathing.UI.WPF.Controls;
 
-public class CellControl : System.Windows.Controls.Primitives.ButtonBase
+public class SettingsBlock : System.Windows.Controls.Primitives.ButtonBase
 {
+
     /// <summary>Identifies the <see cref="Icon"/> dependency property.</summary>
     public static readonly DependencyProperty IconProperty = DependencyProperty.Register(
         nameof(Icon),
         typeof(IconElement),
-        typeof(CellControl),
+        typeof(SettingsBlock),
+        new PropertyMetadata(null)
+    );
+
+    /// <summary>Identifies the <see cref="Header"/> dependency property.</summary>
+    public static readonly DependencyProperty IsDescriptionOnContentRightProperty = DependencyProperty.Register(
+        nameof(IsDescriptionOnContentRight),
+        typeof(bool),
+        typeof(SettingsBlock),
+        new PropertyMetadata(false)
+    );
+
+    /// <summary>Identifies the <see cref="Header"/> dependency property.</summary>
+    public static readonly DependencyProperty CategoryTextProperty = DependencyProperty.Register(
+        nameof(CategoryText),
+        typeof(string),
+        typeof(SettingsBlock),
         new PropertyMetadata(null)
     );
 
     /// <summary>Identifies the <see cref="Header"/> dependency property.</summary>
     public static readonly DependencyProperty HeaderProperty = DependencyProperty.Register(
         nameof(Header),
-        typeof(object),
-        typeof(CellControl),
+        typeof(string),
+        typeof(SettingsBlock),
         new PropertyMetadata(null)
     );
 
-    /// <summary>Identifies the <see cref="Header"/> dependency property.</summary>
+    /// <summary>Identifies the <see cref="Description"/> dependency property.</summary>
     public static readonly DependencyProperty DescriptionProperty = DependencyProperty.Register(
         nameof(Description),
-        typeof(object),
-        typeof(CellControl),
+        typeof(string),
+        typeof(SettingsBlock),
         new PropertyMetadata(null)
     );
 
@@ -40,7 +57,7 @@ public class CellControl : System.Windows.Controls.Primitives.ButtonBase
     public static readonly DependencyProperty CornerRadiusProperty = DependencyProperty.Register(
         nameof(CornerRadius),
         typeof(CornerRadius),
-        typeof(CellControl),
+        typeof(SettingsBlock),
         new PropertyMetadata(new CornerRadius(0))
     );
 
@@ -55,13 +72,30 @@ public class CellControl : System.Windows.Controls.Primitives.ButtonBase
         set => SetValue(IconProperty, value);
     }
 
+    [Bindable(true)]
+    public bool IsDescriptionOnContentRight
+    {
+        get => (bool)GetValue(IsDescriptionOnContentRightProperty);
+        set => SetValue(IsDescriptionOnContentRightProperty, value);
+    }
+
     /// <summary>
     /// Gets or sets header which is used for each item in the control.
     /// </summary>
     [Bindable(true)]
-    public object? Header
+    public string? CategoryText
     {
-        get => GetValue(HeaderProperty);
+        get => (string?)GetValue(CategoryTextProperty);
+        set => SetValue(CategoryTextProperty, value);
+    }
+
+    /// <summary>
+    /// Gets or sets header which is used for each item in the control.
+    /// </summary>
+    [Bindable(true)]
+    public string? Header
+    {
+        get => (string?)GetValue(HeaderProperty);
         set => SetValue(HeaderProperty, value);
     }
 
@@ -69,9 +103,9 @@ public class CellControl : System.Windows.Controls.Primitives.ButtonBase
     /// Gets or sets description which is used for each item in the control.
     /// </summary>
     [Bindable(true)]
-    public object? Description
+    public string? Description
     {
-        get => GetValue(DescriptionProperty);
+        get => (string?)GetValue(DescriptionProperty);
         set => SetValue(DescriptionProperty, value);
     }
 
