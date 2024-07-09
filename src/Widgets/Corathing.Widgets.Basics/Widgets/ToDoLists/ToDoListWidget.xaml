@@ -108,18 +108,33 @@
                     Value="{DynamicResource TextControlForeground}" />
             <Setter Property="CaretBrush"
                     Value="{DynamicResource TextControlForeground}" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsCompleted}"
+                             Value="True">
+                    <Setter Property="Foreground"
+                            Value="{DynamicResource TextControlForegroundDisabled}" />
+                    <Setter Property="IsEnabled"
+                            Value="False" />
+                </DataTrigger>
+                <Trigger Property="IsEnabled"
+                         Value="False">
+                    <Setter Property="Foreground"
+                            Value="{DynamicResource TextControlForegroundDisabled}" />
+                    <Setter Property="Background"
+                            Value="Transparent" />
+                </Trigger>
+            </Style.Triggers>
         </Style>
         
         <DataTemplate x:Key="AddingJobDataTemplate" DataType="{x:Type models:AddingJob}">
             <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
                 <Button Margin="4 2 0 2"
+                        Height="24"
+                        Cursor="Hand"
                         Command="{Binding DataContext.AddNewJobCommand, RelativeSource={RelativeSource AncestorType={x:Type local:ToDoListWidget}, Mode=FindAncestor}}">
                     <TextBlock Text="Add Item..."
                                FontSize="11"
+                               VerticalAlignment="Center"
                                Foreground="{DynamicResource CardForeground}" />
                 </Button>
             </Grid>
@@ -133,6 +148,7 @@
                            LastChildFill="True">
                     <CheckBox DockPanel.Dock="Left"
                               FocusVisualStyle="{x:Null}"
+                              Cursor="Hand"
                               IsChecked="{Binding IsCompleted}" />
                     <TextBox HorizontalAlignment="Stretch"
                              VerticalContentAlignment="Center"

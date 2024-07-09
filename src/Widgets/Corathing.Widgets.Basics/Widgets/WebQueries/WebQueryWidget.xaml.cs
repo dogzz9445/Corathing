@@ -32,7 +32,7 @@ namespace Corathing.Widgets.Basics.Widgets.WebQueries;
     )]
 public partial class WebQueryViewModel : WidgetContext
 {
-    public override void OnCreate(WidgetState state)
+    public override void OnCreate(IServiceProvider services, WidgetState state)
     {
         ILocalizationService localizationService = _services.GetService<ILocalizationService>();
         localizationService.Provide("Corathing.Widgets.Basics.WebQueryName", value => WidgetTitle = value);

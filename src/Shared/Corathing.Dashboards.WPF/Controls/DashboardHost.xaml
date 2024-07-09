@@ -36,11 +36,13 @@
         <ControlTemplate>
             <ScrollViewer x:Name="DashboardHostScrollViewer"
                           FocusVisualStyle="{TemplateBinding FocusVisualStyle}"
+                          Focusable="False"
                           HorizontalScrollBarVisibility="Disabled"
                           VerticalScrollBarVisibility="Auto">
                 <AdornerDecorator FocusVisualStyle="{DynamicResource EmptyControlFocusVisualStyle}">
                     <Grid>
                         <Canvas x:Name="HighlightWidgetCanvas"
+                                Focusable="False"
                                 FocusVisualStyle="{DynamicResource EmptyControlFocusVisualStyle}" />
                         <ItemsPresenter />
                     </Grid>

@@ -4,7 +4,7 @@
 
     <Thickness x:Key="SettingsBlockPadding">8,8,8,8</Thickness>
     <Thickness x:Key="SettingsBlockBorderThemeThickness">1</Thickness>
-    <Thickness x:Key="SettingsBlockIconMargin">0,0,0,0</Thickness>
+    <Thickness x:Key="SettingsBlockIconMargin">0,0,4,0</Thickness>
     <Thickness x:Key="SettingsBlockContentMargin">4,4,0,4</Thickness>
     <!--<system:Double x:Key="CardControlIconSize">24.0</system:Double>-->
 
@@ -20,7 +20,6 @@
             </Setter.Value>
         </Setter>
     </Style>
-
 
     <Style x:Key="DefaultUiSettingsBlockStyle"
            TargetType="{x:Type controls:SettingsBlock}">
@@ -48,6 +47,8 @@
                 Value="{DynamicResource ControlContentThemeFontSize}" />
         <Setter Property="FontWeight"
                 Value="Normal" />
+        <Setter Property="FontFamily"
+                Value="{DynamicResource CorathingDefaultFontFamily}" />
         <Setter Property="CornerRadius"
                 Value="0 0 0 0" />
         <Setter Property="SnapsToDevicePixels"
@@ -71,11 +72,24 @@
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="{TemplateBinding BorderThickness}"
                             CornerRadius="{TemplateBinding CornerRadius}">
-                        <DockPanel LastChildFill="True"
+
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                        <!--<DockPanel LastChildFill="True"
                                    HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                   VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
+                                   VerticalAlignment="{TemplateBinding VerticalContentAlignment}">-->
                             <Grid x:Name="HeaderContent"
                                   DockPanel.Dock="Top"
+                                  Grid.Row="0"
+                                  Grid.ColumnSpan="2"
                                   Margin="{StaticResource SettingsBlockContentMargin}">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto" />
@@ -86,9 +100,11 @@
                                                 Grid.Column="0"
                                                 Margin="{StaticResource SettingsBlockIconMargin}"
                                                 VerticalAlignment="Center"
+                                                VerticalContentAlignment="Center"
+                                                HorizontalAlignment="Center"
                                                 Content="{TemplateBinding Icon}"
                                                 Focusable="False"
-                                                FontSize="14"
+                                                FontSize="16"
                                                 Foreground="{TemplateBinding Foreground}"
                                                 KeyboardNavigation.IsTabStop="False" />
                                 <TextBlock x:Name="CategoryTextBlock"
@@ -109,13 +125,10 @@
                                            Foreground="{TemplateBinding Foreground}"
                                            KeyboardNavigation.IsTabStop="False" />
                             </Grid>
-                            <ContentPresenter x:Name="ContentPresenter"
-                                              DockPanel.Dock="Bottom"
-                                              Margin="{StaticResource SettingsBlockContentMargin}"
-                                              VerticalAlignment="Center"
-                                              Content="{TemplateBinding Content}"
-                                              TextElement.Foreground="{TemplateBinding Foreground}" />
                             <TextBlock x:Name="DescriptionTextBlock"
+                                       Grid.Row="1"
+                                       Grid.ColumnSpan="2"
+                                       DockPanel.Dock="Top"
                                        Margin="{StaticResource SettingsBlockContentMargin}"
                                        VerticalAlignment="Center"
                                        Focusable="False"
@@ -123,7 +136,16 @@
                                        TextWrapping="Wrap"
                                        Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                        KeyboardNavigation.IsTabStop="False" />
-                        </DockPanel>
+                            <ContentPresenter x:Name="ContentPresenter"
+                                              Grid.Row="2"
+                                              Grid.ColumnSpan="2"
+                                              HorizontalAlignment="Stretch"
+                                              VerticalAlignment="Center"
+                                              Content="{TemplateBinding Content}"
+                                              Margin="4 0 0 0"
+                                              TextElement.Foreground="{TemplateBinding Foreground}" />
+                        </Grid>
+                        <!--</DockPanel>-->
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsKeyboardFocusWithin"
@@ -188,6 +210,24 @@
                             <Setter TargetName="DescriptionTextBlock"
                                     Property="DockPanel.Dock"
                                     Value="Right" />
+                            <Setter TargetName="ContentPresenter"
+                                    Property="Grid.Row"
+                                    Value="1" />
+                            <Setter TargetName="DescriptionTextBlock"
+                                    Property="Grid.Row"
+                                    Value="1" />
+                            <Setter TargetName="ContentPresenter"
+                                    Property="Grid.ColumnSpan"
+                                    Value="1" />
+                            <Setter TargetName="DescriptionTextBlock"
+                                    Property="Grid.ColumnSpan"
+                                    Value="1" />
+                            <Setter TargetName="ContentPresenter"
+                                    Property="Grid.Column"
+                                    Value="0" />
+                            <Setter TargetName="DescriptionTextBlock"
+                                    Property="Grid.Column"
+                                    Value="1" />
                         </Trigger>
                         <Trigger Property="Content"
                                  Value="{x:Null}">

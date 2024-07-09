@@ -1,0 +1,102 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:Corathing.Widgets.Basics.Widgets.FileOpeners"
+                    xmlns:system="clr-namespace:System;assembly=mscorlib"
+                    xmlns:behaviors="clr-namespace:Corathing.UI.WPF.Behaviors;assembly=Corathing.UI.WPF"
+                    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+                    xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+                    xmlns:localizations="clr-namespace:Corathing.Widgets.Basics.Behaviors"
+                    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+                    xmlns:settings="clr-namespace:Corathing.UI.WPF.Controls;assembly=Corathing.UI.WPF">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="pack://application:,,,/Corathing.UI.WPF;component/Styles/Button.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+    
+    <local:FileOpenTypeToIndexConverter x:Key="FileOpenTypeToIndexConverter" />
+
+    <!-- File Opener Widget -->
+    <DataTemplate DataType="{x:Type local:FileOpenerWidgetContext}">
+        <Button Style="{DynamicResource CoraWidgetEditModeButtonWithEvent}"
+                Command="{Binding ExecuteCommand}">
+            <Grid HorizontalAlignment="Stretch"
+                  VerticalAlignment="Stretch">
+                <ui:SymbolIcon Symbol="DocumentArrowUp16">
+                    <i:Interaction.Behaviors>
+                        <behaviors:SymbolIconScaleFontBehavior />
+                    </i:Interaction.Behaviors>
+                </ui:SymbolIcon>
+            </Grid>
+        </Button>
+    </DataTemplate>
+
+    <!-- File Opener Settings View -->
+    <DataTemplate DataType="{x:Type local:FileOpenerOptionViewModel}">
+        <StackPanel>
+            <!-- Open Type -->
+            <settings:SettingsBlock IsDescriptionOnContentRight="True"
+                                    CategoryText="Opener:"
+                                    Header="{localizations:Localization Corathing.Widgets.Basics.Files.OptionTypeTitle}">
+                <ComboBox MinWidth="200"
+                          SelectedIndex="{Binding OpenType, Converter={StaticResource FileOpenTypeToIndexConverter}, Mode=TwoWay}">
+                    <ComboBoxItem Content="{localizations:Localization Corathing.Widgets.Basics.Files.OptionTypeFile}" />
+                    <ComboBoxItem Content="{localizations:Localization Corathing.Widgets.Basics.Files.OptionTypeFolder}" />
+                </ComboBox>
+            </settings:SettingsBlock>
+
+            <!-- Files -->
+            <settings:SettingsBlock CategoryText="Opener-Files:"
+                                    Header="{localizations:Localization Corathing.Widgets.Basics.Files.OptionTypeTitle}">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <ui:Button Grid.Row="0"
+                               Content="Add File"
+                               Command="{Binding AddFileCommand}" />
+                    <ListBox Grid.Row="1"
+                             Style="{StaticResource NoFocusListBoxStyle}"
+                             ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                             ItemsSource="{Binding Files}">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate DataType="{x:Type local:FileInfo}">
+                                <Grid HorizontalAlignment="Stretch"
+                                      Focusable="False">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBox Grid.Column="0"
+                                             Text="{Binding Path=FileName}" />
+                                    <ui:Button Grid.Column="1"
+                                               Margin="4 0"
+                                               Style="{StaticResource IconButton24}"
+                                               Icon="{ui:SymbolIcon OpenFolder24}"
+                                               Command="{Binding DataContext.OpenFileCommand, RelativeSource={RelativeSource AncestorType={x:Type ListBox}}}"
+                                               CommandParameter="{Binding DataContext, RelativeSource={RelativeSource AncestorType={x:Type ListBoxItem}}}"
+                                               ToolTip="Open File" />
+                                    <ui:Button Grid.Column="2"
+                                               Margin="0"
+                                               Style="{StaticResource IconButton24}"
+                                               Icon="{ui:SymbolIcon Dismiss24}"
+                                               Command="{Binding DataContext.RemoveFileCommand, RelativeSource={RelativeSource AncestorType={x:Type ListBox}}}"
+                                               CommandParameter="{Binding Path=.}"
+                                               ToolTip="Remove File" />
+                                </Grid>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </Grid>
+            </settings:SettingsBlock>
+
+            <!-- ExecutableAppDataSourceSelector -->
+            <settings:SettingsBlock CategoryText="Opener-Files:"
+                                    Header="Executable App..">
+                <ContentPresenter Grid.Row="1"
+                                  Content="{Binding ExecutableAppDataSourceSelector}"
+                                  DataContext="{Binding ExecutableAppDataSourceSelector}" />
+            </settings:SettingsBlock>
+        </StackPanel>
+    </DataTemplate>
+</ResourceDictionary>

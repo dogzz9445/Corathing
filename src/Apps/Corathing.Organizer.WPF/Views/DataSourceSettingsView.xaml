@@ -10,6 +10,7 @@
       xmlns:converters="clr-namespace:Corathing.Dashboards.WPF.Converters;assembly=Corathing.Dashboards.WPF"
       xmlns:datacontexts="clr-namespace:Corathing.Contracts.DataContexts;assembly=Corathing.Contracts"
       xmlns:localizations="clr-namespace:Corathing.Dashboards.WPF.Bindings;assembly=Corathing.Dashboards.WPF"
+      xmlns:settings="clr-namespace:Corathing.UI.WPF.Controls;assembly=Corathing.UI.WPF"
       mc:Ignorable="d"
       d:DesignHeight="800"
       d:DesignWidth="800"
@@ -51,38 +52,32 @@
         <Separator DockPanel.Dock="Left"
                    Margin="8 0 8 0" />
 
-        <ScrollViewer FocusVisualStyle="{x:Null}">
-            <StackPanel FocusVisualStyle="{x:Null}">
-                <DockPanel LastChildFill="False">
-                    <ui:TextBlock VerticalAlignment="Center"
-                                  FontTypography="BodyStrong"
-                                  Text="{localizations:Localization Corathing.Organizer.DataSourceSettingsTitle}" />
+        <DockPanel LastChildFill="False"
+                   DockPanel.Dock="Top"
+                   Margin="0 0 16 8">
+            <ui:TextBlock VerticalAlignment="Center"
+                          FontTypography="BodyStrong"
+                          Foreground="{DynamicResource ControlForeground}"
+                          Text="{localizations:Localization Corathing.Organizer.DataSourceSettingsTitle}" />
 
-                    <ui:Button DockPanel.Dock="Right"
-                               Appearance="Primary"
-                               Command="{Binding ApplyCommand}"
-                               Content="{localizations:Localization Corathing.Organizer.Apply}"
-                               Icon="Checkmark24"
-                               Height="40" />
-                </DockPanel>
+            <ui:Button DockPanel.Dock="Right"
+                       Appearance="Primary"
+                       Command="{Binding ApplyCommand}"
+                       Content="{localizations:Localization Corathing.Organizer.Apply}"
+                       Icon="Checkmark24"
+                       Height="40" />
+        </DockPanel>
+
+        <ScrollViewer FocusVisualStyle="{x:Null}">
+            <StackPanel FocusVisualStyle="{x:Null}"
+                        Margin="0 0 16 0">
 
                 <!-- 이름 설정 -->
-                <ui:CardControl Margin="0,8,0,8"
-                                Icon="{ui:SymbolIcon KeyboardLayoutResize24}">
-                    <ui:CardControl.Header>
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                            </Grid.RowDefinitions>
-                            <ui:TextBlock Grid.Row="0"
-                                          FontTypography="Body"
-                                          Text="{localizations:Localization Corathing.Organizer.Name}" />
-                            <ui:TextBox Grid.Row="1"
-                                        Text="{Binding TempName, UpdateSourceTrigger=PropertyChanged}" />
-                        </Grid>
-                    </ui:CardControl.Header>
-                </ui:CardControl>
+                <settings:SettingsBlock Header="{localizations:Localization Corathing.Organizer.Name}"
+                                        CategoryText="Name:">
+                    <ui:TextBox Grid.Row="1"
+                                Text="{Binding TempName, UpdateSourceTrigger=PropertyChanged}" />
+                </settings:SettingsBlock>
 
                 <ContentPresenter Content="{Binding TempSettingsContext}"
                                   DataContext="{Binding TempSettingsContext}" />

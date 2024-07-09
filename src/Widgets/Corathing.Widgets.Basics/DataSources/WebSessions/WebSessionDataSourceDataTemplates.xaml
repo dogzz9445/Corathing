@@ -1,0 +1,72 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:Corathing.Widgets.Basics.DataSources.WebSessions"
+                    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+                    xmlns:localizations="clr-namespace:Corathing.Widgets.Basics.Behaviors"
+                    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+                    xmlns:settings="clr-namespace:Corathing.UI.WPF.Controls;assembly=Corathing.UI.WPF">
+
+    <!-- 참조되는 뷰에서 보이는 컨텍스트 -->
+    <DataTemplate DataType="{x:Type local:WebSessionDataSourceSelector}">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <ComboBox Grid.Column="0"
+                      Margin="0 0 8 0"
+                      x:Name="OutlinedComboBox"
+                      materialDesign:HintAssist.Hint="{Binding HintSelectionText}"
+                      materialDesign:TextFieldAssist.HasClearButton="True"
+                      ItemsSource="{Binding DataSourceContexts}"
+                      Style="{StaticResource MaterialDesignComboBox}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Name}" />
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+            <ui:Button Grid.Column="1"
+                       Style="{StaticResource IconButton24}"
+                       Icon="{ui:SymbolIcon Settings24}"
+                       Command="{Binding OpenDataSourceSettingsCommand}"
+                       ToolTip="Manage Datasource" />
+        </Grid>
+    </DataTemplate>
+
+    <!-- Settings View -->
+    <!-- Settings View 에 대한 ViewModel을 데이터 타입으로함 -->
+    <DataTemplate DataType="{x:Type local:WebSessionDataSourceOptionViewModel}">
+
+        <StackPanel>
+            <!-- Open Executable File -->
+            <settings:SettingsBlock CategoryText="Executable App:"
+                                    Header="Executable App">
+                <Grid HorizontalAlignment="Stretch">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <TextBox Grid.Column="0"
+                             Margin="2,0"
+                             Text="{Binding Path=ExecutableAppPath}" />
+                    <ui:Button Grid.Column="1"
+                               Margin="4 0"
+                               Style="{StaticResource IconButton24}"
+                               Icon="{ui:SymbolIcon OpenFolder24}"
+                               Command="{Binding OpenFileCommand}"
+                               ToolTip="Select Executable App" />
+                </Grid>
+            </settings:SettingsBlock>
+
+            <!-- Command Line Arguments -->
+            <settings:SettingsBlock CategoryText="Executable App:"
+                                    Header="CommandLine Arguments">
+                <TextBox HorizontalAlignment="Stretch"
+                         Text="{Binding Path=CommandLineArguments}" />
+            </settings:SettingsBlock>
+        </StackPanel>
+
+    </DataTemplate>
+
+</ResourceDictionary>

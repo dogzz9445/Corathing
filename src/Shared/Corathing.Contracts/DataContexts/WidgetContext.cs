@@ -69,7 +69,7 @@ public partial class WidgetContext : ObservableRecipient
             }
         };
 
-        OnCreate(state);
+        OnCreate(services, state);
         ApplyState(state);
     }
 
@@ -91,7 +91,7 @@ public partial class WidgetContext : ObservableRecipient
         appState.RemoveWidget(WidgetId);
     }
 
-    public virtual void OnCreate(WidgetState state)
+    public virtual void OnCreate(IServiceProvider services, WidgetState state)
     {
     }
 

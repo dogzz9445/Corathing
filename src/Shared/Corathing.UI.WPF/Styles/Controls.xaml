@@ -7,7 +7,11 @@
         <ResourceDictionary Source="pack://application:,,,/Corathing.UI.WPF;component/Controls/SettingsBlocks/SettingsBlock.xaml" />
 
         <ResourceDictionary Source="pack://application:,,,/Corathing.UI.WPF;component/Styles/Button.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Corathing.UI.WPF;component/Styles/ListBox.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Corathing.UI.WPF;component/Styles/TabControl.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Corathing.UI.WPF;component/Styles/ToggleButton.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Corathing.UI.WPF;component/Styles/TextBlock.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Corathing.UI.WPF;component/Styles/Fonts.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
     <CornerRadius x:Key="ControlCornerRadius">4,4,4,4</CornerRadius>

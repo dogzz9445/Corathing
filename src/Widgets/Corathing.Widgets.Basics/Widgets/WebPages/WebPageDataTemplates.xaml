@@ -1,0 +1,33 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:Corathing.Widgets.Basics.Widgets.WebPages"
+                    xmlns:settings="clr-namespace:Corathing.UI.WPF.Controls;assembly=Corathing.UI.WPF"
+                    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+                    xmlns:localizations="clr-namespace:Corathing.Widgets.Basics.Behaviors">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="pack://application:,,,/Corathing.UI.WPF;component/Styles/Button.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+    
+    <DataTemplate DataType="{x:Type local:WebPageWidgetContext}">
+        <UserControl Content="{Binding WebView}" />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type local:WebPageOptionViewModel}">
+        <StackPanel>
+            <!-- Open Type -->
+            <settings:SettingsBlock IsDescriptionOnContentRight="True"
+                                    CategoryText="Opener:"
+                                    Header="{localizations:Localization Corathing.Widgets.Basics.Files.OptionTypeTitle}">
+            </settings:SettingsBlock>
+
+            <!-- WebSessionDataSourceSelector -->
+            <settings:SettingsBlock CategoryText="Opener-Files:"
+                                    Header="Executable App..">
+                <ContentPresenter Grid.Row="1"
+                                  Content="{Binding WebSessionDataSourceSelector}"
+                                  DataContext="{Binding WebSessionDataSourceSelector}" />
+            </settings:SettingsBlock>
+        </StackPanel>
+    </DataTemplate>
+
+</ResourceDictionary>

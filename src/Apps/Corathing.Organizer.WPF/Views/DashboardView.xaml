@@ -7,12 +7,14 @@
              xmlns:models="clr-namespace:Corathing.Organizer.WPF.Models"
              xmlns:viewmodels="clr-namespace:Corathing.Organizer.WPF.ViewModels"
              xmlns:converters="clr-namespace:Corathing.Dashboards.WPF.Converters;assembly=Corathing.Dashboards.WPF"
+             xmlns:converters1="clr-namespace:Corathing.Organizer.WPF.Converters"
              xmlns:dashboardControl="clr-namespace:Corathing.Dashboards.WPF.Controls;assembly=Corathing.Dashboards.WPF"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
              xmlns:behavior="clr-namespace:Corathing.Organizer.WPF.Behaviors"
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              mc:Ignorable="d"
+             FontFamily="{DynamicResource CorathingDefaultFontFamily}"
              Background="{DynamicResource ApplicationBackgroundBrush}"
              Foreground="{DynamicResource TextFillColorPrimaryBrush}"
              d:DesignHeight="1000"
@@ -27,7 +29,7 @@
             <converters:DashboardSelectorIsCheckedConverter x:Key="DashboardSelectorIsCheckedConverter" />
             <converters:NullToVisibilityConverter x:Key="NullToVisibilityConverter" />
             <converters:InvertNullToVisibilityConverter x:Key="InvertNullToVisibilityConverter" />
-
+            <converters1:PlaceholderDataTemplateConverter x:Key="PlaceholderDataTemplateConverter" />
 
             <!-- TextBox style of TabControl header with none editing-->
             <Style x:Key="NoLayoutDefaultTextBoxStyle"
@@ -78,31 +80,38 @@
             <!-- TabControl Template -->
             <DataTemplate x:Key="newTabButtonContentTemplate">
                 <Grid>
-                    <TextBlock Text="Add New Project or Workflow" FontSize="36" />
+                    <TextBlock HorizontalAlignment="Center"
+                               VerticalAlignment="Center" Text="Add new Workflow" FontSize="36" />
                 </Grid>
             </DataTemplate>
 
             <!-- TabControl Template -->
             <DataTemplate x:Key="newTabButtonHeaderTemplate">
-                <ui:Button Icon="{ui:SymbolIcon Add12}"
-                           FontSize="12"
+                <ui:Button Icon="{ui:SymbolIcon Add16}"
+                           Visibility="{Binding DataContext.EditMode,
+                                RelativeSource={RelativeSource AncestorType={x:Type local:DashboardView}, Mode=FindAncestor},
+                                Converter={StaticResource BoolToVis}}"
+                           FontSize="16"
                            Margin="0"
-                           Height="40"
+                           Width="36"
+                           Height="36"
                            Foreground="{DynamicResource CardForeground}"
                            Command="{Binding DataContext.AddWorkflowCommand,
                                 RelativeSource={RelativeSource FindAncestor,
                                 AncestorType={x:Type local:DashboardView}}}"
-                           ToolTip="Add New Workflow"/>
+                           ToolTip="Add New Workflow">
+                </ui:Button>
             </DataTemplate>
 
             <DataTemplate x:Key="itemContentTemplate">
-                <ContentControl>
+                <ContentControl Focusable="False">
                     <ContentControl.Style>
                         <Style TargetType="{x:Type ContentControl}">
                             <Setter Property="Content">
                                 <Setter.Value>
                                     <dashboardControl:DashboardHost Grid.Column="0"
-                                                                    Margin="5"
+                                                                    Margin="4"
+                                                                    Focusable="False"
                                                                     FocusVisualStyle="{x:Null}"
                                                                     LayoutChangedCommand="{Binding LayoutChangedCommand}"
                                                                     ConfigureWidgetCommand="{Binding ConfigureWidgetCommand}"
@@ -131,6 +140,7 @@
 
             <DataTemplate x:Key="itemHeaderTemplate">
                 <Grid HorizontalAlignment="Stretch"
+                      Height="36"
                       MinWidth="168"
                       MaxWidth="168">
                     <StackPanel Margin="0,0,2,0"
@@ -369,11 +379,6 @@
                 </StackPanel>
             </Grid>
 
-            <!--  Separator  -->
-            <Border Grid.Row="2"
-                    Height="1"
-                    Margin="5,0,5,0"
-                    Background="LightGray" />
         </Grid>
 
         <!--  Dashboard Contents  -->
@@ -384,9 +389,11 @@
             <TabControl HorizontalContentAlignment="Left"
                         x:Name="DashboardHostTabControl"
                         FocusVisualStyle="{x:Null}"
+                        Focusable="False"
+                        ItemContainerStyle="{DynamicResource CorathingDefaultTabItemStyle}"
                         ItemTemplateSelector="{StaticResource headerTemplateSelector}"
                         ContentTemplateSelector="{StaticResource contentTemplateSelector}"
-                        SelectedItem="{Binding SelectedProject.SelectedWorkflow}"
+                        SelectedItem="{Binding SelectedProject.SelectedWorkflow, Converter={StaticResource PlaceholderDataTemplateConverter}}"
                         ItemsSource="{Binding SelectedProject.Workflows}" />
         </Grid>
     </Grid>

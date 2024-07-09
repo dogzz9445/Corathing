@@ -10,6 +10,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using Corathing.Contracts.Attributes;
 using Corathing.Contracts.Bases;
 using Corathing.Contracts.DataContexts;
+using Corathing.Contracts.Services;
 
 using Microsoft.CodeAnalysis;
 
@@ -23,7 +24,13 @@ namespace Corathing.Widgets.Basics.DataSources.ExecutableApps;
     description: "Execute an executable app with the selected files.",
     defaultTitle: "DefaultApp"
 )]
-public class ExecutableAppDataSourceContext : DataSourceContext, IDataSourceContext
+[EntryCoraDataSourceDefaultTitle(ApplicationLanguage.en_US, "Default App")]
+[EntryCoraDataSourceDefaultTitle(ApplicationLanguage.ko_KR, "기본 앱")]
+[EntryCoraDataSourceName(ApplicationLanguage.en_US, "Executable App")]
+[EntryCoraDataSourceName(ApplicationLanguage.ko_KR, "실행 앱")]
+[EntryCoraDataSourceDescription(ApplicationLanguage.en_US, "Execute an executable app with the selected files")]
+[EntryCoraDataSourceDescription(ApplicationLanguage.ko_KR, "실행 앱을 통해 선택된 파일들을 실행")]
+public class ExecutableAppDataSourceContext : DataSourceContext
 {
     public string ExecutableAppPath { get; set; }
     public string CommandLineArguments { get; set; }
@@ -44,14 +51,6 @@ public class ExecutableAppDataSourceContext : DataSourceContext, IDataSourceCont
         CommandLineArguments = option.CommandLineArguments;
     }
 
-    public void Apply(DataSourceState state)
-    {
-    }
-
-    public void OnDestroy(DataSourceState state)
-    {
-    }
-
     public void Execute(List<string> paths)
     {
         var arguments = paths.Select(path => $"{CommandLineArguments} {path}");
@@ -62,19 +61,20 @@ public class ExecutableAppDataSourceContext : DataSourceContext, IDataSourceCont
             {
                 FileName = ExecutableAppPath,
                 Arguments = argument,
-                UseShellExecute = false,
+                UseShellExecute = true,
                 CreateNoWindow = false,
                 WindowStyle = ProcessWindowStyle.Hidden
             };
             try
             {
-                using (Process process = Process.Start(processStartInfo))
+                using (var process = Process.Start(processStartInfo))
                 {
                     process?.WaitForExit();
                 }
             }
             catch (Exception e)
             {
+                Debug.WriteLine(e.Message);
             }
         }
     }

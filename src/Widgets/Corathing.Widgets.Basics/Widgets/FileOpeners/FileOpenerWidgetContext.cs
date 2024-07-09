@@ -46,7 +46,7 @@ public partial class FileOpenerWidgetContext : WidgetContext
     [ObservableProperty]
     private ExecutableAppDataSourceContext _executableAppDataSourceContext;
 
-    public override void OnCreate(WidgetState state)
+    public override void OnCreate(IServiceProvider services, WidgetState state)
     {
         FilePaths = new ObservableCollection<string>();
         FolderPaths = new ObservableCollection<string>();
@@ -108,14 +108,27 @@ public partial class FileOpenerWidgetContext : WidgetContext
             {
                 foreach (var file in FilePaths)
                 {
-                    Process.Start(file);
+                    Process.Start(
+                        new ProcessStartInfo()
+                        {
+                            FileName = file,
+                            UseShellExecute = true,
+                        }
+                    );
                 }
             }
             else if (OpenType == FileOpenType.Folders)
             {
                 foreach (var folder in FolderPaths)
                 {
-                    Process.Start("explorer.exe", folder);
+                    Process.Start(
+                        new ProcessStartInfo()
+                        {
+                            FileName = "explorer.exe",
+                            Arguments = folder,
+                            UseShellExecute = true,
+                        }
+                    );
                 }
             }
         }

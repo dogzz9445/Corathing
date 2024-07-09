@@ -55,7 +55,7 @@ public partial class ToDoListViewModel : WidgetContext
         }
     }
 
-    public override void OnCreate(WidgetState state)
+    public override void OnCreate(IServiceProvider services, WidgetState state)
     {
         ILocalizationService localizationService = _services.GetService<ILocalizationService>();
         localizationService.Provide("Corathing.Widgets.Basics.ToDoListName", value => WidgetTitle = value);
@@ -74,7 +74,6 @@ public partial class ToDoListViewModel : WidgetContext
     {
         Jobs.Remove(job);
     }
-
 }
 
 /// <summary>

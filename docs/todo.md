@@ -10,6 +10,8 @@
 - [ ] (Organizer) Navigation 서비스 구현
 - [ ] (Contracts) AssemblyCoraPackageIconAttribute 추가
 - [ ] (Contracts) ArgumentCastNullException 추가
+- [ ] (Organizer) Dashboard View 의 TabControl 의 Placeholder 에서 CornerRadius 가 없는 버튼을 배치하고 안에 Border 및 Corner Radius 를 넣어 버튼을 구현
+- [ ] (Organizer) Dashboard View 의 TabControl 에서 Add Button 을 구현하는데 문제가 있음. TabControl 을 재구현하여 사용하거나 다른 방식을 고려하여야함
 
 ## Doing
 - [ ] (WidgetSystem) DataSourceService 구현

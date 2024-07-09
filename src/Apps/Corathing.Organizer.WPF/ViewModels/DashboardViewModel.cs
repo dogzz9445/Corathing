@@ -178,30 +178,6 @@ public partial class DashboardViewModel : ObservableObject
     #region Public Methods
 
     /// <summary>
-    /// Completes dashboard configuration
-    /// </summary>
-    /// <param name="type">The type.</param>
-    /// <param name="save">if set to <c>true</c> [save].</param>
-    /// <param name="newName">The new name.</param>
-    public void DashboardConfigurationComplete(DashboardConfigurationType type, bool save, string newName)
-    {
-        //if (!save)
-        //    return;
-
-        //switch (type)
-        //{
-        //    case DashboardConfigurationType.New:
-        //        var dashboardModel = new WorkflowContext { Title = newName };
-        //        Workflows.Add(dashboardModel);
-        //        SelectedWorkflow = dashboardModel;
-        //        return;
-        //    case DashboardConfigurationType.Existing:
-        //        SelectedWorkflow.Title = newName;
-        //        return;
-        //}
-    }
-
-    /// <summary>
     /// Starts this instance.
     /// </summary>
     /// <returns>Task.</returns>

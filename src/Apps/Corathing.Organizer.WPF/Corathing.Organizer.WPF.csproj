@@ -18,6 +18,15 @@
 
   <ItemGroup>
     <None Remove="Assets\logo_256.png" />
+    <None Remove="Fonts\NotoSansKR-Black.ttf" />
+    <None Remove="Fonts\NotoSansKR-Bold.ttf" />
+    <None Remove="Fonts\NotoSansKR-ExtraBold.ttf" />
+    <None Remove="Fonts\NotoSansKR-ExtraLight.ttf" />
+    <None Remove="Fonts\NotoSansKR-Light.ttf" />
+    <None Remove="Fonts\NotoSansKR-Medium.ttf" />
+    <None Remove="Fonts\NotoSansKR-Regular.ttf" />
+    <None Remove="Fonts\NotoSansKR-SemiBold.ttf" />
+    <None Remove="Fonts\NotoSansKR-Thin.ttf" />
   </ItemGroup>
 
   <ItemGroup>
@@ -53,6 +62,15 @@
 
   <ItemGroup>
     <Resource Include="Assets\logo_256.png" />
+    <Resource Include="Fonts\NotoSansKR-Black.ttf" />
+    <Resource Include="Fonts\NotoSansKR-Bold.ttf" />
+    <Resource Include="Fonts\NotoSansKR-ExtraBold.ttf" />
+    <Resource Include="Fonts\NotoSansKR-ExtraLight.ttf" />
+    <Resource Include="Fonts\NotoSansKR-Light.ttf" />
+    <Resource Include="Fonts\NotoSansKR-Medium.ttf" />
+    <Resource Include="Fonts\NotoSansKR-Regular.ttf" />
+    <Resource Include="Fonts\NotoSansKR-SemiBold.ttf" />
+    <Resource Include="Fonts\NotoSansKR-Thin.ttf" />
   </ItemGroup>
 
   <ItemGroup>

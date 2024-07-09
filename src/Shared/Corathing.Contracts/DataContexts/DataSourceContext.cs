@@ -26,15 +26,6 @@ public partial class DataSourceContext : ObservableRecipient
     [ObservableProperty]
     private string _name;
 
-    public DataSourceContext()
-    {
-    }
-
-    private void OnCustomSettingsChanged(object recipient, CustomSettingsChangedMessage message)
-    {
-
-    }
-
     public void Initialize(IServiceProvider services, DataSourceState state)
     {
         _services = services;
@@ -43,13 +34,16 @@ public partial class DataSourceContext : ObservableRecipient
         DataSourceId = state.Id;
 
         OnCreate(services, state);
-
         ApplyState(state);
     }
 
     public void ApplyState(DataSourceState state)
     {
+        // FIXME:
+        // State를 Copy 하도록 변경
         State = state;
+        Name = state.CoreSettings.Title;
+
         OnStateChanged(state);
     }
 
@@ -63,6 +57,11 @@ public partial class DataSourceContext : ObservableRecipient
 
     public virtual void OnStateChanged(DataSourceState state)
     {
+    }
+
+    private void OnCustomSettingsChanged(object recipient, CustomSettingsChangedMessage message)
+    {
+
     }
 
     public virtual void OnMessage()

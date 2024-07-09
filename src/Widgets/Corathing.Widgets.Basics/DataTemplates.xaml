@@ -14,8 +14,10 @@
 
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="pack://application:,,,/Corathing.Widgets.Basics;component/Widgets/Emptys/EmptyWidgetView.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/Corathing.Widgets.Basics;component/Widgets/FileOpeners/FileOpenerDataTemplate.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/Corathing.Widgets.Basics;component/DataSources/ExecutableApps/ExecutableAppDataSourceView.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Corathing.Widgets.Basics;component/Widgets/FileOpeners/FileOpenerDataTemplates.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Corathing.Widgets.Basics;component/Widgets/WebPages/WebPageDataTemplates.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Corathing.Widgets.Basics;component/DataSources/ExecutableApps/ExecutableAppDataSourceDataTemplates.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Corathing.Widgets.Basics;component/DataSources/WebSessions/WebSessionDataSourceDataTemplates.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
     <DataTemplate DataType="{x:Type calendars:CalendarWidgetViewModel}">
@@ -30,7 +32,7 @@
         <linkopeners:LinkOpenerWidget />
     </DataTemplate>
     
-    <DataTemplate DataType="{x:Type monacos:MonacoWidgetViewModel}">
+    <DataTemplate DataType="{x:Type monacos:MonacoWidgetContext}">
         <monacos:MonacoWidget />
     </DataTemplate>
 
@@ -46,10 +48,6 @@
         <todos:ToDoListWidget />
     </DataTemplate>
     
-    <DataTemplate DataType="{x:Type webpages:WebPageViewModel}">
-        <webpages:WebPageWidget />
-    </DataTemplate>
-
     <DataTemplate DataType="{x:Type webqueries:WebQueryViewModel}">
         <webqueries:WebQueryWidget />
     </DataTemplate>

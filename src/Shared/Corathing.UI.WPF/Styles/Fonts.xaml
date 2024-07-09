@@ -1,0 +1,6 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <FontFamily x:Key="CorathingDefaultFontFamily">pack://application:,,,/Fonts/#Noto Sans KR</FontFamily>
+
+</ResourceDictionary>

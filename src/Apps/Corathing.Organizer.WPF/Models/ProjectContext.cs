@@ -58,7 +58,7 @@ public partial class ProjectContext : ObservableObject
     }
 
     [ObservableProperty]
-    private WorkflowContext _selectedWorkflow;
+    private WorkflowContext? _selectedWorkflow;
 
     [RelayCommand]
     public void AddWorkflow()
