@@ -25,13 +25,6 @@ public partial class DataSourceSelector<T> :
     [ObservableProperty]
     private T? _selectedDataSourceContext;
 
-    [RelayCommand]
-    public void OpenDataSourceSettings()
-    {
-        var navigationService = _services.GetRequiredService<INavigationDialogService>();
-        navigationService.NavigateDataSourceSettings(typeof(T), SelectedDataSourceContext);
-    }
-
     // TODO:
     // Default localizaed Select hint string
     [ObservableProperty]
@@ -47,34 +40,46 @@ public partial class DataSourceSelector<T> :
 
         var dataSourceService = _services.GetService<IDataSourceService>();
 
-        var dataSources = dataSourceService.GetAllDataSourceContexts<T>().ToList();
-        dataSources.ForEach(item => DataSourceContexts.Add(item));
+        DataSourceContexts = new ObservableCollection<T>(
+            dataSourceService.GetAllDataSourceContexts<T>()
+        );
 
         if (guid != null)
         {
             SelectedDataSourceContext = dataSourceService.GetDataSourceContext<T>(guid);
         }
 
-        WeakReferenceMessenger.Default.Register<DataSourceStateChangedMessage<T>>(this, OnDataSourceStateChanged);
+        WeakReferenceMessenger.Default.Register<DataSourceStateChangedMessage, string>(
+            this,
+            typeof(T).FullName,
+            OnDataSourceStateChanged);
     }
 
-    private void OnDataSourceStateChanged(object recipient, DataSourceStateChangedMessage<T> message)
+    [RelayCommand]
+    public void OpenDataSourceSettings()
+    {
+        var navigationService = _services.GetRequiredService<INavigationDialogService>();
+        navigationService.NavigateDataSourceSettings(typeof(T), SelectedDataSourceContext);
+    }
+
+    private void OnDataSourceStateChanged(object recipient, DataSourceStateChangedMessage message)
     {
         if (message.ChangedType == EntityStateChangedType.Added)
         {
-            DataSourceContexts.Add(message.Value);
+            if (message.Value is T context)
+            {
+                DataSourceContexts.Add(message.Value as T);
+            }
         }
         else if (message.ChangedType == EntityStateChangedType.Removed)
         {
             if (SelectedDataSourceContext == message.Value)
                 SelectedDataSourceContext = null;
-            DataSourceContexts.Remove(message.Value);
+            DataSourceContexts.Remove(message.Value as T);
         }
-    }
-
-    public void Select(Guid? guid = null)
-    {
-        SelectedDataSourceContext = guid == null ? null :
-            _services.GetRequiredService<IDataSourceService>().GetDataSourceContext<T>(guid);
+        else if (message.ChangedType == EntityStateChangedType.Selected)
+        {
+            SelectedDataSourceContext = DataSourceContexts.FirstOrDefault(c => c.DataSourceId == message.Value.DataSourceId);
+        }
     }
 }

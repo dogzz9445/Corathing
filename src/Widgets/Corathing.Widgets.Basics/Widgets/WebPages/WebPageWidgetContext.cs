@@ -48,7 +48,7 @@ public partial class WebPageWidgetContext : WidgetContext
         //WidgetTitle = option.Name;
     }
 
-    public override void OnStateChanged(WidgetState state)
+    public async override void OnStateChanged(WidgetState state)
     {
         if (state.CustomSettings is not WebPageOption option)
         {
@@ -62,6 +62,12 @@ public partial class WebPageWidgetContext : WidgetContext
             if (dataSource.DataSourceId != WebSessionDataSource.DataSourceId)
             {
                 WebSessionDataSource = dataSource;
+                WebView = null;
+                if (WebSessionDataSource != null)
+                {
+                    WebView = await WebSessionDataSource.CreateWebView();
+                    WebView.Source = new Uri(option.Url);
+                }
             }
         }
     }

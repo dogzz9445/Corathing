@@ -31,7 +31,28 @@ public partial class DashboardViewModel : ObservableObject
     [RelayCommand]
     public void AddWidget()
     {
-        Widgets.Add(new EmptyWidgetContext());
+        var widget = new EmptyWidgetContext()
+        {
+            State = new WidgetState()
+            {
+                Id = Guid.NewGuid(),
+                CoreSettings = new WidgetCoreState()
+                {
+                    Title = "New Widget"
+                }
+            },
+            Layout = new WidgetLayout()
+            {
+                Rect = new WidgetLayoutRect()
+                {
+                    X = 0,
+                    Y = 0,
+                    W = 1,
+                    H = 1
+                }
+            }
+        };
+        Widgets.Add(widget);
     }
 
     [RelayCommand]

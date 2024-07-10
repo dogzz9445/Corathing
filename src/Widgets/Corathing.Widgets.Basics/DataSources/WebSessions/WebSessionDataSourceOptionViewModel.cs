@@ -4,8 +4,21 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using Corathing.Contracts.DataContexts;
+
 namespace Corathing.Widgets.Basics.DataSources.WebSessions;
 
-internal class WebSessionDataSourceOptionViewModel
+internal class WebSessionDataSourceOptionViewModel : CustomSettingsContext
 {
+    protected override void OnCreate(object? defaultOption)
+    {
+    }
+
+    protected override void OnContextChanged()
+    {
+    }
+
+    protected override void OnSettingsChanged(object? option)
+    {
+    }
 }

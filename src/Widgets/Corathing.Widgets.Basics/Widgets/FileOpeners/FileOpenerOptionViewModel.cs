@@ -46,6 +46,10 @@ public partial class FileOpenerOptionViewModel :
         Folders = new ObservableCollection<FolderInfo>();
         CustomSettings = fileOpenerOption;
         ExecutableAppDataSourceSelector = new ExecutableAppDataSourceSelector(Services);
+        //ExecutableAppDataSourceSelector.PropertyChanged += (sender, args) =>
+        //{
+        //    OnPropertyChanged(new PropertyChangedEventArgs(nameof(ExecutableAppDataSourceSelector)));
+        //};
     }
 
     protected override void OnContextChanged()
@@ -57,7 +61,8 @@ public partial class FileOpenerOptionViewModel :
         fileOpenerOption.OpenType = OpenType;
         fileOpenerOption.Files = Files.Select(file => file.FileName).ToList();
         fileOpenerOption.Folders = Folders.Select(folder => folder.FolderName).ToList();
-        ExecutableAppDataSourceSelector.Select(fileOpenerOption.ExecutableAppDataSourceId);
+        fileOpenerOption.ExecutableAppDataSourceId = ExecutableAppDataSourceSelector.SelectedDataSourceContext.DataSourceId;
+        //ExecutableAppDataSourceSelector.Select(fileOpenerOption.ExecutableAppDataSourceId);
         CustomSettings = fileOpenerOption;
     }
 

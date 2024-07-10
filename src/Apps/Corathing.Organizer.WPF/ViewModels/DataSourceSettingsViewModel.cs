@@ -99,6 +99,11 @@ public partial class DataSourceSettingsViewModel : ObservableObject
         var dataSourceService = _services.GetRequiredService<IDataSourceService>();
         dataSourceService.AddDataSourceContext(dataContext);
 
+        WeakReferenceMessenger.Default.Send(
+            new DataSourceStateChangedMessage(EntityStateChangedType.Added, dataContext),
+            dataContext.GetType().FullName
+            );
+
         DataSourceContexts.Add(dataContext);
         Select(dataContext);
     }
@@ -114,6 +119,11 @@ public partial class DataSourceSettingsViewModel : ObservableObject
         var dataSourceService = _services.GetRequiredService<IDataSourceService>();
         appStateService.RemovePackage(context.State.Id);
         dataSourceService.RemoveDataSourceContext(context);
+
+        WeakReferenceMessenger.Default.Send(
+            new DataSourceStateChangedMessage(EntityStateChangedType.Removed, context),
+            context.GetType().FullName
+            );
     }
 
     public void OnSelectedContext(DataSourceContext? selectedContext)
@@ -162,9 +172,14 @@ public partial class DataSourceSettingsViewModel : ObservableObject
     }
 
     [RelayCommand]
-    public void GoBack(Window window)
+    public void SelectAndGoBack(DataSourceContext context)
     {
-        window.Close();
+        _services.GetRequiredService<INavigationDialogService>().GoBack();
+
+        WeakReferenceMessenger.Default.Send(
+            new DataSourceStateChangedMessage(EntityStateChangedType.Selected, context),
+            context.GetType().FullName
+            );
     }
 
     private void OnCustomSettingsChanged(object recipient, CustomSettingsChangedMessage? message)

@@ -17,6 +17,9 @@ namespace Corathing.Widgets.Basics.Widgets.WebPages;
 public partial class WebPageOptionViewModel : CustomSettingsContext
 {
     [ObservableProperty]
+    private int _autoReloadInterval;
+
+    [ObservableProperty]
     private WebSessionDataSourceSelector _webSessionDataSourceSelector;
 
     protected override void OnCreate(object? defaultOption)

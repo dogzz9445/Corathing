@@ -37,6 +37,7 @@ public interface IStorageService
     string GetAppPackagePath();
 
     string GetEntityFolder(IEntity entity);
+    void DeleteEntityFolder(IEntity entity);
 
     FileStream OpenFile(IEntity entity, string path, FileMode mode);
 

@@ -30,5 +30,15 @@ public enum SessionPersistence
 
 public class WebPageOption
 {
+    /// <summary>
+    /// Auto Reload Interval in seconds
+    /// </summary>
+    public int AutoReloadInterval { get; set; }
+
+    /// <summary>
+    /// Url of the web page
+    /// </summary>
+    public string? Url { get; set; }
+
     public Guid? WebSessionDataSourceId { get; set; }
 }

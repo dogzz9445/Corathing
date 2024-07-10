@@ -155,6 +155,15 @@ public class StorageService : IStorageService
             );
     }
 
+    public void DeleteEntityFolder(IEntity entity)
+    {
+        var entityFolder = GetEntityFolder(entity);
+        if (Directory.Exists(entityFolder))
+        {
+            Directory.Delete(entityFolder, true);
+        }
+    }
+
     public FileStream OpenFile(IEntity entity, string path, FileMode mode)
     {
         return File.Open(

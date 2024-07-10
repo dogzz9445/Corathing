@@ -34,33 +34,33 @@
         </Grid>
     </DataTemplate>
 
+    <!-- 컨텍스트에 적용 가능한 항목들 -->
+    <DataTemplate DataType="{x:Type local:WebSessionDataSourceContext}">
+        <StackPanel>
+            <settings:SettingsBlock IsDescriptionOnContentRight="True"
+                                    CategoryText="WebSession-Context:"
+                                    Header="Remove Cookies">
+                <ui:Button Appearance="Primary"
+                           Command="{Binding AddDataSourceCommand}"
+                           Content="Remove"
+                           Icon="Add24"
+                           Height="40" />
+            </settings:SettingsBlock>
+        </StackPanel>
+    </DataTemplate>
+
     <!-- Settings View -->
     <!-- Settings View 에 대한 ViewModel을 데이터 타입으로함 -->
     <DataTemplate DataType="{x:Type local:WebSessionDataSourceOptionViewModel}">
 
         <StackPanel>
             <!-- Open Executable File -->
-            <settings:SettingsBlock CategoryText="Executable App:"
+            <settings:SettingsBlock CategoryText="WebSession-Option:"
                                     Header="Executable App">
-                <Grid HorizontalAlignment="Stretch">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="Auto" />
-                    </Grid.ColumnDefinitions>
-                    <TextBox Grid.Column="0"
-                             Margin="2,0"
-                             Text="{Binding Path=ExecutableAppPath}" />
-                    <ui:Button Grid.Column="1"
-                               Margin="4 0"
-                               Style="{StaticResource IconButton24}"
-                               Icon="{ui:SymbolIcon OpenFolder24}"
-                               Command="{Binding OpenFileCommand}"
-                               ToolTip="Select Executable App" />
-                </Grid>
             </settings:SettingsBlock>
 
             <!-- Command Line Arguments -->
-            <settings:SettingsBlock CategoryText="Executable App:"
+            <settings:SettingsBlock CategoryText="WebSession-Option:"
                                     Header="CommandLine Arguments">
                 <TextBox HorizontalAlignment="Stretch"
                          Text="{Binding Path=CommandLineArguments}" />

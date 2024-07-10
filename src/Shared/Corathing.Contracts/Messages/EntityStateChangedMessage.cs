@@ -15,6 +15,8 @@ public enum EntityStateChangedType
     Migrated = 2,
     Moved = 3,
     Modified = 4,
+
+    Selected = 5,
 }
 
 public class EntityStateChangedMessage<T> : ValueChangedMessage<T>

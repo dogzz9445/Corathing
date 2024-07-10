@@ -10,6 +10,7 @@ using Corathing.Contracts.Attributes;
 using Corathing.Contracts.Bases;
 using Corathing.Contracts.DataContexts;
 using Corathing.Contracts.Services;
+using Corathing.Widgets.Basics.DataSources.ExecutableApps;
 
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Web.WebView2.Core;
@@ -17,10 +18,22 @@ using Microsoft.Web.WebView2.Wpf;
 
 namespace Corathing.Widgets.Basics.DataSources.WebSessions;
 
-[EntryCoraDataSource(typeof(WebSessionDataSourceContext))]
+[EntryCoraDataSource(
+    dataSourceType: typeof(WebSessionDataSourceContext),
+    optionType: typeof(WebSessionDataSourceOption),
+    settingsContextType: typeof(WebSessionDataSourceOptionViewModel),
+    name: "Executable App",
+    description: "Execute an executable app with the selected files.",
+    defaultTitle: "DefaultApp"
+)]
+[EntryCoraDataSourceDefaultTitle(ApplicationLanguage.en_US, "Default Session")]
+[EntryCoraDataSourceDefaultTitle(ApplicationLanguage.ko_KR, "기본 세션")]
+[EntryCoraDataSourceName(ApplicationLanguage.en_US, "Web Session")]
+[EntryCoraDataSourceName(ApplicationLanguage.ko_KR, "웹 세션")]
+[EntryCoraDataSourceDescription(ApplicationLanguage.en_US, "Web session")]
+[EntryCoraDataSourceDescription(ApplicationLanguage.ko_KR, "웹세션")]
 public class WebSessionDataSourceContext : DataSourceContext
 {
-    private WebView2 _webview;
     private CoreWebView2Environment _environment;
     private CoreWebView2CookieManager _cookieManager;
     private CoreWebView2CreationProperties _creationProperties;
@@ -43,13 +56,14 @@ public class WebSessionDataSourceContext : DataSourceContext
             UserDataFolder = services.GetService<IStorageService>().GetEntityFolder(state),
         };
 
-        await _webview.EnsureCoreWebView2Async(_environment);
         //CoreWebView2CookieManager cookieManager = CoreWebView2CookieManager.GetForUser(state.WebView.CoreWebView2);
 
     }
 
     public override void OnDestroy()
     {
+        _services.GetService<IStorageService>().DeleteEntityFolder(State);
+        DeleteAllCookies();
     }
 
     public void DeleteAllCookies()
@@ -60,9 +74,11 @@ public class WebSessionDataSourceContext : DataSourceContext
     public async Task<WebView2> CreateWebView()
     {
         WebView2 webView = new WebView2();
+        webView.CoreWebView2.Settings.AreDefaultContextMenusEnabled = false;
         webView.DefaultBackgroundColor = System.Drawing.Color.Transparent;
         webView.CreationProperties = _creationProperties;
         webView.NavigationCompleted += OnWebViewNavigationCompleted;
+        await webView.EnsureCoreWebView2Async(_environment);
         return webView;
     }
 
