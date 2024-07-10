@@ -19,6 +19,7 @@
                       materialDesign:HintAssist.Hint="{Binding HintSelectionText}"
                       materialDesign:TextFieldAssist.HasClearButton="True"
                       ItemsSource="{Binding DataSourceContexts}"
+                      SelectedItem="{Binding SelectedDataSourceContext}"
                       Style="{StaticResource MaterialDesignComboBox}">
                 <ComboBox.ItemTemplate>
                     <DataTemplate>

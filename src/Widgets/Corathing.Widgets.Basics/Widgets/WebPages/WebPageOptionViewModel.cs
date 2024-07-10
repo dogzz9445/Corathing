@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -30,13 +31,34 @@ public partial class WebPageOptionViewModel : CustomSettingsContext
         }
         CustomSettings = webPageOption;
         WebSessionDataSourceSelector = new WebSessionDataSourceSelector(Services);
+        WebSessionDataSourceSelector.PropertyChanged += (sender, args) =>
+        {
+            OnPropertyChanged(new PropertyChangedEventArgs(nameof(WebSessionDataSourceSelector)));
+        };
     }
 
     protected override void OnContextChanged()
     {
+        if (CustomSettings is not WebPageOption webPageOption)
+        {
+            throw new ArgumentException($"Not a valid type for CustomSettings {nameof(WebPageOption)}");
+        }
+        webPageOption.AutoReloadInterval = AutoReloadInterval;
+        webPageOption.WebSessionDataSourceId = null;
+        if (WebSessionDataSourceSelector.SelectedDataSourceContext != null)
+        {
+            webPageOption.WebSessionDataSourceId = WebSessionDataSourceSelector.SelectedDataSourceContext.DataSourceId;
+        }
+        CustomSettings = webPageOption;
     }
 
     protected override void OnSettingsChanged(object? option)
     {
+        if (option is not WebPageOption webPageOption)
+        {
+            throw new ArgumentException($"Not a valid type for CustomSettings {nameof(WebPageOption)}");
+        }
+        AutoReloadInterval = webPageOption.AutoReloadInterval;
+        WebSessionDataSourceSelector.Select(webPageOption.WebSessionDataSourceId);
     }
 }

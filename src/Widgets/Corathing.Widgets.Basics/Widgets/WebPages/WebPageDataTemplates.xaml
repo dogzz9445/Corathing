@@ -9,7 +9,7 @@
     </ResourceDictionary.MergedDictionaries>
     
     <DataTemplate DataType="{x:Type local:WebPageWidgetContext}">
-        <UserControl Content="{Binding WebView}" />
+        <ContentPresenter Content="{Binding WebView}" />
     </DataTemplate>
 
     <DataTemplate DataType="{x:Type local:WebPageOptionViewModel}">

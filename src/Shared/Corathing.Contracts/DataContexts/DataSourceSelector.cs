@@ -79,7 +79,12 @@ public partial class DataSourceSelector<T> :
         }
         else if (message.ChangedType == EntityStateChangedType.Selected)
         {
-            SelectedDataSourceContext = DataSourceContexts.FirstOrDefault(c => c.DataSourceId == message.Value.DataSourceId);
+            Select(message.Value.DataSourceId);
         }
+    }
+
+    public void Select(Guid? guid)
+    {
+        SelectedDataSourceContext = DataSourceContexts.FirstOrDefault(c => c.DataSourceId == guid);
     }
 }

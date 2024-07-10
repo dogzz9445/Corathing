@@ -46,9 +46,9 @@ public class WebSessionDataSourceContext : DataSourceContext
             // Change Exception Type
             throw new Exception();
         }
-        _environment = await CoreWebView2Environment.CreateAsync(
-            userDataFolder: services.GetService<IStorageService>().GetEntityFolder(state)
-        );
+        //_environment = await CoreWebView2Environment.CreateAsync(
+        //    userDataFolder: services.GetService<IStorageService>().GetEntityFolder(state)
+        //);
         _creationProperties = new CoreWebView2CreationProperties
         {
             Language = services.GetService<ILocalizationService>().GetAppCulture().Name,
@@ -71,14 +71,15 @@ public class WebSessionDataSourceContext : DataSourceContext
         _cookieManager.DeleteAllCookies();
     }
 
-    public async Task<WebView2> CreateWebView()
+    public WebView2 CreateWebView()
     {
-        WebView2 webView = new WebView2();
-        webView.CoreWebView2.Settings.AreDefaultContextMenusEnabled = false;
+        WebView2 webView = new WebView2()
+        {
+            CreationProperties = _creationProperties,
+        };
         webView.DefaultBackgroundColor = System.Drawing.Color.Transparent;
         webView.CreationProperties = _creationProperties;
         webView.NavigationCompleted += OnWebViewNavigationCompleted;
-        await webView.EnsureCoreWebView2Async(_environment);
         return webView;
     }
 

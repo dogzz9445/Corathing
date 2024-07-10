@@ -4,6 +4,7 @@ using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 using CommunityToolkit.Mvvm.ComponentModel;
 using Corathing.Contracts.Attributes;
@@ -14,6 +15,7 @@ using Corathing.Widgets.Basics.DataSources.WebSessions;
 using Corathing.Widgets.Basics.Widgets.FileOpeners;
 
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Web.WebView2.Core;
 using Microsoft.Web.WebView2.Wpf;
 
 namespace Corathing.Widgets.Basics.Widgets.WebPages;
@@ -48,7 +50,7 @@ public partial class WebPageWidgetContext : WidgetContext
         //WidgetTitle = option.Name;
     }
 
-    public async override void OnStateChanged(WidgetState state)
+    public override void OnStateChanged(WidgetState state)
     {
         if (state.CustomSettings is not WebPageOption option)
         {
@@ -59,16 +61,50 @@ public partial class WebPageWidgetContext : WidgetContext
         {
             var dataSourceService = _services.GetRequiredService<IDataSourceService>();
             var dataSource = dataSourceService.GetDataSourceContext<WebSessionDataSourceContext>(option.WebSessionDataSourceId);
-            if (dataSource.DataSourceId != WebSessionDataSource.DataSourceId)
+            if (WebSessionDataSource == null || dataSource.DataSourceId != WebSessionDataSource.DataSourceId)
             {
                 WebSessionDataSource = dataSource;
                 WebView = null;
                 if (WebSessionDataSource != null)
                 {
-                    WebView = await WebSessionDataSource.CreateWebView();
-                    WebView.Source = new Uri(option.Url);
+                    WebView = WebSessionDataSource.CreateWebView();
+                    WebView.Loaded += (s, e) =>
+                    {
+                        SetWebView(WebView);
+                    };
+                    WebView.CoreWebView2InitializationCompleted += WebView_CoreWebView2InitializationCompleted;
+                    //WebView.Loaded += (s, e) =>
+                    //{
+                    //    WebView.NavigationCompleted += OnWebViewNavigationCompleted;
+                    //    WebView.SetCurrentValue(FrameworkElement.UseLayoutRoundingProperty, true);
+                    //    WebView.SetCurrentValue(WebView2.DefaultBackgroundColorProperty, System.Drawing.Color.Transparent);
+
+                    //};
                 }
             }
         }
+    }
+
+    private void SetWebView(WebView2 webView)
+    {
+        WebView.Source = new Uri("https://www.microsoft.com");
+    }
+
+    private void WebView_CoreWebView2InitializationCompleted(object? sender, CoreWebView2InitializationCompletedEventArgs e)
+    {
+        IApplicationService applicationService = _services.GetService<IApplicationService>();
+        WebView.Source = new Uri("https://www.microsoft.com");
+    }
+
+    private void OnWebViewNavigationCompleted(object? sender, CoreWebView2NavigationCompletedEventArgs e)
+    {
+        IApplicationService applicationService = _services.GetService<IApplicationService>();
+        applicationService.InvokeAsync(async () =>
+        {
+            if (WebView != null)
+            {
+                WebView.SetCurrentValue(WebView2.SourceProperty, new Uri(Options.Url));
+            }
+        });
     }
 }
