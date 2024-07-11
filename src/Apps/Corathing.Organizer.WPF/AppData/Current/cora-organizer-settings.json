@@ -17,7 +17,9 @@
         },
         "WorkflowIds": [
           "acbb4ec5-3b64-4790-84e1-500defee7018",
-          "62413ba9-7e1c-474c-90f9-4cc43d1032ba"
+          "62413ba9-7e1c-474c-90f9-4cc43d1032ba",
+          "c63741da-467c-4c3c-9248-2e5bb5898b95",
+          "8cdafb44-6c53-4020-8818-bce1e0aeaf65"
         ]
       },
       {
@@ -36,7 +38,7 @@
           "1d9d1613-9201-49e9-9f6c-4e8a80c143f6"
         ],
         "CoreSettings": {
-          "Name": "Dashboard"
+          "Name": "Dashboard Example"
         },
         "MaxColumns": 16,
         "VisibleRows": 8
@@ -48,6 +50,24 @@
         ],
         "CoreSettings": {
           "Name": "Hardware Monitor"
+        },
+        "MaxColumns": 16,
+        "VisibleRows": 8
+      },
+      {
+        "Id": "c63741da-467c-4c3c-9248-2e5bb5898b95",
+        "WidgetIds": [],
+        "CoreSettings": {
+          "Name": "Corathing Develop"
+        },
+        "MaxColumns": 16,
+        "VisibleRows": 8
+      },
+      {
+        "Id": "8cdafb44-6c53-4020-8818-bce1e0aeaf65",
+        "WidgetIds": [],
+        "CoreSettings": {
+          "Name": "First Windows"
         },
         "MaxColumns": 16,
         "VisibleRows": 8

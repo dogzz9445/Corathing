@@ -54,6 +54,7 @@ public class WebSessionDataSourceContext : DataSourceContext
             Language = services.GetService<ILocalizationService>().GetAppCulture().Name,
             //BrowserExecutableFolder = option.BrowserExecutableFolder,
             UserDataFolder = services.GetService<IStorageService>().GetEntityFolder(state),
+
         };
 
         //CoreWebView2CookieManager cookieManager = CoreWebView2CookieManager.GetForUser(state.WebView.CoreWebView2);
@@ -78,7 +79,6 @@ public class WebSessionDataSourceContext : DataSourceContext
             CreationProperties = _creationProperties,
         };
         webView.DefaultBackgroundColor = System.Drawing.Color.Transparent;
-        webView.CreationProperties = _creationProperties;
         webView.NavigationCompleted += OnWebViewNavigationCompleted;
         return webView;
     }

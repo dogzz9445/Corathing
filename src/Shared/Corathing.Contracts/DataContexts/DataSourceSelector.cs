@@ -59,7 +59,7 @@ public partial class DataSourceSelector<T> :
     public void OpenDataSourceSettings()
     {
         var navigationService = _services.GetRequiredService<INavigationDialogService>();
-        navigationService.NavigateDataSourceSettings(typeof(T), SelectedDataSourceContext);
+        navigationService.NavigateDataSourceSettings(typeof(T), SelectedDataSourceContext).Wait();
     }
 
     private void OnDataSourceStateChanged(object recipient, DataSourceStateChangedMessage message)

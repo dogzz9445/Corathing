@@ -82,11 +82,11 @@ public interface INavigationDialogService
     //void SetPageService(IPageService pageService);
 
 
-    bool Navigate<T>(object? parameter = null) where T : INavigationView;
+    Task<bool> Navigate<T>(object? parameter = null) where T : INavigationView;
 
-    bool Navigate(Type? viewType, object? parameter = null);
+    Task<bool> Navigate(Type? viewType, object? parameter = null);
 
-    bool NavigateDataSourceSettings(Type? dataSourceType, object? dataSourceContext = null);
+    Task<bool> NavigateDataSourceSettings(Type? dataSourceType, object? dataSourceContext = null);
 
     /// <summary>
     /// Navigates the NavigationView to the previous journal entry.

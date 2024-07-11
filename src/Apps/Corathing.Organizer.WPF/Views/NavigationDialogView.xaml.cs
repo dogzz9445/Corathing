@@ -34,7 +34,7 @@ namespace Corathing.Organizer.WPF.Views;
 /// <summary>
 /// Interaction logic for NavigationDialogView.xaml
 /// </summary>
-public partial class NavigationDialogView
+public partial class NavigationDialogView : ContentControl
 {
 
     /// <summary>Identifies the <see cref="Closed"/> routed event.</summary>
@@ -102,13 +102,6 @@ public partial class NavigationDialogView
         RaiseEvent(closedEventArgs);
     }
 
-    private void NavigationView_Navigating(Wpf.Ui.Controls.NavigationView sender, Wpf.Ui.Controls.NavigatingCancelEventArgs args)
-    {
-    }
-
-    private void NavigationView_Navigated(Wpf.Ui.Controls.NavigationView sender, Wpf.Ui.Controls.NavigatedEventArgs args)
-    {
-    }
 
     private void OnNavigationSelectionChanged(object sender, RoutedEventArgs e)
     {

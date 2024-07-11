@@ -50,7 +50,7 @@ public partial class WebPageWidgetContext : WidgetContext
         //WidgetTitle = option.Name;
     }
 
-    public override void OnStateChanged(WidgetState state)
+    public async override void OnStateChanged(WidgetState state)
     {
         if (state.CustomSettings is not WebPageOption option)
         {
@@ -68,11 +68,14 @@ public partial class WebPageWidgetContext : WidgetContext
                 if (WebSessionDataSource != null)
                 {
                     WebView = WebSessionDataSource.CreateWebView();
-                    WebView.Loaded += (s, e) =>
-                    {
-                        SetWebView(WebView);
-                    };
-                    WebView.CoreWebView2InitializationCompleted += WebView_CoreWebView2InitializationCompleted;
+                    await WebView.EnsureCoreWebView2Async();
+                    WebView.CoreWebView2.Profile.PreferredColorScheme = CoreWebView2PreferredColorScheme.Dark;
+                    WebView.Source = new Uri("https://www.microsoft.com");
+                    //WebView.Loaded += (s, e) =>
+                    //{
+                    //    SetWebView(WebView);
+                    //};
+                    //WebView.CoreWebView2InitializationCompleted += WebView_CoreWebView2InitializationCompleted;
                     //WebView.Loaded += (s, e) =>
                     //{
                     //    WebView.NavigationCompleted += OnWebViewNavigationCompleted;

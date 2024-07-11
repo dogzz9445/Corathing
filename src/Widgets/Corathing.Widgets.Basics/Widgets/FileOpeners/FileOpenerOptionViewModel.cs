@@ -61,7 +61,10 @@ public partial class FileOpenerOptionViewModel :
         fileOpenerOption.OpenType = OpenType;
         fileOpenerOption.Files = Files.Select(file => file.FileName).ToList();
         fileOpenerOption.Folders = Folders.Select(folder => folder.FolderName).ToList();
-        fileOpenerOption.ExecutableAppDataSourceId = ExecutableAppDataSourceSelector.SelectedDataSourceContext.DataSourceId;
+        if (ExecutableAppDataSourceSelector.SelectedDataSourceContext != null)
+        {
+            fileOpenerOption.ExecutableAppDataSourceId = ExecutableAppDataSourceSelector.SelectedDataSourceContext.DataSourceId;
+        }
         //ExecutableAppDataSourceSelector.Select(fileOpenerOption.ExecutableAppDataSourceId);
         CustomSettings = fileOpenerOption;
     }
@@ -182,12 +185,11 @@ public partial class FileOpenerOptionViewModel :
         }
         //OpenedFolderPathVisibility = Visibility.Collapsed;
 
-        OpenFolderDialog openFolderDialog =
-            new()
-            {
-                Multiselect = true,
-                InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
-            };
+        OpenFolderDialog openFolderDialog = new()
+        {
+            Multiselect = false,
+            InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
+        };
 
         if (openFolderDialog.ShowDialog() != true)
         {

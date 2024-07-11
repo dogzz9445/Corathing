@@ -173,6 +173,8 @@ public partial class App : Application
 
         serviceCollection.AddSingleton<MainWindow>();
         serviceCollection.AddSingleton<MainViewModel>();
+        serviceCollection.AddTransient<BaseWindow>();
+        serviceCollection.AddTransient<BaseWindowViewModel>();
 
         // --------------------------------------------------------------------------
         // Register services

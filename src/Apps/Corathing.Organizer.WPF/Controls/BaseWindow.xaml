@@ -6,14 +6,79 @@
                  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                  xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
                  xmlns:local="clr-namespace:Corathing.Organizer.WPF.Controls"
+                 xmlns:services="clr-namespace:Corathing.Organizer.WPF.Services"
+                 xmlns:localizations="clr-namespace:Corathing.Dashboards.WPF.Bindings;assembly=Corathing.Dashboards.WPF"
+                 xmlns:converter="clr-namespace:Corathing.Dashboards.WPF.Converters;assembly=Corathing.Dashboards.WPF"
                  mc:Ignorable="d"
                  ShowTitleBar="False"
                  ShowCloseButton="False"
                  IsWindowDraggable="False"
-                 Background="{DynamicResource ApplicationBackgroundBrush}"
+                 Background="Transparent"
                  Foreground="{DynamicResource TextFillColorPrimaryBrush}"
                  WindowStartupLocation="CenterOwner"
+                 WindowTransitionsEnabled="False"
                  ResizeMode="NoResize"
+                 AllowsTransparency="True"
+                 ShowInTaskbar="False"
                  Height="800"
                  Width="1280">
+
+    <mah:MetroWindow.Resources>
+        <converter:StringKeyToLocalizationStringConverter x:Key="StringKeyToLocalizationStringConverter" />
+    </mah:MetroWindow.Resources>
+    
+    <Grid Grid.Row="0"
+          x:Name="MainGrid"
+          VerticalAlignment="Stretch"
+          HorizontalAlignment="Stretch">
+        <Border Background="#48000000" />
+
+        <Grid Width="864"
+              Height="864">
+            <Border CornerRadius="8">
+                <Border.Effect>
+                    <DropShadowEffect ShadowDepth="10"
+                                      BlurRadius="20"
+                                      Color="#888888"
+                                      Opacity="0.9"
+                                      Direction="30" />
+                </Border.Effect>
+            </Border>
+
+            <Border Background="{DynamicResource ApplicationBackgroundBrush}"
+                    CornerRadius="8">
+                <DockPanel LastChildFill="True"
+                           Margin="16">
+                    <StackPanel DockPanel.Dock="Top"
+                                Orientation="Horizontal"
+                                VerticalAlignment="Top"
+                                Height="48">
+                        <ui:Button VerticalAlignment="Top"
+                                   Command="{Binding GobackCommand}"
+                                   Height="40"
+                                   Width="40">
+                            <ui:SymbolIcon Symbol="ArrowLeft12" />
+                        </ui:Button>
+                        <ui:BreadcrumbBar Margin="16,0,0,0"
+                                          VerticalAlignment="Top"
+                                          ItemsSource="{Binding NavigationItems}">
+                            <ui:BreadcrumbBar.ItemTemplate>
+                                <DataTemplate DataType="{x:Type services:NavigationItem}">
+                                    <!-- FIXME: -->
+                                    <!-- 트리거 시키기.. MainViewModel로부터.. -->
+                                    <ui:TextBlock FontTypography="Title"
+                                                  Text="{Binding Tag, Converter={StaticResource StringKeyToLocalizationStringConverter}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+                                </DataTemplate>
+                            </ui:BreadcrumbBar.ItemTemplate>
+                        </ui:BreadcrumbBar>
+                    </StackPanel>
+                    <Separator DockPanel.Dock="Top" />
+                    <Frame x:Name="DialogFrame"
+                           Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+                           NavigationUIVisibility="Hidden" />
+                </DockPanel>
+            </Border>
+        </Grid>
+    </Grid>
+
 </mah:MetroWindow>

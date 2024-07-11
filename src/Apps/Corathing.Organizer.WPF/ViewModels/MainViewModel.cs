@@ -53,47 +53,11 @@ public class MenuItem : System.Windows.Controls.MenuItem
 
 public partial class MainViewModel : ObservableObject
 {
-    private readonly IServiceProvider _services;
-
     [ObservableProperty]
     private ObservableCollection<MenuItem> _trayMenuItems;
 
-    [ObservableProperty]
-    private ObservableCollection<NavigationItem> _navigationItems;
-
     public MainViewModel(IServiceProvider services)
     {
-        _services = services;
         TrayMenuItems = [new() { Header = "Home", Tag = "tray_home" }];
-        NavigationItems = new ObservableCollection<NavigationItem>();
-
-        LocalizationService.Instance.PropertyChanged += (s, e) => OnPropertyChanged("Localization");
-        WeakReferenceMessenger.Default.Register<NavigationStackChangedMessage>(this, OnNavigationStackChanged);
-    }
-
-    private void OnNavigationStackChanged(object recipient, NavigationStackChangedMessage message)
-    {
-        var navigationItem = message.Value;
-        if (navigationItem == null)
-        {
-            NavigationItems.Clear();
-        }
-        else if (NavigationItems.Count > navigationItem.Index)
-        {
-            NavigationItems.RemoveWhere((item) => item.Index > navigationItem.Index);
-        }
-        else
-        {
-            NavigationItems.Add(navigationItem);
-        }
-
-    }
-
-    [RelayCommand]
-    public void Goback()
-    {
-        INavigationDialogService navigationDialogService
-            = _services.GetRequiredService<INavigationDialogService>();
-        navigationDialogService.GoBack();
     }
 }

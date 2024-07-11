@@ -65,9 +65,11 @@ public partial class WidgetSettingsViewModel : ObservableObject
         var packageService = _services.GetService<IPackageService>();
 
         TempWidgetContext = packageService.CreateWidgetContext(_originalContext.GetType().FullName);
+        TempWidgetContext.EditMode = false;
         _optionType = packageService.GetWidgetCustomSettingsType(_originalContext.GetType().FullName);
         _originalContext.CopyTo(TempWidgetContext, _optionType);
         _settingsWidgetHost.DataContext = TempWidgetContext;
+        _settingsWidgetHost.EditMode = false;
 
         // If Custom Settings exists
         // Custom Settings 가 존재할 경우
@@ -105,5 +107,6 @@ public partial class WidgetSettingsViewModel : ObservableObject
     public void OnCustomSettingsChanged(object? sender, CustomSettingsChangedMessage? message)
     {
         TempWidgetContext.State.CustomSettings = JsonHelper.DeepCopy(message.Value, _optionType);
+        TempWidgetContext.ApplyState(TempWidgetContext.State);
     }
 }

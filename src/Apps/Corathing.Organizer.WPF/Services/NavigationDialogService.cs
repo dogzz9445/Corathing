@@ -4,6 +4,7 @@ using System.IO.IsolatedStorage;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Navigation;
 
@@ -19,6 +20,7 @@ using Corathing.Organizer.WPF.Controls;
 using Corathing.Organizer.WPF.Views;
 
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Microsoft.Extensions.DependencyInjection;
 
 using Wpf.Ui;
 using Wpf.Ui.Controls;
@@ -45,19 +47,23 @@ public class NavigationItem
 
 public class NavigationDialogService : INavigationDialogService
 {
-    private Frame? _navigationHost;
+    private readonly IServiceProvider _services;
     private bool _isNavigating = false;
 
     public Stack<NavigationItem> _stackedUserControl;
     private NavigationItem? _current = null;
 
+    private MainWindow? _mainWindow;
+    private BaseWindow? _baseWindow;
+
     public NavigationDialogService(
+        IServiceProvider services,
         MainWindow mainWindow
         )
     {
+        _services = services;
+        _mainWindow = mainWindow;
         _stackedUserControl = new Stack<NavigationItem>();
-        _navigationHost = mainWindow.NavigationDialog;
-        _navigationHost.Visibility = System.Windows.Visibility.Collapsed;
         _isNavigating = false;
     }
 
@@ -81,19 +87,18 @@ public class NavigationDialogService : INavigationDialogService
         {
             _current = _stackedUserControl.Pop();
             WeakReferenceMessenger.Default.Send(new NavigationStackChangedMessage(_current));
-            _navigationHost.Content = _current.View;
+            _baseWindow.SetDialogView(_current.View);
             _current.View.OnBack(parameter);
             return true;
         }
         WeakReferenceMessenger.Default.Send(new NavigationStackChangedMessage(null));
         _current = null;
         _isNavigating = false;
-        _navigationHost.Content = null;
-        _navigationHost.Visibility = System.Windows.Visibility.Collapsed;
+        CloseDialg();
         return false;
     }
 
-    public bool Navigate<T>(object? parameter = null) where T : INavigationView
+    public async Task<bool> Navigate<T>(object? parameter = null) where T : INavigationView
     {
         _isNavigating = true;
         if (_current != null)
@@ -108,14 +113,16 @@ public class NavigationDialogService : INavigationDialogService
             Index = _stackedUserControl.Count,
             View = view
         };
-        _navigationHost.Visibility = System.Windows.Visibility.Visible;
-        _navigationHost.Content = _current.View;
+
+        await WaitUntilOpenDialog();
+
+        _baseWindow.SetDialogView(_current.View);
         _current.View.OnForward(parameter);
         WeakReferenceMessenger.Default.Send(new NavigationStackChangedMessage(_current));
         return true;
     }
 
-    public bool Navigate(Type? viewType, object? parameter = null)
+    public async Task<bool> Navigate(Type? viewType, object? parameter = null)
     {
         var view = Activator.CreateInstance(viewType);
         _isNavigating = true;
@@ -130,14 +137,53 @@ public class NavigationDialogService : INavigationDialogService
             Index = _stackedUserControl.Count,
             View = view as INavigationView
         };
-        _navigationHost.Visibility = System.Windows.Visibility.Visible;
-        _navigationHost.Content = _current.View;
+
+        await WaitUntilOpenDialog();
+
+        _baseWindow.SetDialogView(_current.View);
         _current.View.OnForward(parameter);
         WeakReferenceMessenger.Default.Send(new NavigationStackChangedMessage(_current));
         return true;
     }
 
-    public bool NavigateDataSourceSettings(Type? dataSourceType, object? dataSourceContext = null)
+    public async Task WaitUntilOpenDialog()
+    {
+        if (_baseWindow == null)
+        {
+            OpenDialogAsync();
+        }
+        while (_baseWindow == null)
+        {
+            await Task.Delay(10);
+        }
+        while (!_baseWindow.IsLoaded)
+        {
+            await Task.Delay(10);
+        }
+    }
+
+    private async void OpenDialogAsync()
+    {
+        if (_baseWindow != null)
+        {
+            return;
+        }
+        await Task.Yield();
+        _baseWindow = _services.GetRequiredService<BaseWindow>();
+        _baseWindow.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+        _baseWindow.Owner = _mainWindow;
+        _baseWindow.Width = _mainWindow.Width;
+        _baseWindow.Height = _mainWindow.Height;
+        _baseWindow.ShowDialog();
+    }
+
+    private void CloseDialg()
+    {
+        _baseWindow.Close();
+        _baseWindow = null;
+    }
+
+    public Task<bool> NavigateDataSourceSettings(Type? dataSourceType, object? dataSourceContext = null)
     {
         if (dataSourceContext != null)
         {
@@ -149,44 +195,4 @@ public class NavigationDialogService : INavigationDialogService
         }
         return Navigate(typeof(DataSourceSettingsView), dataSourceType);
     }
-
-    //private INavigationService _uiNavigationService;
-    //private NavigationDialogView _navigationView;
-    //public bool GoBack()
-    //{
-    //    bool isSucceeded = _uiNavigationService.GoBack();
-    //    return isSucceeded;
-    //}
-
-    //public async Task<bool> Navigate(Type pageType, CancellationToken cancellationToken = default)
-    //{
-    //    return await NavigateWithHierarchy(pageType);
-    //}
-
-    //public async Task<bool> Navigate(Type pageType, object? dataContext, CancellationToken cancellationToken = default)
-    //{
-    //    return await NavigateWithHierarchy(pageType, dataContext);
-    //}
-
-    //public async Task<bool> Navigate(string pageIdOrTargetTag, CancellationToken cancellationToken = default)
-    //{
-    //    return true;
-    //}
-
-    //public async Task<bool> Navigate(string pageIdOrTargetTag, object? dataContext, CancellationToken cancellationToken = default)
-    //{
-    //    return true;
-    //}
-
-    //public async Task<bool> NavigateWithHierarchy(Type pageType, CancellationToken cancellationToken = default)
-    //{
-    //    _navigationView.Show();
-    //    return true;
-    //}
-
-    //public async Task<bool> NavigateWithHierarchy(Type pageType, object? dataContext, CancellationToken cancellationToken = default)
-    //{
-    //    _navigationView.Show();
-    //    return _uiNavigationService.NavigateWithHierarchy(typeof(MultiLevelNavigationPage), dataContext);
-    //}
 }

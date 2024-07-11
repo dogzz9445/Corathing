@@ -132,21 +132,21 @@ public partial class DashboardViewModel : ObservableObject
     public void OpenOrganizerSettings()
     {
         var navigationService = _services.GetRequiredService<INavigationDialogService>();
-        navigationService.Navigate<OrganizerSettingsView>();
+        navigationService.Navigate<OrganizerSettingsView>().Wait();
     }
 
     [RelayCommand]
     public void OpenProjectSettings()
     {
         var navigationService = _services.GetRequiredService<INavigationDialogService>();
-        navigationService.Navigate<ProjectSettingsView>();
+        navigationService.Navigate<ProjectSettingsView>().Wait();
     }
 
     [RelayCommand]
     public void OpenWorkflowSettings()
     {
         var navigationService = _services.GetRequiredService<INavigationDialogService>();
-        navigationService.Navigate<WorkflowSettingsView>();
+        navigationService.Navigate<WorkflowSettingsView>().Wait();
     }
 
     [RelayCommand]
