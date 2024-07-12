@@ -7,8 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="NuGet.Packaging" Version="6.10.0" />
-    <PackageReference Include="NuGet.Protocol" Version="6.10.0" />
+    <PackageReference Include="NuGet.Packaging" Version="6.10.1" />
+    <PackageReference Include="NuGet.Protocol" Version="6.10.1" />
+    <PackageReference Include="Supabase" Version="1.0.5" />
   </ItemGroup>
 
   <ItemGroup>

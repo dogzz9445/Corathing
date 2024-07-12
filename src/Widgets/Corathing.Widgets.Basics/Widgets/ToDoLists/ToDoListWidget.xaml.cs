@@ -26,6 +26,7 @@ using Corathing.Contracts.Entries;
 using Corathing.Contracts.Services;
 using Corathing.Widgets.Basics.Widgets.Timers;
 using Corathing.Widgets.Basics.Widgets.ToDoLists.Models;
+using CommunityToolkit.Mvvm.Collections;
 
 namespace Corathing.Widgets.Basics.Widgets.ToDoLists;
 
@@ -38,20 +39,19 @@ namespace Corathing.Widgets.Basics.Widgets.ToDoLists;
     )]
 public partial class ToDoListViewModel : WidgetContext
 {
-    private ObservableCollection<Job> _jobs;
-    public ObservableCollection<Job> Jobs
+    private ObservableGroupedCollection<JobType, Job>? _groupedJobs;
+    public ObservableGroupedCollection<JobType, Job>? GroupedJobs
     {
-        get => _jobs;
+        get => _groupedJobs;
         set
         {
-
-            if (EqualityComparer<ObservableCollection<Job>?>.Default.Equals(_jobs, value))
+            if (EqualityComparer<ObservableGroupedCollection<JobType, Job>?>.Default.Equals(_groupedJobs, value))
                 return;
-            OnPropertyChanging(nameof(Jobs));
-            _jobs = value;
-            var itemsView = (IEditableCollectionView)CollectionViewSource.GetDefaultView(_jobs);
+            OnPropertyChanging(nameof(GroupedJobs));
+            _groupedJobs = value;
+            var itemsView = (IEditableCollectionView)CollectionViewSource.GetDefaultView(_groupedJobs);
             itemsView.NewItemPlaceholderPosition = NewItemPlaceholderPosition.AtEnd;
-            OnPropertyChanged(nameof(Jobs));
+            OnPropertyChanged(nameof(GroupedJobs));
         }
     }
 
@@ -60,19 +60,31 @@ public partial class ToDoListViewModel : WidgetContext
         ILocalizationService localizationService = _services.GetService<ILocalizationService>();
         localizationService.Provide("Corathing.Widgets.Basics.ToDoListName", value => WidgetTitle = value);
 
-        Jobs = new ObservableCollection<Job>();
+        GroupedJobs = new ObservableGroupedCollection<JobType, Job>();
     }
 
     [RelayCommand]
     public void AddNewJob()
     {
-        Jobs.Add(new ToDoJob());
+        GroupedJobs?.AddItem(JobType.Normal, new ToDoJob());
     }
 
     [RelayCommand]
     public void RemoveJob(ToDoJob job)
     {
-        Jobs.Remove(job);
+        GroupedJobs?.RemoveItem(job.JobType, job);
+    }
+
+    [RelayCommand]
+    public void MarkJob(ToDoJob job)
+    {
+
+    }
+
+    [RelayCommand]
+    public void UnmarkJob(ToDoJob job)
+    {
+
     }
 }
 

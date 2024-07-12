@@ -11,10 +11,19 @@ namespace Corathing.Widgets.Basics.Widgets.ToDoLists.Models;
 
 public partial class Job : ObservableObject
 {
+    [ObservableProperty]
+    private JobType _jobType;
 }
 
 public partial class AddingJob : Job
 {
+}
+
+public enum JobType
+{
+    Normal,
+    IsCompleted,
+    Placeholder
 }
 
 public partial class ToDoJob : Job

@@ -165,13 +165,19 @@
                         BorderBrush="{DynamicResource TextControlForegroundDisabled}" />
             </Grid>
         </DataTemplate>
+
     </UserControl.Resources>
     <Grid>
-        <ListBox x:Name="ToDoListBox"
+        <ListView BorderThickness="0"
+                  Background="Transparent"
+                  ItemsSource="{Binding GroupedJobs}"
+                  ItemTemplateSelector="{StaticResource JobTemplateSelector}">
+                
+        </ListView>
+        <!--<ListBox x:Name="ToDoListBox"
                  BorderThickness="0"
                  Background="Transparent"
-                 ItemsSource="{Binding Jobs}"
-                 ItemTemplateSelector="{StaticResource JobTemplateSelector}" />
-
+                 ItemsSource="{Binding GroupedJobs}"
+                 ItemTemplateSelector="{StaticResource JobTemplateSelector}" />-->
     </Grid>
 </UserControl>
