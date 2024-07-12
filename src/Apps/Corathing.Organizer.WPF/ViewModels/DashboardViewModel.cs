@@ -125,34 +125,46 @@ public partial class DashboardViewModel : ObservableObject
     public void AddProject()
     {
         var projectContext = ProjectContext.Create();
-        Projects.Add(projectContext);
+        Projects?.Add(projectContext);
     }
 
     [RelayCommand]
-    public void OpenOrganizerSettings()
+    public async Task OpenOrganizerSettings()
     {
         var navigationService = _services.GetRequiredService<INavigationDialogService>();
-        navigationService.Navigate<OrganizerSettingsView>().Wait();
+        await navigationService.Navigate<OrganizerSettingsView>();
     }
 
     [RelayCommand]
-    public void OpenProjectSettings()
+    public async Task OpenProjectSettings()
     {
         var navigationService = _services.GetRequiredService<INavigationDialogService>();
-        navigationService.Navigate<ProjectSettingsView>().Wait();
+        await navigationService.Navigate<ProjectSettingsView>();
     }
 
     [RelayCommand]
-    public void OpenWorkflowSettings()
+    public async Task OpenWorkflowSettings()
     {
         var navigationService = _services.GetRequiredService<INavigationDialogService>();
-        navigationService.Navigate<WorkflowSettingsView>().Wait();
+        await navigationService.Navigate<WorkflowSettingsView>();
     }
 
     [RelayCommand]
-    public void ConfigureWidget(WidgetHost widget)
+    public async Task OpenPackageManagementView()
     {
-        SelectedProject?.SelectedWorkflow?.ConfigureWidget(widget);
+        var navigationService = _services.GetRequiredService<INavigationDialogService>();
+        await navigationService.Navigate<PackageManagementView>();
+    }
+
+    [RelayCommand]
+    public async Task ConfigureWidget(WidgetHost widget)
+    {
+        if (SelectedProject == null)
+            return;
+        if (SelectedProject.SelectedWorkflow == null)
+            return;
+
+        await SelectedProject.SelectedWorkflow.ConfigureWidget(widget);
     }
 
     [RelayCommand]

@@ -65,10 +65,12 @@ public partial class WidgetSettingsViewModel : ObservableObject
         var packageService = _services.GetService<IPackageService>();
 
         TempWidgetContext = packageService.CreateWidgetContext(_originalContext.GetType().FullName);
-        TempWidgetContext.EditMode = false;
         _optionType = packageService.GetWidgetCustomSettingsType(_originalContext.GetType().FullName);
         _originalContext.CopyTo(TempWidgetContext, _optionType);
+        _settingsWidgetHost.Content = TempWidgetContext;
         _settingsWidgetHost.DataContext = TempWidgetContext;
+
+        TempWidgetContext.EditMode = false;
         _settingsWidgetHost.EditMode = false;
 
         // If Custom Settings exists

@@ -17,6 +17,7 @@ public interface IWidgetCoreState
 
     // 설정 가능한 변수
     string Title { get; }
+    public string Tags { get; set; }
     bool VisibleTitle { get; }
     bool UseDefaultBackgroundColor { get; }
     string BackgroundColor { get; }
@@ -42,6 +43,8 @@ public class WidgetCoreState : IWidgetCoreState
     /// 화면에 표시되는 위젯의 이름
     /// </summary>
     public string Title { get; set; }
+
+    public string Tags { get; set; }
 
     /// <summary>
     /// Just known namespace name of the widget in settings file.

@@ -106,17 +106,23 @@ public class NavigationDialogService : INavigationDialogService
             _stackedUserControl.Push(_current);
         }
         var view = Activator.CreateInstance<T>();
+        if (view is not Page page)
+        {
+            // FIXME:
+            // Message Box 로 교체하기
+            throw new ArgumentException("When navigate the INavigationView, view cannot convert page");
+        }
         _current = new NavigationItem
         {
-            Header = (view as Page).Title,
-            Tag = (view as Page).Tag,
+            Header = page.Title,
+            Tag = page.Tag,
             Index = _stackedUserControl.Count,
             View = view
         };
 
         await WaitUntilOpenDialog();
 
-        _baseWindow.SetDialogView(_current.View);
+        _baseWindow?.SetDialogView(_current.View);
         _current.View.OnForward(parameter);
         WeakReferenceMessenger.Default.Send(new NavigationStackChangedMessage(_current));
         return true;
@@ -124,23 +130,36 @@ public class NavigationDialogService : INavigationDialogService
 
     public async Task<bool> Navigate(Type? viewType, object? parameter = null)
     {
+        if (viewType == null)
+        {
+            // FIXME:
+            // Message Box 로 교체하기
+            return false;
+        }
+
         var view = Activator.CreateInstance(viewType);
         _isNavigating = true;
         if (_current != null)
         {
             _stackedUserControl.Push(_current);
         }
+        if (view is not Page page || view is not INavigationView navigationView)
+        {
+            // FIXME:
+            // Message Box 로 교체하기
+            throw new ArgumentException("When navigate the INavigationView, view cannot convert page");
+        }
         _current = new NavigationItem
         {
-            Header = (view as Page).Title,
-            Tag = (view as Page).Tag,
+            Header = page.Title,
+            Tag = page.Tag,
             Index = _stackedUserControl.Count,
-            View = view as INavigationView
+            View = navigationView
         };
 
         await WaitUntilOpenDialog();
 
-        _baseWindow.SetDialogView(_current.View);
+        _baseWindow?.SetDialogView(_current.View);
         _current.View.OnForward(parameter);
         WeakReferenceMessenger.Default.Send(new NavigationStackChangedMessage(_current));
         return true;
@@ -152,11 +171,7 @@ public class NavigationDialogService : INavigationDialogService
         {
             OpenDialogAsync();
         }
-        while (_baseWindow == null)
-        {
-            await Task.Delay(10);
-        }
-        while (!_baseWindow.IsLoaded)
+        while (_baseWindow == null || !_baseWindow.IsLoaded)
         {
             await Task.Delay(10);
         }
@@ -164,7 +179,7 @@ public class NavigationDialogService : INavigationDialogService
 
     private async void OpenDialogAsync()
     {
-        if (_baseWindow != null)
+        if (_baseWindow != null || _mainWindow == null)
         {
             return;
         }
@@ -179,7 +194,7 @@ public class NavigationDialogService : INavigationDialogService
 
     private void CloseDialg()
     {
-        _baseWindow.Close();
+        _baseWindow?.Close();
         _baseWindow = null;
     }
 

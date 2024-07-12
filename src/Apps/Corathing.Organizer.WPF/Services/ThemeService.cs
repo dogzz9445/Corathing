@@ -237,37 +237,6 @@ public partial class ThemeService : ObservableRecipient, IThemeService
     }
 
     /// <summary>
-    /// Applies Resources in the <paramref name="frameworkElement"/>.
-    /// </summary>
-    //public void Apply(FrameworkElement frameworkElement)
-    //{
-    //    if (frameworkElement is null)
-    //    {
-    //        return;
-    //    }
-
-    //    ResourceDictionary[] resourcesRemove = frameworkElement
-    //        .Resources.MergedDictionaries.Where(e => e.Source is not null)
-    //        .Where(e => e.Source.ToString().ToLower().Contains(LibraryNamespace))
-    //        .ToArray();
-
-    //    foreach (ResourceDictionary? resource in UiApplication.Current.Resources.MergedDictionaries)
-    //    {
-    //        frameworkElement.Resources.MergedDictionaries.Add(resource);
-    //    }
-
-    //    foreach (ResourceDictionary resource in resourcesRemove)
-    //    {
-    //        _ = frameworkElement.Resources.MergedDictionaries.Remove(resource);
-    //    }
-
-    //    foreach (System.Collections.DictionaryEntry resource in UiApplication.Current.Resources)
-    //    {
-    //        frameworkElement.Resources[resource.Key] = resource.Value;
-    //    }
-    //}
-
-    /// <summary>
     /// Gets currently set application theme.
     /// </summary>
     /// <returns><see cref="ApplicationTheme.Unknown"/> if something goes wrong.</returns>
@@ -341,37 +310,6 @@ public partial class ThemeService : ObservableRecipient, IThemeService
 
         return sysTheme is SystemTheme.Light or SystemTheme.Flow or SystemTheme.Sunrise;
     }
-
-    /// <summary>
-    /// Tries to guess the currently set application theme.
-    /// </summary>
-    //private void FetchApplicationTheme()
-    //{
-    //    var appDictionaries = App.Current.Resources;
-    //    ResourceDictionary? themeDictionary = appDictionaries.GetDictionary("theme");
-
-    //    if (themeDictionary == null)
-    //    {
-    //        return;
-    //    }
-
-    //    string themeUri = themeDictionary.Source.ToString().Trim().ToLower();
-
-    //    if (themeUri.Contains("light"))
-    //    {
-    //        _cachedApplicationTheme = ApplicationTheme.Light;
-    //    }
-
-    //    if (themeUri.Contains("dark"))
-    //    {
-    //        _cachedApplicationTheme = ApplicationTheme.Dark;
-    //    }
-
-    //    if (themeUri.Contains("highcontrast"))
-    //    {
-    //        _cachedApplicationTheme = ApplicationTheme.HighContrast;
-    //    }
-    //}
 
     #region System Theme
 

@@ -18,6 +18,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Web.WebView2.Core;
 using Microsoft.Web.WebView2.Wpf;
 
+using static System.Windows.Forms.AxHost;
+
 namespace Corathing.Widgets.Basics.Widgets.WebPages;
 
 [EntryCoraWidget(
@@ -37,11 +39,17 @@ public partial class WebPageWidgetContext : WidgetContext
     [ObservableProperty]
     private WebView2 _webView;
 
+    private string _sourceUrl;
+
     [ObservableProperty]
     private WebSessionDataSourceContext _webSessionDataSource;
 
+    private CancellationTokenSource _reloadRoutineTokenSource;
+
     public override void OnCreate(IServiceProvider services, WidgetState state)
     {
+        _reloadRoutineTokenSource = new CancellationTokenSource();
+
         ILocalizationService localizationService = _services.GetService<ILocalizationService>();
         localizationService.Provide("Corathing.Widgets.Basics.WebPageName", value => WidgetTitle = value);
 
@@ -56,6 +64,10 @@ public partial class WebPageWidgetContext : WidgetContext
         {
             return;
         }
+        var themeService = _services.GetRequiredService<IThemeService>();
+        SetTheme(themeService.GetAppTheme());
+        SetAutoReloadInterval(option.AutoReloadInterval);
+        SetUrl(option.Url ?? WebPageOption.DefaultUrl);
 
         if (option.WebSessionDataSourceId != null && option.WebSessionDataSourceId != Guid.Empty)
         {
@@ -64,13 +76,20 @@ public partial class WebPageWidgetContext : WidgetContext
             if (WebSessionDataSource == null || dataSource.DataSourceId != WebSessionDataSource.DataSourceId)
             {
                 WebSessionDataSource = dataSource;
+                if (WebView != null)
+                {
+                    //WebView.Loaded -= WebView_Loaded;
+                    WebView.Dispose();
+                    WebView = null;
+                }
                 WebView = null;
                 if (WebSessionDataSource != null)
                 {
                     WebView = WebSessionDataSource.CreateWebView();
                     await WebView.EnsureCoreWebView2Async();
-                    WebView.CoreWebView2.Profile.PreferredColorScheme = CoreWebView2PreferredColorScheme.Dark;
-                    WebView.Source = new Uri("https://www.microsoft.com");
+                    themeService.ProvideApplicationTheme(theme => SetTheme(theme));
+                    WebView.Source = new Uri(option.Url ?? WebPageOption.DefaultUrl);
+                    //WebView.Loaded += WebView_Loaded;
                     //WebView.Loaded += (s, e) =>
                     //{
                     //    SetWebView(WebView);
@@ -88,26 +107,101 @@ public partial class WebPageWidgetContext : WidgetContext
         }
     }
 
-    private void SetWebView(WebView2 webView)
+    private void SetAutoReloadInterval(int autoReloadInterval)
     {
-        WebView.Source = new Uri("https://www.microsoft.com");
+        if (State.CustomSettings is not WebPageOption option)
+            return;
+
+        _reloadRoutineTokenSource.Cancel();
+
+        if (autoReloadInterval <= 0)
+            return;
+
+        _reloadRoutineTokenSource = new CancellationTokenSource();
+        _ = ReloadRoutine(_reloadRoutineTokenSource.Token);
     }
 
-    private void WebView_CoreWebView2InitializationCompleted(object? sender, CoreWebView2InitializationCompletedEventArgs e)
+    public override void OnDestroy()
     {
-        IApplicationService applicationService = _services.GetService<IApplicationService>();
-        WebView.Source = new Uri("https://www.microsoft.com");
+        _reloadRoutineTokenSource.Cancel();
     }
 
-    private void OnWebViewNavigationCompleted(object? sender, CoreWebView2NavigationCompletedEventArgs e)
+    private void WebView_Loaded(object? sender, RoutedEventArgs e)
     {
-        IApplicationService applicationService = _services.GetService<IApplicationService>();
-        applicationService.InvokeAsync(async () =>
+        SetWebView();
+    }
+
+    private async Task ReloadRoutine(CancellationToken token)
+    {
+        if (State == null)
+            return;
+        if (State.CustomSettings is not WebPageOption option)
+            return;
+
+        while (!token.IsCancellationRequested)
         {
-            if (WebView != null)
-            {
-                WebView.SetCurrentValue(WebView2.SourceProperty, new Uri(Options.Url));
-            }
-        });
+            await Task.Delay(option.AutoReloadInterval * 1000, token);
+            WebView?.Reload();
+        }
     }
+
+    private void SetUrl(string url)
+    {
+        if (_sourceUrl == url)
+            return;
+        _sourceUrl = url;
+        if (WebView == null)
+            return;
+        WebView.Source = new Uri(url);
+    }
+
+    private void SetTheme(ApplicationTheme theme)
+    {
+        if (WebView == null || State == null)
+            return;
+        if (State.CustomSettings is not WebPageOption option)
+            return;
+
+        WebView.CoreWebView2.Profile.PreferredColorScheme = option.IndependentTheme switch
+        {
+            WebPageTheme.App => theme switch
+            {
+                ApplicationTheme.Unknown => CoreWebView2PreferredColorScheme.Auto,
+                ApplicationTheme.Light => CoreWebView2PreferredColorScheme.Light,
+                ApplicationTheme.Dark => CoreWebView2PreferredColorScheme.Dark,
+                _ => CoreWebView2PreferredColorScheme.Auto
+            },
+            WebPageTheme.Light => CoreWebView2PreferredColorScheme.Light,
+            WebPageTheme.Dark => CoreWebView2PreferredColorScheme.Dark,
+            _ => CoreWebView2PreferredColorScheme.Auto
+        };
+    }
+
+    private void SetWebView()
+    {
+        if (WebView == null || State == null)
+            return;
+        if (State.CustomSettings is not WebPageOption option)
+            return;
+
+        WebView.Source = new Uri(option.Url ?? WebPageOption.DefaultUrl);
+    }
+
+    //private void WebView_CoreWebView2InitializationCompleted(object? sender, CoreWebView2InitializationCompletedEventArgs e)
+    //{
+    //    IApplicationService applicationService = _services.GetService<IApplicationService>();
+    //    WebView.Source = new Uri("https://www.microsoft.com");
+    //}
+
+    //private void OnWebViewNavigationCompleted(object? sender, CoreWebView2NavigationCompletedEventArgs e)
+    //{
+    //    IApplicationService applicationService = _services.GetService<IApplicationService>();
+    //    applicationService.InvokeAsync(async () =>
+    //    {
+    //        if (WebView != null)
+    //        {
+    //            WebView.SetCurrentValue(WebView2.SourceProperty, new Uri(Options.Url));
+    //        }
+    //    });
+    //}
 }

@@ -21,6 +21,12 @@ public partial class WebPageOptionViewModel : CustomSettingsContext
     private int _autoReloadInterval;
 
     [ObservableProperty]
+    private string? _url;
+
+    [ObservableProperty]
+    private WebPageTheme _webPageTheme;
+
+    [ObservableProperty]
     private WebSessionDataSourceSelector _webSessionDataSourceSelector;
 
     protected override void OnCreate(object? defaultOption)
@@ -37,6 +43,10 @@ public partial class WebPageOptionViewModel : CustomSettingsContext
         };
     }
 
+    /// <summary>
+    /// Context To CustomSettings
+    /// </summary>
+    /// <exception cref="ArgumentException"></exception>
     protected override void OnContextChanged()
     {
         if (CustomSettings is not WebPageOption webPageOption)
@@ -44,11 +54,15 @@ public partial class WebPageOptionViewModel : CustomSettingsContext
             throw new ArgumentException($"Not a valid type for CustomSettings {nameof(WebPageOption)}");
         }
         webPageOption.AutoReloadInterval = AutoReloadInterval;
+        webPageOption.IndependentTheme = WebPageTheme;
+        webPageOption.Url = Url;
+
         webPageOption.WebSessionDataSourceId = null;
         if (WebSessionDataSourceSelector.SelectedDataSourceContext != null)
         {
             webPageOption.WebSessionDataSourceId = WebSessionDataSourceSelector.SelectedDataSourceContext.DataSourceId;
         }
+
         CustomSettings = webPageOption;
     }
 
@@ -58,7 +72,9 @@ public partial class WebPageOptionViewModel : CustomSettingsContext
         {
             throw new ArgumentException($"Not a valid type for CustomSettings {nameof(WebPageOption)}");
         }
+        Url = webPageOption.Url;
         AutoReloadInterval = webPageOption.AutoReloadInterval;
+        WebPageTheme = webPageOption.IndependentTheme;
         WebSessionDataSourceSelector.Select(webPageOption.WebSessionDataSourceId);
     }
 }

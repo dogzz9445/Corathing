@@ -61,7 +61,6 @@ public partial class WidgetSettingsView : Page, INavigationView
         // This is a temporary solution to get the context type of the widget.
         // This will be replaced with a more elegant solution in the future.
         WidgetHost tempWidgetHost = new WidgetHost();
-        WidgetHostContentPresenter.Content = tempWidgetHost;
 
         if (widgetHost.DataContext is WidgetContext widgetContext)
         {
@@ -87,5 +86,7 @@ public partial class WidgetSettingsView : Page, INavigationView
             App.Current.Services.GetService<IDialogService>()
                 .ShowAlertDanger("Failed to load widget settings.");
         }
+
+        WidgetHostContentPresenter.Content = tempWidgetHost;
     }
 }

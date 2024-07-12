@@ -11,7 +11,7 @@
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="pack://application:,,,/Corathing.UI.WPF;component/Styles/Button.xaml" />
     </ResourceDictionary.MergedDictionaries>
-    
+
     <local:FileOpenTypeToIndexConverter x:Key="FileOpenTypeToIndexConverter" />
 
     <!-- File Opener Widget -->
