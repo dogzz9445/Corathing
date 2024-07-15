@@ -45,6 +45,14 @@
                 </ComboBox>
             </settings:SettingsBlock>
 
+            <!-- Files ExecutableAppDataSourceSelector -->
+            <settings:SettingsBlock CategoryText="Opener:"
+                                    Header="Executable App for Open File or Folder..">
+                <ContentPresenter Grid.Row="1"
+                                  Content="{Binding ExecutableAppDataSourceSelector}"
+                                  DataContext="{Binding ExecutableAppDataSourceSelector}" />
+            </settings:SettingsBlock>
+
             <!-- Files -->
             <settings:SettingsBlock CategoryText="Opener-Files:"
                                     Visibility="{Binding OpenType, Converter={StaticResource FileOpenTypeFileToVisibleConverter}, Mode=OneWay}"
@@ -93,15 +101,6 @@
                 </Grid>
             </settings:SettingsBlock>
 
-            <!-- Files ExecutableAppDataSourceSelector -->
-            <settings:SettingsBlock CategoryText="Opener-Files:"
-                                    Visibility="{Binding OpenType, Converter={StaticResource FileOpenTypeFileToVisibleConverter}, Mode=OneWay}"
-                                    Header="Executable App..">
-                <ContentPresenter Grid.Row="1"
-                                  Content="{Binding ExecutableAppDataSourceSelector}"
-                                  DataContext="{Binding ExecutableAppDataSourceSelector}" />
-            </settings:SettingsBlock>
-
             <!-- Folders -->
             <settings:SettingsBlock CategoryText="Opener-Folders:"
                                     Visibility="{Binding OpenType, Converter={StaticResource FileOpenTypeFolderToVisibleConverter}, Mode=OneWay}"
@@ -133,7 +132,7 @@
                                                Margin="4 0"
                                                Style="{StaticResource IconButton24}"
                                                Icon="{ui:SymbolIcon OpenFolder24}"
-                                               Command="{Binding DataContext.OpenFileCommand, RelativeSource={RelativeSource AncestorType={x:Type ListBox}}}"
+                                               Command="{Binding DataContext.OpenFolderCommand, RelativeSource={RelativeSource AncestorType={x:Type ListBox}}}"
                                                CommandParameter="{Binding DataContext, RelativeSource={RelativeSource AncestorType={x:Type ListBoxItem}}}"
                                                ToolTip="Open Folder" />
                                     <ui:Button Grid.Column="2"
@@ -148,15 +147,6 @@
                         </ListBox.ItemTemplate>
                     </ListBox>
                 </Grid>
-            </settings:SettingsBlock>
-
-            <!-- Folders ExecutableAppDataSourceSelector -->
-            <settings:SettingsBlock CategoryText="Opener-Folders:"
-                                    Visibility="{Binding OpenType, Converter={StaticResource FileOpenTypeFolderToVisibleConverter}, Mode=OneWay}"
-                                    Header="Executable App for Open Folders..">
-                <ContentPresenter Grid.Row="1"
-                                  Content="{Binding ExecutableAppDataSourceSelector}"
-                                  DataContext="{Binding ExecutableAppDataSourceSelector}" />
             </settings:SettingsBlock>
 
         </StackPanel>
