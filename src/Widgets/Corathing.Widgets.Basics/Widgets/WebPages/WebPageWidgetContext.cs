@@ -69,41 +69,32 @@ public partial class WebPageWidgetContext : WidgetContext
         SetAutoReloadInterval(option.AutoReloadInterval);
         SetUrl(option.Url ?? WebPageOption.DefaultUrl);
 
-        if (option.WebSessionDataSourceId != null && option.WebSessionDataSourceId != Guid.Empty)
-        {
-            var dataSourceService = _services.GetRequiredService<IDataSourceService>();
-            var dataSource = dataSourceService.GetDataSourceContext<WebSessionDataSourceContext>(option.WebSessionDataSourceId);
-            if (WebSessionDataSource == null || dataSource.DataSourceId != WebSessionDataSource.DataSourceId)
-            {
-                WebSessionDataSource = dataSource;
-                if (WebView != null)
-                {
-                    //WebView.Loaded -= WebView_Loaded;
-                    WebView.Dispose();
-                    WebView = null;
-                }
-                WebView = null;
-                if (WebSessionDataSource != null)
-                {
-                    WebView = WebSessionDataSource.CreateWebView();
-                    await WebView.EnsureCoreWebView2Async();
-                    themeService.ProvideApplicationTheme(theme => SetTheme(theme));
-                    WebView.Source = new Uri(option.Url ?? WebPageOption.DefaultUrl);
-                    //WebView.Loaded += WebView_Loaded;
-                    //WebView.Loaded += (s, e) =>
-                    //{
-                    //    SetWebView(WebView);
-                    //};
-                    //WebView.CoreWebView2InitializationCompleted += WebView_CoreWebView2InitializationCompleted;
-                    //WebView.Loaded += (s, e) =>
-                    //{
-                    //    WebView.NavigationCompleted += OnWebViewNavigationCompleted;
-                    //    WebView.SetCurrentValue(FrameworkElement.UseLayoutRoundingProperty, true);
-                    //    WebView.SetCurrentValue(WebView2.DefaultBackgroundColorProperty, System.Drawing.Color.Transparent);
+        var dataSourceService = _services.GetRequiredService<IDataSourceService>();
+        var dataSource = dataSourceService.GetOrFirstOrCreateDataSourceContext<WebSessionDataSourceContext>(option.WebSessionDataSourceId);
 
-                    //};
-                }
+        if (WebSessionDataSource == null || dataSource.DataSourceId != WebSessionDataSource.DataSourceId)
+        {
+            WebSessionDataSource = dataSource;
+            if (WebView != null)
+            {
+                //WebView.Loaded -= WebView_Loaded;
+                WebView.Dispose();
+                WebView = null;
             }
+            WebView = null;
+            if (WebSessionDataSource != null)
+            {
+                WebView = WebSessionDataSource.CreateWebView();
+                await WebView.EnsureCoreWebView2Async();
+                themeService.ProvideApplicationTheme(theme => SetTheme(theme));
+                WebView.Source = new Uri(option.Url ?? WebPageOption.DefaultUrl);
+            }
+        }
+
+        if (IsTemporal == false)
+        {
+            option.WebSessionDataSourceId = dataSource.DataSourceId;
+            _appStateService?.UpdateWidget(state);
         }
     }
 
@@ -129,6 +120,18 @@ public partial class WebPageWidgetContext : WidgetContext
     private void WebView_Loaded(object? sender, RoutedEventArgs e)
     {
         SetWebView();
+        //WebView.Loaded += WebView_Loaded;
+        //WebView.Loaded += (s, e) =>
+        //{
+        //    SetWebView(WebView);
+        //};
+        //WebView.CoreWebView2InitializationCompleted += WebView_CoreWebView2InitializationCompleted;
+        //WebView.Loaded += (s, e) =>
+        //{
+        //    WebView.NavigationCompleted += OnWebViewNavigationCompleted;
+        //    WebView.SetCurrentValue(FrameworkElement.UseLayoutRoundingProperty, true);
+        //    WebView.SetCurrentValue(WebView2.DefaultBackgroundColorProperty, System.Drawing.Color.Transparent);
+        //};
     }
 
     private async Task ReloadRoutine(CancellationToken token)

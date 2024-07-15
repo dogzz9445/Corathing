@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Corathing.Widgets.Basics.Widgets.ToDoLists"
              xmlns:models="clr-namespace:Corathing.Widgets.Basics.Widgets.ToDoLists.Models"
+             xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:behaviors="clr-namespace:Corathing.UI.WPF.Behaviors;assembly=Corathing.UI.WPF"
              xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
@@ -170,6 +171,7 @@
     <Grid>
         <ListView BorderThickness="0"
                   Background="Transparent"
+                  Style="{StaticResource MahApps.Styles.ListView.Virtualized}"
                   ItemsSource="{Binding GroupedJobs}"
                   ItemTemplateSelector="{StaticResource JobTemplateSelector}">
                 

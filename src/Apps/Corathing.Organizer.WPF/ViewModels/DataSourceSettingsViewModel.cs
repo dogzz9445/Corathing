@@ -90,19 +90,8 @@ public partial class DataSourceSettingsViewModel : ObservableObject
         if (_dataSourceType == null)
             return;
 
-        var packageService = _services.GetRequiredService<IPackageService>();
-        var dataContext = packageService.CreateDataSourceContext(_dataSourceType.FullName);
-
-        var appStateService = _services.GetRequiredService<IAppStateService>();
-        appStateService.UpdateDataSource(dataContext.State);
-
         var dataSourceService = _services.GetRequiredService<IDataSourceService>();
-        dataSourceService.AddDataSourceContext(dataContext);
-
-        WeakReferenceMessenger.Default.Send(
-            new DataSourceStateChangedMessage(EntityStateChangedType.Added, dataContext),
-            dataContext.GetType().FullName
-            );
+        var dataContext = dataSourceService.CreateDataSourceContext(_dataSourceType);
 
         DataSourceContexts.Add(dataContext);
         Select(dataContext);
@@ -111,19 +100,8 @@ public partial class DataSourceSettingsViewModel : ObservableObject
     [RelayCommand]
     public void RemoveDataSource(DataSourceContext context)
     {
-        // TODO:
-        // 모든 위젯에서 해당 연결 끊기
-        //WeakReferenceMessenger.Default.Send(new DataSourceRemovedMessage(context.State.Id));
-
-        var appStateService = _services.GetRequiredService<IAppStateService>();
         var dataSourceService = _services.GetRequiredService<IDataSourceService>();
-        appStateService.RemovePackage(context.State.Id);
-        dataSourceService.RemoveDataSourceContext(context);
-
-        WeakReferenceMessenger.Default.Send(
-            new DataSourceStateChangedMessage(EntityStateChangedType.Removed, context),
-            context.GetType().FullName
-            );
+        dataSourceService.DestroyDataSourceContext(context);
     }
 
     public void OnSelectedContext(DataSourceContext? selectedContext)

@@ -146,8 +146,10 @@ public class PackageService : IPackageService
     /// <summary>
     /// <inheritdoc/>
     /// </summary>
-    public DataSourceContext? CreateDataSourceContext(string contextTypeFullName)
+    public DataSourceContext? CreateDataSourceContext(string? contextTypeFullName)
     {
+        if (string.IsNullOrEmpty(contextTypeFullName))
+            return null;
         if (!_dataSourceGenerator.TryGetValue(contextTypeFullName, out var dataSourceGenerator))
             return null;
         return dataSourceGenerator.CreateDataSource();
@@ -156,8 +158,10 @@ public class PackageService : IPackageService
     /// <summary>
     /// <inheritdoc/>
     /// </summary>
-    public Type? GetDataSourceCustomSettingsType(string contextTypeFullName)
+    public Type? GetDataSourceCustomSettingsType(string? contextTypeFullName)
     {
+        if (string.IsNullOrEmpty(contextTypeFullName))
+            return null;
         if (!_dataSourceGenerator.TryGetValue(contextTypeFullName, out var dataSourceGenerator))
             return null;
         return dataSourceGenerator.Info.OptionType;
@@ -166,8 +170,10 @@ public class PackageService : IPackageService
     /// <summary>
     /// <inheritdoc/>
     /// </summary>
-    public CustomSettingsContext? CreateDataSourceSettingsContext(string contextTypeFullName)
+    public CustomSettingsContext? CreateDataSourceSettingsContext(string? contextTypeFullName)
     {
+        if (string.IsNullOrEmpty(contextTypeFullName))
+            return null;
         if (!_dataSourceGenerator.TryGetValue(contextTypeFullName, out var dataSourceGenerator))
             return null;
         return dataSourceGenerator.CreateSettingsContext();
@@ -175,6 +181,8 @@ public class PackageService : IPackageService
 
     public Type? GetDataSourceSettingsContextType(string? contextTypeFullName)
     {
+        if (string.IsNullOrEmpty(contextTypeFullName))
+            return null;
         if (!_dataSourceGenerator.TryGetValue(contextTypeFullName, out var dataSourceGenerator))
             return null;
         return dataSourceGenerator.Info.SettingsContextType;
@@ -200,8 +208,10 @@ public class PackageService : IPackageService
     /// <summary>
     /// <inheritdoc/>
     /// </summary>
-    public WidgetContext? CreateWidgetContext(string contextTypeFullName, WidgetState? state = null)
+    public WidgetContext? CreateWidgetContext(string? contextTypeFullName, WidgetState? state = null)
     {
+        if (string.IsNullOrEmpty(contextTypeFullName))
+            return null;
         if (!_widgetGenerators.TryGetValue(contextTypeFullName, out var widgetContext))
             return null;
         return widgetContext.CreateWidget(state);
@@ -210,8 +220,10 @@ public class PackageService : IPackageService
     /// <summary>
     /// <inheritdoc/>
     /// </summary>
-    public Type? GetWidgetCustomSettingsType(string contextTypeFullName)
+    public Type? GetWidgetCustomSettingsType(string? contextTypeFullName)
     {
+        if (string.IsNullOrEmpty(contextTypeFullName))
+            return null;
         if (!_widgetGenerators.TryGetValue(contextTypeFullName, out var widgetContext))
             return null;
         return widgetContext.Info.WidgetCustomSettingsType;
@@ -220,8 +232,10 @@ public class PackageService : IPackageService
     /// <summary>
     /// <inheritdoc/>
     /// </summary>
-    public CustomSettingsContext? CreateWidgetSettingsContext(string contextTypeFullName)
+    public CustomSettingsContext? CreateWidgetSettingsContext(string? contextTypeFullName)
     {
+        if (string.IsNullOrEmpty(contextTypeFullName))
+            return null;
         if (!_widgetGenerators.TryGetValue(contextTypeFullName, out var widgetContext))
             return null;
         return widgetContext.CreateSettingsContext();

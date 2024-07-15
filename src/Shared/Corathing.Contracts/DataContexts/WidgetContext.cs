@@ -16,7 +16,8 @@ namespace Corathing.Contracts.Bases;
 
 public partial class WidgetContext : ObservableRecipient
 {
-    protected IServiceProvider _services;
+    protected IServiceProvider? _services;
+    protected IAppStateService? _appStateService;
 
     #region 숨겨진 프로퍼티
     public Guid WidgetId;
@@ -43,11 +44,15 @@ public partial class WidgetContext : ObservableRecipient
     #region Only Used Properties in Context
     [ObservableProperty]
     private bool? _editMode;
+    [ObservableProperty]
+    private bool? _isTemporal;
     #endregion
 
     public void Initialize(IServiceProvider services, WidgetState state)
     {
         _services = services;
+        _appStateService = _services.GetRequiredService<IAppStateService>();
+        IsTemporal = false;
 
         State = state;
         WidgetId = state.Id;
@@ -87,8 +92,8 @@ public partial class WidgetContext : ObservableRecipient
     public void Destroy()
     {
         OnDestroy();
-        var appState = _services.GetService<IAppStateService>();
-        appState.RemoveWidget(WidgetId);
+
+        _appStateService?.RemoveWidget(WidgetId);
     }
 
     public virtual void OnCreate(IServiceProvider services, WidgetState state)

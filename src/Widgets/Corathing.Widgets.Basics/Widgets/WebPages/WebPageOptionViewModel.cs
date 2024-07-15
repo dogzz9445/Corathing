@@ -35,12 +35,16 @@ public partial class WebPageOptionViewModel : CustomSettingsContext
         {
             throw new ArgumentException($"Not a valid type for CustomSettings {nameof(WebPageOption)}");
         }
-        CustomSettings = webPageOption;
         WebSessionDataSourceSelector = new WebSessionDataSourceSelector(Services);
         WebSessionDataSourceSelector.PropertyChanged += (sender, args) =>
         {
             OnPropertyChanged(new PropertyChangedEventArgs(nameof(WebSessionDataSourceSelector)));
         };
+        if (WebSessionDataSourceSelector.SelectedDataSourceContext != null)
+        {
+            webPageOption.WebSessionDataSourceId = WebSessionDataSourceSelector.SelectedDataSourceContext.DataSourceId;
+        }
+        CustomSettings = webPageOption;
     }
 
     /// <summary>

@@ -65,6 +65,7 @@ public partial class WidgetSettingsViewModel : ObservableObject
         var packageService = _services.GetService<IPackageService>();
 
         TempWidgetContext = packageService.CreateWidgetContext(_originalContext.GetType().FullName);
+        TempWidgetContext.IsTemporal = true;
         _optionType = packageService.GetWidgetCustomSettingsType(_originalContext.GetType().FullName);
         _originalContext.CopyTo(TempWidgetContext, _optionType);
         _settingsWidgetHost.Content = TempWidgetContext;

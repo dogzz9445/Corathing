@@ -13,6 +13,8 @@
     </ResourceDictionary.MergedDictionaries>
 
     <local:FileOpenTypeToIndexConverter x:Key="FileOpenTypeToIndexConverter" />
+    <local:FileOpenTypeFileToVisibleConverter x:Key="FileOpenTypeFileToVisibleConverter" />
+    <local:FileOpenTypeFolderToVisibleConverter x:Key="FileOpenTypeFolderToVisibleConverter" />
 
     <!-- File Opener Widget -->
     <DataTemplate DataType="{x:Type local:FileOpenerWidgetContext}">
@@ -20,7 +22,7 @@
                 Command="{Binding ExecuteCommand}">
             <Grid HorizontalAlignment="Stretch"
                   VerticalAlignment="Stretch">
-                <ui:SymbolIcon Symbol="DocumentArrowUp16">
+                <ui:SymbolIcon Symbol="{Binding Icon}">
                     <i:Interaction.Behaviors>
                         <behaviors:SymbolIconScaleFontBehavior />
                     </i:Interaction.Behaviors>
@@ -35,7 +37,7 @@
             <!-- Open Type -->
             <settings:SettingsBlock IsDescriptionOnContentRight="True"
                                     CategoryText="Opener:"
-                                    Header="{localizations:Localization Corathing.Widgets.Basics.Files.OptionTypeTitle}">
+                                    Header="Type of Open File or Folder">
                 <ComboBox MinWidth="200"
                           SelectedIndex="{Binding OpenType, Converter={StaticResource FileOpenTypeToIndexConverter}, Mode=TwoWay}">
                     <ComboBoxItem Content="{localizations:Localization Corathing.Widgets.Basics.Files.OptionTypeFile}" />
@@ -45,7 +47,8 @@
 
             <!-- Files -->
             <settings:SettingsBlock CategoryText="Opener-Files:"
-                                    Header="{localizations:Localization Corathing.Widgets.Basics.Files.OptionTypeTitle}">
+                                    Visibility="{Binding OpenType, Converter={StaticResource FileOpenTypeFileToVisibleConverter}, Mode=OneWay}"
+                                    Header="Files">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
@@ -90,13 +93,72 @@
                 </Grid>
             </settings:SettingsBlock>
 
-            <!-- ExecutableAppDataSourceSelector -->
+            <!-- Files ExecutableAppDataSourceSelector -->
             <settings:SettingsBlock CategoryText="Opener-Files:"
+                                    Visibility="{Binding OpenType, Converter={StaticResource FileOpenTypeFileToVisibleConverter}, Mode=OneWay}"
                                     Header="Executable App..">
                 <ContentPresenter Grid.Row="1"
                                   Content="{Binding ExecutableAppDataSourceSelector}"
                                   DataContext="{Binding ExecutableAppDataSourceSelector}" />
             </settings:SettingsBlock>
+
+            <!-- Folders -->
+            <settings:SettingsBlock CategoryText="Opener-Folders:"
+                                    Visibility="{Binding OpenType, Converter={StaticResource FileOpenTypeFolderToVisibleConverter}, Mode=OneWay}"
+                                    Header="Folders">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <ui:Button Grid.Row="0"
+                               Content="Add Folder"
+                               Command="{Binding AddFolderCommand}" />
+                    <ListBox Grid.Row="1"
+                             Style="{StaticResource NoFocusListBoxStyle}"
+                             ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                             ItemsSource="{Binding Folders}">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate DataType="{x:Type local:FolderInfo}">
+                                <Grid HorizontalAlignment="Stretch"
+                                      Focusable="False">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBox Grid.Column="0"
+                                             Text="{Binding Path=FolderName}" />
+                                    <ui:Button Grid.Column="1"
+                                               Margin="4 0"
+                                               Style="{StaticResource IconButton24}"
+                                               Icon="{ui:SymbolIcon OpenFolder24}"
+                                               Command="{Binding DataContext.OpenFileCommand, RelativeSource={RelativeSource AncestorType={x:Type ListBox}}}"
+                                               CommandParameter="{Binding DataContext, RelativeSource={RelativeSource AncestorType={x:Type ListBoxItem}}}"
+                                               ToolTip="Open Folder" />
+                                    <ui:Button Grid.Column="2"
+                                               Margin="0"
+                                               Style="{StaticResource IconButton24}"
+                                               Icon="{ui:SymbolIcon Dismiss24}"
+                                               Command="{Binding DataContext.RemoveFolder, RelativeSource={RelativeSource AncestorType={x:Type ListBox}}}"
+                                               CommandParameter="{Binding Path=.}"
+                                               ToolTip="Remove Folder" />
+                                </Grid>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </Grid>
+            </settings:SettingsBlock>
+
+            <!-- Folders ExecutableAppDataSourceSelector -->
+            <settings:SettingsBlock CategoryText="Opener-Folders:"
+                                    Visibility="{Binding OpenType, Converter={StaticResource FileOpenTypeFolderToVisibleConverter}, Mode=OneWay}"
+                                    Header="Executable App for Open Folders..">
+                <ContentPresenter Grid.Row="1"
+                                  Content="{Binding ExecutableAppDataSourceSelector}"
+                                  DataContext="{Binding ExecutableAppDataSourceSelector}" />
+            </settings:SettingsBlock>
+
         </StackPanel>
     </DataTemplate>
 </ResourceDictionary>

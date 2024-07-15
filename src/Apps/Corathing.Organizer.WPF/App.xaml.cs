@@ -210,6 +210,7 @@ public partial class App : Application
         serviceCollection.AddScoped<OrganizerSettingsViewModel>();
         serviceCollection.AddScoped<ProjectSettingsViewModel>();
         serviceCollection.AddScoped<WorkflowSettingsViewModel>();
+        serviceCollection.AddScoped<WidgetManagementView>();
         serviceCollection.AddTransient<DataSourceSettingsViewModel>();
         serviceCollection.AddTransient<WidgetSettingsViewModel>();
         serviceCollection.AddTransient<ProjectSettingsContext>();

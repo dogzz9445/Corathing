@@ -63,8 +63,7 @@
             <!-- Command Line Arguments -->
             <settings:SettingsBlock CategoryText="WebSession-Option:"
                                     Header="CommandLine Arguments">
-                <TextBox HorizontalAlignment="Stretch"
-                         Text="{Binding Path=CommandLineArguments}" />
+                <TextBox HorizontalAlignment="Stretch" />
             </settings:SettingsBlock>
         </StackPanel>
 

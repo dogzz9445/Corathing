@@ -3,9 +3,9 @@
 
 Corathing is Customizable Widget Organizer. It is a WPF application that allows you to organize anything with customizable widget dashboards. You can create your own widgets or use the default widgets provided by Corathing.
 
-|  Wiki |Readme | Readme |
-| --- | --- | --- |
-| [Wiki](https://github.com/dogzz9445/Corathing/wiki/Home) | [English](README.md) | [한국어](README_KR.md) | 
+| Homepage |  Wiki |Readme | Readme |
+| --- | --- | --- | --- |
+|  [Homepage](https://corathing.com) | [Wiki](https://github.com/dogzz9445/Corathing/wiki/Home) | [English](README.md) | [한국어](README_KR.md) | 
 
 ![sample](docs/images/version0.0.9.gif)
 

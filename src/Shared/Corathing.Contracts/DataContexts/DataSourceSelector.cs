@@ -30,13 +30,17 @@ public partial class DataSourceSelector<T> :
     [ObservableProperty]
     private string? _hintSelectionText;
 
+    private bool _selectDefaultCreateIfEmpty;
+
     public DataSourceSelector(
         IServiceProvider services,
-        Guid? guid = null)
+        Guid? guid = null,
+        bool selectDefaultCreateIfEmpty = false)
     {
         _services = services;
         DataSourceContexts = new ObservableCollection<T>();
         HintSelectionText = "Default DataSource";
+        _selectDefaultCreateIfEmpty = selectDefaultCreateIfEmpty;
 
         var dataSourceService = _services.GetService<IDataSourceService>();
 
@@ -44,12 +48,9 @@ public partial class DataSourceSelector<T> :
             dataSourceService.GetAllDataSourceContexts<T>()
         );
 
-        if (guid != null)
-        {
-            SelectedDataSourceContext = dataSourceService.GetDataSourceContext<T>(guid);
-        }
+        Select(guid);
 
-        WeakReferenceMessenger.Default.Register<DataSourceStateChangedMessage, string>(
+        WeakReferenceMessenger.Default?.Register<DataSourceStateChangedMessage, string>(
             this,
             typeof(T).FullName,
             OnDataSourceStateChanged);
@@ -85,6 +86,22 @@ public partial class DataSourceSelector<T> :
 
     public void Select(Guid? guid)
     {
-        SelectedDataSourceContext = DataSourceContexts.FirstOrDefault(c => c.DataSourceId == guid);
+        if (guid != null)
+        {
+            SelectedDataSourceContext = DataSourceContexts.FirstOrDefault(c => c.DataSourceId == guid);
+        }
+
+        if (SelectedDataSourceContext == null && _selectDefaultCreateIfEmpty)
+        {
+            var dataSourceService = _services.GetRequiredService<IDataSourceService>();
+
+            if (DataSourceContexts.Count == 0)
+            {
+                var dataContext = dataSourceService.CreateDataSourceContext<T>();
+
+                DataSourceContexts.Add(dataContext);
+            }
+            SelectedDataSourceContext = DataSourceContexts.FirstOrDefault();
+        }
     }
 }

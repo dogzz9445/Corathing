@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -38,6 +39,9 @@ public partial class FileOpenerWidgetContext : WidgetContext
     private FileOpenType _openType = FileOpenType.Files;
 
     [ObservableProperty]
+    private string _icon;
+
+    [ObservableProperty]
     private ObservableCollection<string>? _filePaths;
 
     [ObservableProperty]
@@ -50,6 +54,7 @@ public partial class FileOpenerWidgetContext : WidgetContext
     {
         FilePaths = new ObservableCollection<string>();
         FolderPaths = new ObservableCollection<string>();
+        Icon = "Document24";
 
         ILocalizationService localizationService = _services.GetService<ILocalizationService>();
         localizationService.Provide("Corathing.Widgets.Basics.FileOpenerName", value =>
@@ -69,6 +74,14 @@ public partial class FileOpenerWidgetContext : WidgetContext
             return;
         }
         OpenType = option.OpenType;
+        if (OpenType == FileOpenType.Files)
+        {
+            Icon = "Document24";
+        }
+        else if (OpenType == FileOpenType.Folders)
+        {
+            Icon = "Folder24";
+        }
 
         FilePaths.Clear();
         if (option.Files != null)
