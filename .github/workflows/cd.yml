@@ -180,7 +180,7 @@ jobs:
 
     # Archive the exe
     - name: Create archive exe
-      run: Compress-Archive -Path $env:Wpf_Project_Directory\bin\$env:Configuration\$env:TargetPlatform\* -DestinationPath ${{ env.Wpf_Project_Directory }}\bin\${{ env.Configuration }}\${{ env.TargetPlatform }}\${{ matrix.ChannelName }}.zip
+      run: Compress-Archive -Path $env:Wpf_Project_Directory\bin\$env:TargetPlatform\$env:Configuration\* -DestinationPath ${{ env.Wpf_Project_Directory }}\bin\${{ env.TargetPlatform }}\${{ env.Configuration }}\${{ matrix.ChannelName }}.zip
       if: matrix.ChannelName == 'DevExe' || matrix.ChannelName == 'ProdExe'
       env:
         Configuration: ${{ matrix.Configuration }}
@@ -226,7 +226,7 @@ jobs:
         TargetPlatform: ${{ matrix.targetplatform }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}  # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps
-        asset_path: ${{ env.Wpf_Project_Directory }}\bin\${{ env.Configuration }}\${{ env.TargetPlatform }}\${{ matrix.ChannelName }}.zip
+        asset_path: ${{ env.Wpf_Project_Directory }}\bin\${{ env.TargetPlatform }}\${{ env.Configuration }}\${{ matrix.ChannelName }}.zip
         asset_name: ${{ matrix.ChannelName }}.zip
         asset_content_type: application/zip
       if: matrix.ChannelName == 'DevExe' || matrix.ChannelName == 'ProdExe'
