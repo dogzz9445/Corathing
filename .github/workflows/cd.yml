@@ -30,7 +30,7 @@ jobs:
     # development, production for sideload applications and production for the Microsoft store.
     # For more information, see https://help.github.com/en/actions/configuring-and-managing-workflows/configuring-a-workflow#configuring-a-build-matrix
       matrix:
-        channel: [Dev, Prod_Sideload, Prod_Store]
+        channel: [Dev, DevExe, ProdExe, Prod_Sideload, Prod_Store]
         targetPlatform: [x64]
         include:
 
@@ -40,8 +40,26 @@ jobs:
             Configuration: Debug
             DistributionUrl: https://github.com/dogzz9445/Corathing/Releases
             MsixPackageId: Corathing.Organzier.Dev
-            MsixPublisherId: CN=CorathingOrganizer
-            MsixPackageDisplayName: MyWPFApp (Dev)
+            MsixPublisherId: CN=Corathing
+            MsixPackageDisplayName: Corathing Organzier (Dev)
+
+          # includes the following variables for the matrix leg matching DevExe
+          - channel: DevExe
+            ChannelName: DevExe
+            Configuration: Debug
+            DistributionUrl: https://github.com/dogzz9445/Corathing/Releases
+            MsixPackageId: Corathing.Organzier.DevExe
+            MsixPublisherId: CN=Corathing
+            MsixPackageDisplayName: Corathing Organzier (DevExe)
+
+          # includes the following variables for the matrix leg matching ProdExe
+          - channel: ProdExe
+            ChannelName: ProdExe
+            Configuration: Release
+            DistributionUrl: https://github.com/dogzz9445/Corathing/Releases
+            MsixPackageId: Corathing.Organzier.ProdExe
+            MsixPublisherId: CN=Corathing
+            MsixPackageDisplayName: Corathing Organzier (ProdExe)
 
           # includes the following variables for the matrix leg matching Prod_Sideload
           - channel: Prod_Sideload
@@ -49,8 +67,8 @@ jobs:
             ChannelName: Prod_Sideload
             DistributionUrl: https://github.com/dogzz9445/Corathing/Releases
             MsixPackageId: Corathing.Organzier.ProdSideload
-            MsixPublisherId: CN=CorathingOrganizer
-            MsixPackageDisplayName: MyWPFApp (ProdSideload)
+            MsixPublisherId: CN=Corathing
+            MsixPackageDisplayName: Corathing Organzier (ProdSideload)
 
           # includes the following variables for the matrix leg matching Prod_Store
           - channel: Prod_Store
@@ -58,8 +76,8 @@ jobs:
             ChannelName: Prod_Store
             DistributionUrl:
             MsixPackageId: Corathing.Organzier.ProdStore
-            MsixPublisherId: CN=CorathingOrganizer
-            MsixPackageDisplayName: MyWPFApp (ProdStore)
+            MsixPublisherId: CN=Corathing
+            MsixPackageDisplayName: Corathing Organzier (ProdStore)
 
     runs-on: windows-latest
 
@@ -90,7 +108,7 @@ jobs:
       with:
         dotnet-version: '8.0.x'
 
-    # Add  MsBuild to the PATH: https://github.com/microsoft/setup-msbuild
+    # Add MsBuild to the PATH: https://github.com/microsoft/setup-msbuild
     - name: Setup MSBuild.exe
       uses: microsoft/setup-msbuild@v2
 
@@ -122,10 +140,18 @@ jobs:
         Configuration: ${{ matrix.Configuration }}
         RuntimeIdentifier: win-${{ matrix.targetplatform }}
 
+    # Build the Windows Application for DevExe and ProdExe
+    - name: Build the Wpf Application for ${{ matrix.ChannelName }}
+      run: msbuild $env:Wpf_Project_Path /p:Platform=$env:TargetPlatform /p:Configuration=$env:Configuration
+      if: matrix.ChannelName == 'DevExe' || matrix.ChannelName == 'ProdExe'
+      env:
+        Configuration: ${{ matrix.Configuration }}
+        TargetPlatform: ${{ matrix.targetplatform }}
+
     # Build the Windows Application Packaging project for Dev and Prod_Sideload
     - name: Build the Windows Application Packaging Project (wapproj) for ${{ matrix.ChannelName }}
       run: msbuild $env:Solution_Path /p:Platform=$env:TargetPlatform /p:Configuration=$env:Configuration /p:UapAppxPackageBuildMode=$env:BuildMode /p:AppxBundle=$env:AppxBundle /p:PackageCertificateKeyFile=$env:SigningCertificate /p:PackageCertificatePassword=${{ secrets.Pfx_Key }}
-      if: matrix.ChannelName != 'Prod_Store'
+      if: matrix.ChannelName == 'Dev' || matrix.ChannelName == 'Prod_Sideload'
       env:
         AppxBundle: Never
         AppInstallerUri: ${{ matrix.DistributionUrl }}
@@ -151,9 +177,15 @@ jobs:
       run: Remove-Item -path $env:Wap_Project_Directory\$env:SigningCertificate
       if: matrix.ChannelName != 'Prod_Store'
 
+    # Archive the exe
+    - name: Create archive
+      run: Compress-Archive -Path $env:Wpf_Project_Path\bin\$env:Configuration\$env:TargetPlatform\* -DestinationPath $env:Wpf_Project_Path\bin\$env:Configuration\$env:TargetPlatform\$env:ChannelName.zip
+      if: matrix.ChannelName == 'DevExe' || matrix.ChannelName == 'ProdExe'
+
     # Archive the package
     - name: Create archive
       run: Compress-Archive -Path $env:Wap_Project_Directory\$env:App_Packages_Directory\* -DestinationPath $env:Wap_Project_Directory\$env:App_Packages_Directory\$env:App_Packages_Archive
+      if: matrix.ChannelName == 'Dev' || matrix.ChannelName == 'Prod_Sideload' || matrix.ChannelName == 'Prod_Store'
 
     # Create the release:  https://github.com/actions/create-release
     - name: Create release
@@ -178,4 +210,19 @@ jobs:
         asset_path: ${{ env.Wap_Project_Directory }}\${{ env.App_Packages_Directory }}\${{ env.App_Packages_Archive }}
         asset_name: ${{ env.App_Packages_Archive }}
         asset_content_type: application/zip
-        
+      if: matrix.ChannelName == 'Dev' || matrix.ChannelName == 'Prod_Sideload' || matrix.ChannelName == 'Prod_Store'
+    
+    # Upload the exe
+    - name: Update release asset exe
+      id: upload-release-asset-exe
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        Configuration: ${{ matrix.Configuration }}
+        TargetPlatform: ${{ matrix.targetplatform }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}  # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps
+        asset_path: ${{ env.Wpf_Project_Path }}\bin\${{ env.Configuration }}\${{ env.TargetPlatform }}\${{ matrix.ChannelName }}.zip
+        asset_name: ${{ matrix.ChannelName }}.zip
+        asset_content_type: application/zip
+      if: matrix.ChannelName == 'DevExe' || matrix.ChannelName == 'ProdExe'
