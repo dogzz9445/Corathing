@@ -38,7 +38,7 @@ jobs:
           - channel: Dev
             ChannelName: Dev
             Configuration: Debug
-            DistributionUrl: https://microsoft.github.io/github-actions-for-desktop-apps-distribution-dev
+            DistributionUrl: https://github.com/dogzz9445/Corathing/Releases
             MsixPackageId: Corathing.Organzier.Dev
             MsixPublisherId: CN=CorathingOrganizer
             MsixPackageDisplayName: MyWPFApp (Dev)
@@ -47,7 +47,7 @@ jobs:
           - channel: Prod_Sideload
             Configuration: Release
             ChannelName: Prod_Sideload
-            DistributionUrl: https://microsoft.github.io/github-actions-for-desktop-apps-distribution-prod
+            DistributionUrl: https://github.com/dogzz9445/Corathing/Releases
             MsixPackageId: Corathing.Organzier.ProdSideload
             MsixPublisherId: CN=CorathingOrganizer
             MsixPackageDisplayName: MyWPFApp (ProdSideload)
