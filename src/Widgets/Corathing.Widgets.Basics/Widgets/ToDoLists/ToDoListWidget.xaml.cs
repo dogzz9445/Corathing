@@ -78,13 +78,17 @@ public partial class ToDoListViewModel : WidgetContext
     [RelayCommand]
     public void MarkJob(ToDoJob job)
     {
-
+        GroupedJobs?.RemoveItem(job.JobType, job);
+        job.IsCompleted = true;
+        GroupedJobs?.AddItem(JobType.IsCompleted, new ToDoJob());
     }
 
     [RelayCommand]
     public void UnmarkJob(ToDoJob job)
     {
-
+        GroupedJobs?.RemoveItem(job.JobType, job);
+        job.IsCompleted = false;
+        GroupedJobs?.AddItem(JobType.IsCompleted, new ToDoJob());
     }
 }
 

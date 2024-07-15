@@ -34,7 +34,7 @@ public class CoraWidgetGenerator(IServiceProvider services)
 
         ArgumentNullException.ThrowIfNull(context);
 
-        if (state != null)
+        if (state != null && Info.WidgetCustomSettingsType != null)
         {
             state.CustomSettings = JsonSerializer.Deserialize(
                 JsonSerializer.Serialize(state.CustomSettings),
