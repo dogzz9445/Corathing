@@ -86,6 +86,7 @@ jobs:
       App_Packages_Directory: AppPackages
       SigningCertificate: GitHubActionsPackageCorathing.pfx
       Solution_Path: Corathing.sln
+      Wpf_Project_Directory: src\Apps\Corathing.Organizer.WPF
       Wpf_Project_Path: src\Apps\Corathing.Organizer.WPF\Corathing.Organizer.WPF.csproj
       Wap_Project_Directory: src\Apps\Corathing.Package
       Wap_Project_Name: Corathing.Package.wapproj
@@ -178,12 +179,12 @@ jobs:
       if: matrix.ChannelName != 'Prod_Store'
 
     # Archive the exe
-    - name: Create archive
-      run: Compress-Archive -Path $env:Wpf_Project_Path\bin\$env:Configuration\$env:TargetPlatform\* -DestinationPath $env:Wpf_Project_Path\bin\$env:Configuration\$env:TargetPlatform\$env:ChannelName.zip
+    - name: Create archive exe
+      run: Compress-Archive -Path $env:Wpf_Project_Directory\bin\$env:Configuration\$env:TargetPlatform\* -DestinationPath $env:Wpf_Project_Directory\bin\$env:Configuration\$env:TargetPlatform\$env:ChannelName.zip
       if: matrix.ChannelName == 'DevExe' || matrix.ChannelName == 'ProdExe'
 
     # Archive the package
-    - name: Create archive
+    - name: Create archive package
       run: Compress-Archive -Path $env:Wap_Project_Directory\$env:App_Packages_Directory\* -DestinationPath $env:Wap_Project_Directory\$env:App_Packages_Directory\$env:App_Packages_Archive
       if: matrix.ChannelName == 'Dev' || matrix.ChannelName == 'Prod_Sideload' || matrix.ChannelName == 'Prod_Store'
 

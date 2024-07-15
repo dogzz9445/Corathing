@@ -22,11 +22,25 @@ Corathing is Customizable Widget Organizer. It is a WPF application that allows 
 ❌ Features - TBD
 - 
 
+📁 Shared
+-
+| Name| Folder |Framework | Description | Version
+| --- | --- | --- | --- | --- |
+| Corathing.Widgets.Basics | src/Apps | WPF |  | ```시작전```
+|  |  | WPF |  | ```시작전```
+
+
+📁 Apps
+-
+| Name| Folder |Framework | Description | Version
+| --- | --- | --- | --- | --- |
+| Corathing.Widgets.Basics | src/Apps | WPF |  | ```시작전```
+|  |  | WPF |  | ```시작전```
 
 
 📁 Widgets
 -
 | Name| Folder |Framework | Description | Version
 | --- | --- | --- | --- | --- |
-| Corathing.Widgets.Basics | src/Apps | WPF | Grafana 를 이용한 WPF 모니터링 툴 | ```시작전```
+| [Corathing.Widgets.Basics](src/Widgets/Corathing.Widgets.Basics/README.md) | src/Apps | WPF |  | ```시작전```
 |  |  | WPF |  | ```시작전```
