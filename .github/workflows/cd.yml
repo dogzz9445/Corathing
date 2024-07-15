@@ -180,8 +180,11 @@ jobs:
 
     # Archive the exe
     - name: Create archive exe
-      run: Compress-Archive -Path $env:Wpf_Project_Directory\bin\$env:Configuration\$env:TargetPlatform\* -DestinationPath $env:Wpf_Project_Directory\bin\$env:Configuration\$env:TargetPlatform\$matrix:ChannelName.zip
+      run: Compress-Archive -Path $env:Wpf_Project_Directory\bin\$env:Configuration\$env:TargetPlatform\* -DestinationPath ${{ env.Wpf_Project_Directory }}\bin\${{ env.Configuration }}\${{ env.TargetPlatform }}\${{ matrix.ChannelName }}.zip
       if: matrix.ChannelName == 'DevExe' || matrix.ChannelName == 'ProdExe'
+      env:
+        Configuration: ${{ matrix.Configuration }}
+        TargetPlatform: ${{ matrix.targetplatform }}
 
     # Archive the package
     - name: Create archive package

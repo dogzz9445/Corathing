@@ -79,6 +79,8 @@ public class TextBlockScaleFontBehavior : Behavior<Grid>
                 fontSize = Math.Min(fontSize, MaxFontSize / factor);
             }
 
+            if (fontSize <= 0)
+                fontSize = 1;
             tb.FontSize = fontSize;
         }
     }
