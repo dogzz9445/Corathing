@@ -18,17 +18,7 @@
 
     <!-- File Opener Widget -->
     <DataTemplate DataType="{x:Type local:FileOpenerWidgetContext}">
-        <Button Style="{DynamicResource CoraWidgetEditModeButtonWithEvent}"
-                Command="{Binding ExecuteCommand}">
-            <Grid HorizontalAlignment="Stretch"
-                  VerticalAlignment="Stretch">
-                <ui:SymbolIcon Symbol="{Binding Icon}">
-                    <i:Interaction.Behaviors>
-                        <behaviors:SymbolIconScaleFontBehavior />
-                    </i:Interaction.Behaviors>
-                </ui:SymbolIcon>
-            </Grid>
-        </Button>
+        <local:FileOpenerWidget />
     </DataTemplate>
 
     <!-- File Opener Settings View -->

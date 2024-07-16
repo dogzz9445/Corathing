@@ -8,9 +8,9 @@ using Corathing.Contracts.DataContexts;
 
 namespace Corathing.Widgets.Basics.DataSources.FileStorages;
 
-public partial class FileStorageDataSourceSelector : DataSourceSelector<FileStorageDataSourceContext>
+public partial class LocalFileStorageDataSourceSelector : DataSourceSelector<LocalFileStorageDataSourceContext>
 {
-    public FileStorageDataSourceSelector(IServiceProvider services, Guid? guid = null) : base(services, guid)
+    public LocalFileStorageDataSourceSelector(IServiceProvider services, Guid? guid = null) : base(services, guid)
     {
     }
 }

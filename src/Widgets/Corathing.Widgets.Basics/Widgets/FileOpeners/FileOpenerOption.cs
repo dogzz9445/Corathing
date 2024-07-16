@@ -18,6 +18,13 @@ public enum FileOpenType
     Folders,
 }
 
+public enum IconSourceType
+{
+    System,
+    Svg,
+    Image,
+}
+
 public class FileOpenerOption
 {
     public FileOpenType OpenType { get; set; }
