@@ -4,9 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Corathing.Widgets.Basics.Widgets.LinkOpeners
+namespace Corathing.Widgets.Basics.DataSources.FileStorages;
+
+public interface IStorageDataSource
 {
-    class LinkOpenerOption
-    {
-    }
 }

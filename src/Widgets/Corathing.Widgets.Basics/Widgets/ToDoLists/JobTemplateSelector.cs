@@ -16,9 +16,6 @@ public class JobTemplateSelector : DataTemplateSelector
     {
         FrameworkElement element = container as FrameworkElement;
 
-        if (item is null)
-            return null;
-
         if (item is ToDoJob)
             return element.FindResource("ToDoJobDataTemplate") as DataTemplate;
         else

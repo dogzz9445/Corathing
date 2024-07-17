@@ -12,6 +12,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="400">
     <UserControl.Resources>
+        <!-- TODO:  Make Null Template Selector -->
         <local:JobTemplateSelector x:Key="JobTemplateSelector" />
         <BooleanToVisibilityConverter x:Key="BoolToVis" />
 
@@ -173,9 +174,9 @@
                   Background="Transparent"
                   Style="{StaticResource MahApps.Styles.ListView.Virtualized}"
                   ItemsSource="{Binding GroupedJobs}"
-                  ItemTemplateSelector="{StaticResource JobTemplateSelector}">
-                
-        </ListView>
+                  ItemTemplateSelector="{StaticResource JobTemplateSelector}" />
+
+
         <!--<ListBox x:Name="ToDoListBox"
                  BorderThickness="0"
                  Background="Transparent"
