@@ -59,3 +59,6 @@ Corathing is Customizable Widget Organizer. It is a WPF application that allows 
 | Name| Folder |Framework | Description | Version
 | --- | --- | --- | --- | --- |
 |  |  | WPF |  | ```시작전```
+
+### TODO
+- [ ] 인터페이스로 DataSource 나 Widget 으로부터 인터페이스(API 느낌의?? ENI, ENtity Interface?) 를 등록하거나 호출 가능하도록 구조 변경

@@ -1,21 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using CommunityToolkit.Mvvm.ComponentModel;
-
 using Corathing.Contracts.Attributes;
 using Corathing.Widgets.Basics.DataSources.ExecutableApps;
+using Corathing.Widgets.Basics.Widgets.FileOpeners;
 
-namespace Corathing.Widgets.Basics.Widgets.FileOpeners;
+namespace Corathing.Widgets.Basics.Widgets.Openers;
 
-public enum FileOpenType
+public enum OpenerType
 {
     Files,
     Folders,
+    Links,
 }
 
 public enum IconSourceType
@@ -25,11 +24,12 @@ public enum IconSourceType
     Image,
 }
 
-public class FileOpenerOption
+public class OpenerOption
 {
-    public FileOpenType OpenType { get; set; }
+    public OpenerType OpenerType { get; set; }
     public List<string>? Files { get; set; }
     public List<string>? Folders { get; set; }
+    public List<string>? Links { get; set; }
 
     [ReferenceCoraDataSourceProperty(typeof(ExecutableAppDataSourceContext))]
     public Guid? ExecutableAppDataSourceId { get; set; }

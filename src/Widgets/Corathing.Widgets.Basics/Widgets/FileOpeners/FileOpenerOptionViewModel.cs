@@ -75,45 +75,45 @@ public partial class FileOpenerOptionViewModel :
         {
             throw new ArgumentException($"Not a valid type for CustomSettings {nameof(FileOpenerOption)}");
         }
-        Files.Clear();
-        Folders.Clear();
+        Files?.Clear();
+        Folders?.Clear();
 
         OpenType = fileOpenerOption.OpenType;
-        fileOpenerOption.Files?.ForEach(file => Files.Add(new FileInfo()
+        fileOpenerOption.Files?.ForEach(file => Files?.Add(new FileInfo()
         {
             FileName = file,
         }));
-        fileOpenerOption.Folders?.ForEach(folder => Folders.Add(new FolderInfo()
+        fileOpenerOption.Folders?.ForEach(folder => Folders?.Add(new FolderInfo()
         {
             FolderName = folder,
         }));
-        ExecutableAppDataSourceSelector.Select(fileOpenerOption.ExecutableAppDataSourceId);
+        ExecutableAppDataSourceSelector?.Select(fileOpenerOption.ExecutableAppDataSourceId);
     }
 
     [ObservableProperty]
     private FileOpenType _openType;
     [ObservableProperty]
-    private ObservableCollection<FileInfo> _files;
+    private ObservableCollection<FileInfo>? _files;
     [ObservableProperty]
-    private ObservableCollection<FolderInfo> _folders;
+    private ObservableCollection<FolderInfo>? _folders;
     [ObservableProperty]
-    private FileInfo _selectedFile;
+    private FileInfo? _selectedFile;
     [ObservableProperty]
-    private FolderInfo _selectedFolder;
+    private FolderInfo? _selectedFolder;
 
     [ObservableProperty]
-    private ExecutableAppDataSourceSelector _executableAppDataSourceSelector;
+    private ExecutableAppDataSourceSelector? _executableAppDataSourceSelector;
 
     [RelayCommand]
     public void AddFile()
     {
-        Files.Add(new FileInfo());
+        Files?.Add(new FileInfo());
     }
 
     [RelayCommand]
     public void AddFolder()
     {
-        Folders.Add(new FolderInfo());
+        Folders?.Add(new FolderInfo());
     }
 
     [RelayCommand]
@@ -121,11 +121,9 @@ public partial class FileOpenerOptionViewModel :
     {
         if (file is not FileInfo fileInfo)
         {
-            // TODO:
-            // Change Exception Type
-            throw new Exception();
+            throw new ArgumentException($"Not a valid type for CustomSettings {nameof(FileInfo)}");
         }
-        Files.Remove(fileInfo);
+        Files?.Remove(fileInfo);
     }
 
     [RelayCommand]
@@ -133,11 +131,9 @@ public partial class FileOpenerOptionViewModel :
     {
         if (folder is not FolderInfo folderInfo)
         {
-            // TODO:
-            // Change Exception Type
-            throw new Exception();
+            throw new ArgumentException($"Not a valid type for CustomSettings {nameof(FolderInfo)}");
         }
-        Folders.Remove(folderInfo);
+        Folders?.Remove(folderInfo);
     }
 
     [RelayCommand]
@@ -145,12 +141,8 @@ public partial class FileOpenerOptionViewModel :
     {
         if (file is not FileInfo fileInfo)
         {
-            // TODO:
-            // Change Exception Type
-            throw new Exception();
+            throw new ArgumentException($"Not a valid type for CustomSettings {nameof(FileInfo)}");
         }
-
-        //OpenedFilePathVisibility = Visibility.Collapsed;
 
         OpenFileDialog openFileDialog =
             new()
@@ -171,7 +163,6 @@ public partial class FileOpenerOptionViewModel :
 
         fileInfo.FileName = openFileDialog.FileName;
         OnPropertyChanged(new PropertyChangedEventArgs(nameof(fileInfo.FileName)));
-        //OpenedFilePathVisibility = Visibility.Visible;
     }
 
     [RelayCommand]
@@ -179,11 +170,8 @@ public partial class FileOpenerOptionViewModel :
     {
         if (folder is not FolderInfo folderInfo)
         {
-            // TODO:
-            // Change Exception Type
-            throw new Exception();
+            throw new ArgumentException($"Not a valid type for CustomSettings {nameof(FolderInfo)}");
         }
-        //OpenedFolderPathVisibility = Visibility.Collapsed;
 
         OpenFolderDialog openFolderDialog = new()
         {
@@ -203,7 +191,5 @@ public partial class FileOpenerOptionViewModel :
 
         folderInfo.FolderName = string.Join("\n", openFolderDialog.FolderNames);
         OnPropertyChanged(new PropertyChangedEventArgs(nameof(folderInfo.FolderName)));
-        //OpenedFolderPathVisibility = Visibility.Visible;
     }
-
 }

@@ -21,4 +21,12 @@ namespace Corathing.Widgets.Basics.Widgets.Emptys;
 public partial class EmptyWidgetContext : WidgetContext
 {
 
+    public override void OnDestroy()
+    {
+        // TODO:
+        // Remove localization services
+        //ILocalizationService localizationService = _services.GetService<ILocalizationService>();
+        //localizationService.Provide("Corathing.Widgets.Basics.FileOpenerName", value =>
+        //);
+    }
 }

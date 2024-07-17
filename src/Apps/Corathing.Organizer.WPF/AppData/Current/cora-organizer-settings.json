@@ -83,12 +83,12 @@
           "AssemblyVersion": "1.0.0.0"
         },
         "CoreSettings": {
-          "TypeName": "Corathing.Widgets.Basics.Widgets.FileOpeners.FileOpenerWidgetContext",
+          "TypeName": "Corathing.Widgets.Basics.Widgets.Openers.OpenerWidgetContext",
           "RowIndex": 0,
           "ColumnIndex": 0,
           "RowSpan": 2,
           "ColumnSpan": 2,
-          "Title": "File Opener",
+          "Title": "Opener",
           "VisibleTitle": true,
           "UseDefaultBackgroundColor": true,
           "BackgroundColor": "#FFFFFF"
@@ -97,6 +97,7 @@
           "OpenType": 0,
           "Files": null,
           "Folders": null,
+          "Links": null,
           "ExecutableAppDataSourceId": null
         }
       },
@@ -109,12 +110,12 @@
           "AssemblyVersion": "1.0.0.0"
         },
         "CoreSettings": {
-          "TypeName": "Corathing.Widgets.Basics.Widgets.FileOpeners.FileOpenerWidgetContext",
+          "TypeName": "Corathing.Widgets.Basics.Widgets.Openers.OpenerWidgetContext",
           "RowIndex": 2,
           "ColumnIndex": 3,
           "RowSpan": 2,
           "ColumnSpan": 2,
-          "Title": "File Opener",
+          "Title": "Opener",
           "VisibleTitle": true,
           "UseDefaultBackgroundColor": true,
           "BackgroundColor": "#FFFFFF"
@@ -123,6 +124,7 @@
           "OpenType": 0,
           "Files": null,
           "Folders": null,
+          "Links": null,
           "ExecutableAppDataSourceId": null
         }
       }
