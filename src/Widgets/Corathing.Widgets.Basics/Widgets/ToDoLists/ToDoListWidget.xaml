@@ -4,7 +4,6 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Corathing.Widgets.Basics.Widgets.ToDoLists"
-             xmlns:models="clr-namespace:Corathing.Widgets.Basics.Widgets.ToDoLists.Models"
              xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:behaviors="clr-namespace:Corathing.UI.WPF.Behaviors;assembly=Corathing.UI.WPF"
              xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
@@ -12,8 +11,6 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="400">
     <UserControl.Resources>
-        <!-- TODO:  Make Null Template Selector -->
-        <local:JobTemplateSelector x:Key="JobTemplateSelector" />
         <BooleanToVisibilityConverter x:Key="BoolToVis" />
 
         <Style TargetType="{x:Type ListBox}">
@@ -128,7 +125,7 @@
             </Style.Triggers>
         </Style>
         
-        <DataTemplate x:Key="AddingJobDataTemplate" DataType="{x:Type models:AddingJob}">
+        <DataTemplate x:Key="AddingJobDataTemplate">
             <Grid>
                 <Button Margin="4 2 0 2"
                         Height="24"
@@ -141,7 +138,7 @@
                 </Button>
             </Grid>
         </DataTemplate>
-        <DataTemplate x:Key="ToDoJobDataTemplate" DataType="{x:Type models:ToDoJob}">
+        <DataTemplate x:Key="ToDoJobDataTemplate" DataType="{x:Type local:ToDoContext}">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
@@ -151,15 +148,22 @@
                     <CheckBox DockPanel.Dock="Left"
                               FocusVisualStyle="{x:Null}"
                               Cursor="Hand"
-                              IsChecked="{Binding IsCompleted}" />
+                              IsChecked="{Binding IsDone}" />
+                    <ComboBox DockPanel.Dock="Left"
+                              Margin="4 2 0 2"
+                              ItemsSource="{Binding DataContext.JobTypes}"
+                              SelectedItem="{Binding JobType}"
+                              Style="{StaticResource MaterialDesignComboBox}">
+                        
+                    </ComboBox>
                     <TextBox HorizontalAlignment="Stretch"
                              VerticalContentAlignment="Center"
                              Margin="0"
                              BorderThickness="0"
-                             Text="{Binding Detail}" />
+                             Text="{Binding Job}" />
                 </DockPanel>
                 <Border IsHitTestVisible="False"
-                        Visibility="{Binding IsCompleted, 
+                        Visibility="{Binding IsDone, 
                                 Converter={StaticResource BoolToVis}}"
                         BorderThickness="0.5"
                         VerticalAlignment="Center"
@@ -179,12 +183,11 @@
         <ListView BorderThickness="0"
                   Background="Transparent"
                   Style="{StaticResource MahApps.Styles.ListView.Virtualized}"
-                  ItemsSource="{Binding GroupedJobs}">
+                  ItemsSource="{Binding ToDos}">
             <ListView.ItemTemplateSelector>
                 <behaviors:EmptyDataTemplateSelector EmptyTemplate="{StaticResource AddingJobDataTemplate}" />
             </ListView.ItemTemplateSelector>
         </ListView>
-
 
         <!--<ListBox x:Name="ToDoListBox"
                  BorderThickness="0"

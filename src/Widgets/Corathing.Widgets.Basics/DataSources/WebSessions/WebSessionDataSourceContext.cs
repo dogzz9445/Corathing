@@ -63,7 +63,6 @@ public class WebSessionDataSourceContext : DataSourceContext
 
     public override void OnDestroy()
     {
-        _services.GetService<IStorageService>().DeleteEntityFolder(State);
         DeleteAllCookies();
     }
 

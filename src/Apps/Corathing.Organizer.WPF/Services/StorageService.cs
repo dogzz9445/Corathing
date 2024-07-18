@@ -82,9 +82,9 @@ public class StorageService : IStorageService
         _services = services;
     }
 
-    public string GetAppDataPath()
+    public string? GetAppDataPath()
     {
-        var appStateService = _services.GetService<IAppStateService>();
+        var appStateService = _services.GetRequiredService<IAppStateService>();
         var appSettings = appStateService.GetAppSettings();
 
         // Read or Create AppState Data
@@ -117,9 +117,9 @@ public class StorageService : IStorageService
         }
     }
 
-    public string GetAppPackagePath()
+    public string? GetAppPackagePath()
     {
-        var appStateService = _services.GetService<IAppStateService>();
+        var appStateService = _services.GetRequiredService<IAppStateService>();
         var appSettings = appStateService.GetAppSettings();
 
         // Read or Create AppState Data
@@ -146,16 +146,30 @@ public class StorageService : IStorageService
         }
     }
 
-    public string GetEntityFolder(IEntity entity)
+    public string? GetEntityFolder(IEntity? entity)
     {
+        if (entity == null)
+        {
+            throw new ArgumentNullException(nameof(entity));
+        }
+        var appDataPath = GetAppDataPath();
+        if (string.IsNullOrEmpty(appDataPath))
+        {
+            throw new InvalidOperationException("AppData path is not defined.");
+        }
+        if (!Directory.Exists(appDataPath))
+        {
+            Directory.CreateDirectory(appDataPath);
+        }
+
         return Path.Combine(
-            GetAppDataPath(),
+            appDataPath,
             EntitiesFolderName,
             entity.Id.ToString().Replace("-", "")
             );
     }
 
-    public void DeleteEntityFolder(IEntity entity)
+    public void DeleteEntityFolder(IEntity? entity)
     {
         var entityFolder = GetEntityFolder(entity);
         if (Directory.Exists(entityFolder))
@@ -164,10 +178,24 @@ public class StorageService : IStorageService
         }
     }
 
-    public FileStream OpenFile(IEntity entity, string path, FileMode mode)
+    public FileStream? OpenFile(IEntity? entity, string path, FileMode mode)
     {
+        if (entity == null)
+        {
+            throw new ArgumentNullException(nameof(entity));
+        }
+
+        var entityFolder = GetEntityFolder(entity);
+        if (string.IsNullOrEmpty(entityFolder))
+        {
+            throw new InvalidOperationException("Entity folder is not defined.");
+        }
+        if (!Directory.Exists(entityFolder))
+        {
+            Directory.CreateDirectory(entityFolder);
+        }
         return File.Open(
-            Path.Combine(GetEntityFolder(entity), path), mode);
+            Path.Combine(entityFolder, path), mode);
     }
 
     public void Delete(string filename)

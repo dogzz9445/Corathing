@@ -38,7 +38,6 @@ public partial class LinkInfo : ObservableObject
     private string _linkName;
 }
 
-
 public partial class OpenerOptionContext :
     CustomSettingsContext
 {

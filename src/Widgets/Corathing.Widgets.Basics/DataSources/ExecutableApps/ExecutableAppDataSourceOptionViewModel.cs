@@ -45,16 +45,14 @@ public partial class ExecutableAppDataSourceOptionViewModel :
     }
 
     [ObservableProperty]
-    private string _executableAppPath;
+    private string? _executableAppPath;
 
     [ObservableProperty]
-    private string _commandLineArguments;
+    private string? _commandLineArguments;
 
     [RelayCommand]
     public void OpenFile()
     {
-        //OpenedFilePathVisibility = Visibility.Collapsed;
-
         OpenFileDialog openFileDialog =
             new()
             {
@@ -73,7 +71,5 @@ public partial class ExecutableAppDataSourceOptionViewModel :
         }
 
         ExecutableAppPath = openFileDialog.FileName;
-        //OpenedFilePathVisibility = Visibility.Visible;
     }
-
 }

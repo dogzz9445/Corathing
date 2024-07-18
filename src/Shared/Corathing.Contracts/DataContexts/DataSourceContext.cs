@@ -10,6 +10,9 @@ using CommunityToolkit.Mvvm.Messaging;
 
 using Corathing.Contracts.Bases;
 using Corathing.Contracts.Messages;
+using Corathing.Contracts.Services;
+
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Corathing.Contracts.DataContexts;
 
@@ -45,6 +48,21 @@ public partial class DataSourceContext : ObservableRecipient
         Name = state.CoreSettings.Title;
 
         OnStateChanged(state);
+    }
+
+    public void SaveState()
+    {
+        if (State == null)
+            return;
+        _services?.GetRequiredService<IAppStateService>().UpdateDataSource(State);
+    }
+
+    public void Destroy()
+    {
+        OnDestroy();
+
+        _services?.GetRequiredService<IStorageService>().DeleteEntityFolder(State);
+        _services?.GetRequiredService<IAppStateService>().RemoveDataSource(State);
     }
 
     public virtual void OnCreate(IServiceProvider services, DataSourceState state)

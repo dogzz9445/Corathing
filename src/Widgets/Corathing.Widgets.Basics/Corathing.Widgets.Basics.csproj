@@ -42,6 +42,9 @@
 
 	<ItemGroup>
 		<Folder Include="Assets\Monaco\" />
+		<Folder Include="DataSources\DotNetCodes\" />
+		<Folder Include="DataSources\DotNetEnvironments\CompilerPlatforms\" />
+		<Folder Include="DataSources\PythonCodes\" />
 	</ItemGroup>
 
 	<ItemGroup>

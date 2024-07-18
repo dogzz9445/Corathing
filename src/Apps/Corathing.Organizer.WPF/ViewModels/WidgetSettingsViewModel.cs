@@ -96,9 +96,7 @@ public partial class WidgetSettingsViewModel : ObservableObject
         TempWidgetContext.CopyToWithoutLayout(_originalContext, _optionType);
         _originalContext.UpdateTo(_originalContext.State);
         _originalContext.ApplyState(_originalContext.State);
-
-        var appStateService = _services.GetService<IAppStateService>();
-        appStateService.UpdateWidget(_originalContext.State);
+        _originalContext.SaveState();
     }
 
     [RelayCommand]

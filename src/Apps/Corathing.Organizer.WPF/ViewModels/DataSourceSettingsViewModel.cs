@@ -144,9 +144,7 @@ public partial class DataSourceSettingsViewModel : ObservableObject
         SelectedContext.State.CoreSettings.Title = TempName;
         SelectedContext.State.CustomSettigns = JsonHelper.DeepCopy(TempSettingsContext.CustomSettings, _optionType);
         SelectedContext.ApplyState(SelectedContext.State);
-
-        var appStateService = _services.GetRequiredService<IAppStateService>();
-        appStateService.UpdateDataSource(SelectedContext.State);
+        SelectedContext.SaveState();
     }
 
     [RelayCommand]

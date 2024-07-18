@@ -89,6 +89,15 @@ public partial class WidgetContext : ObservableRecipient
         OnStateChanged(State);
     }
 
+    public void SaveState()
+    {
+        if (State == null)
+            return;
+
+        _services?.GetRequiredService<IAppStateService>()
+            .UpdateWidget(State);
+    }
+
     public void Destroy()
     {
         OnDestroy();
