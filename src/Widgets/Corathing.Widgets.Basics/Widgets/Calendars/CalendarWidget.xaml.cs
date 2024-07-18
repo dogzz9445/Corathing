@@ -19,7 +19,6 @@ using Corathing.Contracts.Attributes;
 using Corathing.Contracts.Bases;
 using Corathing.Contracts.Entries;
 using Corathing.Contracts.Services;
-using Corathing.Widgets.Basics.Widgets.FileOpeners;
 
 using Microsoft.Extensions.DependencyInjection;
 

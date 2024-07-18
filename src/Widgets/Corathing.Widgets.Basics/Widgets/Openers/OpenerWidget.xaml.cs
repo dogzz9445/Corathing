@@ -13,7 +13,6 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-using Corathing.Widgets.Basics.Widgets.FileOpeners;
 using Wpf.Ui.Controls;
 
 using DataFormats = System.Windows.DataFormats;

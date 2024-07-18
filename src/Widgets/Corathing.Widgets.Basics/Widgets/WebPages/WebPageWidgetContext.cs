@@ -12,7 +12,6 @@ using Corathing.Contracts.Bases;
 using Corathing.Contracts.Services;
 using Corathing.Widgets.Basics.DataSources.ExecutableApps;
 using Corathing.Widgets.Basics.DataSources.WebSessions;
-using Corathing.Widgets.Basics.Widgets.FileOpeners;
 
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Web.WebView2.Core;

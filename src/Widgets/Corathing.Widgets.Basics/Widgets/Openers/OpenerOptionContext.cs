@@ -13,7 +13,6 @@ using CommunityToolkit.Mvvm.Input;
 using Corathing.Contracts.DataContexts;
 using Corathing.UI.ObjectModel;
 using Corathing.Widgets.Basics.DataSources.ExecutableApps;
-using Corathing.Widgets.Basics.Widgets.FileOpeners;
 
 using Microsoft.Win32;
 

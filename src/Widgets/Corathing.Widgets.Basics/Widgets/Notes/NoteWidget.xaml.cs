@@ -17,7 +17,6 @@ using Corathing.Contracts.Attributes;
 using Corathing.Contracts.Bases;
 using Corathing.Contracts.Entries;
 using Corathing.Contracts.Services;
-using Corathing.Widgets.Basics.Widgets.LinkOpeners;
 using Corathing.Widgets.Basics.Widgets.Monacos;
 
 using Microsoft.Extensions.DependencyInjection;

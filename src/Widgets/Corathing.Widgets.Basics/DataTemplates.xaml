@@ -2,7 +2,6 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:calendars="clr-namespace:Corathing.Widgets.Basics.Widgets.Calendars"
                     xmlns:commanders="clr-namespace:Corathing.Widgets.Basics.Widgets.Commanders"
-                    xmlns:fileopeners="clr-namespace:Corathing.Widgets.Basics.Widgets.FileOpeners"
                     xmlns:monacos="clr-namespace:Corathing.Widgets.Basics.Widgets.Monacos"
                     xmlns:notes="clr-namespace:Corathing.Widgets.Basics.Widgets.Notes"
                     xmlns:timers="clr-namespace:Corathing.Widgets.Basics.Widgets.Timers"
@@ -13,7 +12,6 @@
 
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="pack://application:,,,/Corathing.Widgets.Basics;component/Widgets/Emptys/EmptyWidgetView.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/Corathing.Widgets.Basics;component/Widgets/FileOpeners/FileOpenerDataTemplates.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Corathing.Widgets.Basics;component/Widgets/Openers/OpenerDataTemplates.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Corathing.Widgets.Basics;component/Widgets/WebPages/WebPageDataTemplates.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Corathing.Widgets.Basics;component/Widgets/WebQueries/WebQueryDataTemplates.xaml" />

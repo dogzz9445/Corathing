@@ -10,7 +10,6 @@ using CommunityToolkit.Mvvm.ComponentModel;
 
 using Corathing.Contracts.DataContexts;
 using Corathing.Widgets.Basics.DataSources.ExecutableApps;
-using Corathing.Widgets.Basics.Widgets.FileOpeners;
 
 namespace Corathing.Widgets.Basics.Widgets.WebQueries;
 
@@ -21,7 +20,7 @@ public partial class WebQueryOptionContext : CustomSettingsContext
     {
         if (defaultOption is not WebQueryOption webQueryOption)
         {
-            throw new ArgumentException($"Not a valid type for CustomSettings {nameof(FileOpenerOption)}");
+            throw new ArgumentException($"Not a valid type for CustomSettings {nameof(WebQueryOption)}");
         }
         Urls = new ObservableCollection<string>();
         CustomSettings = webQueryOption;
@@ -31,7 +30,7 @@ public partial class WebQueryOptionContext : CustomSettingsContext
     {
         if (CustomSettings is not WebQueryOption webQueryOption)
         {
-            throw new ArgumentException($"Not a valid type for CustomSettings {nameof(FileOpenerOption)}");
+            throw new ArgumentException($"Not a valid type for CustomSettings {nameof(WebQueryOption)}");
         }
         webQueryOption.Urls = Urls?.Select(url => url).ToList();
     }
@@ -40,7 +39,7 @@ public partial class WebQueryOptionContext : CustomSettingsContext
     {
         if (option is not WebQueryOption webQueryOption)
         {
-            throw new ArgumentException($"Not a valid type for CustomSettings {nameof(FileOpenerOption)}");
+            throw new ArgumentException($"Not a valid type for CustomSettings {nameof(WebQueryOption)}");
         }
         Urls?.Clear();
 

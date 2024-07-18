@@ -9,7 +9,6 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
 using Corathing.Contracts.DataContexts;
-using Corathing.Widgets.Basics.Widgets.FileOpeners;
 
 using Microsoft.Win32;
 

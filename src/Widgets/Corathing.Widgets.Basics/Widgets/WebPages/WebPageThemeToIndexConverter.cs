@@ -6,7 +6,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Data;
 
-using Corathing.Widgets.Basics.Widgets.FileOpeners;
 
 namespace Corathing.Widgets.Basics.Widgets.WebPages;
 

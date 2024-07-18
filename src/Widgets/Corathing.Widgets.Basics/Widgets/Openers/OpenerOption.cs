@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 
 using Corathing.Contracts.Attributes;
 using Corathing.Widgets.Basics.DataSources.ExecutableApps;
-using Corathing.Widgets.Basics.Widgets.FileOpeners;
 
 namespace Corathing.Widgets.Basics.Widgets.Openers;
 

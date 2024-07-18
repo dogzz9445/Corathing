@@ -11,7 +11,6 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using Corathing.Contracts.DataContexts;
 using Corathing.Widgets.Basics.DataSources.ExecutableApps;
 using Corathing.Widgets.Basics.DataSources.WebSessions;
-using Corathing.Widgets.Basics.Widgets.FileOpeners;
 
 namespace Corathing.Widgets.Basics.Widgets.WebPages;
 

@@ -170,11 +170,20 @@
 
     </UserControl.Resources>
     <Grid>
-        <ListView BorderThickness="0"
+        <!--<ListView BorderThickness="0"
                   Background="Transparent"
                   Style="{StaticResource MahApps.Styles.ListView.Virtualized}"
                   ItemsSource="{Binding GroupedJobs}"
-                  ItemTemplateSelector="{StaticResource JobTemplateSelector}" />
+                  ItemTemplateSelector="{StaticResource JobTemplateSelector}" />-->
+
+        <ListView BorderThickness="0"
+                  Background="Transparent"
+                  Style="{StaticResource MahApps.Styles.ListView.Virtualized}"
+                  ItemsSource="{Binding GroupedJobs}">
+            <ListView.ItemTemplateSelector>
+                <behaviors:EmptyDataTemplateSelector EmptyTemplate="{StaticResource AddingJobDataTemplate}" />
+            </ListView.ItemTemplateSelector>
+        </ListView>
 
 
         <!--<ListBox x:Name="ToDoListBox"
