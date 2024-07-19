@@ -116,61 +116,6 @@ public partial class OpenerOptionContext :
     [ObservableProperty]
     private ObservableItemCollection<LinkInfo>? _links;
 
-    private FileInfo? _selectedFile;
-
-    public FileInfo? SelectedFile
-    {
-        get => _selectedFile;
-        set
-        {
-            if (_selectedFile != null)
-            {
-                _selectedFile.PropertyChanged -= SelectedFile_OnPropertyChanged;
-            }
-            SetProperty(ref _selectedFile, value);
-            if (_selectedFile != null)
-            {
-                _selectedFile.PropertyChanged += SelectedFile_OnPropertyChanged;
-            }
-        }
-    }
-
-    private FolderInfo? _selectedFolder;
-    public FolderInfo? SelectedFolder
-    {
-        get => _selectedFolder;
-        set
-        {
-            if (_selectedFolder != null)
-            {
-                _selectedFolder.PropertyChanged -= SelectedFolder_OnPropertyChanged;
-            }
-            SetProperty(ref _selectedFolder, value);
-            if (_selectedFolder != null)
-            {
-                _selectedFolder.PropertyChanged += SelectedFolder_OnPropertyChanged;
-            }
-        }
-    }
-
-    private LinkInfo? _selectedLink;
-    public LinkInfo? SelectedLink
-    {
-        get => _selectedLink;
-        set
-        {
-            if (_selectedLink != null)
-            {
-                _selectedLink.PropertyChanged -= SelectedLink_OnPropertyChanged;
-            }
-            SetProperty(ref _selectedLink, value);
-            if (_selectedLink != null)
-            {
-                _selectedLink.PropertyChanged += SelectedLink_OnPropertyChanged;
-            }
-        }
-    }
-
     [ObservableProperty]
     private ExecutableAppDataSourceSelector? _executableAppDataSourceSelector;
 
@@ -277,21 +222,5 @@ public partial class OpenerOptionContext :
 
         folderInfo.FolderName = string.Join("\n", openFolderDialog.FolderNames);
         OnPropertyChanged(new PropertyChangedEventArgs(nameof(folderInfo.FolderName)));
-    }
-
-
-    private void SelectedFile_OnPropertyChanged(object? sender, PropertyChangedEventArgs e)
-    {
-        OnPropertyChanged(nameof(SelectedFile));
-    }
-
-    private void SelectedFolder_OnPropertyChanged(object? sender, PropertyChangedEventArgs e)
-    {
-        OnPropertyChanged(nameof(SelectedFolder));
-    }
-
-    private void SelectedLink_OnPropertyChanged(object? sender, PropertyChangedEventArgs e)
-    {
-        OnPropertyChanged(nameof(SelectedLink));
     }
 }

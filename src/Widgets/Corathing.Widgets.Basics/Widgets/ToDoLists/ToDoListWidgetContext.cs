@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -15,9 +16,15 @@ using Corathing.Contracts.Bases;
 
 using Corathing.Contracts.Services;
 using Corathing.UI.ObjectModel;
+using Corathing.Widgets.Basics.DataSources.ExecutableApps;
 using Corathing.Widgets.Basics.DataSources.ToDos;
+using Corathing.Widgets.Basics.Widgets.Openers;
+
+using GongSolutions.Wpf.DragDrop;
 
 using Microsoft.Extensions.DependencyInjection;
+
+using IDropTarget = GongSolutions.Wpf.DragDrop.IDropTarget;
 
 namespace Corathing.Widgets.Basics.Widgets.ToDoLists;
 
@@ -25,14 +32,39 @@ public partial class ToDoContext : ObservableObject
 {
     public ToDo ToDo { get; set; }
 
-    [ObservableProperty]
     private bool _isDone;
+    public bool IsDone
+    {
+        get => _isDone;
+        set
+        {
+            if (SetProperty(ref _isDone, value))
+            {
+                TaskType = IsDone ? ToDoTaskType.DONE : ToDoTaskType.TODO;
+            }
+        }
+    }
 
-    [ObservableProperty]
     private ToDoTaskType _taskType;
+    public ToDoTaskType TaskType
+    {
+        get => _taskType;
+        set
+        {
+            if (SetProperty(ref _taskType, value))
+            {
+                IsDone = TaskType == ToDoTaskType.DONE;
+                IsDropDownUnchecked = true;
+                IsDropDownUnchecked = false;
+            }
+        }
+    }
 
     [ObservableProperty]
     private string? _job;
+
+    [ObservableProperty]
+    private bool _isDropDownUnchecked;
 }
 
 [EntryCoraWidget(
@@ -44,7 +76,7 @@ public partial class ToDoContext : ObservableObject
     menuPath: "Default/To Do List",
     menuOrder: 0
     )]
-public partial class ToDoListWidgetContext : WidgetContext
+public partial class ToDoListWidgetContext : WidgetContext, IDropTarget, IDragPreviewItemsSorter, IDropTargetItemsSorter
 {
     private ObservableItemCollection<ToDoContext>? _toDos;
     public ObservableItemCollection<ToDoContext>? ToDos
@@ -65,13 +97,34 @@ public partial class ToDoListWidgetContext : WidgetContext
     [ObservableProperty]
     private ToDoDataSourceContext? _selectedToDoDataSourceContext;
 
+    [ObservableProperty]
+    private bool _isShowDone;
+
+    [ObservableProperty]
+    private bool _isShowTask;
+
     public override void OnCreate(IServiceProvider services, WidgetState state)
     {
-        ILocalizationService localizationService = _services.GetService<ILocalizationService>();
-        localizationService.Provide("Corathing.Widgets.Basics.ToDoListName", value => WidgetTitle = value);
-
         ToDos = new ObservableItemCollection<ToDoContext>();
         ToDos.ItemPropertyChanged += ToDos_ItemPropertyChanged;
+        IsShowDone = true;
+        IsShowTask = true;
+    }
+
+    public override void OnStateChanged(WidgetState state)
+    {
+        if (state.CustomSettings is not ToDoListWidgetOption option)
+        {
+            return;
+        }
+        IsShowDone = option.IsShowDone;
+        IsShowTask = option.IsShowTask;
+
+        if (option.ToDoDataSourceId != null && option.ToDoDataSourceId != Guid.Empty)
+        {
+            var dataSourceService = _services.GetRequiredService<IDataSourceService>();
+            SelectedToDoDataSourceContext = dataSourceService.GetDataSourceContext<ToDoDataSourceContext>(option.ToDoDataSourceId);
+        }
     }
 
     private void ToDos_ItemPropertyChanged(object? sender, ItemPropertyChangedEventArgs args)
@@ -120,5 +173,41 @@ public partial class ToDoListWidgetContext : WidgetContext
         todo.IsDone = false;
         todo.ToDo = todo.ToDo.Copy(isDone: false);
         SelectedToDoDataSourceContext?.Update(todo.ToDo);
+    }
+
+    public void DragOver(IDropInfo dropInfo)
+    {
+        if (dropInfo.Data is not ToDoContext) return;
+        if (dropInfo.TargetItem is not ToDoContext) return;
+
+        dropInfo.DropTargetAdorner = DropTargetAdorners.Highlight;
+        dropInfo.Effects = System.Windows.DragDropEffects.Copy;
+    }
+
+    public void Drop(IDropInfo dropInfo)
+    {
+        if (dropInfo.Data is not ToDoContext sourceItem) return;
+        if (dropInfo.TargetItem is not ToDoContext target) return;
+
+    }
+
+    // TODO:
+    public IEnumerable SortDragPreviewItems(IEnumerable items)
+    {
+        var allItems = items.Cast<object>().ToList();
+        if (allItems.Count > 0)
+        {
+            if (allItems[0] is ToDoContext)
+            {
+                return allItems.OrderBy(x => ((ToDoContext)x));
+            }
+        }
+
+        return allItems;
+    }
+
+    public IEnumerable SortDropTargetItems(IEnumerable items)
+    {
+        throw new NotImplementedException();
     }
 }

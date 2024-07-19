@@ -26,6 +26,13 @@ using Corathing.Contracts.Entries;
 using Corathing.Contracts.Services;
 using Corathing.Widgets.Basics.Widgets.Timers;
 using CommunityToolkit.Mvvm.Collections;
+using ListView = System.Windows.Controls.ListView;
+using Point = System.Windows.Point;
+using MouseEventArgs = System.Windows.Input.MouseEventArgs;
+using ListViewItem = System.Windows.Controls.ListViewItem;
+using DragEventArgs = System.Windows.DragEventArgs;
+using DataObject = System.Windows.DataObject;
+using DragDropEffects = System.Windows.DragDropEffects;
 
 namespace Corathing.Widgets.Basics.Widgets.ToDoLists;
 
@@ -37,5 +44,13 @@ public partial class ToDoListWidget
     public ToDoListWidget()
     {
         InitializeComponent();
+    }
+
+    private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        if (sender is ListView listView)
+        {
+            listView.SelectedIndex = -1;
+        }
     }
 }

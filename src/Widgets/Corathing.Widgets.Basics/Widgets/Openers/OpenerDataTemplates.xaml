@@ -60,7 +60,6 @@
                     <ListBox Grid.Row="1"
                              Style="{StaticResource NoFocusListBoxStyle}"
                              ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                             SelectedItem="{Binding SelectedFile}"
                              ItemsSource="{Binding Files}">
                         <ListBox.ItemTemplate>
                             <DataTemplate DataType="{x:Type local:FileInfo}">
@@ -113,7 +112,6 @@
                     <ListBox Grid.Row="1"
                              Style="{StaticResource NoFocusListBoxStyle}"
                              ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                             SelectedItem="{Binding SelectedFolder}"
                              ItemsSource="{Binding Folders}">
                         <ListBox.ItemTemplate>
                             <DataTemplate DataType="{x:Type local:FolderInfo}">
@@ -167,7 +165,6 @@
                     <ListBox Grid.Row="1"
                              Style="{StaticResource NoFocusListBoxStyle}"
                              ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                             SelectedItem="{Binding SelectedLink}"
                              ItemsSource="{Binding Links}">
                         <ListBox.ItemTemplate>
                             <DataTemplate DataType="{x:Type local:LinkInfo}">

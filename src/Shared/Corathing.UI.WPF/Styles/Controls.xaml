@@ -7,7 +7,10 @@
         <ResourceDictionary Source="pack://application:,,,/Corathing.UI.WPF;component/Controls/SettingsBlocks/SettingsBlock.xaml" />
 
         <ResourceDictionary Source="pack://application:,,,/Corathing.UI.WPF;component/Styles/Button.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Corathing.UI.WPF;component/Styles/ComboBox.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Corathing.UI.WPF;component/Styles/ListBox.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Corathing.UI.WPF;component/Styles/ListView.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Corathing.UI.WPF;component/Styles/ListViewItem.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Corathing.UI.WPF;component/Styles/TabControl.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Corathing.UI.WPF;component/Styles/ToggleButton.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Corathing.UI.WPF;component/Styles/TextBlock.xaml" />

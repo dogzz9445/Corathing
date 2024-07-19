@@ -18,8 +18,8 @@ public enum ToDoVisualizationType
 
 public class ToDoListWidgetOption
 {
-    public bool IsShowDone { get; set; }
-    public bool IsShowTask { get; set; }
+    public bool IsShowDone { get; set; } = true;
+    public bool IsShowTask { get; set; } = true;
 
     public Guid? ToDoDataSourceId { get; set; }
 }

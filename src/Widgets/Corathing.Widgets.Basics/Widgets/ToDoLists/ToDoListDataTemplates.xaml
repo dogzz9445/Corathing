@@ -9,28 +9,38 @@
                     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
                     xmlns:settings="clr-namespace:Corathing.UI.WPF.Controls;assembly=Corathing.UI.WPF">
 
-    <!-- Opener Widget -->
+    <!-- ToDo Widget -->
     <DataTemplate DataType="{x:Type local:ToDoListWidgetContext}">
         <local:ToDoListWidget />
     </DataTemplate>
 
-    <!-- Opener Settings View -->
+    <!-- ToDo Settings View -->
     <DataTemplate DataType="{x:Type local:ToDoListWidgetOptionContext}">
         <StackPanel>
-            <!-- Open Type -->
+            <!-- Done 된 할 일을 표시 여부 -->
             <settings:SettingsBlock IsDescriptionOnContentRight="True"
-                                    CategoryText="Opener:"
-                                    Header="Type of Open File or Folder">
-                <ComboBox MinWidth="200"
-                          SelectedIndex="{Binding OpenerType, Converter={StaticResource OpenerTypeToIndexConverter}, Mode=TwoWay}">
-                    <ComboBoxItem Content="{localizations:Localization Corathing.Widgets.Basics.Files.OptionTypeFile}" />
-                    <ComboBoxItem Content="{localizations:Localization Corathing.Widgets.Basics.Files.OptionTypeFolder}" />
-                    <ComboBoxItem Content="{localizations:Localization Corathing.Widgets.Basics.Files.OptionTypeLink}" />
-                </ComboBox>
+                                    CategoryText="ToDo:"
+                                    Header="Show Done"
+                                    Description="Done 된 할 일을 표시할지 설정하세요.">
+                <CheckBox Grid.Column="1"
+                          VerticalAlignment="Center"
+                          HorizontalAlignment="Center"
+                          IsChecked="{Binding IsShowDone}" />
+            </settings:SettingsBlock>
+
+            <!-- TODO, DOING 과 같은 Task 를 표시 여부 -->
+            <settings:SettingsBlock IsDescriptionOnContentRight="True"
+                                    CategoryText="ToDo:"
+                                    Header="Show Task State"
+                                    Description="TODO, DOING 과 같은 Task 를 표시할지 설정하세요.">
+                <CheckBox Grid.Column="1"
+                          VerticalAlignment="Center"
+                          HorizontalAlignment="Center"
+                          IsChecked="{Binding IsShowTask}" />
             </settings:SettingsBlock>
 
             <!-- Files ExecutableAppDataSourceSelector -->
-            <settings:SettingsBlock CategoryText="Opener:"
+            <settings:SettingsBlock CategoryText="ToDo:"
                                     Header="Executable App for Open File or Folder..">
                 <ContentPresenter Grid.Row="1"
                                   Content="{Binding ToDoDataSourceSelector}"
