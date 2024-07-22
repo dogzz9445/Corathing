@@ -45,7 +45,6 @@
     </Style>
 
     <Style TargetType="{x:Type ListBoxItem}"
-           BasedOn="{StaticResource DefaultListBoxItemStyle}"
            x:Key="DefaultCorathingListBoxItemStyle">
         <Setter Property="Foreground"
                 Value="{DynamicResource ListBoxItemForeground}" />

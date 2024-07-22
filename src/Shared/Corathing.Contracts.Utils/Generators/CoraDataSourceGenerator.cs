@@ -57,6 +57,8 @@ public class CoraDataSourceGenerator(IServiceProvider services)
         {
             TypeName = GetDataSourceFullName(),
             Title = GenerateDefaultTitle(),
+            IsDependentOnWidget = false,
+            DependencyWidget = null,
         };
 
         state.CustomSettigns = CreateCustomOption();

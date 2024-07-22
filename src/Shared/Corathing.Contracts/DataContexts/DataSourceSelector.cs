@@ -30,7 +30,7 @@ public partial class DataSourceSelector<T> :
     [ObservableProperty]
     private string? _hintSelectionText;
 
-    private bool _selectDefaultCreateIfEmpty;
+    private readonly bool _selectDefaultCreateIfEmpty;
 
     public DataSourceSelector(
         IServiceProvider services,
@@ -50,10 +50,13 @@ public partial class DataSourceSelector<T> :
 
         Select(guid);
 
-        WeakReferenceMessenger.Default?.Register<DataSourceStateChangedMessage, string>(
-            this,
-            typeof(T).FullName,
-            OnDataSourceStateChanged);
+        if (!string.IsNullOrEmpty(typeof(T).FullName))
+        {
+            WeakReferenceMessenger.Default?.Register<DataSourceStateChangedMessage, string>(
+                this,
+                typeof(T).FullName,
+                OnDataSourceStateChanged);
+        }
     }
 
     [RelayCommand]
@@ -69,14 +72,18 @@ public partial class DataSourceSelector<T> :
         {
             if (message.Value is T context)
             {
-                DataSourceContexts.Add(message.Value as T);
+                DataSourceContexts.Add(context);
             }
         }
         else if (message.ChangedType == EntityStateChangedType.Removed)
         {
             if (SelectedDataSourceContext == message.Value)
                 SelectedDataSourceContext = null;
-            DataSourceContexts.Remove(message.Value as T);
+
+            if (message.Value is T context)
+            {
+                DataSourceContexts.Remove(context);
+            }
         }
         else if (message.ChangedType == EntityStateChangedType.Selected)
         {

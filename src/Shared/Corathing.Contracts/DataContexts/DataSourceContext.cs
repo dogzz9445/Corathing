@@ -18,16 +18,16 @@ namespace Corathing.Contracts.DataContexts;
 
 public partial class DataSourceContext : ObservableRecipient
 {
-    protected IServiceProvider _services;
+    protected IServiceProvider? _services;
 
     #region 숨겨진 프로퍼티
-    public Guid DataSourceId;
+    public Guid? DataSourceId { get; set; }
 
     public DataSourceState? State { get; set; }
     #endregion
 
     [ObservableProperty]
-    private string _name;
+    private string? _name;
 
     public void Initialize(IServiceProvider services, DataSourceState state)
     {
@@ -63,6 +63,9 @@ public partial class DataSourceContext : ObservableRecipient
 
         _services?.GetRequiredService<IStorageService>().DeleteEntityFolder(State);
         _services?.GetRequiredService<IAppStateService>().RemoveDataSource(State);
+
+        // TODO:
+        //WeakReferenceMessenger.Default.Register
     }
 
     public virtual void OnCreate(IServiceProvider services, DataSourceState state)

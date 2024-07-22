@@ -47,30 +47,39 @@ public class ToDoDataSourceContext : DataSourceContext
 
     public void Add(ToDo toDo)
     {
+        ArgumentNullException.ThrowIfNull(State);
+
         if (State.CustomSettigns is not ToDoDataSourceOption option)
         {
             return;
         }
+        option.ToDos ??= new List<ToDo>();
         option.ToDos.Add(toDo);
         SaveState();
     }
 
     public void Remove(ToDo toDo)
     {
+        ArgumentNullException.ThrowIfNull(State);
+
         if (State.CustomSettigns is not ToDoDataSourceOption option)
         {
             return;
         }
+        option.ToDos ??= new List<ToDo>();
         option.ToDos.Remove(toDo);
         SaveState();
     }
 
     public void Update(ToDo toDo)
     {
+        ArgumentNullException.ThrowIfNull(State);
+
         if (State.CustomSettigns is not ToDoDataSourceOption option)
         {
             return;
         }
+        option.ToDos ??= new List<ToDo>();
         var index = option.ToDos.FindIndex(t => t.Id == toDo.Id);
         if (index == -1)
         {
@@ -85,10 +94,14 @@ public class ToDoDataSourceContext : DataSourceContext
 
     public List<ToDo>? GetToDos()
     {
+        ArgumentNullException.ThrowIfNull(State);
+
         if (State.CustomSettigns is not ToDoDataSourceOption option)
         {
             return null;
         }
+
+        option.ToDos ??= new List<ToDo>();
         return option.ToDos;
     }
 }

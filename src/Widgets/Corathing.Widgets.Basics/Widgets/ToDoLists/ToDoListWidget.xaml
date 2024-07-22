@@ -248,7 +248,11 @@
                              Margin="0"
                              Padding="0"
                              BorderThickness="0"
-                             Text="{Binding Job}" />
+                             Text="{Binding Job}">
+                        <i:Interaction.Behaviors>
+                            <behaviors:TextBoxEnterKeyUpdateBehavior />
+                        </i:Interaction.Behaviors>
+                    </TextBox>
                 </DockPanel>
                 <Border IsHitTestVisible="False"
                         Visibility="{Binding IsDone, Converter={StaticResource BoolToVis}}"
@@ -260,13 +264,8 @@
         </DataTemplate>
 
     </UserControl.Resources>
+    
     <Grid>
-        <!--<ListView BorderThickness="0"
-                  Background="Transparent"
-                  Style="{StaticResource MahApps.Styles.ListView.Virtualized}"
-                  ItemsSource="{Binding GroupedJobs}"
-                  ItemTemplateSelector="{StaticResource JobTemplateSelector}" />-->
-
         <ListView BorderThickness="0"
                   Background="Transparent"
                   Style="{DynamicResource CoraListViewStyle}"
@@ -274,7 +273,6 @@
                   dd:DragDrop.IsDropTarget="True"
                   dd:DragDrop.ShowAlwaysDropTargetAdorner="True"
                   dd:DragDrop.UseDefaultDragAdorner="True"
-                  dd:DragDrop.DropHandler="{Binding}"
                   ItemContainerStyle="{StaticResource ChangedVisibilityByDoneListViewItem}"
                   SelectionChanged="ListView_SelectionChanged"
                   ItemsSource="{Binding ToDos}">
@@ -282,11 +280,6 @@
                 <behaviors:EmptyDataTemplateSelector EmptyTemplate="{StaticResource AddingJobDataTemplate}" />
             </ListView.ItemTemplateSelector>
         </ListView>
-
-        <!--<ListBox x:Name="ToDoListBox"
-                 BorderThickness="0"
-                 Background="Transparent"
-                 ItemsSource="{Binding GroupedJobs}"
-                 ItemTemplateSelector="{StaticResource JobTemplateSelector}" />-->
     </Grid>
+    
 </UserControl>

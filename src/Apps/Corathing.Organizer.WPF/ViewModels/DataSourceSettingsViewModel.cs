@@ -138,8 +138,6 @@ public partial class DataSourceSettingsViewModel : ObservableObject
         if (SelectedContext == null)
             return;
 
-        // FIXME:
-        // 무언가 우아한 방법
         SelectedContext.Name = TempName;
         SelectedContext.State.CoreSettings.Title = TempName;
         SelectedContext.State.CustomSettigns = JsonHelper.DeepCopy(TempSettingsContext.CustomSettings, _optionType);

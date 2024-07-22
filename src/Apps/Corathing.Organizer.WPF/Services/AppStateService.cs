@@ -437,7 +437,7 @@ public class AppStateService : IAppStateService
         else
         {
             using var fileStream = File.Open(AppSettingsFilename, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
-            using var streamReader = new StreamReader(fileStream);
+            using var streamReader = new StreamReader(fileStream, Encoding.UTF8);
             var json = await streamReader.ReadToEndAsync();
             using var document = JsonDocument.Parse(json, _documentOptions);
             var appSettings = document.RootElement
@@ -454,14 +454,14 @@ public class AppStateService : IAppStateService
         if (appSettings == null)
             return;
 
-        string jsonString = await File.ReadAllTextAsync(AppSettingsFilename);
+        string jsonString = await File.ReadAllTextAsync(AppSettingsFilename, Encoding.UTF8);
 
         var rootNode = JsonNode.Parse(jsonString);
 
         rootNode["Corathing"]["Organizer"].ReplaceWith(appSettings);
         var json = rootNode.ToJsonString(_serializerOptions);
 
-        await File.WriteAllTextAsync(AppSettingsFilename, json);
+        await File.WriteAllTextAsync(AppSettingsFilename, json, Encoding.UTF8);
     }
 
     private async Task ReadOrCreateAppStateByAppSettings()
@@ -551,7 +551,7 @@ public class AppStateService : IAppStateService
     {
         _isWriting = true;
         using var fileStream = File.Open(GetOrganizerSettingsFilename(), FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.Read);
-        using var streamReader = new StreamReader(fileStream);
+        using var streamReader = new StreamReader(fileStream, Encoding.UTF8);
         var json = await streamReader.ReadToEndAsync();
         if (string.IsNullOrEmpty(json))
             json = AppStateJsonDomBase;

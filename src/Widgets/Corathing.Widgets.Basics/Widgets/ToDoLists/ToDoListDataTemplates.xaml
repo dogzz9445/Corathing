@@ -39,7 +39,7 @@
                           IsChecked="{Binding IsShowTask}" />
             </settings:SettingsBlock>
 
-            <!-- Files ExecutableAppDataSourceSelector -->
+            <!-- ToDo DataSources -->
             <settings:SettingsBlock CategoryText="ToDo:"
                                     Header="Executable App for Open File or Folder..">
                 <ContentPresenter Grid.Row="1"
