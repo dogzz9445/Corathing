@@ -109,7 +109,11 @@ public class DataSourceService(IServiceProvider services) : IDataSourceService
 
     public void AddDataSourceContext(DataSourceContext dataSourceContext)
     {
-        DataSourceContexts.Add(dataSourceContext.DataSourceId, dataSourceContext);
+        if (dataSourceContext.DataSourceId == null)
+        {
+            throw new InvalidOperationException("DataSourceId is null");
+        }
+        DataSourceContexts.Add(dataSourceContext.DataSourceId.Value, dataSourceContext);
     }
 
     public void RemoveAllDataSourceContexts<T>()
@@ -124,7 +128,10 @@ public class DataSourceService(IServiceProvider services) : IDataSourceService
 
     public void RemoveDataSourceContext<T>(T dataSourceContext) where T : DataSourceContext
     {
-        DataSourceContexts.Remove(dataSourceContext.DataSourceId);
+        if (dataSourceContext.DataSourceId != null)
+        {
+            DataSourceContexts.Remove(dataSourceContext.DataSourceId.Value);
+        }
     }
 
     public IEnumerable<DataSourceContext> GetAllDataSourceContexts(Type? dataSourceContext)
@@ -139,7 +146,6 @@ public class DataSourceService(IServiceProvider services) : IDataSourceService
     public IEnumerable<T> GetAllDataSourceContexts<T>()
     {
         return DataSourceContexts.Values.OfType<T>();
-        //return DataSourceContexts.Values.Select(item => item as T).Where(x => x != null);
     }
 
     public IEnumerable<T> GetDataSourceContexts<T>()
