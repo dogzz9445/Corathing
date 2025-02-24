@@ -128,7 +128,12 @@ public enum ApplicationTheme
     /// <summary>
     /// High contract application theme.
     /// </summary>
-    HighContrast
+    HighContrast,
+
+    /// <summary>
+    /// Scifi application theme.
+    /// </summary>
+    Scifi,
 }
 
 

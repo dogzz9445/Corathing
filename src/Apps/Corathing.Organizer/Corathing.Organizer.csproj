@@ -17,4 +17,8 @@
     <ProjectReference Include="..\..\Shared\Corathing.Dashboards\Corathing.Dashboards.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Resources\" />
+  </ItemGroup>
+
 </Project>
