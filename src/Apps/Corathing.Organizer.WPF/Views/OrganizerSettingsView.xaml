@@ -13,6 +13,7 @@
       xmlns:converters2="clr-namespace:Corathing.Dashboards.WPF.Converters;assembly=Corathing.Dashboards.WPF"
       mc:Ignorable="d"
       Tag="Corathing.Organizer.WPF.Settings"
+      FontFamily="{DynamicResource CorathingDefaultFontFamily}"
       Style="{DynamicResource PageWithReturnAndBreadCrumb}"
       Background="{DynamicResource ApplicationBackgroundBrush}"
       Foreground="{DynamicResource TextFillColorPrimaryBrush}"

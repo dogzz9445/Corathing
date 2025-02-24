@@ -8,14 +8,44 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Fonts\NotoSansKR-Black.ttf" />
+    <None Remove="Fonts\NotoSansKR-Bold.ttf" />
+    <None Remove="Fonts\NotoSansKR-ExtraBold.ttf" />
+    <None Remove="Fonts\NotoSansKR-ExtraLight.ttf" />
+    <None Remove="Fonts\NotoSansKR-Light.ttf" />
+    <None Remove="Fonts\NotoSansKR-Medium.ttf" />
+    <None Remove="Fonts\NotoSansKR-Regular.ttf" />
+    <None Remove="Fonts\NotoSansKR-SemiBold.ttf" />
+    <None Remove="Fonts\NotoSansKR-Thin.ttf" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="gong-wpf-dragdrop" Version="3.2.1" />
     <PackageReference Include="MahApps.Metro" Version="2.4.10" />
     <PackageReference Include="MahApps.Metro.IconPacks" Version="5.0.0" />
     <PackageReference Include="Material.Icons.WPF" Version="2.1.10" />
-    <PackageReference Include="MaterialDesignThemes" Version="5.0.0" />
-    <PackageReference Include="MaterialDesignThemes.MahApps" Version="1.0.0" />
-    <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.39" />
+    <PackageReference Include="MaterialDesignThemes" Version="5.1.0" />
+    <PackageReference Include="MaterialDesignThemes.MahApps" Version="3.1.0" />
+    <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.122" />
     <PackageReference Include="PixiEditor.ColorPicker" Version="3.4.1" />
+    <PackageReference Include="System.Text.Json" Version="8.0.4" />
     <PackageReference Include="WPF-UI" Version="3.0.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Corathing.UI\Corathing.UI.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Fonts\NotoSansKR-Black.ttf" />
+    <Resource Include="Fonts\NotoSansKR-Bold.ttf" />
+    <Resource Include="Fonts\NotoSansKR-ExtraBold.ttf" />
+    <Resource Include="Fonts\NotoSansKR-ExtraLight.ttf" />
+    <Resource Include="Fonts\NotoSansKR-Light.ttf" />
+    <Resource Include="Fonts\NotoSansKR-Medium.ttf" />
+    <Resource Include="Fonts\NotoSansKR-Regular.ttf" />
+    <Resource Include="Fonts\NotoSansKR-SemiBold.ttf" />
+    <Resource Include="Fonts\NotoSansKR-Thin.ttf" />
   </ItemGroup>
 
 </Project>

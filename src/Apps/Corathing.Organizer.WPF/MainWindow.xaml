@@ -8,7 +8,6 @@
                    xmlns:views="clr-namespace:Corathing.Organizer.WPF.Views"
                    xmlns:tray="http://schemas.lepo.co/wpfui/2022/xaml/tray"
                    xmlns:main="clr-namespace:Corathing.Organizer.WPF"
-                   xmlns:services="clr-namespace:Corathing.Organizer.WPF.Services"
                    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
                    xmlns:localizations="clr-namespace:Corathing.Dashboards.WPF.Bindings;assembly=Corathing.Dashboards.WPF"
                    xmlns:converter="clr-namespace:Corathing.Dashboards.WPF.Converters;assembly=Corathing.Dashboards.WPF"
@@ -25,9 +24,6 @@
                    Height="1000"
                    Width="1600">
 
-    <metro:MetroWindow.Resources>
-        <converter:StringKeyToLocalizationStringConverter x:Key="StringKeyToLocalizationStringConverter" />
-    </metro:MetroWindow.Resources>
 
     <Grid>
         <views:DashboardView />
@@ -48,62 +44,8 @@
                                     Width="800"
                                     Grid.Row="0" />-->
 
-        <Grid Grid.Row="0"
-              VerticalAlignment="Stretch"
-              HorizontalAlignment="Stretch"
-              Visibility="{Binding ElementName=NavigationDialog, Path=Visibility}">
-            <Border Background="#48000000"/>
-
-            <Grid Width="864"
-                  Height="864">
-                <Border CornerRadius="8">
-                    <Border.Effect>
-                        <DropShadowEffect ShadowDepth="10"
-                                          BlurRadius="20"
-                                          Color="#888888"
-                                          Opacity="0.9"
-                                          Direction="30" />
-                    </Border.Effect>
-                </Border>
-
-                <Border Background="{DynamicResource ApplicationBackgroundBrush}"
-                        CornerRadius="8">
-                    <DockPanel LastChildFill="True"
-                               Margin="16">
-                        <StackPanel DockPanel.Dock="Top"
-                                    Orientation="Horizontal"
-                                    VerticalAlignment="Top"
-                                    Height="48">
-                            <ui:Button VerticalAlignment="Top"
-                                       Command="{Binding GobackCommand}"
-                                       Height="40"
-                                       Width="40">
-                                <ui:SymbolIcon Symbol="ArrowLeft12" />
-                            </ui:Button>
-                            <ui:BreadcrumbBar Margin="16,0,0,0"
-                                              VerticalAlignment="Top"
-                                              ItemsSource="{Binding NavigationItems}">
-                                <ui:BreadcrumbBar.ItemTemplate>
-                                    <DataTemplate DataType="{x:Type services:NavigationItem}">
-                                        <!-- FIXME: -->
-                                        <!-- 트리거 시키기.. MainViewModel로부터.. -->
-                                        <ui:TextBlock FontTypography="Title"
-                                                      Text="{Binding Tag, Converter={StaticResource StringKeyToLocalizationStringConverter}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
-                                    </DataTemplate>
-                                </ui:BreadcrumbBar.ItemTemplate>
-                            </ui:BreadcrumbBar>
-                        </StackPanel>
-                        <Separator DockPanel.Dock="Top" />
-                        <Frame x:Name="NavigationDialog"
-                               Foreground="{DynamicResource TextFillColorPrimaryBrush}"
-                               NavigationUIVisibility="Hidden"
-                               Visibility="Collapsed" />
-                    </DockPanel>
-                </Border>
-            </Grid>
-        </Grid>
-
         <ContentPresenter x:Name="RootContentDialog"
+                          Panel.ZIndex="100"
                           Grid.Row="0"/>
     </Grid>
 </metro:MetroWindow>

@@ -25,6 +25,8 @@
                 Value="50" />
         <Setter Property="Duration"
                 Value="1000" />
+        <Setter Property="FontFamily"
+                Value="{DynamicResource NotoSansKR}" />
         <Setter Property="HorizontalAlignment"
                 Value="Stretch" />
         <Setter Property="VerticalAlignment"

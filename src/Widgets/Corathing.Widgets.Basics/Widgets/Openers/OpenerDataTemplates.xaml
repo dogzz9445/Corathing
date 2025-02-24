@@ -1,0 +1,201 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:Corathing.Widgets.Basics.Widgets.Openers"
+                    xmlns:system="clr-namespace:System;assembly=mscorlib"
+                    xmlns:behaviors="clr-namespace:Corathing.UI.WPF.Behaviors;assembly=Corathing.UI.WPF"
+                    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+                    xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+                    xmlns:localizations="clr-namespace:Corathing.Widgets.Basics.Behaviors"
+                    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+                    xmlns:settings="clr-namespace:Corathing.UI.WPF.Controls;assembly=Corathing.UI.WPF">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="pack://application:,,,/Corathing.UI.WPF;component/Styles/Button.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+
+    <local:OpenerTypeToIndexConverter x:Key="OpenerTypeToIndexConverter" />
+    <local:OpenerTypeFilesToVisibleConverter x:Key="OpenerTypeFilesToVisibleConverter" />
+    <local:OpenerTypeFoldersToVisibleConverter x:Key="OpenerTypeFoldersToVisibleConverter" />
+    <local:OpenerTypeLinksToVisibleConverter x:Key="OpenerTypeLinksToVisibleConverter" />
+
+    <!-- Opener Widget -->
+    <DataTemplate DataType="{x:Type local:OpenerWidgetContext}">
+        <local:OpenerWidget />
+    </DataTemplate>
+
+    <!-- Opener Settings View -->
+    <DataTemplate DataType="{x:Type local:OpenerOptionContext}">
+        <StackPanel>
+            <!-- Open Type -->
+            <settings:SettingsBlock IsDescriptionOnContentRight="True"
+                                    CategoryText="Opener:"
+                                    Header="Type of Open File or Folder">
+                <ComboBox MinWidth="200"
+                          SelectedIndex="{Binding OpenerType, Converter={StaticResource OpenerTypeToIndexConverter}, Mode=TwoWay}">
+                    <ComboBoxItem Content="{localizations:Localization Corathing.Widgets.Basics.Files.OptionTypeFile}" />
+                    <ComboBoxItem Content="{localizations:Localization Corathing.Widgets.Basics.Files.OptionTypeFolder}" />
+                    <ComboBoxItem Content="{localizations:Localization Corathing.Widgets.Basics.Files.OptionTypeLink}" />
+                </ComboBox>
+            </settings:SettingsBlock>
+
+            <!-- Files ExecutableAppDataSourceSelector -->
+            <settings:SettingsBlock CategoryText="Opener:"
+                                    Header="Executable App for Open File or Folder..">
+                <ContentPresenter Grid.Row="1"
+                                  Content="{Binding ExecutableAppDataSourceSelector}"
+                                  DataContext="{Binding ExecutableAppDataSourceSelector}" />
+            </settings:SettingsBlock>
+
+            <!-- Files -->
+            <settings:SettingsBlock CategoryText="Opener-Files:"
+                                    Visibility="{Binding OpenerType, Converter={StaticResource OpenerTypeFilesToVisibleConverter}, Mode=OneWay}"
+                                    Header="Files">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <ui:Button Grid.Row="0"
+                               Content="Add File"
+                               Command="{Binding AddFileCommand}" />
+                    <ListBox Grid.Row="1"
+                             Style="{StaticResource NoFocusListBoxStyle}"
+                             ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                             ItemsSource="{Binding Files}">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate DataType="{x:Type local:FileInfo}">
+                                <Grid HorizontalAlignment="Stretch"
+                                      Focusable="False">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBox Grid.Column="0"
+                                             Text="{Binding Path=FileName, UpdateSourceTrigger=LostFocus}">
+                                        <i:Interaction.Behaviors>
+                                            <behaviors:TextBoxEnterKeyUpdateBehavior />
+                                        </i:Interaction.Behaviors>
+                                    </TextBox>
+                                    <ui:Button Grid.Column="1"
+                                               Margin="4 0"
+                                               Style="{StaticResource IconButton24}"
+                                               Icon="{ui:SymbolIcon OpenFolder24}"
+                                               Command="{Binding DataContext.OpenFileCommand, RelativeSource={RelativeSource AncestorType={x:Type ListBox}}}"
+                                               CommandParameter="{Binding DataContext, RelativeSource={RelativeSource AncestorType={x:Type ListBoxItem}}}"
+                                               ToolTip="Open File" />
+                                    <ui:Button Grid.Column="2"
+                                               Margin="0"
+                                               Style="{StaticResource IconButton24}"
+                                               Icon="{ui:SymbolIcon Dismiss24}"
+                                               Command="{Binding DataContext.RemoveFileCommand, RelativeSource={RelativeSource AncestorType={x:Type ListBox}}}"
+                                               CommandParameter="{Binding Path=.}"
+                                               ToolTip="Remove File" />
+                                </Grid>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </Grid>
+            </settings:SettingsBlock>
+
+            <!-- Folders -->
+            <settings:SettingsBlock CategoryText="Opener-Folders:"
+                                    Visibility="{Binding OpenerType, Converter={StaticResource OpenerTypeFoldersToVisibleConverter}, Mode=OneWay}"
+                                    Header="Folders">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <ui:Button Grid.Row="0"
+                               Content="Add Folder"
+                               Command="{Binding AddFolderCommand}" />
+                    <ListBox Grid.Row="1"
+                             Style="{StaticResource NoFocusListBoxStyle}"
+                             ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                             ItemsSource="{Binding Folders}">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate DataType="{x:Type local:FolderInfo}">
+                                <Grid HorizontalAlignment="Stretch"
+                                      Focusable="False">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBox Grid.Column="0"
+                                             Text="{Binding Path=FolderName, UpdateSourceTrigger=LostFocus}">
+                                        <i:Interaction.Behaviors>
+                                            <behaviors:TextBoxEnterKeyUpdateBehavior />
+                                        </i:Interaction.Behaviors>
+                                    </TextBox>
+                                    <ui:Button Grid.Column="1"
+                                               Margin="4 0"
+                                               Style="{StaticResource IconButton24}"
+                                               Icon="{ui:SymbolIcon OpenFolder24}"
+                                               Command="{Binding DataContext.OpenFolderCommand, RelativeSource={RelativeSource AncestorType={x:Type ListBox}}}"
+                                               CommandParameter="{Binding DataContext, RelativeSource={RelativeSource AncestorType={x:Type ListBoxItem}}}"
+                                               ToolTip="Open Folder" />
+                                    <ui:Button Grid.Column="2"
+                                               Margin="0"
+                                               Style="{StaticResource IconButton24}"
+                                               Icon="{ui:SymbolIcon Dismiss24}"
+                                               Command="{Binding DataContext.RemoveFolderCommand, RelativeSource={RelativeSource AncestorType={x:Type ListBox}}}"
+                                               CommandParameter="{Binding Path=.}"
+                                               ToolTip="Remove Folder" />
+                                </Grid>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </Grid>
+            </settings:SettingsBlock>
+
+
+            <!-- Links -->
+            <settings:SettingsBlock CategoryText="Opener-Links:"
+                                    Visibility="{Binding OpenerType, Converter={StaticResource OpenerTypeLinksToVisibleConverter}, Mode=OneWay}"
+                                    Header="Links">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <ui:Button Grid.Row="0"
+                               Content="Add Link"
+                               Command="{Binding AddLinkCommand}" />
+                    <ListBox Grid.Row="1"
+                             Style="{StaticResource NoFocusListBoxStyle}"
+                             ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                             ItemsSource="{Binding Links}">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate DataType="{x:Type local:LinkInfo}">
+                                <Grid HorizontalAlignment="Stretch"
+                                      Focusable="False">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBox Grid.Column="0"
+                                             Text="{Binding Path=LinkName, UpdateSourceTrigger=LostFocus}">
+                                        <i:Interaction.Behaviors>
+                                            <behaviors:TextBoxEnterKeyUpdateBehavior />
+                                        </i:Interaction.Behaviors>
+                                    </TextBox>
+                                    <ui:Button Grid.Column="2"
+                                               Margin="0"
+                                               Style="{StaticResource IconButton24}"
+                                               Icon="{ui:SymbolIcon Dismiss24}"
+                                               Command="{Binding DataContext.RemoveLinkCommand, RelativeSource={RelativeSource AncestorType={x:Type ListBox}}}"
+                                               CommandParameter="{Binding Path=.}"
+                                               ToolTip="Remove Link" />
+                                </Grid>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </Grid>
+            </settings:SettingsBlock>
+
+        </StackPanel>
+    </DataTemplate>
+
+</ResourceDictionary>

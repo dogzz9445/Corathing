@@ -12,8 +12,6 @@ namespace Corathing.Dashboards.WPF.Converters;
 /// <seealso cref="System.Windows.Data.IValueConverter" />
 public class NullToVisibilityConverter : IValueConverter
 {
-    #region Public Methods
-
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
         return value == null ? Visibility.Collapsed : Visibility.Visible;
@@ -23,6 +21,4 @@ public class NullToVisibilityConverter : IValueConverter
     {
         throw new NotImplementedException();
     }
-
-    #endregion Public Methods
 }

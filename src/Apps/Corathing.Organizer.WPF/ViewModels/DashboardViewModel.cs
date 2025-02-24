@@ -125,34 +125,46 @@ public partial class DashboardViewModel : ObservableObject
     public void AddProject()
     {
         var projectContext = ProjectContext.Create();
-        Projects.Add(projectContext);
+        Projects?.Add(projectContext);
     }
 
     [RelayCommand]
-    public void OpenOrganizerSettings()
+    public async Task OpenOrganizerSettings()
     {
         var navigationService = _services.GetRequiredService<INavigationDialogService>();
-        navigationService.Navigate<OrganizerSettingsView>();
+        await navigationService.Navigate<OrganizerSettingsView>();
     }
 
     [RelayCommand]
-    public void OpenProjectSettings()
+    public async Task OpenProjectSettings()
     {
         var navigationService = _services.GetRequiredService<INavigationDialogService>();
-        navigationService.Navigate<ProjectSettingsView>();
+        await navigationService.Navigate<ProjectSettingsView>();
     }
 
     [RelayCommand]
-    public void OpenWorkflowSettings()
+    public async Task OpenWorkflowSettings()
     {
         var navigationService = _services.GetRequiredService<INavigationDialogService>();
-        navigationService.Navigate<WorkflowSettingsView>();
+        await navigationService.Navigate<WorkflowSettingsView>();
     }
 
     [RelayCommand]
-    public void ConfigureWidget(WidgetHost widget)
+    public async Task OpenPackageManagementView()
     {
-        SelectedProject?.SelectedWorkflow?.ConfigureWidget(widget);
+        var navigationService = _services.GetRequiredService<INavigationDialogService>();
+        await navigationService.Navigate<PackageManagementView>();
+    }
+
+    [RelayCommand]
+    public async Task ConfigureWidget(WidgetHost widget)
+    {
+        if (SelectedProject == null)
+            return;
+        if (SelectedProject.SelectedWorkflow == null)
+            return;
+
+        await SelectedProject.SelectedWorkflow.ConfigureWidget(widget);
     }
 
     [RelayCommand]
@@ -176,30 +188,6 @@ public partial class DashboardViewModel : ObservableObject
     #endregion Public Properties
 
     #region Public Methods
-
-    /// <summary>
-    /// Completes dashboard configuration
-    /// </summary>
-    /// <param name="type">The type.</param>
-    /// <param name="save">if set to <c>true</c> [save].</param>
-    /// <param name="newName">The new name.</param>
-    public void DashboardConfigurationComplete(DashboardConfigurationType type, bool save, string newName)
-    {
-        //if (!save)
-        //    return;
-
-        //switch (type)
-        //{
-        //    case DashboardConfigurationType.New:
-        //        var dashboardModel = new WorkflowContext { Title = newName };
-        //        Workflows.Add(dashboardModel);
-        //        SelectedWorkflow = dashboardModel;
-        //        return;
-        //    case DashboardConfigurationType.Existing:
-        //        SelectedWorkflow.Title = newName;
-        //        return;
-        //}
-    }
 
     /// <summary>
     /// Starts this instance.
@@ -243,6 +231,20 @@ public partial class DashboardViewModel : ObservableObject
         if (SelectedProject == null)
         { 
             SelectedProject = Projects.FirstOrDefault();
+        }
+
+        foreach (var projectContext in Projects)
+        {
+            if (!appStateService.TryGetProject(projectContext.ProjectId, out var projectState))
+            {
+                // TODO:
+                // Change Exception Type
+                throw new Exception();
+            }
+            if (projectState.SelectedWorkflowId != null)
+            {
+                projectContext.SelectedWorkflow = projectContext.Workflows.FirstOrDefault(context => context.WorkflowId == projectState.SelectedWorkflowId);
+            }
         }
     }
 

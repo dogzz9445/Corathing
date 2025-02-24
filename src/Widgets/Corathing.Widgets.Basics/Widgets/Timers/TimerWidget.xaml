@@ -59,15 +59,36 @@
                 <ColumnDefinition Width="2*" />
                 <ColumnDefinition Width="1*" />
             </Grid.ColumnDefinitions>
-            <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="2*" />
+                <RowDefinition Height="2*" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="2*" />
+            </Grid.RowDefinitions>
+            <Grid Grid.Column="1"
+                  Grid.Row="1">
                 <b:Interaction.Behaviors>
                     <behaviors:TextBlockScaleFontBehavior />
                 </b:Interaction.Behaviors>
                 <TextBlock VerticalAlignment="Center"
-                           HorizontalAlignment="Center"
-                           Text="{Binding RemainingTime, StringFormat=\{0:mm\\:ss\}, FallbackValue=00:00}"
-                           Foreground="{DynamicResource TextFillAccentColorPrimaryBrush}">
+                            HorizontalAlignment="Center"
+                            Text="{Binding RemainingTime, StringFormat=\{0:mm\\:ss\}, FallbackValue=00:00}"
+                            Foreground="{DynamicResource TextFillAccentColorPrimaryBrush}">
                 </TextBlock>
+            </Grid>
+            <!-- When not Running-->
+            <Grid HorizontalAlignment="Center"
+                  Grid.Column="1"
+                  Grid.Row="2"
+                  Visibility="{Binding IsRunning, Converter={StaticResource InvertBoolNullToVisibilityConverter}}">
+                <Button Content="Reset"
+                        Padding="0"
+                        Foreground="{DynamicResource TextFillAccentColorPrimaryBrush}"
+                        BorderBrush="Transparent"
+                        Focusable="False"
+                        FocusVisualStyle="{x:Null}"
+                        Style="{StaticResource MahApps.Styles.Button.MetroSquare}"
+                        Command="{Binding ResetCommand}" />
             </Grid>
         </Grid>
         
@@ -77,14 +98,5 @@
 
         </Grid>
 
-        <!-- When not Running-->
-        <Grid HorizontalAlignment="Center"
-              VerticalAlignment="Bottom"
-              Visibility="{Binding IsRunning, Converter={StaticResource InvertBoolNullToVisibilityConverter}}">
-            <Button Content="Reset"
-                    Foreground="{DynamicResource TextFillColorPrimaryBrush}"
-                    Style="{StaticResource MahApps.Styles.Button.MetroSquare}"
-                    Command="{Binding ResetCommand}" />
-        </Grid>
     </Grid>
 </UserControl>

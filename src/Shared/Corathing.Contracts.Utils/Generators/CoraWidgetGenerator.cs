@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Emit;
 using System.Text;
+using System.Text.Json;
+using System.Text.Json.Nodes;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 using Corathing.Contracts.Bases;
@@ -30,6 +33,14 @@ public class CoraWidgetGenerator(IServiceProvider services)
         var context = Activator.CreateInstance(Info.WidgetContextType) as WidgetContext;
 
         ArgumentNullException.ThrowIfNull(context);
+
+        if (state != null && Info.WidgetCustomSettingsType != null)
+        {
+            state.CustomSettings = JsonSerializer.Deserialize(
+                JsonSerializer.Serialize(state.CustomSettings),
+                Info.WidgetCustomSettingsType
+            );
+        }
 
         context.Initialize(services, state ?? CreateState());
 

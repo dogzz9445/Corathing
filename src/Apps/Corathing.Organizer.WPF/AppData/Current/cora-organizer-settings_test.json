@@ -1,0 +1,277 @@
+{
+  "Preferences": {
+    "UseSystemTheme": false,
+    "Theme": "Light",
+    "Language": "en_US"
+  },
+  "Packages": {
+    "Id": "00000000-0000-0000-0000-000000000000",
+    "Packages": [
+      {
+        "Id": "d8c5ab52-d303-4dfa-b1d7-0af6ecd24814",
+        "AssemblyGuid": "00000000-0000-0000-0000-000000000000",
+        "AssemblyName": "Corathing.Widgets.Basics",
+        "AssemblyVersion": "1.0.0.0",
+        "Title": null,
+        "Description": null
+      },
+      {
+        "Id": "ef8a00e5-939f-4c6c-bfff-77fbcc61add2",
+        "AssemblyGuid": "00000000-0000-0000-0000-000000000000",
+        "AssemblyName": "Corathing.Widgets.Basics",
+        "AssemblyVersion": "1.0.0.0",
+        "Title": null,
+        "Description": null
+      },
+      {
+        "Id": "fd1c7bfd-5740-4dee-bca1-2fc30d4a5efb",
+        "AssemblyGuid": "00000000-0000-0000-0000-000000000000",
+        "AssemblyName": "Corathing.Widgets.Basics",
+        "AssemblyVersion": "1.0.0.0",
+        "Title": null,
+        "Description": null
+      }
+    ]
+  },
+  "Dashboards": {
+    "Id": "ba5b6e0a-51fa-4dc4-992e-3123cc287cb7",
+    "SelectedProjectId": "926c252b-a158-4e05-8593-7cb55c10bf24",
+    "Projects": [
+      {
+        "Id": "22778c82-674a-41a7-9fe9-c61d76329690",
+        "SelectedWorkflowId": null,
+        "CoreSettings": {
+          "Name": "Colors"
+        },
+        "WorkflowIds": []
+      },
+      {
+        "Id": "926c252b-a158-4e05-8593-7cb55c10bf24",
+        "SelectedWorkflowId": "acbb4ec5-3b64-4790-84e1-500defee7018",
+        "CoreSettings": {
+          "Name": "Welcome!"
+        },
+        "WorkflowIds": [
+          "acbb4ec5-3b64-4790-84e1-500defee7018",
+          "62413ba9-7e1c-474c-90f9-4cc43d1032ba",
+          "c63741da-467c-4c3c-9248-2e5bb5898b95",
+          "8cdafb44-6c53-4020-8818-bce1e0aeaf65"
+        ]
+      }
+    ],
+    "Workflows": [
+      {
+        "Id": "62413ba9-7e1c-474c-90f9-4cc43d1032ba",
+        "WidgetIds": [
+          "a4664977-857c-439b-92dd-df99610ce8c1"
+        ],
+        "CoreSettings": {
+          "Name": "Hardware Monitor"
+        },
+        "MaxColumns": 16,
+        "VisibleRows": 8
+      },
+      {
+        "Id": "c63741da-467c-4c3c-9248-2e5bb5898b95",
+        "WidgetIds": [],
+        "CoreSettings": {
+          "Name": "Corathing Develop"
+        },
+        "MaxColumns": 16,
+        "VisibleRows": 8
+      },
+      {
+        "Id": "8cdafb44-6c53-4020-8818-bce1e0aeaf65",
+        "WidgetIds": [],
+        "CoreSettings": {
+          "Name": "First Windows"
+        },
+        "MaxColumns": 16,
+        "VisibleRows": 8
+      },
+      {
+        "Id": "acbb4ec5-3b64-4790-84e1-500defee7018",
+        "WidgetIds": [
+          "1d9d1613-9201-49e9-9f6c-4e8a80c143f6",
+          "ad39eb37-6e1a-4b3c-ad9d-003abcb0f52f",
+          "d37f60cc-c038-401b-89c3-0dbd2befae1f",
+          "2fcf82b1-591d-4501-a254-dfd3204863a3",
+          "f466ddaa-db7b-428e-8de5-0decd370583f",
+          "5a3b6982-a36a-4856-9adc-c793ce829d84"
+        ],
+        "CoreSettings": {
+          "Name": "Dashboard Example"
+        },
+        "MaxColumns": 16,
+        "VisibleRows": 8
+      }
+    ],
+    "Widgets": [
+      {
+        "Id": "a4664977-857c-439b-92dd-df99610ce8c1",
+        "PackageReference": {
+          "PackageId": "34a60d6b-21aa-4aa3-8a50-85c01c39ebd3",
+          "PackageTitle": null,
+          "AssemblyName": "Corathing.Widgets.Basics",
+          "AssemblyVersion": "1.0.0.0"
+        },
+        "CoreSettings": {
+          "TypeName": "Corathing.Widgets.Basics.Widgets.FileOpeners.FileOpenerWidgetContext",
+          "RowIndex": 2,
+          "ColumnIndex": 3,
+          "RowSpan": 2,
+          "ColumnSpan": 2,
+          "Title": "File Opener",
+          "Tags": null,
+          "VisibleTitle": true,
+          "UseDefaultBackgroundColor": true,
+          "BackgroundColor": "#FFFFFF"
+        },
+        "CustomSettings": {
+          "OpenType": 0,
+          "Files": null,
+          "Folders": null,
+          "ExecutableAppDataSourceId": null
+        }
+      },
+      {
+        "Id": "ad39eb37-6e1a-4b3c-ad9d-003abcb0f52f",
+        "PackageReference": {
+          "PackageId": "d8c5ab52-d303-4dfa-b1d7-0af6ecd24814",
+          "PackageTitle": null,
+          "AssemblyName": "Corathing.Widgets.Basics",
+          "AssemblyVersion": "1.0.0.0"
+        },
+        "CoreSettings": {
+          "TypeName": "Corathing.Widgets.Basics.Widgets.WebQueries.WebQueryViewModel",
+          "RowIndex": 1,
+          "ColumnIndex": 9,
+          "RowSpan": 2,
+          "ColumnSpan": 2,
+          "Title": "WebQueryViewModel",
+          "Tags": null,
+          "VisibleTitle": true,
+          "UseDefaultBackgroundColor": true,
+          "BackgroundColor": "#FFFFFF"
+        },
+        "CustomSettings": null
+      },
+      {
+        "Id": "d37f60cc-c038-401b-89c3-0dbd2befae1f",
+        "PackageReference": {
+          "PackageId": "d8c5ab52-d303-4dfa-b1d7-0af6ecd24814",
+          "PackageTitle": null,
+          "AssemblyName": "Corathing.Widgets.Basics",
+          "AssemblyVersion": "1.0.0.0"
+        },
+        "CoreSettings": {
+          "TypeName": "Corathing.Widgets.Basics.Widgets.Timers.TimerWidgetViewModel",
+          "RowIndex": 1,
+          "ColumnIndex": 5,
+          "RowSpan": 2,
+          "ColumnSpan": 2,
+          "Title": "TimerWidgetViewModel",
+          "Tags": null,
+          "VisibleTitle": false,
+          "UseDefaultBackgroundColor": true,
+          "BackgroundColor": "#FFFFFF"
+        },
+        "CustomSettings": null
+      },
+      {
+        "Id": "2fcf82b1-591d-4501-a254-dfd3204863a3",
+        "PackageReference": {
+          "PackageId": "d8c5ab52-d303-4dfa-b1d7-0af6ecd24814",
+          "PackageTitle": null,
+          "AssemblyName": "Corathing.Widgets.Basics",
+          "AssemblyVersion": "1.0.0.0"
+        },
+        "CoreSettings": {
+          "TypeName": "Corathing.Widgets.Basics.Widgets.Monacos.MonacoWidgetContext",
+          "RowIndex": 0,
+          "ColumnIndex": 15,
+          "RowSpan": 7,
+          "ColumnSpan": 9,
+          "Title": "MonacoWidgetContext",
+          "Tags": null,
+          "VisibleTitle": true,
+          "UseDefaultBackgroundColor": true,
+          "BackgroundColor": "#FFFFFF"
+        },
+        "CustomSettings": null
+      },
+      {
+        "Id": "f466ddaa-db7b-428e-8de5-0decd370583f",
+        "PackageReference": {
+          "PackageId": "d8c5ab52-d303-4dfa-b1d7-0af6ecd24814",
+          "PackageTitle": null,
+          "AssemblyName": "Corathing.Widgets.Basics",
+          "AssemblyVersion": "1.0.0.0"
+        },
+        "CoreSettings": {
+          "TypeName": "Corathing.Widgets.Basics.Widgets.Emptys.EmptyWidgetContext",
+          "RowIndex": 0,
+          "ColumnIndex": 13,
+          "RowSpan": 2,
+          "ColumnSpan": 2,
+          "Title": "EmptyWidgetContext",
+          "Tags": null,
+          "VisibleTitle": false,
+          "UseDefaultBackgroundColor": true,
+          "BackgroundColor": "#FFFFFF"
+        },
+        "CustomSettings": null
+      },
+      {
+        "Id": "5a3b6982-a36a-4856-9adc-c793ce829d84",
+        "PackageReference": {
+          "PackageId": "d8c5ab52-d303-4dfa-b1d7-0af6ecd24814",
+          "PackageTitle": null,
+          "AssemblyName": "Corathing.Widgets.Basics",
+          "AssemblyVersion": "1.0.0.0"
+        },
+        "CoreSettings": {
+          "TypeName": "Corathing.Widgets.Basics.Widgets.Commanders.CommanderWidgetViewModel",
+          "RowIndex": 2,
+          "ColumnIndex": 13,
+          "RowSpan": 2,
+          "ColumnSpan": 2,
+          "Title": "CommanderWidgetViewModel",
+          "Tags": null,
+          "VisibleTitle": true,
+          "UseDefaultBackgroundColor": true,
+          "BackgroundColor": "#FFFFFF"
+        },
+        "CustomSettings": null
+      },
+      {
+        "Id": "1d9d1613-9201-49e9-9f6c-4e8a80c143f6",
+        "PackageReference": {
+          "PackageId": "34a60d6b-21aa-4aa3-8a50-85c01c39ebd3",
+          "PackageTitle": null,
+          "AssemblyName": "Corathing.Widgets.Basics",
+          "AssemblyVersion": "1.0.0.0"
+        },
+        "CoreSettings": {
+          "TypeName": "Corathing.Widgets.Basics.Widgets.FileOpeners.FileOpenerWidgetContext",
+          "RowIndex": 0,
+          "ColumnIndex": 0,
+          "RowSpan": 2,
+          "ColumnSpan": 2,
+          "Title": "File Opener",
+          "Tags": null,
+          "VisibleTitle": true,
+          "UseDefaultBackgroundColor": true,
+          "BackgroundColor": "#FFFFFF"
+        },
+        "CustomSettings": {
+          "OpenType": 0,
+          "Files": null,
+          "Folders": null,
+          "ExecutableAppDataSourceId": null
+        }
+      }
+    ],
+    "DataSources": []
+  }
+}

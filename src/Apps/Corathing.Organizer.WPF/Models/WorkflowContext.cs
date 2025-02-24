@@ -174,11 +174,11 @@ public partial class WorkflowContext : ObservableObject
     }
 
     [RelayCommand]
-    public void ConfigureWidget(WidgetHost widget)
+    public async Task ConfigureWidget(WidgetHost widget)
     {
         var widgetHost = widget;
         var navigationService = _services.GetRequiredService<INavigationDialogService>();
-        navigationService.Navigate<WidgetSettingsView>(widgetHost);
+        await navigationService.Navigate<WidgetSettingsView>(widgetHost);
     }
 
     [RelayCommand]

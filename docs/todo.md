@@ -3,13 +3,15 @@
 ## TODO
 - [ ] (WidgetSystem) WidgetContext 구현
 - [ ] (WidgetSystem) DataSourceService 구현
-- [ ] (WidgetSystem) DataSourceContext 구현
 - [ ] (WidgetSystem) DataSourceContext 에서 데이터를 읽어오는 기능 구현
 - [ ] (WidgetSystem) DataSourceContext 에서 OnMessage 구현하기
 - [ ] (WidgetSystem) WidgetContext 에서 OnMessage 구현하기 
 - [ ] (Organizer) Navigation 서비스 구현
 - [ ] (Contracts) AssemblyCoraPackageIconAttribute 추가
 - [ ] (Contracts) ArgumentCastNullException 추가
+- [ ] (Organizer) Dashboard View 의 TabControl 의 Placeholder 에서 CornerRadius 가 없는 버튼을 배치하고 안에 Border 및 Corner Radius 를 넣어 버튼을 구현
+- [ ] (Organizer) Dashboard View 의 TabControl 에서 Add Button 을 구현하는데 문제가 있음. TabControl 을 재구현하여 사용하거나 다른 방식을 고려하여야함
+- [ ] (Organizer) Settings 에서 TypeName 을 Generator 네임으로 변경해야함. 따라서, Generator가 되는 Key 에 대한 값을 패키지에서 생성하도록 해야함 (애트리뷰트)
 
 ## Doing
 - [ ] (WidgetSystem) DataSourceService 구현
@@ -21,14 +23,21 @@
 - [x] (WidgetSystem) WidgetContext 에서 위젯을 로드하는 기능 구현
 - [x] (Organizer) Nuget 패키지에서 위젯을 읽고 로드하는 서비스 구현
   - [x] DLL 로드
+- [x] (WidgetSystem) DataSourceContext 구현
 
 ## Idea
 - [ ] (Organizer) 위젯 세팅에서 위젯의 크기를 선택하여 위젯의 크기를 변경할 수 있도록 한다.
-- [ ] (Widget) 
+
+# 📅 데이터소스
+## Idea v1
+- [ ] Executable DataSource
+- [ ] WebSession DataSource
+- [ ] ToDo DataSource
 
 # 📅 위젯
-## Idea
-- [ ] 파일 열기 위젯
+## Idea v1
+- [x] 열기 위젯
+- [ ] ToDo 위젯
 - [ ] Python 위젯
 - [ ] C# 위젯
 - [ ] Windows 위젯
@@ -36,16 +45,22 @@
 - [ ] vscode 위젯
 - [ ] PLC 위젯
 
+## Idea v2
+- [ ] 하드웨어 모니터링 위젯 추가
+
 ## TODO
-- [ ] (파일열기 위젯) 커맨드 또는 쉘로 파일 열기 기능 추가
-- [ ] (파일열기 위젯) 폴더 열기 기능 추가
-- [ ] (파일열기 위젯) 폴더 열기 기능 추가
+- [ ] (열기 위젯) 커맨드 또는 쉘로 파일 열기 기능 추가
+- [ ] (열기 위젯) 열기 위젯에 Localization 추가
+- [ ] (ToDo) ToDo 위젯에 Localization 추가
 
 ## Doing
 - [ ] (타이머 위젯) 리셋 버튼 스타일 수정
+- [ ] (타이머 위젯) 타이머 위젯 구현
 
 ## Done
-- [ ] (타이머 위젯) 타이머 위젯 구현
+- [x] (열기 위젯) 파일 열기 기능 추가
+- [x] (열기 위젯) 폴더 열기 기능 추가
+- [x] (열기 위젯) 링크 열기 기능 추가
 
 
 # 📅 퍼블리싱

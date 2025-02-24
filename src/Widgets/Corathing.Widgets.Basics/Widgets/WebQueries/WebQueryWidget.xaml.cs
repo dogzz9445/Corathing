@@ -23,21 +23,6 @@ using Corathing.Widgets.Basics.Widgets.WebPages;
 
 namespace Corathing.Widgets.Basics.Widgets.WebQueries;
 
-[EntryCoraWidget(
-    contextType: typeof(WebQueryViewModel),
-    name: "Create Web Query",
-    description: "Provides a one by one square widget.",
-    menuPath: "Default/Web Query",
-    menuOrder: 0
-    )]
-public partial class WebQueryViewModel : WidgetContext
-{
-    public override void OnCreate(WidgetState state)
-    {
-        ILocalizationService localizationService = _services.GetService<ILocalizationService>();
-        localizationService.Provide("Corathing.Widgets.Basics.WebQueryName", value => WidgetTitle = value);
-    }
-}
 
 /// <summary>
 /// Interaction logic for WebQueryWidget.xaml

@@ -4,100 +4,34 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Corathing.Widgets.Basics.Widgets.ToDoLists"
-             xmlns:models="clr-namespace:Corathing.Widgets.Basics.Widgets.ToDoLists.Models"
+             xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:behaviors="clr-namespace:Corathing.UI.WPF.Behaviors;assembly=Corathing.UI.WPF"
              xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+             xmlns:dd="clr-namespace:GongSolutions.Wpf.DragDrop;assembly=GongSolutions.Wpf.DragDrop"
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:datasources="clr-namespace:Corathing.Widgets.Basics.DataSources.ToDos"
+             xmlns:converter="clr-namespace:Corathing.UI.WPF.Converters;assembly=Corathing.UI.WPF"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="400">
     <UserControl.Resources>
-        <local:JobTemplateSelector x:Key="JobTemplateSelector" />
+        <behaviors:DelayedMultiBindingConverter x:Key="DelayedMultiBindingConverter" />
+        <datasources:ToDoTaskTypeToIndexConverter x:Key="ToDoTaskTypeToIndexConverter" />
         <BooleanToVisibilityConverter x:Key="BoolToVis" />
-
-        <Style TargetType="{x:Type ListBox}">
-            <Setter Property="Margin"
-                    Value="0" />
-            <Setter Property="Padding"
-                    Value="0" />
-            <Setter Property="BorderThickness"
-                    Value="0" />
-            <Setter Property="VerticalContentAlignment"
-                    Value="Center" />
-            <Setter Property="ScrollViewer.VerticalScrollBarVisibility"
-                    Value="Auto" />
-            <Setter Property="ScrollViewer.HorizontalScrollBarVisibility"
-                    Value="Auto" />
-            <Setter Property="ScrollViewer.CanContentScroll"
-                    Value="True" />
-            <Setter Property="VirtualizingPanel.IsVirtualizing"
-                    Value="True" />
-            <Setter Property="VirtualizingPanel.VirtualizationMode"
-                    Value="Standard" />
-            <Setter Property="SnapsToDevicePixels"
-                    Value="True" />
-            <Setter Property="ItemsPanel">
-                <Setter.Value>
-                    <ItemsPanelTemplate>
-                        <VirtualizingStackPanel Orientation="Vertical"
-                                                IsVirtualizing="{TemplateBinding VirtualizingPanel.IsVirtualizing}"
-                                                VirtualizationMode="{TemplateBinding VirtualizingPanel.VirtualizationMode}" />
-                    </ItemsPanelTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-
-        <Style TargetType="{x:Type ListBoxItem}"
-               BasedOn="{StaticResource DefaultListBoxItemStyle}">
-            <Setter Property="Foreground"
-                    Value="{DynamicResource ListBoxItemForeground}" />
-            <Setter Property="Background"
-                    Value="{DynamicResource ListBoxItemSelectedBackgroundThemeBrush}" />
-            <Setter Property="BorderBrush"
-                    Value="{DynamicResource ListBoxItemSelectedBackgroundThemeBrush}" />
-            <Setter Property="Margin"
-                    Value="0" />
-            <Setter Property="Padding"
-                    Value="0" />
-            <Setter Property="Border.CornerRadius"
-                    Value="0" />
-            <Setter Property="SnapsToDevicePixels"
-                    Value="True" />
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type ListBoxItem}">
-                        <Border x:Name="Border"
-                                Margin="0"
-                                Padding="{TemplateBinding Padding}"
-                                Background="Transparent"
-                                BorderThickness="0"
-                                CornerRadius="{TemplateBinding Border.CornerRadius}">
-                            <ContentPresenter />
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver"
-                                     Value="True">
-                                <Setter TargetName="Border"
-                                        Property="Background"
-                                        Value="{DynamicResource ButtonBackgroundPointerOver}" />
-                                <Setter Property="Foreground"
-                                        Value="{DynamicResource ButtonForegroundPointerOver}" />
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
 
         <Style BasedOn="{StaticResource MahApps.Styles.CheckBox}"
                TargetType="{x:Type CheckBox}">
             <Setter Property="Margin"
-                    Value="4 2 0 2" />
+                    Value="2 0" />
+            <Setter Property="Padding"
+                    Value="0" />
             <Setter Property="BorderBrush"
                     Value="{DynamicResource CheckBoxBorderBrush}" />
             <Setter Property="Background"
                     Value="{DynamicResource CheckBoxBackground}" />
             <Setter Property="Foreground"
                     Value="{DynamicResource CheckBoxForeground}" />
+            <Setter Property="Cursor"
+                    Value="Hand" />
         </Style>
 
         <Style TargetType="{x:Type TextBox}"
@@ -108,54 +42,244 @@
                     Value="{DynamicResource TextControlForeground}" />
             <Setter Property="CaretBrush"
                     Value="{DynamicResource TextControlForeground}" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsDone}"
+                             Value="True">
+                    <Setter Property="Foreground"
+                            Value="{DynamicResource TextControlForegroundDisabled}" />
+                    <Setter Property="IsReadOnly"
+                            Value="True" />
+                    <Setter Property="Cursor"
+                            Value="Arrow" />
+                </DataTrigger>
+                <!--<Trigger Property="IsEnabled"
+                         Value="False">
+                    <Setter Property="Foreground"
+                            Value="{DynamicResource TextControlForegroundDisabled}" />
+                    <Setter TargetName="DisabledVisualElement"
+                            Property="UIElement.Opacity"
+                            Value="0.0" />
+                    <Setter TargetName="PART_ContentHost"
+                            Property="Background"
+                            Value="Transparent" />
+                </Trigger>-->
+            </Style.Triggers>
         </Style>
         
-        <DataTemplate x:Key="AddingJobDataTemplate" DataType="{x:Type models:AddingJob}">
+        <DataTemplate x:Key="AddingJobDataTemplate">
             <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
                 <Button Margin="4 2 0 2"
+                        Height="24"
+                        Cursor="Hand"
                         Command="{Binding DataContext.AddNewJobCommand, RelativeSource={RelativeSource AncestorType={x:Type local:ToDoListWidget}, Mode=FindAncestor}}">
                     <TextBlock Text="Add Item..."
                                FontSize="11"
+                               VerticalAlignment="Center"
                                Foreground="{DynamicResource CardForeground}" />
                 </Button>
             </Grid>
         </DataTemplate>
-        <DataTemplate x:Key="ToDoJobDataTemplate" DataType="{x:Type models:ToDoJob}">
+
+        <Style TargetType="{x:Type ListViewItem}"
+               x:Key="ChangedVisibilityByDoneListViewItem"
+               BasedOn="{StaticResource CoraListViewItemStyle}">
+            <Style.Triggers>
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding DataContext.IsShowDone, RelativeSource={RelativeSource AncestorType={x:Type local:ToDoListWidget}}}"
+                                   Value="False"/>
+                        <Condition Binding="{Binding IsDone}"
+                                   Value="True"/>
+                    </MultiDataTrigger.Conditions>
+                    <Setter Property="Visibility"
+                            Value="Collapsed" />
+                </MultiDataTrigger>
+            </Style.Triggers>
+        </Style>
+        
+        <DataTemplate DataType="{x:Type local:ToDoContext}">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
-                <DockPanel HorizontalAlignment="Stretch"
-                           LastChildFill="True">
+                <DockPanel LastChildFill="True">
                     <CheckBox DockPanel.Dock="Left"
                               FocusVisualStyle="{x:Null}"
-                              IsChecked="{Binding IsCompleted}" />
+                              IsChecked="{Binding IsDone}" />
+                    <Grid DockPanel.Dock="Left"
+                          Visibility="{Binding DataContext.IsShowTask, Converter={StaticResource BoolToVis},
+                                RelativeSource={RelativeSource AncestorType={x:Type local:ToDoListWidget}, Mode=FindAncestor}}">
+                        <Popup x:Name="PART_Popup"
+                               AllowsTransparency="True"
+                               IsOpen="{Binding IsChecked, ElementName=PART_ToggleButton}"
+                               Placement="Bottom"
+                               PlacementTarget="{Binding ElementName=PART_ToggleButton}">
+                            <Border MinWidth="64"
+                                    Background="White"
+                                    BorderBrush="LightGray"
+                                    BorderThickness="1"
+                                    CornerRadius="4">
+                                <Border.Effect>
+                                    <DropShadowEffect BlurRadius="3"
+                                                      Direction="-50"
+                                                      Opacity="0.3"
+                                                      ShadowDepth="1"
+                                                      Color="Black" />
+                                </Border.Effect>
+
+                                <StackPanel Margin="1">
+                                    <ListBox BorderThickness="0"
+                                             Style="{DynamicResource DefaultCorathingListBoxStyle}"
+                                             SelectedIndex="{Binding TaskType, Converter={StaticResource ToDoTaskTypeToIndexConverter}}">
+                                        <ListBoxItem Content="TODO" />
+                                        <ListBoxItem Content="DOING" />
+                                        <ListBoxItem Content="NOW" />
+                                        <ListBoxItem Content="LATER" />
+                                        <ListBoxItem Content="DONE" />
+                                    </ListBox>
+                                </StackPanel>
+                            </Border>
+                        </Popup>
+
+                        <ToggleButton x:Name="PART_ToggleButton"
+                                      Grid.Column="0"
+                                      FocusVisualStyle="{x:Null}"
+                                      Focusable="False">
+                            <ToggleButton.Style>
+                                <Style TargetType="{x:Type ToggleButton}">
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="{x:Type ToggleButton}">
+                                                
+                                                <Grid x:Name="PART_ButtonText"
+                                                      Margin="0 2"
+                                                      TextElement.FontWeight="DemiBold"
+                                                      TextElement.Foreground="{DynamicResource TextFillAccentColorPrimaryBrush}"
+                                                      Background="Transparent">
+                                                    <TextBlock Grid.Column="0"
+                                                               VerticalAlignment="Center"
+                                                               Margin="2 0"
+                                                               FontSize="12"
+                                                               Text="{Binding TaskType}"
+                                                               TextTrimming="CharacterEllipsis" />
+                                                </Grid>
+                                                <ControlTemplate.Triggers>
+                                                    <MultiDataTrigger>
+                                                        <MultiDataTrigger.Conditions>
+                                                            <Condition Binding="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}"
+                                                                       Value="True" />
+                                                            <Condition Binding="{Binding IsMouseOver, ElementName=PART_Popup}"
+                                                                       Value="False" />
+                                                        </MultiDataTrigger.Conditions>
+                                                        <Setter TargetName="PART_ButtonText"
+                                                                Property="Background"
+                                                                Value="{DynamicResource ControlAccentBackground}" />
+                                                        <Setter TargetName="PART_ButtonText"
+                                                                Property="TextElement.Foreground"
+                                                                Value="{DynamicResource ControlAccentForeground}" />
+                                                    </MultiDataTrigger>
+
+                                                    <MultiDataTrigger>
+                                                        <MultiDataTrigger.Conditions>
+                                                            <Condition Binding="{Binding IsPressed, RelativeSource={RelativeSource Self}}"
+                                                                       Value="True" />
+                                                            <Condition Binding="{Binding IsMouseOver, ElementName=PART_Popup}"
+                                                                       Value="False" />
+                                                        </MultiDataTrigger.Conditions>
+                                                        <Setter TargetName="PART_ButtonText"
+                                                                Property="Background"
+                                                                Value="{DynamicResource ControlAccentBackgroundPressed}" />
+                                                        <Setter TargetName="PART_ButtonText"
+                                                                Property="TextElement.Foreground"
+                                                                Value="{DynamicResource ControlAccentForeground}" />
+                                                    </MultiDataTrigger>
+
+                                                    <MultiDataTrigger>
+                                                        <MultiDataTrigger.Conditions>
+                                                            <Condition Binding="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}"
+                                                                       Value="False" />
+                                                            <Condition Binding="{Binding IsMouseOver, ElementName=PART_Popup}"
+                                                                       Value="True" />
+                                                        </MultiDataTrigger.Conditions>
+                                                        <Setter TargetName="PART_ButtonText"
+                                                                Property="Background"
+                                                                Value="{DynamicResource ControlAccentBackground}" />
+                                                        <Setter TargetName="PART_ButtonText"
+                                                                Property="TextElement.Foreground"
+                                                                Value="{DynamicResource ControlAccentForeground}" />
+                                                    </MultiDataTrigger>
+
+                                                    <DataTrigger Value="True">
+                                                        <DataTrigger.Binding>
+                                                            <behaviors:DelayedMultiBinding Converter="{StaticResource DelayedMultiBindingConverter}"
+                                                                                            Delay="0:0:0.1"
+                                                                                            Mode="TwoWay">
+                                                                <Binding Mode="OneWay"
+                                                                         Path="IsChecked"
+                                                                         RelativeSource="{RelativeSource Self}" />
+                                                                <Binding Mode="OneWay"
+                                                                         Path="IsMouseOver"
+                                                                         RelativeSource="{RelativeSource Self}" />
+                                                                <Binding ElementName="PART_Popup"
+                                                                         Mode="OneWay"
+                                                                         Path="IsMouseOver" />
+                                                            </behaviors:DelayedMultiBinding>
+                                                        </DataTrigger.Binding>
+                                                        <Setter Property="IsChecked"
+                                                                Value="False" />
+                                                    </DataTrigger>
+
+                                                    <DataTrigger Binding="{Binding IsDropDownUnchecked}"
+                                                                 Value="True">
+                                                        <Setter Property="IsChecked"
+                                                                Value="False" />
+                                                    </DataTrigger>
+                                                </ControlTemplate.Triggers>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </ToggleButton.Style>
+                        </ToggleButton>
+                    </Grid>
                     <TextBox HorizontalAlignment="Stretch"
+                             HorizontalContentAlignment="Stretch"
                              VerticalContentAlignment="Center"
                              Margin="0"
+                             Padding="0"
                              BorderThickness="0"
-                             Text="{Binding Detail}" />
+                             Text="{Binding Job}">
+                        <i:Interaction.Behaviors>
+                            <behaviors:TextBoxEnterKeyUpdateBehavior />
+                        </i:Interaction.Behaviors>
+                    </TextBox>
                 </DockPanel>
                 <Border IsHitTestVisible="False"
-                        Visibility="{Binding IsCompleted, 
-                                Converter={StaticResource BoolToVis}}"
+                        Visibility="{Binding IsDone, Converter={StaticResource BoolToVis}}"
                         BorderThickness="0.5"
                         VerticalAlignment="Center"
                         HorizontalAlignment="Stretch"
                         BorderBrush="{DynamicResource TextControlForegroundDisabled}" />
             </Grid>
         </DataTemplate>
-    </UserControl.Resources>
-    <Grid>
-        <ListBox x:Name="ToDoListBox"
-                 BorderThickness="0"
-                 Background="Transparent"
-                 ItemsSource="{Binding Jobs}"
-                 ItemTemplateSelector="{StaticResource JobTemplateSelector}" />
 
+    </UserControl.Resources>
+    
+    <Grid>
+        <ListView BorderThickness="0"
+                  Background="Transparent"
+                  Style="{DynamicResource CoraListViewStyle}"
+                  dd:DragDrop.IsDragSource="True"
+                  dd:DragDrop.IsDropTarget="True"
+                  dd:DragDrop.ShowAlwaysDropTargetAdorner="True"
+                  dd:DragDrop.UseDefaultDragAdorner="True"
+                  ItemContainerStyle="{StaticResource ChangedVisibilityByDoneListViewItem}"
+                  SelectionChanged="ListView_SelectionChanged"
+                  ItemsSource="{Binding ToDos}">
+            <ListView.ItemTemplateSelector>
+                <behaviors:EmptyDataTemplateSelector EmptyTemplate="{StaticResource AddingJobDataTemplate}" />
+            </ListView.ItemTemplateSelector>
+        </ListView>
     </Grid>
+    
 </UserControl>

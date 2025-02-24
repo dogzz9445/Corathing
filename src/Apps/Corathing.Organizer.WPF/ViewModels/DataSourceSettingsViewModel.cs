@@ -90,14 +90,8 @@ public partial class DataSourceSettingsViewModel : ObservableObject
         if (_dataSourceType == null)
             return;
 
-        var packageService = _services.GetRequiredService<IPackageService>();
-        var dataContext = packageService.CreateDataSourceContext(_dataSourceType.FullName);
-
-        var appStateService = _services.GetRequiredService<IAppStateService>();
-        appStateService.UpdateDataSource(dataContext.State);
-
         var dataSourceService = _services.GetRequiredService<IDataSourceService>();
-        dataSourceService.AddDataSourceContext(dataContext);
+        var dataContext = dataSourceService.CreateDataSourceContext(_dataSourceType);
 
         DataSourceContexts.Add(dataContext);
         Select(dataContext);
@@ -106,14 +100,8 @@ public partial class DataSourceSettingsViewModel : ObservableObject
     [RelayCommand]
     public void RemoveDataSource(DataSourceContext context)
     {
-        // TODO:
-        // 모든 위젯에서 해당 연결 끊기
-        //WeakReferenceMessenger.Default.Send(new DataSourceRemovedMessage(context.State.Id));
-
-        var appStateService = _services.GetRequiredService<IAppStateService>();
         var dataSourceService = _services.GetRequiredService<IDataSourceService>();
-        appStateService.RemovePackage(context.State.Id);
-        dataSourceService.RemoveDataSourceContext(context);
+        dataSourceService.DestroyDataSourceContext(context);
     }
 
     public void OnSelectedContext(DataSourceContext? selectedContext)
@@ -136,6 +124,7 @@ public partial class DataSourceSettingsViewModel : ObservableObject
         if (_optionType != null || _settingsContextType != null)
         {
             TempSettingsContext = packageService.CreateDataSourceSettingsContext(selectedContext.GetType().FullName);
+            TempName = selectedContext.State.CoreSettings.Title;
             TempSettingsContext.RegisterSettings(
                 _id, JsonHelper.DeepCopy(selectedContext.State.CustomSettigns, _optionType)
             );
@@ -149,21 +138,22 @@ public partial class DataSourceSettingsViewModel : ObservableObject
         if (SelectedContext == null)
             return;
 
-        // FIXME:
-        // 무언가 우아한 방법
         SelectedContext.Name = TempName;
         SelectedContext.State.CoreSettings.Title = TempName;
         SelectedContext.State.CustomSettigns = JsonHelper.DeepCopy(TempSettingsContext.CustomSettings, _optionType);
         SelectedContext.ApplyState(SelectedContext.State);
-
-        var appStateService = _services.GetRequiredService<IAppStateService>();
-        appStateService.UpdateDataSource(SelectedContext.State);
+        SelectedContext.SaveState();
     }
 
     [RelayCommand]
-    public void GoBack(Window window)
+    public void SelectAndGoBack(DataSourceContext context)
     {
-        window.Close();
+        _services.GetRequiredService<INavigationDialogService>().GoBack();
+
+        WeakReferenceMessenger.Default.Send(
+            new DataSourceStateChangedMessage(EntityStateChangedType.Selected, context),
+            context.GetType().FullName
+            );
     }
 
     private void OnCustomSettingsChanged(object recipient, CustomSettingsChangedMessage? message)

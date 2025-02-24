@@ -10,12 +10,16 @@ public interface IDataSourceCoreState
 {
     string? TypeName { get; }
     string? Title { get; }
+    bool IsDependentOnWidget { get; }
+    Guid? DependencyWidget { get; }
 }
 
-public class DataSourceCoreState
+public class DataSourceCoreState : IDataSourceCoreState
 {
     public string? TypeName { get; set; }
     public string? Title { get; set; }
+    public bool IsDependentOnWidget { get; set; }
+    public Guid? DependencyWidget { get; set; }
 }
 
 public interface IDataSourceState : IEntity

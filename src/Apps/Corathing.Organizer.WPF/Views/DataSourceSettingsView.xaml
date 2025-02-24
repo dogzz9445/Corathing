@@ -4,12 +4,17 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:local="clr-namespace:Corathing.Organizer.WPF.Views"
+      xmlns:system="clr-namespace:System;assembly=mscorlib"
       xmlns:viewmodels="clr-namespace:Corathing.Organizer.WPF.ViewModels"
       xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
       xmlns:controls="clr-namespace:Corathing.Dashboards.WPF.Controls;assembly=Corathing.Dashboards.WPF"
       xmlns:converters="clr-namespace:Corathing.Dashboards.WPF.Converters;assembly=Corathing.Dashboards.WPF"
       xmlns:datacontexts="clr-namespace:Corathing.Contracts.DataContexts;assembly=Corathing.Contracts"
       xmlns:localizations="clr-namespace:Corathing.Dashboards.WPF.Bindings;assembly=Corathing.Dashboards.WPF"
+      xmlns:settings="clr-namespace:Corathing.UI.WPF.Controls;assembly=Corathing.UI.WPF"
+      xmlns:behaviors="clr-namespace:Corathing.Organizer.WPF.Behaviors"
+      xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+      xmlns:behaviors1="clr-namespace:Corathing.UI.WPF.Behaviors;assembly=Corathing.UI.WPF"
       mc:Ignorable="d"
       d:DesignHeight="800"
       d:DesignWidth="800"
@@ -17,6 +22,14 @@
                         IsDesignTimeCreatable=False}"
       Tag="Corathing.Organizer.DataSourceSettingsTitle"
       Title="DataContextSettingsView">
+    <Page.Resources>
+        <!-- Empty Data Template -->
+        <DataTemplate x:Key="EmptyDataTemplate" />
+
+        <behaviors:EmptyDataTemplateSelector x:Key="EmptyTemplateSelector"
+                                             EmptyTemplate="{StaticResource EmptyDataTemplate}" />
+
+    </Page.Resources>
 
     <DockPanel LastChildFill="True"
                Margin="0 16 0 0">
@@ -37,6 +50,50 @@
                 <ListBox Background="{DynamicResource ControlBackground}"
                          ItemsSource="{Binding DataSourceContexts}"
                          SelectedItem="{Binding SelectedContext}">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="MouseDoubleClick">
+                            <i:InvokeCommandAction Command="{Binding SelectAndGoBackCommand}"
+                                                   CommandParameter="{Binding SelectedContext}" />
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                    <!--<ListBox.ItemContainerStyle>
+                        <Style TargetType="ListBoxItem"
+                               BasedOn="{StaticResource DefaultListBoxItemStyle}">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                                        <GridViewRowPresenter>
+                                            <i:Interaction.Triggers>
+                                                <i:EventTrigger EventName="MouseDoubleClick">
+                                                    <i:InvokeCommandAction Command="{Binding SelectAndGoBackCommand, RelativeSource={RelativeSource AncestorType=local:DataSourceSettingsView}}"
+                                                                           CommandParameter="{Binding DataContext, RelativeSource={RelativeSource AncestorType=ListBoxItem}}" />
+                                                </i:EventTrigger>
+                                            </i:Interaction.Triggers>
+
+                                            <Border x:Name="Border"
+                                                Margin="0"
+                                                Padding="{TemplateBinding Padding}"
+                                                Background="Transparent"
+                                                BorderThickness="1"
+                                                CornerRadius="{TemplateBinding Border.CornerRadius}">
+                                            <ContentPresenter />
+                                            </Border>
+                                        </GridViewRowPresenter>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsSelected"
+                                                     Value="True">
+                                                <Setter TargetName="Border"
+                                                        Property="Background"
+                                                        Value="{DynamicResource ListBoxItemSelectedBackgroundThemeBrush}" />
+                                                <Setter Property="Foreground"
+                                                        Value="{DynamicResource ListBoxItemSelectedForegroundThemeBrush}" />
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </ListBox.ItemContainerStyle>-->
                     <ListBox.ItemTemplate>
                         <DataTemplate DataType="{x:Type datacontexts:DataSourceContext}">
                             <StackPanel>
@@ -51,41 +108,44 @@
         <Separator DockPanel.Dock="Left"
                    Margin="8 0 8 0" />
 
-        <ScrollViewer FocusVisualStyle="{x:Null}">
-            <StackPanel FocusVisualStyle="{x:Null}">
-                <DockPanel LastChildFill="False">
-                    <ui:TextBlock VerticalAlignment="Center"
-                                  FontTypography="BodyStrong"
-                                  Text="{localizations:Localization Corathing.Organizer.DataSourceSettingsTitle}" />
+        <DockPanel LastChildFill="False"
+                   DockPanel.Dock="Top"
+                   Margin="0 0 16 8">
+            <ui:TextBlock VerticalAlignment="Center"
+                          FontTypography="BodyStrong"
+                          Foreground="{DynamicResource ControlForeground}"
+                          Text="{localizations:Localization Corathing.Organizer.DataSourceSettingsTitle}" />
 
-                    <ui:Button DockPanel.Dock="Right"
-                               Appearance="Primary"
-                               Command="{Binding ApplyCommand}"
-                               Content="{localizations:Localization Corathing.Organizer.Apply}"
-                               Icon="Checkmark24"
-                               Height="40" />
-                </DockPanel>
+            <ui:Button DockPanel.Dock="Right"
+                       Appearance="Primary"
+                       Command="{Binding ApplyCommand}"
+                       Content="{localizations:Localization Corathing.Organizer.Apply}"
+                       Icon="Checkmark24"
+                       Height="40" />
+        </DockPanel>
+
+        <ScrollViewer FocusVisualStyle="{x:Null}">
+            <StackPanel FocusVisualStyle="{x:Null}"
+                        Margin="0 0 16 0">
 
                 <!-- 이름 설정 -->
-                <ui:CardControl Margin="0,8,0,8"
-                                Icon="{ui:SymbolIcon KeyboardLayoutResize24}">
-                    <ui:CardControl.Header>
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                            </Grid.RowDefinitions>
-                            <ui:TextBlock Grid.Row="0"
-                                          FontTypography="Body"
-                                          Text="{localizations:Localization Corathing.Organizer.Name}" />
-                            <ui:TextBox Grid.Row="1"
-                                        Text="{Binding TempName, UpdateSourceTrigger=PropertyChanged}" />
-                        </Grid>
-                    </ui:CardControl.Header>
-                </ui:CardControl>
+                <settings:SettingsBlock Header="{localizations:Localization Corathing.Organizer.Name}"
+                                        CategoryText="Name:">
+                    <ui:TextBox Grid.Row="1"
+                                Text="{Binding TempName, UpdateSourceTrigger=PropertyChanged}">
+                        <i:Interaction.Behaviors>
+                            <behaviors1:TextBoxEnterKeyUpdateBehavior />
+                        </i:Interaction.Behaviors>
+                    </ui:TextBox>
+                </settings:SettingsBlock>
+
+                <ContentPresenter Content="{Binding SelectedContext}"
+                                  DataContext="{Binding SelectedContext}"
+                                  ContentTemplateSelector="{StaticResource EmptyTemplateSelector}"/>
 
                 <ContentPresenter Content="{Binding TempSettingsContext}"
-                                  DataContext="{Binding TempSettingsContext}" />
+                                  DataContext="{Binding TempSettingsContext}"
+                                  ContentTemplateSelector="{StaticResource EmptyTemplateSelector}" />
 
             </StackPanel>
         </ScrollViewer>

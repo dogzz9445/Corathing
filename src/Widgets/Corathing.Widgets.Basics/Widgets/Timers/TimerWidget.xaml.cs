@@ -51,7 +51,7 @@ public partial class TimerWidgetViewModel : WidgetContext
 
     #endregion
 
-    public override void OnCreate(WidgetState state)
+    public override void OnCreate(IServiceProvider services, WidgetState state)
     {
         ILocalizationService localizationService = _services.GetService<ILocalizationService>();
         localizationService.Provide(

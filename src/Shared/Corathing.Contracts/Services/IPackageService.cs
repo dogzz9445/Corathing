@@ -36,16 +36,16 @@ public interface IPackageService
     // Data Sources
     // --------------------------------------------------------------------
     List<ICoraDataSourceInfo> GetAvailableDataSources();
-    DataSourceContext? CreateDataSourceContext(string contextTypeFullName);
-    Type? GetDataSourceCustomSettingsType(string contextTypeFullName);
-    CustomSettingsContext? CreateDataSourceSettingsContext(string contextTypeFullName);
+    DataSourceContext? CreateDataSourceContext(string? contextTypeFullName);
+    Type? GetDataSourceCustomSettingsType(string? contextTypeFullName);
+    CustomSettingsContext? CreateDataSourceSettingsContext(string? contextTypeFullName);
     Type? GetDataSourceSettingsContextType(string? contextTypeFullName);
 
     // --------------------------------------------------------------------
     // Widgets
     // --------------------------------------------------------------------
     List<ICoraWidgetInfo> GetAvailableWidgets();
-    WidgetContext? CreateWidgetContext(string contextTypeFullName, WidgetState? state = null);
-    Type? GetWidgetCustomSettingsType(string contextTypeFullName);
-    CustomSettingsContext? CreateWidgetSettingsContext(string contextTypeFullName);
+    WidgetContext? CreateWidgetContext(string? contextTypeFullName, WidgetState? state = null);
+    Type? GetWidgetCustomSettingsType(string? contextTypeFullName);
+    CustomSettingsContext? CreateWidgetSettingsContext(string? contextTypeFullName);
 }

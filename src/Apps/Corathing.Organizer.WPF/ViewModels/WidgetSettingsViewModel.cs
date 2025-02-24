@@ -65,9 +65,14 @@ public partial class WidgetSettingsViewModel : ObservableObject
         var packageService = _services.GetService<IPackageService>();
 
         TempWidgetContext = packageService.CreateWidgetContext(_originalContext.GetType().FullName);
+        TempWidgetContext.IsTemporal = true;
         _optionType = packageService.GetWidgetCustomSettingsType(_originalContext.GetType().FullName);
         _originalContext.CopyTo(TempWidgetContext, _optionType);
+        _settingsWidgetHost.Content = TempWidgetContext;
         _settingsWidgetHost.DataContext = TempWidgetContext;
+
+        TempWidgetContext.EditMode = false;
+        _settingsWidgetHost.EditMode = false;
 
         // If Custom Settings exists
         // Custom Settings 가 존재할 경우
@@ -90,10 +95,8 @@ public partial class WidgetSettingsViewModel : ObservableObject
         // 무언가 우아한 방법
         TempWidgetContext.CopyToWithoutLayout(_originalContext, _optionType);
         _originalContext.UpdateTo(_originalContext.State);
-        _originalContext.OnStateChanged(_originalContext.State);
-
-        var appStateService = _services.GetService<IAppStateService>();
-        appStateService.UpdateWidget(_originalContext.State);
+        _originalContext.ApplyState(_originalContext.State);
+        _originalContext.SaveState();
     }
 
     [RelayCommand]
@@ -105,5 +108,6 @@ public partial class WidgetSettingsViewModel : ObservableObject
     public void OnCustomSettingsChanged(object? sender, CustomSettingsChangedMessage? message)
     {
         TempWidgetContext.State.CustomSettings = JsonHelper.DeepCopy(message.Value, _optionType);
+        TempWidgetContext.ApplyState(TempWidgetContext.State);
     }
 }

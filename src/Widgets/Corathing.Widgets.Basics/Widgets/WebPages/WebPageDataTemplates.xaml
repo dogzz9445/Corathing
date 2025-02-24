@@ -1,0 +1,73 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:Corathing.Widgets.Basics.Widgets.WebPages"
+                    xmlns:settings="clr-namespace:Corathing.UI.WPF.Controls;assembly=Corathing.UI.WPF"
+                    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+                    xmlns:localizations="clr-namespace:Corathing.Widgets.Basics.Behaviors"
+                    xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+                    xmlns:behaviors="clr-namespace:Corathing.UI.WPF.Behaviors;assembly=Corathing.UI.WPF">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="pack://application:,,,/Corathing.UI.WPF;component/Styles/Button.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+
+    <local:WebPageThemeToIndexConverter x:Key="WebPageThemeToIndexConverter" />
+    <local:AutoReloadValueToIndexConverter x:Key="AutoReloadValueToIndexConverter" />
+
+    <DataTemplate DataType="{x:Type local:WebPageWidgetContext}">
+        <ContentPresenter Content="{Binding WebView}" />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type local:WebPageOptionViewModel}">
+        <StackPanel>
+            <!-- Web Page Theme -->
+            <settings:SettingsBlock IsDescriptionOnContentRight="True"
+                                    CategoryText="WebPage:"
+                                    Header="Theme">
+                <ComboBox MinWidth="200"
+                          SelectedIndex="{Binding WebPageTheme, Converter={StaticResource WebPageThemeToIndexConverter}, Mode=TwoWay}">
+                    <ComboBoxItem Content="App" />
+                    <ComboBoxItem Content="Light" />
+                    <ComboBoxItem Content="Dark" />
+                </ComboBox>
+            </settings:SettingsBlock>
+
+            <!-- Auto Reload -->
+            <settings:SettingsBlock IsDescriptionOnContentRight="True"
+                                    CategoryText="WebPage:"
+                                    Header="Auto Reload">
+                <ComboBox MinWidth="200"
+                          SelectedIndex="{Binding AutoReloadInterval, Converter={StaticResource AutoReloadValueToIndexConverter}, Mode=TwoWay}">
+                    <ComboBoxItem Content="없음" />
+                    <ComboBoxItem Content="30초" />
+                    <ComboBoxItem Content="1분" />
+                    <ComboBoxItem Content="2분" />
+                    <ComboBoxItem Content="5분" />
+                    <ComboBoxItem Content="10분" />
+                    <ComboBoxItem Content="15분" />
+                    <ComboBoxItem Content="30분" />
+                    <ComboBoxItem Content="1시간" />
+                    <ComboBoxItem Content="1일" />
+                </ComboBox>
+            </settings:SettingsBlock>
+
+            <!-- Url -->
+            <settings:SettingsBlock CategoryText="WebPage:"
+                                    Header="Url">
+                <ui:TextBox Text="{Binding Url, UpdateSourceTrigger=LostFocus}">
+                    <i:Interaction.Behaviors>
+                        <behaviors:TextBoxEnterKeyUpdateBehavior />
+                    </i:Interaction.Behaviors>
+                </ui:TextBox>
+            </settings:SettingsBlock>
+
+            <!-- WebSessionDataSourceSelector -->
+            <settings:SettingsBlock CategoryText="WebPage:"
+                                    Header="Session">
+                <ContentPresenter Grid.Row="1"
+                                  Content="{Binding WebSessionDataSourceSelector}"
+                                  DataContext="{Binding WebSessionDataSourceSelector}" />
+            </settings:SettingsBlock>
+        </StackPanel>
+    </DataTemplate>
+
+</ResourceDictionary>

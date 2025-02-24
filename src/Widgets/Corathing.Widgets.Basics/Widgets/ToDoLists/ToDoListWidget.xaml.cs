@@ -25,57 +25,16 @@ using Corathing.Contracts.Bases;
 using Corathing.Contracts.Entries;
 using Corathing.Contracts.Services;
 using Corathing.Widgets.Basics.Widgets.Timers;
-using Corathing.Widgets.Basics.Widgets.ToDoLists.Models;
+using CommunityToolkit.Mvvm.Collections;
+using ListView = System.Windows.Controls.ListView;
+using Point = System.Windows.Point;
+using MouseEventArgs = System.Windows.Input.MouseEventArgs;
+using ListViewItem = System.Windows.Controls.ListViewItem;
+using DragEventArgs = System.Windows.DragEventArgs;
+using DataObject = System.Windows.DataObject;
+using DragDropEffects = System.Windows.DragDropEffects;
 
 namespace Corathing.Widgets.Basics.Widgets.ToDoLists;
-
-[EntryCoraWidget(
-    contextType: typeof(ToDoListViewModel),
-    name: "Create To Do List",
-    description: "Provides a one by one square widget.",
-    menuPath: "Default/To Do List",
-    menuOrder: 0
-    )]
-public partial class ToDoListViewModel : WidgetContext
-{
-    private ObservableCollection<Job> _jobs;
-    public ObservableCollection<Job> Jobs
-    {
-        get => _jobs;
-        set
-        {
-
-            if (EqualityComparer<ObservableCollection<Job>?>.Default.Equals(_jobs, value))
-                return;
-            OnPropertyChanging(nameof(Jobs));
-            _jobs = value;
-            var itemsView = (IEditableCollectionView)CollectionViewSource.GetDefaultView(_jobs);
-            itemsView.NewItemPlaceholderPosition = NewItemPlaceholderPosition.AtEnd;
-            OnPropertyChanged(nameof(Jobs));
-        }
-    }
-
-    public override void OnCreate(WidgetState state)
-    {
-        ILocalizationService localizationService = _services.GetService<ILocalizationService>();
-        localizationService.Provide("Corathing.Widgets.Basics.ToDoListName", value => WidgetTitle = value);
-
-        Jobs = new ObservableCollection<Job>();
-    }
-
-    [RelayCommand]
-    public void AddNewJob()
-    {
-        Jobs.Add(new ToDoJob());
-    }
-
-    [RelayCommand]
-    public void RemoveJob(ToDoJob job)
-    {
-        Jobs.Remove(job);
-    }
-
-}
 
 /// <summary>
 /// Interaction logic for ToDoListWidget.xaml
@@ -85,5 +44,13 @@ public partial class ToDoListWidget
     public ToDoListWidget()
     {
         InitializeComponent();
+    }
+
+    private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        if (sender is ListView listView)
+        {
+            listView.SelectedIndex = -1;
+        }
     }
 }

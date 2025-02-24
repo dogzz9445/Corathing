@@ -2,20 +2,21 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:calendars="clr-namespace:Corathing.Widgets.Basics.Widgets.Calendars"
                     xmlns:commanders="clr-namespace:Corathing.Widgets.Basics.Widgets.Commanders"
-                    xmlns:fileopeners="clr-namespace:Corathing.Widgets.Basics.Widgets.FileOpeners"
-                    xmlns:linkopeners="clr-namespace:Corathing.Widgets.Basics.Widgets.LinkOpeners"
                     xmlns:monacos="clr-namespace:Corathing.Widgets.Basics.Widgets.Monacos"
                     xmlns:notes="clr-namespace:Corathing.Widgets.Basics.Widgets.Notes"
                     xmlns:timers="clr-namespace:Corathing.Widgets.Basics.Widgets.Timers"
-                    xmlns:todos="clr-namespace:Corathing.Widgets.Basics.Widgets.ToDoLists"
-                    xmlns:webpages="clr-namespace:Corathing.Widgets.Basics.Widgets.WebPages"
                     xmlns:webqueries="clr-namespace:Corathing.Widgets.Basics.Widgets.WebQueries"
                     >
 
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="pack://application:,,,/Corathing.Widgets.Basics;component/Widgets/Emptys/EmptyWidgetView.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/Corathing.Widgets.Basics;component/Widgets/FileOpeners/FileOpenerDataTemplate.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/Corathing.Widgets.Basics;component/DataSources/ExecutableApps/ExecutableAppDataSourceView.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Corathing.Widgets.Basics;component/Widgets/Openers/OpenerDataTemplates.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Corathing.Widgets.Basics;component/Widgets/WebPages/WebPageDataTemplates.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Corathing.Widgets.Basics;component/Widgets/WebQueries/WebQueryDataTemplates.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Corathing.Widgets.Basics;component/Widgets/ToDoLists/ToDoListDataTemplates.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Corathing.Widgets.Basics;component/DataSources/ExecutableApps/ExecutableAppDataSourceDataTemplates.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Corathing.Widgets.Basics;component/DataSources/WebSessions/WebSessionDataSourceDataTemplates.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Corathing.Widgets.Basics;component/DataSources/ToDos/ToDoDataSourceDataTemplates.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
     <DataTemplate DataType="{x:Type calendars:CalendarWidgetViewModel}">
@@ -26,11 +27,7 @@
         <commanders:CommanderWidget />
     </DataTemplate>
 
-    <DataTemplate DataType="{x:Type linkopeners:LinkOpenerWidgetViewModel}">
-        <linkopeners:LinkOpenerWidget />
-    </DataTemplate>
-    
-    <DataTemplate DataType="{x:Type monacos:MonacoWidgetViewModel}">
+    <DataTemplate DataType="{x:Type monacos:MonacoWidgetContext}">
         <monacos:MonacoWidget />
     </DataTemplate>
 
@@ -42,15 +39,7 @@
         <timers:TimerWidget />
     </DataTemplate>
 
-    <DataTemplate DataType="{x:Type todos:ToDoListViewModel}">
-        <todos:ToDoListWidget />
-    </DataTemplate>
-    
-    <DataTemplate DataType="{x:Type webpages:WebPageViewModel}">
-        <webpages:WebPageWidget />
-    </DataTemplate>
-
-    <DataTemplate DataType="{x:Type webqueries:WebQueryViewModel}">
+    <DataTemplate DataType="{x:Type webqueries:WebQueryWidgetContext}">
         <webqueries:WebQueryWidget />
     </DataTemplate>
     

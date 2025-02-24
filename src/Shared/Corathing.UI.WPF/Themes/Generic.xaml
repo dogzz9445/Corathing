@@ -91,10 +91,12 @@
     <Color x:Key="ControlFillAccentColorLightThemeDefault">#5ea6ff</Color>
     <Color x:Key="ControlFillAccentColorLightThemeSecondary">#0078d4</Color>
     <Color x:Key="ControlFillAccentColorLightThemeTeritary">#004da2</Color>
+    <Color x:Key="ControlFillAccentColorLightThemeTransparent">#0F004da2</Color>
 
     <!-- 2. Dark Theme Accent Colors -->
     <Color x:Key="ControlFillAccentColorDarkThemeDefault">#5ea6ff</Color>
     <Color x:Key="ControlFillAccentColorDarkThemeSecondary">#0078d4</Color>
     <Color x:Key="ControlFillAccentColorDarkThemeTeritary">#004da2</Color>
+    <Color x:Key="ControlFillAccentColorDarkThemeTransparent">#0F004da2</Color>
 
 </ResourceDictionary>
