@@ -21,12 +21,6 @@ public partial class App : Application
         // 같은 이름의 다른 프로세스가 실행중인지 확인하고, 실행중이면 종료
         if (CheckIfProcessExists())
         {
-            MessageBox.Show(
-                "Another instance of the application is already running.",
-                "Error",
-                MessageBoxButton.OK,
-                MessageBoxImage.Error);
-
             Shutdown();
         }
 
@@ -44,7 +38,7 @@ public partial class App : Application
                         }
                         Current.MainWindow.Activate();
                     });
-                    break;
+                    break; 
             }
         };
         SecondInstanceService.StartAsync(new System.Threading.CancellationToken());

@@ -9,6 +9,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
+using Corathing.WPF.Sample.ViewModels;
+
 namespace Corathing.WPF.Sample;
 
 /// <summary>
@@ -16,8 +18,15 @@ namespace Corathing.WPF.Sample;
 /// </summary>
 public partial class MainWindow : Window
 {
+    private readonly MainWindowViewModel _viewModel;
+    //private readonly IPopupService _popupService;
+
     public MainWindow()
     {
         InitializeComponent();
+
+        // ViewModel 생성 및 연결
+        _viewModel = new MainWindowViewModel();
+        this.DataContext = _viewModel;
     }
 }

@@ -4,9 +4,76 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Corathing.WPF.Sample"
+        xmlns:viewmodels="clr-namespace:Corathing.WPF.Sample.ViewModels"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+        xmlns:behaviors="clr-namespace:Corathing.WPF.Sample.Behaviors"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
+        Title="MainWindow"
+        Height="450"
+        Width="800">
+    <Window.Resources>
+        <DropShadowEffect x:Key="DropShadowEffect"
+                          ShadowDepth="3"
+                          BlurRadius="5"
+                          Opacity="0.3" />
+    </Window.Resources>
 
+    <i:Interaction.Triggers>
+        <behaviors:MouseTrigger EventType="PreviewMouseDown"
+                                Command="{Binding MouseDownCommand}" />
+    </i:Interaction.Triggers>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="2*" />
+        </Grid.ColumnDefinitions>
+
+        <ListBox x:Name="itemListBox"
+                 Grid.Column="0"
+                 Margin="10"
+                 ItemsSource="{Binding Logs}"
+                 SelectedItem="{Binding SelectedLog, Mode=TwoWay}">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <ToggleButton Name="button"
+                                      VerticalAlignment="Stretch"
+                                      HorizontalAlignment="Stretch">
+                            <ToggleButton.Template>
+                                <ControlTemplate TargetType="ToggleButton">
+                                    <TextBlock Text="{Binding Title}"
+                                               VerticalAlignment="Stretch"
+                                               HorizontalAlignment="Stretch"/>
+                                </ControlTemplate>
+                            </ToggleButton.Template>
+                        </ToggleButton>
+                        <Popup IsOpen="{Binding IsChecked, ElementName=button}"
+                               StaysOpen="False"
+                               Placement="Mouse">
+                            <Border Background="LightBlue">
+                                <TextBox Text="{Binding Content}" />
+                            </Border>
+                        </Popup>
+                    </Grid>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="ListBoxItem">
+                    <Setter Property="HorizontalContentAlignment"
+                            Value="Stretch"></Setter>
+                </Style>
+            </ListBox.ItemContainerStyle>
+        </ListBox>
+
+        <Grid Grid.Column="1"
+              Margin="10">
+            <TextBlock x:Name="detailsTextBlock"
+                       TextWrapping="Wrap"
+                       Foreground="Gray"
+                       VerticalAlignment="Center"
+                       HorizontalAlignment="Center"
+                       Text="{Binding DetailsText}" />
+        </Grid>
     </Grid>
 </Window>
