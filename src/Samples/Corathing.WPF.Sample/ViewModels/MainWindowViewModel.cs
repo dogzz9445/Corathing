@@ -12,6 +12,12 @@ using System.Windows.Input;
 using System.Windows.Documents;
 using CommunityToolkit.Mvvm.Input;
 using System.Runtime.Serialization;
+using LiveChartsCore.SkiaSharpView.Painting;
+using LiveChartsCore.SkiaSharpView;
+using LiveChartsCore;
+using SkiaSharp;
+using LiveChartsCore.Defaults;
+using System.Windows;
 
 namespace Corathing.WPF.Sample.ViewModels
 {
@@ -47,6 +53,15 @@ namespace Corathing.WPF.Sample.ViewModels
         {
         }
 
+        [RelayCommand]
+        private void Loaded(object obj)
+        {
+            if (obj is Window window)
+            {
+
+            }
+        }
+
         partial void OnSelectedLogChanged(LogItem item)
         {
             if (item != null)
@@ -55,5 +70,7 @@ namespace Corathing.WPF.Sample.ViewModels
                 DetailsText = item.Content;
             }
         }
+
+
     }
 }
