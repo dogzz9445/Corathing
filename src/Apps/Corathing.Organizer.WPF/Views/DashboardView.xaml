@@ -374,6 +374,8 @@
                     <ui:Button Style="{StaticResource IconButton24}"
                                Icon="{ui:SymbolIcon Dismiss24}"
                                Margin="0,0,10,0"
+                               Command="{Binding CloseWindowCommand}"
+                               CommandParameter="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}, Mode=FindAncestor}}"
                                ToolTip="Close oranigzer" />
 
                 </StackPanel>

@@ -109,22 +109,21 @@ public partial class App : Application
                 themeService.Apply(theme);
         }
 
-
         // --------------------------------------------------------------------------
         // Available Widgets
         // --------------------------------------------------------------------------
-        IPackageService packageService = Services.GetService<IPackageService>();
-        packageService.LoadDLL("Corathing.Widgets.Basics.dll");
-        //widgetService.LoadWidgetsFromDLL("DDT.Core.WidgetSystems.DefaultWidgets.dll");
+        IPackageService? packageService = Services.GetService<IPackageService>();
+        packageService?.LoadDLL("Corathing.Widgets.Basics.dll");
         //widgetService.RegisterWidgets(new List<WidgetGenerator> { new WidgetGenerator() });
 
-        LocalizationService.Instance.RegisterStringResourceManager("Corathing.Organizer.WPF",
+        LocalizationService.Instance.RegisterStringResourceManager(
+            "Corathing.Organizer.WPF",
             CorathingOrganizerLocalizationStringResources.ResourceManager);
 
         // --------------------------------------------------------------------------
         // Configure authentication
         // --------------------------------------------------------------------------
-        IAuthService authService = App.Current.Services.GetService<IAuthService>();
+        IAuthService? authService = App.Current.Services.GetService<IAuthService>();
         if (authService != null && authService.UseAuthService)
         {
             //var loginWindow = new BaseWindow();
@@ -186,7 +185,6 @@ public partial class App : Application
         serviceCollection.AddSingleton<IDialogService, DialogService>();
         serviceCollection.AddSingleton<ILocalizationService>(LocalizationService.Instance);
         serviceCollection.AddSingleton<INavigationService, NavigationService>();
-        serviceCollection.AddSingleton<IPageService, PageService>();
         serviceCollection.AddSingleton<IContentDialogService, ContentDialogService>();
         serviceCollection.AddSingleton<INavigationDialogService, NavigationDialogService>();
         serviceCollection.AddSingleton<IPackageService, PackageService>();
@@ -216,7 +214,6 @@ public partial class App : Application
         serviceCollection.AddTransient<ProjectSettingsContext>();
         serviceCollection.AddTransient<ProjectContext>();
         serviceCollection.AddTransient<WorkflowContext>();
-
 
         // TODO:
         // Logger 및 Localizer 설정

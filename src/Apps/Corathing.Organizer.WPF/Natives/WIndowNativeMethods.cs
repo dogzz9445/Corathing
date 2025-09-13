@@ -39,6 +39,4 @@ public static class WindowNativeMethods
         public Rect Work;
         public uint Flags;
     }
-
-
 }

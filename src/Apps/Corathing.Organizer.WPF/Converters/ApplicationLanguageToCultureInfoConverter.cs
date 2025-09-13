@@ -31,36 +31,4 @@ public class ApplicationLanguageToCultureInfoConverter : IValueConverter
             1 => ApplicationLanguage.ko_KR,
             _ => ApplicationLanguage.en_US,
         } : ApplicationLanguage.en_US;
-
-    //public object? Convert(object value, Type targetType,
-    //    object parameter, CultureInfo culture)
-    //{
-    //    if (value == null)
-    //        return null;
-    //    if (value is not AvailableCulture)
-    //        return null;
-    //    return Convert((AvailableCulture)value);
-    //}
-
-    //public object? ConvertBack(object value, Type targetType,
-    //    object parameter, CultureInfo culture)
-    //{
-    //    if (value == null)
-    //        return null;
-    //    if (value is not CultureInfo)
-    //        return null;
-    //    return ConvertBack((CultureInfo)value);
-    //}
-
-    //public static CultureInfo Convert(AvailableCulture culture)
-    //{
-    //    return CultureInfo.GetCultureInfo(
-    //        StringToAvailableCultureConverter.
-    //        ConvertBack(culture));
-    //}
-
-    //public static AvailableCulture ConvertBack(CultureInfo culture)
-    //{
-    //    return StringToAvailableCultureConverter.Convert(culture.Name);
-    //}
 }

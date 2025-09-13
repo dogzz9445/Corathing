@@ -15,9 +15,13 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Compile Remove="DataSources\DotNetCodes\**" />
 	  <Compile Remove="LogicNodes\**" />
+	  <EmbeddedResource Remove="DataSources\DotNetCodes\**" />
 	  <EmbeddedResource Remove="LogicNodes\**" />
+	  <None Remove="DataSources\DotNetCodes\**" />
 	  <None Remove="LogicNodes\**" />
+	  <Page Remove="DataSources\DotNetCodes\**" />
 	  <Page Remove="LogicNodes\**" />
 	</ItemGroup>
 
@@ -32,17 +36,16 @@
 	</ItemGroup>
 
 	<ItemGroup>
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.9.2" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
-    <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.2535.41" />
-    <PackageReference Include="WPF-UI" Version="3.0.4" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.14.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.9" />
+    <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.3485.44" />
+    <PackageReference Include="WPF-UI" Version="4.0.3" />
   </ItemGroup>
 
   <ProjectExtensions><VisualStudio><UserProperties /></VisualStudio></ProjectExtensions>
 
 	<ItemGroup>
 		<Folder Include="Assets\Monaco\" />
-		<Folder Include="DataSources\DotNetCodes\" />
 		<Folder Include="DataSources\DotNetEnvironments\CompilerPlatforms\" />
 		<Folder Include="DataSources\PythonCodes\" />
 	</ItemGroup>

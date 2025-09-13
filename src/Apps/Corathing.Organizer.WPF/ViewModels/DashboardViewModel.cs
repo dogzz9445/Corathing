@@ -185,6 +185,15 @@ public partial class DashboardViewModel : ObservableObject
         SelectedProject?.RemoveWorkflow(context);
     }
 
+    [RelayCommand]
+    public void CloseWindow(Window? window)
+    {
+        if (window is Window)
+        {
+            window.Close();
+        }
+    }
+
     #endregion Public Properties
 
     #region Public Methods

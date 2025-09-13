@@ -63,25 +63,6 @@ public interface INavigationDialogService
     //Task<bool> NavigateWithHierarchy(Type pageType, object? dataContext, CancellationToken cancellationToken = default);
 
 
-    /// <summary>
-    /// Provides direct access to the control responsible for navigation.
-    /// </summary>
-    /// <returns>Instance of the <see cref="INavigationView"/> control.</returns>
-    //INavigationView GetNavigationControl();
-
-    /// <summary>
-    /// Lets you attach the control that represents the <see cref="INavigationView"/>.
-    /// </summary>
-    /// <param name="navigation">Instance of the <see cref="INavigationView"/>.</param>
-    //void SetNavigationControl(INavigationView navigation);
-
-    /// <summary>
-    /// Lets you attach the service that delivers page instances to <see cref="INavigationView"/>.
-    /// </summary>
-    /// <param name="pageService">Instance of the <see cref="IPageService"/>.</param>
-    //void SetPageService(IPageService pageService);
-
-
     Task<bool> Navigate<T>(object? parameter = null) where T : INavigationView;
 
     Task<bool> Navigate(Type? viewType, object? parameter = null);

@@ -45,7 +45,6 @@ public partial class MainWindow : MetroWindow
         MouseDoubleClick += Window_MouseDoubleClick;
     }
 
-
     private void Window_MouseDoubleClick(object sender, MouseButtonEventArgs e)
     {
         if (e.GetPosition(this).Y >= 64)

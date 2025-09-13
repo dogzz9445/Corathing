@@ -21,8 +21,6 @@ using Smart.Collections.Generic;
 
 using Wpf.Ui.Controls;
 
-using INavigationView = Corathing.Contracts.Services.INavigationView;
-
 namespace Corathing.Organizer.WPF.ViewModels;
 
 /// <summary>
@@ -49,7 +47,6 @@ public class MenuItem : System.Windows.Controls.MenuItem
         set => SetValue(IconProperty, value);
     }
 }
-
 
 public partial class MainViewModel : ObservableObject
 {
