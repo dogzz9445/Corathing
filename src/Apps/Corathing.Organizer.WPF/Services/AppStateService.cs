@@ -19,8 +19,6 @@ using Corathing.Organizer.WPF.Models;
 
 using Microsoft.Extensions.DependencyInjection;
 
-using Smart.IO;
-
 using Windows.ApplicationModel.Calls;
 
 using MessageBox = System.Windows.MessageBox;

@@ -42,7 +42,7 @@ public class NavigationItem
     public string Header { get; set; } = string.Empty;
     public object Tag { get; set; } = string.Empty;
     public int Index { get; set; }
-    public INavigationView View { get; set; }
+    public INavigationView? View { get; set; }
 }
 
 public class NavigationDialogService : INavigationDialogService

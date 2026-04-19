@@ -18,7 +18,7 @@ charset = utf-8-bom
 
 # Xml project files
 [*.{csproj,vbproj,vcxproj,vcxproj.filters,proj,projitems,shproj}]
-indent_size = 2
+indent_size = 4
 
 # Xml config files
 [*.{props,targets,ruleset,config,nuspec,resx,vsixmanifest,vsct}]
@@ -72,8 +72,8 @@ dotnet_style_explicit_tuple_names = true:suggestion
 dotnet_style_prefer_inferred_tuple_names = true:suggestion
 dotnet_style_prefer_inferred_anonymous_type_member_names = true:suggestion
 dotnet_style_prefer_is_null_check_over_reference_equality_method = true:suggestion
-dotnet_style_prefer_conditional_expression_over_return = false
-dotnet_style_prefer_conditional_expression_over_assignment = false
+dotnet_style_prefer_conditional_expression_over_return = false:silent
+dotnet_style_prefer_conditional_expression_over_assignment = false:silent
 dotnet_style_prefer_auto_properties = true:suggestion
 
 # Parentheses
@@ -90,47 +90,28 @@ dotnet_style_require_accessibility_modifiers = always:suggestion
 
 # Interfaces start with an I and are PascalCased
 dotnet_naming_rule.interfaces_must_be_pascal_cased_and_prefixed_with_I.symbols                        = interface_symbols
-dotnet_naming_rule.interfaces_must_be_pascal_cased_and_prefixed_with_I.style                          = pascal_case_and_prefix_with_I_style
-dotnet_naming_rule.interfaces_must_be_pascal_cased_and_prefixed_with_I.severity                       = warning
+dotnet_naming_rule.interfaces_must_be_pascal_cased_and_prefixed_with_i.style = pascal_case_and_prefix_with_I_style
+dotnet_naming_rule.interfaces_must_be_pascal_cased_and_prefixed_with_i.severity = warning
 
 # External members are PascalCased
 dotnet_naming_rule.externally_visible_members_must_be_pascal_cased.symbols                            = externally_visible_symbols
-dotnet_naming_rule.externally_visible_members_must_be_pascal_cased.style                              = pascal_case_style
-dotnet_naming_rule.externally_visible_members_must_be_pascal_cased.severity                           = warning
+dotnet_naming_rule.externally_visible_members_must_be_pascal_cased.style = pascal_case_style
+dotnet_naming_rule.externally_visible_members_must_be_pascal_cased.severity = warning
 
 # Parameters are camelCased
 dotnet_naming_rule.parameters_must_be_camel_cased.symbols                                             = parameter_symbols
-dotnet_naming_rule.parameters_must_be_camel_cased.style                                               = camel_case_style
-dotnet_naming_rule.parameters_must_be_camel_cased.severity                                            = warning
+dotnet_naming_rule.parameters_must_be_camel_cased.style = camel_case_style
+dotnet_naming_rule.parameters_must_be_camel_cased.severity = warning
 
 # Constants are PascalCased
 dotnet_naming_rule.constants_must_be_pascal_cased.symbols                                             = constant_symbols
-dotnet_naming_rule.constants_must_be_pascal_cased.style                                               = pascal_case_style
-dotnet_naming_rule.constants_must_be_pascal_cased.severity                                            = warning
-
-# Uncomment this group and comment out the next group if you prefer s_ prefixes for static fields
-
-# Private static fields are prefixed with s_ and are camelCased like s_myStatic
-#dotnet_naming_rule.private_static_fields_must_be_camel_cased_and_prefixed_with_s_underscore.symbols   = private_static_field_symbols
-#dotnet_naming_rule.private_static_fields_must_be_camel_cased_and_prefixed_with_s_underscore.style     = camel_case_and_prefix_with_s_underscore_style
-#dotnet_naming_rule.private_static_fields_must_be_camel_cased_and_prefixed_with_s_underscore.severity  = warning
+dotnet_naming_rule.constants_must_be_pascal_cased.style = pascal_case_style
+dotnet_naming_rule.constants_must_be_pascal_cased.severity = warning
 
 # Static readonly fields are PascalCased
 dotnet_naming_rule.static_readonly_fields_should_be_pascal_case.symbols                               = private_static_readonly_field_symbols
-dotnet_naming_rule.static_readonly_fields_should_be_pascal_case.style                                 = pascal_case_style
-dotnet_naming_rule.static_readonly_fields_should_be_pascal_case.severity                              = warning
-
-# Comment this group and uncomment out the next group if you don't want _ prefixed fields.
-
-# Private instance fields are camelCased with an _ like _myField
-dotnet_naming_rule.private_instance_fields_must_be_camel_cased_and_prefixed_with_underscore.symbols   = private_field_symbols
-dotnet_naming_rule.private_instance_fields_must_be_camel_cased_and_prefixed_with_underscore.style     = camel_case_and_prefix_with_underscore_style
-dotnet_naming_rule.private_instance_fields_must_be_camel_cased_and_prefixed_with_underscore.severity  = warning
-
-# Private instance fields are camelCased
-#dotnet_naming_rule.private_instance_fields_must_be_camel_cased.symbols                                = private_field_symbols
-#dotnet_naming_rule.private_instance_fields_must_be_camel_cased.style                                  = camel_case_style
-#dotnet_naming_rule.private_instance_fields_must_be_camel_cased.severity                               = warning
+dotnet_naming_rule.static_readonly_fields_should_be_pascal_case.style = pascal_case_style
+dotnet_naming_rule.static_readonly_fields_should_be_pascal_case.severity = warning
 
 # Symbols
 dotnet_naming_symbols.externally_visible_symbols.applicable_kinds                                     = class,struct,interface,enum,property,method,field,event,delegate
@@ -170,6 +151,17 @@ dotnet_naming_style.camel_case_and_prefix_with_underscore_style.capitalization  
 
 dotnet_naming_style.pascal_case_and_prefix_with_I_style.required_prefix                               = I
 dotnet_naming_style.pascal_case_and_prefix_with_I_style.capitalization                                = pascal_case
+dotnet_code_quality_unused_parameters = all:suggestion
+dotnet_style_allow_multiple_blank_lines_experimental = true:silent
+dotnet_style_allow_statement_immediately_after_block_experimental = true:silent
+tab_width = 4
+end_of_line = crlf
+dotnet_style_operator_placement_when_wrapping = beginning_of_line
+dotnet_style_prefer_simplified_boolean_expressions = true:suggestion
+dotnet_style_prefer_compound_assignment = true:suggestion
+dotnet_style_prefer_simplified_interpolation = true:suggestion
+dotnet_style_prefer_collection_expression = when_types_loosely_match:suggestion
+dotnet_style_namespace_match_folder = true:suggestion
 
 
 # CSharp code style settings:
@@ -252,3 +244,37 @@ csharp_space_between_method_declaration_name_and_open_parenthesis = false
 csharp_space_between_method_declaration_parameter_list_parentheses = false
 csharp_space_between_parentheses = false
 csharp_space_between_square_brackets = false
+csharp_using_directive_placement = outside_namespace:silent
+csharp_style_allow_embedded_statements_on_same_line_experimental = true:silent
+csharp_style_allow_blank_lines_between_consecutive_braces_experimental = true:silent
+csharp_style_allow_blank_line_after_colon_in_constructor_initializer_experimental = true:silent
+csharp_style_allow_blank_line_after_token_in_conditional_expression_experimental = true:silent
+csharp_style_allow_blank_line_after_token_in_arrow_expression_clause_experimental = true:silent
+csharp_style_expression_bodied_local_functions = false:silent
+csharp_style_expression_bodied_lambdas = true:silent
+csharp_style_prefer_null_check_over_type_check = true:suggestion
+csharp_style_prefer_local_over_anonymous_function = true:suggestion
+csharp_style_prefer_index_operator = true:suggestion
+csharp_style_prefer_range_operator = true:suggestion
+csharp_style_implicit_object_creation_when_type_is_apparent = true:suggestion
+csharp_style_prefer_implicitly_typed_lambda_expression = true:suggestion
+csharp_style_prefer_tuple_swap = true:suggestion
+csharp_style_prefer_unbound_generic_type_in_nameof = true:suggestion
+csharp_style_prefer_utf8_string_literals = true:suggestion
+csharp_style_unused_value_assignment_preference = discard_variable:suggestion
+csharp_style_unused_value_expression_statement_preference = discard_variable:silent
+csharp_prefer_simple_using_statement = true:suggestion
+csharp_style_namespace_declarations = block_scoped:silent
+csharp_style_prefer_method_group_conversion = true:silent
+csharp_style_prefer_top_level_statements = true:silent
+csharp_style_prefer_primary_constructors = true:suggestion
+csharp_prefer_system_threading_lock = true:suggestion
+csharp_style_prefer_simple_property_accessors = true:suggestion
+csharp_style_prefer_pattern_matching = true:silent
+csharp_style_prefer_switch_expression = true:suggestion
+csharp_style_prefer_extended_property_pattern = true:suggestion
+csharp_style_prefer_not_pattern = true:suggestion
+csharp_prefer_static_anonymous_function = true:suggestion
+csharp_prefer_static_local_function = true:suggestion
+csharp_style_prefer_readonly_struct = true:suggestion
+csharp_style_prefer_readonly_struct_member = true:suggestion

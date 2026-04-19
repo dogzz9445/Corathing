@@ -12,8 +12,6 @@ using Corathing.Contracts.Services;
 
 using Microsoft.Extensions.DependencyInjection;
 
-using NuGet.Packaging;
-
 namespace Corathing.Organizer.Services;
 
 public class DataSourceService(IServiceProvider services) : IDataSourceService

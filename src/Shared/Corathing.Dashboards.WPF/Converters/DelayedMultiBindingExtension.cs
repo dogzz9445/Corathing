@@ -40,7 +40,7 @@ public sealed class DelayedMultiBindingExtension : MarkupExtension, IMultiValueC
     /// <summary>
     /// Occurs when a property value changes.
     /// </summary>
-    public event PropertyChangedEventHandler PropertyChanged;
+    public event PropertyChangedEventHandler? PropertyChanged;
 
     #endregion Public Events
 
@@ -227,7 +227,7 @@ public sealed class DelayedMultiBindingExtension : MarkupExtension, IMultiValueC
 
     #region Private Methods
 
-    private void Timer_Tick(object sender, EventArgs e)
+    private void Timer_Tick(object? sender, EventArgs e)
     {
         _timer.Stop();
         _delayedValue = _unDelayedValue;

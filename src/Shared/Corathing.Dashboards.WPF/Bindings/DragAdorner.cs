@@ -5,6 +5,8 @@ using System.Windows.Shapes;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
+using Serilog;
+
 namespace Corathing.Dashboards.WPF.Bindings;
 
 /// <summary>
@@ -77,15 +79,26 @@ public sealed class DragAdorner : Adorner
     /// <param name="startPoint">The start point.</param>
     public DragAdorner(UIElement adornedElement, Point startPoint) : base(adornedElement)
     {
-        var content = adornedElement as FrameworkElement;
-
-        StartPoint = startPoint;
-        _child = new Rectangle
+        if (adornedElement is FrameworkElement content)
         {
-            Width = (int)content.RenderSize.Width,
-            Height = (int)content.RenderSize.Height,
-            Fill = new ImageBrush(BitmapFrame.Create(RenderToBitmap(content)))
-        };
+            StartPoint = startPoint;
+            _child = new Rectangle
+            {
+                Width = (int)content.RenderSize.Width,
+                Height = (int)content.RenderSize.Height,
+                Fill = new ImageBrush(BitmapFrame.Create(RenderToBitmap(content)))
+            };
+        }
+        else
+        {
+            Log.Error("Adorned element is not a FrameworkElement. DragAdorner requires a FrameworkElement to render correctly.");
+            _child = new Rectangle
+            {
+                Width = 0,
+                Height = 0,
+                Fill = Brushes.Transparent
+            };
+        }
     }
 
     #endregion Public Constructors

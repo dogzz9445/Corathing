@@ -81,6 +81,7 @@ public partial class ThemeService : ObservableRecipient, IThemeService
             ApplicationTheme.Dark => Wpf.Ui.Appearance.ApplicationTheme.Dark,
             ApplicationTheme.Light => Wpf.Ui.Appearance.ApplicationTheme.Light,
             ApplicationTheme.HighContrast => Wpf.Ui.Appearance.ApplicationTheme.HighContrast,
+            ApplicationTheme.Scifi => Wpf.Ui.Appearance.ApplicationTheme.Dark,
             _ => Wpf.Ui.Appearance.ApplicationTheme.Unknown
         };
 

@@ -17,8 +17,6 @@ using Corathing.Organizer.WPF.Services;
 
 using Microsoft.Extensions.DependencyInjection;
 
-using Smart.Collections.Generic;
-
 using Wpf.Ui.Controls;
 
 namespace Corathing.Organizer.WPF.ViewModels;

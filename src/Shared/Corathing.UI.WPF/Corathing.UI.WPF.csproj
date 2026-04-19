@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net8.0-windows</TargetFramework>
+    <TargetFramework>net10.0-windows7.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
@@ -21,15 +21,14 @@
 
   <ItemGroup>
     <PackageReference Include="gong-wpf-dragdrop" Version="4.0.0" />
-    <PackageReference Include="MahApps.Metro" Version="2.4.10" />
-    <PackageReference Include="MahApps.Metro.IconPacks" Version="6.1.0" />
-    <PackageReference Include="Material.Icons.WPF" Version="2.4.1" />
-    <PackageReference Include="MaterialDesignThemes" Version="5.2.1" />
-    <PackageReference Include="MaterialDesignThemes.MahApps" Version="5.2.1" />
-    <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.135" />
-    <PackageReference Include="PixiEditor.ColorPicker" Version="3.4.2" />
-    <PackageReference Include="System.Text.Json" Version="9.0.9" />
-    <PackageReference Include="WPF-UI" Version="4.0.3" />
+    <PackageReference Include="MahApps.Metro" Version="2.4.11" />
+    <PackageReference Include="MahApps.Metro.IconPacks" Version="6.2.1" />
+    <PackageReference Include="Material.Icons.WPF" Version="3.0.2" />
+    <PackageReference Include="MaterialDesignThemes" Version="5.3.1" />
+    <PackageReference Include="MaterialDesignThemes.MahApps" Version="5.3.1" />
+    <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.142" />
+    <PackageReference Include="PixiEditor.ColorPicker" Version="3.4.2.3" />
+    <PackageReference Include="WPF-UI" Version="4.2.0" />
   </ItemGroup>
 
   <ItemGroup>

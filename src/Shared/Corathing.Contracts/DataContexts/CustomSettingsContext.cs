@@ -11,8 +11,6 @@ using CommunityToolkit.Mvvm.Messaging.Messages;
 
 using Corathing.Contracts.Messages;
 
-using Microsoft.VisualBasic.FileIO;
-
 namespace Corathing.Contracts.DataContexts;
 
 public abstract partial class CustomSettingsContext : ObservableObject

@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="10.0.6" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.6" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="10.0.6" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="10.0.6" />
+    <PackageReference Include="Microsoft.Extensions.Identity.Stores" Version="10.0.6" />
+    <PackageReference Include="Serilog.Extensions.Hosting" Version="10.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Model\Organizer\" />
+  </ItemGroup>
+
+</Project>

@@ -46,8 +46,5 @@ public partial class MultiLevelNavigationPage : INavigableView<MultiLevelNavigat
     public MultiLevelNavigationPage(MultiLevelNavigationViewModel viewModel)
     {
         ViewModel = viewModel;
-        DataContext = ViewModel;
-
-        InitializeComponent();
     }
 }

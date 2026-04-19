@@ -33,8 +33,7 @@ public class BoolToVisibilityConverter : IValueConverter
             return Visibility.Visible;
 
         if (!(value is bool boolValue))
-            return null;
-        //throw new Exception($"{value} {nameof(InvertBoolToVisibilityConverter)} expects a boolean to passed in through its value parameter");
+            return Visibility.Collapsed;
 
         return boolValue ? Visibility.Visible : Visibility.Collapsed;
     }

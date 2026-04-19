@@ -32,7 +32,7 @@ namespace Corathing.Dashboards.WPF.Services;
 
 public class LocalizationService : ILocalizationService, INotifyPropertyChanged
 {
-    public static new LocalizationService Instance = new();
+    public readonly static LocalizationService Instance = new();
 
     private ApplicationLanguage _cachedApplicationLanguage = ApplicationLanguage.Unknown;
     private CultureInfo? _cachedApplicationCultureInfo = null;

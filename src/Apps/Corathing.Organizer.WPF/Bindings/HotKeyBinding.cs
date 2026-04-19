@@ -69,7 +69,7 @@ public class HotKeyBinding
     }
     #endregion
 
-    public static event EventHandler<HotKeyEventArgs> HotkeyAlreadyRegistered;
+    public static event EventHandler<HotKeyEventArgs>? HotkeyAlreadyRegistered;
 
     private static void OnHotkeyAlreadyRegistered(string name)
     {
@@ -80,11 +80,11 @@ public class HotKeyBinding
 
 
     #region Key Binding
-    private static readonly Lazy<KeyGestureConverter> _gestureConverter
+    private static readonly Lazy<KeyGestureConverter> GestureConverter
         = new(() => new KeyGestureConverter());
     public static KeyGestureConverter KeyGestureConverter
     {
-        get => _gestureConverter.Value;
+        get => GestureConverter.Value;
     }
 
     private static string GetNameForKeyBinding(KeyGesture gesture)
