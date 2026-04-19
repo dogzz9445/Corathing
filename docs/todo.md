@@ -1,116 +1,55 @@
-# 📅 대시보드
+# TODO — 현재 안 되는 핵심 기능
 
-## TODO
-- [ ] (WidgetSystem) WidgetContext 구현
-- [ ] (WidgetSystem) DataSourceService 구현
-- [ ] (WidgetSystem) DataSourceContext 에서 데이터를 읽어오는 기능 구현
-- [ ] (WidgetSystem) DataSourceContext 에서 OnMessage 구현하기
-- [ ] (WidgetSystem) WidgetContext 에서 OnMessage 구현하기 
-- [ ] (Organizer) Navigation 서비스 구현
-- [ ] (Contracts) AssemblyCoraPackageIconAttribute 추가
-- [ ] (Contracts) ArgumentCastNullException 추가
-- [ ] (Organizer) Dashboard View 의 TabControl 의 Placeholder 에서 CornerRadius 가 없는 버튼을 배치하고 안에 Border 및 Corner Radius 를 넣어 버튼을 구현
-- [ ] (Organizer) Dashboard View 의 TabControl 에서 Add Button 을 구현하는데 문제가 있음. TabControl 을 재구현하여 사용하거나 다른 방식을 고려하여야함
-- [ ] (Organizer) Settings 에서 TypeName 을 Generator 네임으로 변경해야함. 따라서, Generator가 되는 Key 에 대한 값을 패키지에서 생성하도록 해야함 (애트리뷰트)
+> 순서대로 하나씩 개발한다. 위에서 아래로.
+> 위젯 아이디어 · 편의 기능은 [milestones.md](milestones.md), 버전 계획은 [roadmap.md](roadmap.md) 참고.
 
-## Doing
-- [ ] (WidgetSystem) DataSourceService 구현
+---
 
-## Done
-- [x] (Dashboard) Dashboard host 및 widget host 구현 및 버그 수정, 테스트
-- [x] (WidgetSystem) Localization 서비스 구현
-- [x] (WidgetSystem) 테마 서비스 구현
-- [x] (WidgetSystem) WidgetContext 에서 위젯을 로드하는 기능 구현
-- [x] (Organizer) Nuget 패키지에서 위젯을 읽고 로드하는 서비스 구현
-  - [x] DLL 로드
-- [x] (WidgetSystem) DataSourceContext 구현
+## 1. 위젯 간 메시지 전달 (WidgetSystem)
 
-## Idea
-- [ ] (Organizer) 위젯 세팅에서 위젯의 크기를 선택하여 위젯의 크기를 변경할 수 있도록 한다.
+- [ ] `DataSourceContext.OnMessage` 구현 — 위젯 → 데이터소스 → 위젯 브로드캐스트
+- [ ] `WidgetContext.OnMessage` 구현 — 위젯 간 직접 메시지
+- [ ] 메시지 스키마 정의 (Contracts/Messages/)
+- [ ] 샘플: Opener 위젯이 ExecutableApp DataSource 변경을 수신해서 UI 갱신
 
-# 📅 데이터소스
-## Idea v1
-- [ ] Executable DataSource
-- [ ] WebSession DataSource
-- [ ] ToDo DataSource
+## 2. Settings 화면 안정화 (Organizer)
 
-# 📅 위젯
-## Idea v1
-- [x] 열기 위젯
-- [ ] ToDo 위젯
-- [ ] Python 위젯
-- [ ] C# 위젯
-- [ ] Windows 위젯
-- [ ] WebView 위젯
-- [ ] vscode 위젯
-- [ ] PLC 위젯
+- [ ] Dashboard View `TabControl` 의 Add 버튼 재구현 — Placeholder 스타일 + 클릭 처리
+- [ ] Settings 에서 TypeName 대신 **Generator Key** 사용
+  - [ ] `[AssemblyCoraPackageIconAttribute]` 추가
+  - [ ] `CoraWidgetGenerator` / `CoraDataSourceGenerator` 가 Key 를 패키지에서 읽도록 변경
+- [ ] `ArgumentCastNullException` 추가 (Contracts)
 
-## Idea v2
-- [ ] 하드웨어 모니터링 위젯 추가
+## 3. State/Context 생명주기 정리
 
-## TODO
-- [ ] (열기 위젯) 커맨드 또는 쉘로 파일 열기 기능 추가
-- [ ] (열기 위젯) 열기 위젯에 Localization 추가
-- [ ] (ToDo) ToDo 위젯에 Localization 추가
+- [ ] `ProjectContext`, `WorkflowContext` 생성 메소드 추가
+- [ ] `ProjectState`, `WorkflowState`, `WidgetState` 에 `Copy()` 메소드 추가
+- [ ] `WidgetContext.Update` 에서 AppState 직접 업데이트 제거 → `WidgetState` 만 갱신
+- [ ] `IAppStateService` 가 상태 변경을 감지해서 저장하도록 재배선
 
-## Doing
-- [ ] (타이머 위젯) 리셋 버튼 스타일 수정
-- [ ] (타이머 위젯) 타이머 위젯 구현
+## 4. NavigationService 통합 (Organizer)
+
+- [ ] `Usa.Smart.Navigation` 기반 `INavigationService` 구현
+- [ ] 설정 화면 breadcrumb 을 `NavigationDialogService` 에서 분리
+- [ ] 위젯에서 모달/팝업을 띄울 수 있는 API 제공
+
+## 5. 품질
+
+- [ ] 단위테스트 프로젝트 추가 (`Corathing.Tests`, xUnit)
+- [ ] CI 에 `dotnet test` 단계 추가
+- [ ] 핵심 서비스(`AppStateService`, `PackageService`, `DataSourceService`) 테스트 커버
+
+---
 
 ## Done
-- [x] (열기 위젯) 파일 열기 기능 추가
-- [x] (열기 위젯) 폴더 열기 기능 추가
-- [x] (열기 위젯) 링크 열기 기능 추가
 
+최근 완료(참고용). 오래된 것은 git log 참고.
 
-# 📅 퍼블리싱
-
-## CI/CI
-- [ ] Create CI/CD workflows for WPF Applications built on .NET 8.x
-- [ ] Code Quality
-
-## 배포/웹사이트
-- [ ] Create a website for the project
-- [ ] Create a GitHub Pages site for the project
-- [ ] Create a NuGet package for the project
-- [ ] Create a Community Standup for the project
-
-# 2.0.0
-
-## Idea
-- [ ] Avalonia UI 프레임워크 마이그레이션
-
-## TODO
-- [ ] Services 문서화
-- [ ] Widgets 문서화
-- [ ] DataContext 문서화
-- [ ] 개인적인 사용이 아닌 배포 용으로 사용할 때 필요한 작업들을 정리
-  - [ ] 시크릿 서비스를 이용한 어플리케이션 설정 암호화
-  - [ ] 문서에 빌드 방법 및 배포 방법을 정리
-
-### 배포/웹사이트
-- [ ] 
-- [ ] 위젯의 AssemblyName 을 패키지 정보로 이동
-- [ ] 사이즈 변경되는 아이콘 컨트롤 기능
-- [ ] 위젯 Background 설정 변경 기능
-- [ ] 커스텀 아이콘 추가 기능
-- [ ] 프로그램 아이콘 읽어오기 기능
-
-
-## TODO 20240626
-- [ ] 위젯 Background 설정 변경 기능
-- [ ] 커스텀 아이콘 추가 기능
-- [ ] ProjectContext, WorkflowContext, ProjectState, WorkflowState 생성 메소드 추가
-- [ ] WidgetContext 의 Update 메소드에서 AppState에 업데이트 기능 삭제
-- [ ] WidgetContext 의 Update 메소드에 WidgetState를 업데이트 기능 추가 
-- [ ] ProjectState, WorkflowState, WidgetState 에 Copy 메소드 추가 
-- [ ] (Widget) 하드웨어 모니터링 위젯 추가
-- [ ] (Widget) 시스템 정보 위젯 추가
-- [ ] (Widget) 프로세스 모니터링 위젯 추가
-- [ ] (Widget) 서비스 모니터링 위젯 추가
-- [ ] (Widget) 이벤트 로그 모니터링 위젯 추가
-- [ ] (Widget) 로그 파일 모니터링 위젯 추가
-
-## Done
-### 20240626
-- [x] 사이즈 변경되는 아이콘 컨트롤 기능
+- [x] Dashboard host / Widget host 구현
+- [x] Localization / Theme 서비스
+- [x] WidgetContext / DataSourceContext
+- [x] DLL / NuGet 패키지 로드
+- [x] 열기 위젯 (파일/폴더/링크)
+- [x] Avalonia 레거시 참조 제거 (2026-04)
+- [x] .NET 10 + CI/CD 단순화 (2026-04)
+- [x] Localization Designer.cs → 수동 wrapper 전환 (2026-04)

@@ -54,19 +54,4 @@
 	  <ProjectReference Include="..\..\Shared\Corathing.UI.WPF\Corathing.UI.WPF.csproj" />
 	</ItemGroup>
 
-	<ItemGroup>
-	  <Compile Update="Resources\BasicWidgetStringResources.Designer.cs">
-	    <DesignTime>True</DesignTime>
-	    <AutoGen>True</AutoGen>
-	    <DependentUpon>BasicWidgetStringResources.resx</DependentUpon>
-	  </Compile>
-	</ItemGroup>
-
-	<ItemGroup>
-	  <EmbeddedResource Update="Resources\BasicWidgetStringResources.resx">
-	    <Generator>PublicResXFileCodeGenerator</Generator>
-	    <LastGenOutput>BasicWidgetStringResources.Designer.cs</LastGenOutput>
-	  </EmbeddedResource>
-	</ItemGroup>
-
 </Project>
